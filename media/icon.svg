@@ -1,0 +1,62 @@
+<!-- 由 scripts/gen-icon.mjs 从 scripts/icon-spec.mjs 生成, 请勿手工编辑。 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Editor Comfort Theme">
+  <defs>
+    <linearGradient id="g0" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2E3547" />
+      <stop offset="1" stop-color="#171B26" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="256" height="256" rx="56" fill="url(#g0)" />
+  <rect x="3" y="3" width="250" height="250" rx="53" fill="none" stroke="#3C4459" stroke-width="3" />
+  <rect x="32" y="32" width="192" height="192" rx="34" fill="#2E3446" />
+  <rect x="128" y="32" width="96" height="192" rx="34" fill="#E3DCCB" />
+  <rect x="128" y="32" width="36" height="192" rx="0" fill="#E3DCCB" />
+  <rect x="32" y="32" width="192" height="192" rx="34" fill="none" stroke="#C792EA" stroke-width="10" />
+  <circle cx="86" cy="104.75" r="31" fill="#C9B6EC" />
+  <circle cx="99" cy="95.25" r="26.5" fill="#2E3446" />
+  <path d="M110 72.25 L111.587 76.066 L115.706 76.396 L112.568 79.084 L113.527 83.104 L110 80.95 L106.473 83.104 L107.432 79.084 L104.294 76.396 L108.413 76.066 L110 72.25" fill="none" stroke="#A893DA" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M110 70.75 L111.587 74.566 L115.706 74.896 L112.568 77.584 L113.527 81.604 L110 79.45 L106.473 81.604 L107.432 77.584 L104.294 74.896 L108.413 74.566 L110 70.75" fill="none" stroke="#DCCEFA" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M113 131.45 L114.19 134.312 L117.28 134.559 L114.926 136.576 L115.645 139.591 L113 137.975 L110.355 139.591 L111.074 136.576 L108.72 134.559 L111.81 134.312 L113 131.45" fill="none" stroke="#A893DA" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M113 130.25 L114.19 133.112 L117.28 133.359 L114.926 135.376 L115.645 138.391 L113 136.775 L110.355 138.391 L111.074 135.376 L108.72 133.359 L111.81 133.112 L113 130.25" fill="none" stroke="#DCCEFA" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M50 139.45 L50.926 141.676 L53.329 141.868 L51.498 143.437 L52.057 145.782 L50 144.525 L47.943 145.782 L48.502 143.437 L46.671 141.868 L49.074 141.676 L50 139.45" fill="none" stroke="#A893DA" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M50 138.25 L50.926 140.476 L53.329 140.668 L51.498 142.237 L52.057 144.582 L50 143.325 L47.943 144.582 L48.502 142.237 L46.671 140.668 L49.074 140.476 L50 138.25" fill="none" stroke="#DCCEFA" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M197 108.75 L203 108.75" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M190.849 123.599 L195.092 127.842" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M176 129.75 L176 135.75" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M161.151 123.599 L156.908 127.842" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M155 108.75 L149 108.75" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M161.151 93.901 L156.908 89.658" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M176 87.75 L176 81.75" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M190.849 93.901 L195.092 89.658" fill="none" stroke="#E2A85E" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="176" cy="108.75" r="14" fill="#E8B467" />
+  <circle cx="192.5" cy="145.75" r="4.75" fill="#D6CCBA" />
+  <circle cx="198.5" cy="142.75" r="6" fill="#D6CCBA" />
+  <circle cx="204.5" cy="145.75" r="4.25" fill="#D6CCBA" />
+  <rect x="188" y="145.25" width="21" height="5.5" rx="2.75" fill="#D6CCBA" />
+  <circle cx="192.5" cy="143.75" r="4.75" fill="#F8F4EC" />
+  <circle cx="198.5" cy="140.75" r="6" fill="#F8F4EC" />
+  <circle cx="204.5" cy="143.75" r="4.25" fill="#F8F4EC" />
+  <rect x="188" y="143.25" width="21" height="5.5" rx="2.75" fill="#F8F4EC" />
+  <circle cx="144.15" cy="81.45" r="3.325" fill="#D6CCBA" />
+  <circle cx="148.35" cy="79.35" r="4.2" fill="#D6CCBA" />
+  <circle cx="152.55" cy="81.45" r="2.975" fill="#D6CCBA" />
+  <rect x="141" y="81.1" width="14.7" height="3.85" rx="1.925" fill="#D6CCBA" />
+  <circle cx="144.15" cy="79.45" r="3.325" fill="#F8F4EC" />
+  <circle cx="148.35" cy="77.35" r="4.2" fill="#F8F4EC" />
+  <circle cx="152.55" cy="79.45" r="2.975" fill="#F8F4EC" />
+  <rect x="141" y="79.1" width="14.7" height="3.85" rx="1.925" fill="#F8F4EC" />
+  <circle cx="144.7" cy="144.35" r="2.85" fill="#D6CCBA" />
+  <circle cx="148.3" cy="142.55" r="3.6" fill="#D6CCBA" />
+  <circle cx="151.9" cy="144.35" r="2.55" fill="#D6CCBA" />
+  <rect x="142" y="144.05" width="12.6" height="3.3" rx="1.65" fill="#D6CCBA" />
+  <circle cx="144.7" cy="142.35" r="2.85" fill="#F8F4EC" />
+  <circle cx="148.3" cy="140.55" r="3.6" fill="#F8F4EC" />
+  <circle cx="151.9" cy="142.35" r="2.55" fill="#F8F4EC" />
+  <rect x="142" y="142.05" width="12.6" height="3.3" rx="1.65" fill="#F8F4EC" />
+  <circle cx="65.5" cy="190" r="8.5" fill="#E8919A" />
+  <circle cx="90.5" cy="190" r="8.5" fill="#EEB07F" />
+  <circle cx="115.5" cy="190" r="8.5" fill="#E9CF7E" />
+  <circle cx="140.5" cy="190" r="8.5" fill="#A9CC94" />
+  <circle cx="165.5" cy="190" r="8.5" fill="#86BEDC" />
+  <circle cx="190.5" cy="190" r="8.5" fill="#B5A2E6" />
+</svg>

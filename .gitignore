@@ -1,0 +1,10 @@
+node_modules/
+artifacts/
+vendor/
+out/
+.*/
+!.vscode/
+!.github/
+!package-lock.json
+l10n/*
+!l10n/bundle.*.json
