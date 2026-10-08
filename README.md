@@ -6,11 +6,11 @@
 
 **English** · [简体中文](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/README.zh-cn.md)
 
-Seven VS Code color themes for long coding sessions, every one tuned and adapted for comfort. The palettes take their design cues from the official One Dark Pro, One Light, Ayu and Solarized themes, so they feel familiar from the first line.
+Eight VS Code color themes for long coding sessions, every one tuned and adapted for comfort. The palettes take their design cues from the official One Dark Pro, One Light, Ayu and Solarized themes, so they feel familiar from the first line.
 
 ## Highlights
 
-- **Comfort-tuned throughout** — all seven themes are adapted for long sessions and pass the same WCAG contrast and OKLCH chroma gate.
+- **Comfort-tuned throughout** — all eight themes are adapted for long sessions and pass the same WCAG contrast and OKLCH chroma gate.
 - **Familiar by design** — palettes reference the official themes; hues are kept while lightness and chroma are tuned.
 - **Complete coverage** — the ~200 UI colors VS Code otherwise hard-codes (bracket pairs, terminal, diff and more) are set from each theme's own palette.
 - **Zero overhead** — static theme files only: no settings, no activation, no runtime code.
@@ -21,6 +21,7 @@ Seven VS Code color themes for long coding sessions, every one tuned and adapted
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
 | **One Dark Pro Lite** | One Dark Pro 3.20.2 | Closest to the original: body text kept, more of the original chroma retained within the gate; italic and bold enabled |
+| **One Light Pro Lite** | Atom One Light 2.3.0 | Closest to the original: body text kept, background eased just enough to pass the gate, more of the original chroma retained |
 | **Comfort One Dark** | One Dark Pro | Softer accents, slightly brighter text |
 | **Comfort One Light** | Atom One Light | Dimmer background, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Softer accents, calmer strings, readable punctuation |

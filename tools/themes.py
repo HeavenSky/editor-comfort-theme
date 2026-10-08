@@ -1,4 +1,4 @@
-# 7 套主题的定义, 是 VS Code 主题与 Terminal.app 主题的唯一数据来源.
+# 8 套主题的定义, 是 VS Code 主题与 Terminal.app 主题的唯一数据来源.
 #
 # VS Code 主题以 tools/sources/ 下的原主题为模板, 保留其全部界面键与语法规则, 由 gen_vscode.py 逐色变换;
 # 本文件给出变换目标(底色, 前景, 16 色终端)与调色参数. Terminal 主题只用 bg / fg / bold / cursor / sel / ansi.
@@ -41,6 +41,18 @@ def build() -> list[dict]:
                   ansi=_ansi({k: tune(v, bg, 0.138, 4.5) for k, v in ODP_NORMAL.items()},
                              {k: tune(v, bg, 0.138, 6.5, 0.05) for k, v in ODP_BRIGHT.items()},
                              dict(Black=h('#21252B'), BrightBlack=h('#7F848E'), White=h('#D7DAE0'), BrightWhite=h('#E6E6E6')))))
+
+    # ---- One Light Pro Lite: 与 One Dark Pro Lite 同方案, 模板为 akamud One Light 2.3.0. 正文沿用原版;
+    #      底 #FAFAFA(亮度 0.956)超出浅色底上限 0.90, 只压到贴近上限的 #F3F3F3(0.896);
+    #      原版没有终端色, 终端取原版语法色同口径调校, 亮白取原版底色 #FAFAFA 保证彩色底上的白字可读 ----
+    bg = h('#F3F3F3')
+    acc = dict(Red='E45649', Green='50A14F', Yellow='C18401', Blue='4078F2', Magenta='A626A4', Cyan='0184BC')
+    T.append(dict(name='one-light-pro', label='One Light Pro Lite', dark=False, gate=True, terminal=False,
+                  source='one-light.json', cap=0.138, token_min=4.5, comment_cr=COMMENT_CR,
+                  bg=bg, fg=h('#383A42'), cursor=h('#526FFF'),
+                  ansi=_ansi({n: tune(v, bg, 0.138, 4.5) for n, v in acc.items()},
+                             {n: tune(v, bg, 0.138, 6.0, -0.06) for n, v in acc.items()},
+                             dict(Black=h('#383A42'), BrightBlack=tune('A0A1A7', bg, 0.02, 3.2), White=h('#CDCED3'), BrightWhite=h('#FAFAFA')))))
 
     # ---- one-dark: 底同 One Dark Pro, 正文略提亮, 彩色降彩度 ----
     bg = h('#282C34')

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- **One Light Pro Lite**: Atom One Light 2.3.0 tuned the same way as One Dark Pro Lite. Body text is kept, the background is eased from `#FAFAFA` to `#F3F3F3` just enough to pass the gate, and chroma is capped at 0.138.
+
 ### Changed
 
 - **One Dark Pro Lite**: now passes the clarity and eye-comfort gate. Syntax and terminal colors meet the contrast minimum, comments are unified at 3.2 and chroma is capped at 0.138; body text and background stay as in One Dark Pro, so it remains the closest to the original.

@@ -4,11 +4,11 @@
 
 > 市场页只展示英文 README, 不随显示语言切换; 本页是中文版.
 
-面向长时间编码的 7 套 VS Code 配色主题, 每一套都经过舒适度调整与适配. 配色设计参考官方的 One Dark Pro, One Light, Ayu 与 Solarized 主题, 上手即熟悉.
+面向长时间编码的 8 套 VS Code 配色主题, 每一套都经过舒适度调整与适配. 配色设计参考官方的 One Dark Pro, One Light, Ayu 与 Solarized 主题, 上手即熟悉.
 
 ## 特性
 
-- 全部舒适度适配: 7 套主题都按长时间使用做了适配, 并全部通过同一套 WCAG 对比度与 OKLCH 彩度门禁.
+- 全部舒适度适配: 8 套主题都按长时间使用做了适配, 并全部通过同一套 WCAG 对比度与 OKLCH 彩度门禁.
 - 熟悉的配色: 配色参考官方主题, 保留色相, 调校明度与彩度.
 - 覆盖完整: VS Code 约两百个写死默认值的界面色(括号对, 终端, diff 等)全部按本主题色板补齐.
 - 零开销: 纯静态主题文件, 无设置项, 无激活事件, 无运行时代码.
@@ -19,6 +19,7 @@
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
 | **One Dark Pro Lite** | One Dark Pro 3.20.2 | 最接近原版: 正文不变, 在门禁内保留更多原版彩度, 启用 italic 与 bold |
+| **One Light Pro Lite** | Atom One Light 2.3.0 | 最接近原版: 正文不变, 底色只压到刚好达标, 在门禁内保留更多原版彩度 |
 | **Comfort One Dark** | One Dark Pro | 彩色更柔和, 正文略提亮 |
 | **Comfort One Light** | Atom One Light | 底色压暗, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 彩色更柔和, 字符串不再刺眼, 半透明标点改为清楚可读 |

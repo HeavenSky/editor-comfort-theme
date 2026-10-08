@@ -34,6 +34,11 @@
 				"path": "./themes/one-dark-pro-color-theme.json"
 			},
 			{
+				"label": "One Light Pro Lite",
+				"uiTheme": "vs",
+				"path": "./themes/one-light-pro-color-theme.json"
+			},
+			{
 				"label": "Comfort One Dark",
 				"uiTheme": "vs-dark",
 				"path": "./themes/one-dark-color-theme.json"

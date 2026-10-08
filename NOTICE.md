@@ -5,7 +5,7 @@
 | 来源 | 版权 | 用于 |
 | --- | --- | --- |
 | [One Dark Pro](https://github.com/Binaryify/OneDark-Pro) 3.20.2 | Copyright (c) 2013-2022 Binaryify | One Dark Pro Lite, Comfort One Dark |
-| [One Light](https://github.com/akamud/vscode-theme-onelight) | Copyright (c) 2015 Mahmoud Ali | Comfort One Light |
+| [One Light](https://github.com/akamud/vscode-theme-onelight) 2.3.0 | Copyright (c) 2015 Mahmoud Ali | One Light Pro Lite, Comfort One Light |
 | [ayu](https://github.com/ayu-theme/vscode-ayu) | Copyright (c) 2016 Ike Kurghinyan | Comfort Ayu Dark, Comfort Ayu Light |
 | [VS Code Solarized](https://github.com/microsoft/vscode/tree/main/extensions/theme-solarized-dark) | Copyright (c) Microsoft Corporation | Comfort Solarized Dark, Comfort Solarized Light |
 
