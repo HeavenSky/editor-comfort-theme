@@ -184,8 +184,8 @@ def transform(t: dict, src: dict) -> dict:
 
     fill_hardcoded(colors, t, m)
 
-    # 映射后仍可能有界面文字对比度不足(底色变了, 或原主题本身就偏淡), 逐对推到下限; 只封顶彩度的 Lite 不做
-    for fg_key, bg_key, need in UI_PAIRS if t.get('ensure_ui', True) else []:
+    # 映射后仍可能有界面文字对比度不足(底色变了, 或原主题本身就偏淡), 逐对推到下限
+    for fg_key, bg_key, need in UI_PAIRS:
         under = opaque(colors, bg_key, t['bg']) or t['bg']
         fg = opaque(colors, fg_key, under)
         if fg is not None and cr(fg, under) < need:

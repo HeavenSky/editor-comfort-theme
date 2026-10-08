@@ -2,7 +2,7 @@
 #
 # VS Code 主题以 tools/sources/ 下的原主题为模板, 保留其全部界面键与语法规则, 由 gen_vscode.py 逐色变换;
 # 本文件给出变换目标(底色, 前景, 16 色终端)与调色参数. Terminal 主题只用 bg / fg / bold / cursor / sel / ansi.
-# one-dark-pro: 底色与正文沿用原版, 其余调校与 Comfort 主题同口径, 同样参与达标门禁.
+# one-dark-fit / one-light-fit: 正文沿用原版, 其余调校与 Comfort 主题同口径, 同样参与达标门禁.
 from colorlib import blend, h, hx, tune
 
 ANSI = ['Black', 'Red', 'Green', 'Yellow', 'Blue', 'Magenta', 'Cyan', 'White']
@@ -31,23 +31,23 @@ def build() -> list[dict]:
     # cap: 彩度上限; token_min: 语法色相对编辑区底的对比度下限; comment_cr: 注释对比度(None 表示不调)
     T = []
 
-    # ---- One Dark Pro Lite: 达标范围内最接近原版. 保留原版全部界面键与语法规则, 底色与正文沿用原版;
+    # ---- One Dark Fit: 达标范围内最接近原版. 保留原版全部界面键与语法规则, 底色与正文沿用原版;
     #      彩度上限与语法色对比度下限贴近门禁边界(0.138 / 4.5, 留 hex 取整余量), 比 Comfort One Dark 保留更多原版彩度;
     #      注释, 语法色上限与界面文字兜底同 Comfort 口径; 终端色沿用 One Dark Pro 自己的终端色板 ----
     bg = h('#282C34')
-    T.append(dict(name='one-dark-pro', label='One Dark Pro Lite', dark=True, gate=True, terminal=False,
+    T.append(dict(name='one-dark-fit', label='One Dark Fit', dark=True, gate=True, terminal=False,
                   source='one-dark-pro.json', cap=0.138, token_min=4.5, comment_cr=COMMENT_CR, syntax_max=SYNTAX_MAX,
                   bg=bg, fg=h('#ABB2BF'), cursor=h('#528BFF'),
                   ansi=_ansi({k: tune(v, bg, 0.138, 4.5) for k, v in ODP_NORMAL.items()},
                              {k: tune(v, bg, 0.138, 6.5, 0.05) for k, v in ODP_BRIGHT.items()},
                              dict(Black=h('#21252B'), BrightBlack=h('#7F848E'), White=h('#D7DAE0'), BrightWhite=h('#E6E6E6')))))
 
-    # ---- One Light Pro Lite: 与 One Dark Pro Lite 同方案, 模板为 akamud One Light 2.3.0. 正文沿用原版;
+    # ---- One Light Fit: 与 One Dark Fit 同方案, 模板为 akamud One Light 2.3.0. 正文沿用原版;
     #      底 #FAFAFA(亮度 0.956)超出浅色底上限 0.90, 只压到贴近上限的 #F3F3F3(0.896);
     #      原版没有终端色, 终端取原版语法色同口径调校, 亮白取原版底色 #FAFAFA 保证彩色底上的白字可读 ----
     bg = h('#F3F3F3')
     acc = dict(Red='E45649', Green='50A14F', Yellow='C18401', Blue='4078F2', Magenta='A626A4', Cyan='0184BC')
-    T.append(dict(name='one-light-pro', label='One Light Pro Lite', dark=False, gate=True, terminal=False,
+    T.append(dict(name='one-light-fit', label='One Light Fit', dark=False, gate=True, terminal=False,
                   source='one-light.json', cap=0.138, token_min=4.5, comment_cr=COMMENT_CR,
                   bg=bg, fg=h('#383A42'), cursor=h('#526FFF'),
                   ansi=_ansi({n: tune(v, bg, 0.138, 4.5) for n, v in acc.items()},

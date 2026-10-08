@@ -20,8 +20,8 @@ Eight VS Code color themes for long coding sessions, every one tuned and adapted
 
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
-| **One Dark Pro Lite** | One Dark Pro 3.20.2 | Closest to the original: body text kept, more of the original chroma retained within the gate; italic and bold enabled |
-| **One Light Pro Lite** | Atom One Light 2.3.0 | Closest to the original: body text kept, background eased just enough to pass the gate, more of the original chroma retained |
+| **One Dark Fit** | One Dark Pro 3.20.2 | Closest to the original: body text kept, more of the original chroma retained within the gate; italic and bold enabled |
+| **One Light Fit** | Atom One Light 2.3.0 | Closest to the original: body text kept, background eased just enough to pass the gate, more of the original chroma retained |
 | **Comfort One Dark** | One Dark Pro | Softer accents, slightly brighter text |
 | **Comfort One Light** | Atom One Light | Dimmer background, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Softer accents, calmer strings, readable punctuation |

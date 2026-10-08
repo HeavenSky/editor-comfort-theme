@@ -29,14 +29,14 @@
 	"contributes": {
 		"themes": [
 			{
-				"label": "One Dark Pro Lite",
+				"label": "One Dark Fit",
 				"uiTheme": "vs-dark",
-				"path": "./themes/one-dark-pro-color-theme.json"
+				"path": "./themes/one-dark-fit-color-theme.json"
 			},
 			{
-				"label": "One Light Pro Lite",
+				"label": "One Light Fit",
 				"uiTheme": "vs",
-				"path": "./themes/one-light-pro-color-theme.json"
+				"path": "./themes/one-light-fit-color-theme.json"
 			},
 			{
 				"label": "Comfort One Dark",

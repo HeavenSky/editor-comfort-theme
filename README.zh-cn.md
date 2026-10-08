@@ -18,8 +18,8 @@
 
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
-| **One Dark Pro Lite** | One Dark Pro 3.20.2 | 最接近原版: 正文不变, 在门禁内保留更多原版彩度, 启用 italic 与 bold |
-| **One Light Pro Lite** | Atom One Light 2.3.0 | 最接近原版: 正文不变, 底色只压到刚好达标, 在门禁内保留更多原版彩度 |
+| **One Dark Fit** | One Dark Pro 3.20.2 | 最接近原版: 正文不变, 在门禁内保留更多原版彩度, 启用 italic 与 bold |
+| **One Light Fit** | Atom One Light 2.3.0 | 最接近原版: 正文不变, 底色只压到刚好达标, 在门禁内保留更多原版彩度 |
 | **Comfort One Dark** | One Dark Pro | 彩色更柔和, 正文略提亮 |
 | **Comfort One Light** | Atom One Light | 底色压暗, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 彩色更柔和, 字符串不再刺眼, 半透明标点改为清楚可读 |
