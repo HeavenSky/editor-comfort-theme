@@ -4,7 +4,7 @@
 
 ### Changed
 
-- **One Dark Pro Lite**: chroma capped at 0.13 for eye comfort, the same limit as Comfort One Dark; contrast and body text unchanged.
+- **One Dark Pro Lite**: now passes the clarity and eye-comfort gate. Syntax and terminal colors meet the contrast minimum, comments are unified at 3.2 and chroma is capped at 0.138; body text and background stay as in One Dark Pro, so it remains the closest to the original.
 
 ## v0.0.1 2026-10-08
 

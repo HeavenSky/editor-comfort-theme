@@ -10,7 +10,7 @@ Seven VS Code color themes for long coding sessions, every one tuned and adapted
 
 ## Highlights
 
-- **Comfort-tuned throughout** — all seven themes are adapted for long sessions; the six Comfort themes additionally pass a WCAG contrast and OKLCH chroma gate.
+- **Comfort-tuned throughout** — all seven themes are adapted for long sessions and pass the same WCAG contrast and OKLCH chroma gate.
 - **Familiar by design** — palettes reference the official themes; hues are kept while lightness and chroma are tuned.
 - **Complete coverage** — the ~200 UI colors VS Code otherwise hard-codes (bracket pairs, terminal, diff and more) are set from each theme's own palette.
 - **Zero overhead** — static theme files only: no settings, no activation, no runtime code.
@@ -20,7 +20,7 @@ Seven VS Code color themes for long coding sessions, every one tuned and adapted
 
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
-| **One Dark Pro Lite** | One Dark Pro 3.20.2 | Chroma capped at 0.13 for eye comfort; contrast and body text unchanged; italic and bold enabled |
+| **One Dark Pro Lite** | One Dark Pro 3.20.2 | Closest to the original: body text kept, more of the original chroma retained within the gate; italic and bold enabled |
 | **Comfort One Dark** | One Dark Pro | Softer accents, slightly brighter text |
 | **Comfort One Light** | Atom One Light | Dimmer background, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Softer accents, calmer strings, readable punctuation |
@@ -32,7 +32,7 @@ Switch themes with **Preferences: Color Theme** (`⌘K ⌘T` / `Ctrl+K Ctrl+T`).
 
 ## Tuning principles
 
-The Comfort themes are tuned color by color against three goals:
+Every theme is tuned color by color against three goals:
 
 - **Clarity** — body text, syntax colors, line numbers and terminal colors meet a minimum WCAG contrast against their background.
 - **Calm** — comments share one quiet contrast level (3.2) across all themes; in dark themes no syntax color exceeds 1.1× the contrast of body text.
