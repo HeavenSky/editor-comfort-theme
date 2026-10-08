@@ -64,10 +64,6 @@ Fit 主题在保留参考主题风格的同时做完整的护眼适配; Comfort 
 
 ## 开发
 
-### 看配色
-
-用 VS Code 打开本仓库按 F5, 在调试窗口里打开 `samples/theme-preview.js` 与 `samples/theme-preview.jsx`, 用 "首选项: 颜色主题" 逐个切换. `.js` 里有故意写的类型错误, 弃用调用与未使用变量, 用来看诊断与淡化效果; `.jsx` 不开类型检查, 只看 JSX 着色.
-
 ### 改配色
 
 `themes/*.json` 与 `terminal/*.terminal` 都是生成物, 不要手改, 下次生成会被覆盖, `npm run check` 也会报漂移. 生成的输入:
