@@ -50,7 +50,7 @@ Requires VS Code `1.101.0` or newer.
 
 ### Terminal.app profiles
 
-The six Comfort themes have matching macOS Terminal.app profiles in the repository's [`terminal/`](https://github.com/HeavenSky/editor-comfort-theme/tree/HEAD/terminal) folder. Double-click a `.terminal` file to import it.
+The six Comfort themes have matching macOS Terminal.app profiles in the repository's [`terminal/`](https://github.com/HeavenSky/editor-comfort-theme/tree/HEAD/terminal) folder. Double-click a `.terminal` file to import it; a profile with the same name is replaced. Run `bash terminal/terminal-preview.sh --full` to show the 16-color matrix.
 
 ## Turning off italic or bold
 
@@ -64,9 +64,48 @@ Themes are static, so there are no settings. Override font styles in your `setti
 }
 ```
 
-## For contributors
+## Development
 
-Themes are generated, not hand-edited. Palettes and tuning parameters live in `tools/themes.py`; `tools/metrics.py` prints clarity and eye-comfort scores for any theme file and fails with `--check` when a theme falls short. See [README.zh-cn.md](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/README.zh-cn.md) for the full workflow.
+### Changing colors
+
+`themes/*.json` and `terminal/*.terminal` are generated. Do not edit them by hand: the next generation overwrites them, and `npm run check` reports the drift. The generator inputs are:
+
+- `tools/themes.py`: each theme's target background, foreground, 16 terminal colors and tuning parameters (chroma cap, contrast minimums for syntax and comment colors).
+- `tools/sources/*.json`: the reference theme templates. Every theme keeps all UI keys and syntax rules of its template and only transforms colors one by one.
+- `tools/sources/vscode-color-registry.json`: the VS Code color registry. Keys whose default is hard-coded and that the template leaves undefined are filled from the theme's own palette; after a VS Code upgrade, re-extract it with `npm run extract:registry`.
+
+```bash
+npm run extract:registry              # extract the color registry from /Applications/Visual Studio Code.app
+uv run tools/gen_vscode.py            # generate themes/*.json
+uv run tools/gen_terminal.py          # generate terminal/*.terminal (macOS only); accepts --font <PostScript name> --size <points>
+npm run metrics                       # metrics table and gate verdict; exits 1 when a theme falls short
+```
+
+### Metrics and gate
+
+`tools/metrics.py` works on its own and accepts any `.terminal` profile or VS Code color theme `.json`, including other people's themes:
+
+```bash
+uv run tools/metrics.py <file>...           # print the metrics table only
+uv run tools/metrics.py --check <file>...   # also apply the gate
+```
+
+- Contrast is always WCAG contrast; chroma is OKLCH C; background luminance is WCAG relative luminance (0 is pure black, 1 is pure white).
+- Clarity is rated high / mid-high / mid and eye comfort good / mid. A theme passes when clarity is at least mid-high, eye comfort is good, and a VS Code theme covers every registry key with a hard-coded default ("uncovered" is 0).
+- VS Code themes have two more upper limits; exceeding either rates clarity as mid: comment contrast at most 3.5, and in dark themes the brightest syntax color at most 1.1× the body text contrast.
+- Thresholds are the constants at the top of `tools/metrics.py`. `tune` in `tools/colorlib.py` is the tuning tool: cap chroma, then push lightness to the contrast minimum, without changing hue.
+- "Default text on a colored background" (such as `\e[41m` alone) is unreadable under any palette and is not scored; Terminal.app dims faint text by a fixed, non-configurable ratio.
+
+### Before release
+
+```bash
+npm run check       # icon, manifest, template drift, generated theme drift, color gate
+npm run typecheck
+npm test
+npm run package     # build artifacts/editor-comfort-theme-<version>.vsix and assert its contents
+```
+
+This repository derives from the vsc-ext project template. Because it has no runtime code, a few template files deviate in a controlled way; the reasons are recorded on the `!` lines of `.template-shared`.
 
 ## License
 

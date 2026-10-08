@@ -1,8 +1,10 @@
 # Editor Comfort Theme
 
-[English](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/README.md) · **简体中文**
+[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/HeavenSky.editor-comfort-theme?label=marketplace)](https://marketplace.visualstudio.com/items?itemName=HeavenSky.editor-comfort-theme)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/HeavenSky.editor-comfort-theme)](https://marketplace.visualstudio.com/items?itemName=HeavenSky.editor-comfort-theme)
+[![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/LICENSE.txt)
 
-> 市场页只展示英文 README, 不随显示语言切换; 本页是中文版.
+[English](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/README.md) · **简体中文**
 
 面向长时间编码的 8 套 VS Code 配色主题, 每一套都经过舒适度调整与适配. 配色设计参考官方的 One Dark Pro, One Light, Ayu 与 Solarized 主题, 上手即熟悉.
 
@@ -48,7 +50,7 @@ Fit 主题在保留参考主题风格的同时做完整的护眼适配; Comfort 
 
 ### Terminal.app 配置
 
-6 套 Comfort 主题在仓库的 `terminal/` 目录下有同色板的 macOS Terminal.app 配置, 双击 `.terminal` 导入(同名配置会被覆盖); `bash terminal/terminal-preview.sh --full` 显示 16 色矩阵.
+6 套 Comfort 主题在仓库的 [`terminal/`](https://github.com/HeavenSky/editor-comfort-theme/tree/HEAD/terminal) 目录下有同色板的 macOS Terminal.app 配置. 双击 `.terminal` 文件导入, 同名配置会被覆盖; 运行 `bash terminal/terminal-preview.sh --full` 可显示 16 色矩阵.
 
 ## 关闭斜体或粗体
 
