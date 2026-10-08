@@ -20,7 +20,7 @@ Seven VS Code color themes for long coding sessions, every one tuned and adapted
 
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
-| **One Dark Pro Lite** | One Dark Pro 3.20.2 | Original palette, static and settings-free, italic and bold enabled, off-theme defaults filled |
+| **One Dark Pro Lite** | One Dark Pro 3.20.2 | Chroma capped at 0.13 for eye comfort; contrast and body text unchanged; italic and bold enabled |
 | **Comfort One Dark** | One Dark Pro | Softer accents, slightly brighter text |
 | **Comfort One Light** | Atom One Light | Dimmer background, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Softer accents, calmer strings, readable punctuation |

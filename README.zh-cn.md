@@ -18,7 +18,7 @@
 
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
-| **One Dark Pro Lite** | One Dark Pro 3.20.2 | 沿用原配色, 静态无设置项, 启用 italic 与 bold, 补齐写死的默认色 |
+| **One Dark Pro Lite** | One Dark Pro 3.20.2 | 彩度封顶 0.13 护眼, 对比度与正文不变, 启用 italic 与 bold |
 | **Comfort One Dark** | One Dark Pro | 彩色更柔和, 正文略提亮 |
 | **Comfort One Light** | Atom One Light | 底色压暗, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 彩色更柔和, 字符串不再刺眼, 半透明标点改为清楚可读 |

@@ -184,8 +184,8 @@ def transform(t: dict, src: dict) -> dict:
 
     fill_hardcoded(colors, t, m)
 
-    # 映射后仍可能有界面文字对比度不足(底色变了, 或原主题本身就偏淡), 逐对推到下限
-    for fg_key, bg_key, need in UI_PAIRS:
+    # 映射后仍可能有界面文字对比度不足(底色变了, 或原主题本身就偏淡), 逐对推到下限; 只封顶彩度的 Lite 不做
+    for fg_key, bg_key, need in UI_PAIRS if t.get('ensure_ui', True) else []:
         under = opaque(colors, bg_key, t['bg']) or t['bg']
         fg = opaque(colors, fg_key, under)
         if fg is not None and cr(fg, under) < need:
@@ -225,12 +225,7 @@ def transform(t: dict, src: dict) -> dict:
 
 def render(t: dict) -> dict:
     src = load(os.path.join(SOURCES, t['source']))
-    if t.get('verbatim'):
-        colors = dict(src['colors'])
-        fill_hardcoded(colors, t, Mapper(t, src))
-        body = dict(src, colors=colors)
-    else:
-        body = transform(t, src)
+    body = transform(t, src)
     return {
         '$schema': 'vscode://schemas/color-theme',
         'name': t['label'],
