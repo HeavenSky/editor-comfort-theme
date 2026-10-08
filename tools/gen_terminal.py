@@ -54,7 +54,7 @@ def main() -> int:
     for t in build():
         if not t['terminal']:
             continue
-        p = dict(BASE, name=t['name'], WindowTitle=t['name'], Font=archive(font))
+        p = dict(BASE, name=t['label'], WindowTitle=t['label'], Font=archive(font))
         p.update(BackgroundColor=color(t['bg']), TextColor=color(t['fg']), TextBoldColor=color(t['bold']),
                  CursorColor=color(t['cursor']), SelectionColor=color(t['sel']))
         for n in ANSI:

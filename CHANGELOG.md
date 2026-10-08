@@ -4,11 +4,12 @@
 
 ### Added
 
-- **One Light Fit**: Atom One Light 2.3.0 tuned the same way as One Dark Fit. Body text is kept, the background is eased from `#FAFAFA` to `#F3F3F3` just enough to pass the gate, and chroma is capped at 0.138.
+- **One Light Fit**: a full eye-comfort adaptation of Atom One Light 2.3.0, designed the same way as One Dark Fit. Background eased from `#FAFAFA` to `#F3F3F3` to reduce glare, comments unified at 3.2, syntax and terminal colors brought to the contrast floor, chroma capped and every hard-coded UI color themed.
 
 ### Changed
 
-- **One Dark Fit**: renamed from One Dark Pro Lite, since it now carries more tuning than the original rather than less. It now passes the clarity and eye-comfort gate. Syntax and terminal colors meet the contrast minimum, comments are unified at 3.2 and chroma is capped at 0.138; body text and background stay as in One Dark Pro, so it remains the closest to the original.
+- **One Dark Fit** (formerly One Dark Pro Lite): reworked from a near-copy of One Dark Pro into a full eye-comfort adaptation. Comments unified at 3.2, syntax and terminal colors brought to the contrast floor, chroma capped and UI text contrast secured; now passes the clarity and eye-comfort gate.
+- Comfort theme files and Terminal.app profiles renamed with a `comfort-` prefix; imported Terminal.app profiles now show the full theme name. Re-import the `.terminal` files to pick up the new names.
 
 ## v0.0.1 2026-10-08
 

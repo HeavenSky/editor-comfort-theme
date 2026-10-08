@@ -20,14 +20,16 @@ Eight VS Code color themes for long coding sessions, every one tuned and adapted
 
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
-| **One Dark Fit** | One Dark Pro 3.20.2 | Closest to the original: body text kept, more of the original chroma retained within the gate; italic and bold enabled |
-| **One Light Fit** | Atom One Light 2.3.0 | Closest to the original: body text kept, background eased just enough to pass the gate, more of the original chroma retained |
+| **One Dark Fit** | One Dark Pro 3.20.2 | Full eye-comfort adaptation: comments unified, syntax and terminal colors lifted to the contrast floor, chroma capped, every hard-coded UI color themed; keeps One Dark Pro's body text, italic and bold |
+| **One Light Fit** | Atom One Light 2.3.0 | Full eye-comfort adaptation: glare reduced (`#FAFAFA` → `#F3F3F3`), comments unified, syntax and terminal colors lifted to the contrast floor, chroma capped, every hard-coded UI color themed; keeps One Light's body text |
 | **Comfort One Dark** | One Dark Pro | Softer accents, slightly brighter text |
 | **Comfort One Light** | Atom One Light | Dimmer background, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Softer accents, calmer strings, readable punctuation |
 | **Comfort Ayu Light** | ayu Light | Dimmer background, darker text |
 | **Comfort Solarized Dark** | Solarized Dark | Brighter text, softer accents |
 | **Comfort Solarized Light** | Solarized Light | Dimmer background, darker text |
+
+**Fit** themes add a full eye-comfort adaptation while keeping the character of their reference theme; **Comfort** themes go further toward a softer, quieter look.
 
 Switch themes with **Preferences: Color Theme** (`⌘K ⌘T` / `Ctrl+K Ctrl+T`).
 

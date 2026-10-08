@@ -18,14 +18,16 @@
 
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
-| **One Dark Fit** | One Dark Pro 3.20.2 | 最接近原版: 正文不变, 在门禁内保留更多原版彩度, 启用 italic 与 bold |
-| **One Light Fit** | Atom One Light 2.3.0 | 最接近原版: 正文不变, 底色只压到刚好达标, 在门禁内保留更多原版彩度 |
+| **One Dark Fit** | One Dark Pro 3.20.2 | 完整护眼适配: 注释统一, 语法色与终端色达到对比度下限, 彩度封顶, 写死的界面色全部补齐; 保留 One Dark Pro 的正文, italic 与 bold |
+| **One Light Fit** | Atom One Light 2.3.0 | 完整护眼适配: 底色降眩光(`#FAFAFA` → `#F3F3F3`), 注释统一, 语法色与终端色达到对比度下限, 彩度封顶, 写死的界面色全部补齐; 保留 One Light 的正文 |
 | **Comfort One Dark** | One Dark Pro | 彩色更柔和, 正文略提亮 |
 | **Comfort One Light** | Atom One Light | 底色压暗, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 彩色更柔和, 字符串不再刺眼, 半透明标点改为清楚可读 |
 | **Comfort Ayu Light** | ayu Light | 底色压暗, 正文加深 |
 | **Comfort Solarized Dark** | Solarized Dark | 正文提亮, 彩色更柔和 |
 | **Comfort Solarized Light** | Solarized Light | 底色压暗, 正文加深 |
+
+Fit 主题在保留参考主题风格的同时做完整的护眼适配; Comfort 主题在此基础上更进一步, 整体更柔和, 更安静.
 
 通过 "首选项: 颜色主题"(`⌘K ⌘T` / `Ctrl+K Ctrl+T`)切换.
 
@@ -71,7 +73,7 @@
 `themes/*.json` 与 `terminal/*.terminal` 都是生成物, 不要手改, 下次生成会被覆盖, `npm run check` 也会报漂移. 生成的输入:
 
 - `tools/themes.py`: 每套主题的目标底色, 前景, 16 色终端与调色参数(彩度上限, 语法色与注释色的对比度下限).
-- `tools/sources/*.json`: 原主题模板. Comfort 主题保留其全部界面键与语法规则, 只逐色变换.
+- `tools/sources/*.json`: 原主题模板. 全部主题保留其全部界面键与语法规则, 只逐色变换.
 - `tools/sources/vscode-color-registry.json`: VS Code 颜色注册表. 默认值写死的键, 原主题没定义的一律按本主题色板补齐; VS Code 升级后用 `npm run extract:registry` 重新提取.
 
 ```bash

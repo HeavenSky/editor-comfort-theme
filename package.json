@@ -41,32 +41,32 @@
 			{
 				"label": "Comfort One Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/one-dark-color-theme.json"
+				"path": "./themes/comfort-one-dark-color-theme.json"
 			},
 			{
 				"label": "Comfort One Light",
 				"uiTheme": "vs",
-				"path": "./themes/one-light-color-theme.json"
+				"path": "./themes/comfort-one-light-color-theme.json"
 			},
 			{
 				"label": "Comfort Ayu Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/ayu-dark-color-theme.json"
+				"path": "./themes/comfort-ayu-dark-color-theme.json"
 			},
 			{
 				"label": "Comfort Ayu Light",
 				"uiTheme": "vs",
-				"path": "./themes/ayu-light-color-theme.json"
+				"path": "./themes/comfort-ayu-light-color-theme.json"
 			},
 			{
 				"label": "Comfort Solarized Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/solarized-dark-color-theme.json"
+				"path": "./themes/comfort-solarized-dark-color-theme.json"
 			},
 			{
 				"label": "Comfort Solarized Light",
 				"uiTheme": "vs",
-				"path": "./themes/solarized-light-color-theme.json"
+				"path": "./themes/comfort-solarized-light-color-theme.json"
 			}
 		]
 	},

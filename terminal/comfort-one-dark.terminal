@@ -1613,11 +1613,11 @@
 	<key>UseBrightBold</key>
 	<false/>
 	<key>WindowTitle</key>
-	<string>one-dark</string>
+	<string>Comfort One Dark</string>
 	<key>columnCount</key>
 	<integer>200</integer>
 	<key>name</key>
-	<string>one-dark</string>
+	<string>Comfort One Dark</string>
 	<key>rowCount</key>
 	<integer>50</integer>
 	<key>shellExitAction</key>
