@@ -1,6 +1,6 @@
 # Change Log
 
-## Unreleased
+## v0.0.2 2026-10-08
 
 ### Added
 
@@ -10,6 +10,7 @@
 
 - **One Dark Fit** (formerly One Dark Pro Lite): reworked from a near-copy of One Dark Pro into a full eye-comfort adaptation. Comments unified at 3.2, syntax and terminal colors brought to the contrast floor, chroma capped and UI text contrast secured; now passes the clarity and eye-comfort gate.
 - Comfort theme files and Terminal.app profiles renamed with a `comfort-` prefix; imported Terminal.app profiles now show the full theme name. Re-import the `.terminal` files to pick up the new names.
+- **New icon**: a crescent moon and a sun above a row of theme color dots, drawn in the same flat style and accent palette as the other HeavenSky extensions.
 
 ## v0.0.1 2026-10-08
 
