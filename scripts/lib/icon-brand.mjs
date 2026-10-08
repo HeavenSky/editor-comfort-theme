@@ -16,8 +16,8 @@ export const ACCENT_FROM = "#6FD6FF";
 export const ACCENT_TO = "#3E8BFF";
 export const FOREGROUND = "#E6EBF5";
 
-const BACKGROUND_FROM = "#2E3547";
-const BACKGROUND_TO = "#171B26";
+export const BACKGROUND_FROM = "#2E3547";
+export const BACKGROUND_TO = "#171B26";
 const BORDER = "#3C4459";
 const BORDER_WIDTH = 3;
 
