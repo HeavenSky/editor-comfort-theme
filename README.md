@@ -88,13 +88,28 @@ npm run metrics                       # metrics table and gate verdict; exits 1 
 ```bash
 uv run tools/metrics.py <file>...           # print the metrics table only
 uv run tools/metrics.py --check <file>...   # also apply the gate
+uv run tools/metrics.py --strict --check <file>...  # also require the softness and fatigue ratings to pass
+uv run tools/metrics.py --detail <file>...  # list every softness / fatigue sub-metric and its score
 ```
 
 - Contrast is always WCAG contrast; chroma is OKLCH C; background luminance is WCAG relative luminance (0 is pure black, 1 is pure white).
 - Clarity is rated high / mid-high / mid and eye comfort good / mid. A theme passes when clarity is at least mid-high, eye comfort is good, and a VS Code theme covers every registry key with a hard-coded default ("uncovered" is 0).
-- VS Code themes have two more upper limits; exceeding either rates clarity as mid: comment contrast at most 3.5, and in dark themes the brightest syntax color at most 1.1× the body text contrast.
+- VS Code themes have two more upper limits; exceeding either rates clarity as mid: comment contrast at most 4.2, and in dark themes the brightest syntax color at most 1.1× the body text contrast. Line numbers need a contrast of at least 2.0; a dark theme rates high clarity only with body text contrast between 7.0 and 8.5.
+- **Softness** and **fatigue** are scored 0–100 (rules in `tools/comfort.py`): a sub-metric inside its ideal range scores 100, drops to 60 at its limit, and fails beyond it.
+  - Softness: average and maximum syntax chroma, lightness spread of the colored syntax colors, brightest syntax color versus body text, panel background chroma.
+  - Fatigue: body text contrast, comment contrast, the gap between body text and comments, line number contrast, background luminance, bright panels (large backgrounds above 1.6 contrast against the editor) and highlight backgrounds that glare or make text hard to read.
+  - For now they are enforced only with `--strict`; they join the default gate once the themes are retuned.
 - Thresholds are the constants at the top of `tools/metrics.py`. `tune` in `tools/colorlib.py` is the tuning tool: cap chroma, then push lightness to the contrast minimum, without changing hue.
 - "Default text on a colored background" (such as `\e[41m` alone) is unreadable under any palette and is not scored; Terminal.app dims faint text by a fixed, non-configurable ratio.
+
+### Theme similarity
+
+`tools/similar.py` compares VS Code color themes item by item (CIEDE2000 color difference), finds pairs that are close overall with only a few clearly different spots, and groups those spots by color pair; after picking groups it can write a merge preview and run the gate on it:
+
+```bash
+npm run similar                                              # compare the eight themes pairwise
+uv run tools/similar.py a.json b.json --merge out.json --take 1,3   # base on a, take groups 1 and 3 from b
+```
 
 ### Before release
 
@@ -105,7 +120,9 @@ npm test
 npm run package     # build artifacts/editor-comfort-theme-<version>.vsix and assert its contents
 ```
 
-This repository derives from the vsc-ext project template. Because it has no runtime code, a few template files deviate in a controlled way; the reasons are recorded on the `!` lines of `.template-shared`.
+With npm 12, `npm ci` only accepts a lockfile resolved from `registry.npmjs.org`, and dependency install scripts (`esbuild`, `@vscode/vsce-sign`, `fsevents`) are skipped by default. None of them is needed to check, test or package; approve one with `npm install-scripts approve <package>` only if signing or publishing locally fails. CI uses the npm bundled with the Node version in `.nvmrc` and is not affected.
+
+This repository derives from the vsc-ext project template; `npm run check` reports any drift of the shared template files.
 
 ## License
 

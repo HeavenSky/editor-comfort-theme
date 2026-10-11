@@ -92,15 +92,17 @@
 		"extract:registry": "uv run tools/extract_registry.py",
 		"gen:themes": "uv run tools/gen_vscode.py && uv run tools/gen_terminal.py",
 		"metrics": "uv run tools/metrics.py --check themes/*.json terminal/*.terminal",
+		"similar": "uv run tools/similar.py themes/*.json",
 		"package": "node scripts/package.mjs",
 		"vscode:prepublish": "npm run build"
 	},
 	"dependencies": {},
 	"devDependencies": {
-		"@types/node": "^26.6.4",
+		"@types/node": "^26.6.5",
 		"@vscode/vsce": "^4.0.0",
 		"typescript": "^7.0.2",
-		"vitest": "^5.0.3"
+		"vitest": "^5.0.3",
+		"vscode-types": "npm:@types/vscode@^1.140.0"
 	},
 	"engines": {
 		"vscode": "^1.101.0"

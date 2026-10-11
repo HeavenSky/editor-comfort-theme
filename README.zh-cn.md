@@ -90,13 +90,28 @@ npm run metrics                       # 指标表 + 达标判定, 不达标退�
 ```bash
 uv run tools/metrics.py <文件>...           # 只输出指标表
 uv run tools/metrics.py --check <文件>...   # 再按口径判定, 用作门禁
+uv run tools/metrics.py --strict --check <文件>...  # 另要求 柔和 与 防疲劳 两项通过
+uv run tools/metrics.py --detail <文件>...  # 逐主题列出 柔和 / 防疲劳 的子指标与得分
 ```
 
 - 对比度一律是 WCAG 对比度; 彩度是 OKLCH 的 C; 底亮度是 WCAG 相对亮度(0 纯黑, 1 纯白).
 - 清晰分 高 / 中高 / 中, 护眼分 好 / 中; 达标 = 清晰 >= 中高, 护眼 = 好, 且 VS Code 主题覆盖了注册表里全部写死默认色的键("未覆盖" 为 0).
-- VS Code 主题另有两条上限, 超出即判清晰为中: 注释对比度不超过 3.5; 深色主题最亮的语法色不超过正文对比度的 1.1 倍.
+- VS Code 主题另有两条上限, 超出即判清晰为中: 注释对比度不超过 4.2; 深色主题最亮的语法色不超过正文对比度的 1.1 倍. 行号对比度下限 2.0; 深色主题评"高"要求正文对比度在 7.0~8.5 之间.
+- **柔和** 与 **防疲劳** 两项按 0~100 打分(规则见 `tools/comfort.py`): 每个子指标落在理想区间得 100, 到限值降到 60, 越过限值判不通过.
+  - 柔和: 语法色平均彩度, 最大彩度, 彩色语法色的亮度跨度, 最亮语法色与正文之比, 面板底色彩度.
+  - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色与编辑区底对比度超过 1.6)与高亮底色(刺眼或压字难读).
+  - 目前只在 `--strict` 下判定, 现有主题调完后再并入默认门禁.
 - 各项阈值见 `tools/metrics.py` 顶部常量; `tools/colorlib.py` 的 `tune` 是调色手段: 彩度封顶 + 明度推到对比度下限, 色相不动.
 - "默认文字色配彩色背景"(如只写 `\e[41m`)在任何调色板下都看不清, 不计入指标; Terminal.app 的 dim 字按固定比例减淡且不可配置.
+
+### 配色接近度
+
+`tools/similar.py` 逐项比对 VS Code 颜色主题(CIEDE2000 色差), 找出整体接近, 只有少数几处差别大的主题对, 把差别大的地方按颜色对归成差异组; 选定差异组后可生成合并预览并跑一遍门禁:
+
+```bash
+npm run similar                                              # 8 套主题两两比对
+uv run tools/similar.py a.json b.json --merge out.json --take 1,3   # 以 a 为底, 差异组 1, 3 取 b 的颜色
+```
 
 ### 发布前
 
@@ -107,7 +122,9 @@ npm test
 npm run package     # 生成 artifacts/editor-comfort-theme-<版本>.vsix 并断言包内容
 ```
 
-本仓库派生自 vsc-ext 工程骨架; 因为没有运行时代码, 有几份骨架文件做了受控偏离, 原因写在 `.template-shared` 的 `!` 行里.
+使用 npm 12 时, `npm ci` 只接受从 `registry.npmjs.org` 解析的 lockfile, 且依赖的安装脚本(`esbuild`, `@vscode/vsce-sign`, `fsevents`)默认不执行. 检查, 测试与打包都不需要它们; 只有本地签名或发布报错时, 才用 `npm install-scripts approve <包>` 放行. CI 使用 `.nvmrc` 指定的 Node 版本自带的 npm, 不受影响.
+
+本仓库派生自 vsc-ext 工程骨架; 共享的骨架文件如有偏离, `npm run check` 会报出来.
 
 ## 许可
 

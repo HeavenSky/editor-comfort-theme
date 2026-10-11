@@ -94,3 +94,43 @@ def toward_bg(c: Rgb, bg: Rgb, max_cr: float) -> Rgb:
         L += step
         c = from_oklch(L, C, H)
     return c
+
+
+def lab(c: Rgb) -> tuple[float, float, float]:
+    """sRGB -> CIELAB(D65)."""
+    r, g, b = map(_lin, c)
+    x = (0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / 0.95047
+    y = 0.2126729 * r + 0.7151522 * g + 0.0721750 * b
+    z = (0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / 1.08883
+    f = lambda t: t ** (1 / 3) if t > 216 / 24389 else (24389 / 27 * t + 16) / 116
+    fx, fy, fz = f(x), f(y), f(z)
+    return 116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)
+
+
+def de2000(a: Rgb, b: Rgb) -> float:
+    """CIEDE2000 色差: < 1 基本不可察觉, 1~2 仔细对比可察觉, 2~10 一眼可见, > 10 明显不同."""
+    L1, a1, b1 = lab(a)
+    L2, a2, b2 = lab(b)
+    C7 = ((math.hypot(a1, b1) + math.hypot(a2, b2)) / 2) ** 7
+    G = 0.5 * (1 - math.sqrt(C7 / (C7 + 25 ** 7)))
+    a1p, a2p = a1 * (1 + G), a2 * (1 + G)
+    C1p, C2p = math.hypot(a1p, b1), math.hypot(a2p, b2)
+    h1p = math.degrees(math.atan2(b1, a1p)) % 360
+    h2p = math.degrees(math.atan2(b2, a2p)) % 360
+    dLp, dCp = L2 - L1, C2p - C1p
+    dh = 0 if C1p * C2p == 0 else (h2p - h1p if abs(h2p - h1p) <= 180 else h2p - h1p - 360 if h2p > h1p else h2p - h1p + 360)
+    dHp = 2 * math.sqrt(C1p * C2p) * math.sin(math.radians(dh / 2))
+    Lbp, Cbp = (L1 + L2) / 2, (C1p + C2p) / 2
+    if C1p * C2p == 0:
+        hbp = h1p + h2p
+    elif abs(h1p - h2p) <= 180:
+        hbp = (h1p + h2p) / 2
+    else:
+        hbp = (h1p + h2p + 360) / 2 if h1p + h2p < 360 else (h1p + h2p - 360) / 2
+    T = (1 - 0.17 * math.cos(math.radians(hbp - 30)) + 0.24 * math.cos(math.radians(2 * hbp))
+         + 0.32 * math.cos(math.radians(3 * hbp + 6)) - 0.20 * math.cos(math.radians(4 * hbp - 63)))
+    Sl = 1 + 0.015 * (Lbp - 50) ** 2 / math.sqrt(20 + (Lbp - 50) ** 2)
+    Sc, Sh = 1 + 0.045 * Cbp, 1 + 0.015 * Cbp * T
+    Cb7 = Cbp ** 7
+    Rt = -2 * math.sqrt(Cb7 / (Cb7 + 25 ** 7)) * math.sin(math.radians(60 * math.exp(-(((hbp - 275) / 25) ** 2))))
+    return math.sqrt((dLp / Sl) ** 2 + (dCp / Sc) ** 2 + (dHp / Sh) ** 2 + Rt * (dCp / Sc) * (dHp / Sh))
