@@ -422,6 +422,43 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: support.type",
+			"scope": "support.type",
+			"settings": {
+				"foreground": "#D1AC68"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.italic",
+			"scope": "markup.italic",
+			"settings": {
+				"foreground": "#B788C5",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.inline.raw",
+			"scope": "markup.inline.raw",
+			"settings": {
+				"foreground": "#96BD7A"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.quote",
+			"scope": "markup.quote",
+			"settings": {
+				"foreground": "#8B93A1",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.underline.link",
+			"scope": "markup.underline.link",
+			"settings": {
+				"foreground": "#B788C5"
+			}
+		},
+		{
 			"scope": "meta.embedded",
 			"settings": {
 				"foreground": "#ABB2BF"

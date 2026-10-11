@@ -8,6 +8,7 @@ import json, math, os, re, sys
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from colorlib import Rgb, blend, cr, from_oklch, h, hx, oklch, toward_bg, tune
+from coverage import fill as fill_coverage
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
 from comfort import HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, HIGHLIGHT_TEXT_MIN, PANEL_KEYS, PANEL_MAX_CHROMA, PANEL_MAX_CR
 from themes import ANSI, build
@@ -354,6 +355,8 @@ def transform(t: dict, src: dict) -> dict:
             else:
                 v['foreground'] = out
         semantic[k] = v
+    # 统一着色覆盖: 原主题没定义的常用 scope 从本主题的相近角色取色补上(见 coverage.py)
+    rules[:0] = fill_coverage(rules, hx(t['fg']))
     conform(colors, rules, semantic, t)
     return dict(colors=dict(sorted(colors.items())), tokenColors=rules, semanticTokenColors=semantic)
 

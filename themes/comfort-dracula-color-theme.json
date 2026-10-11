@@ -385,6 +385,20 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: entity.name.namespace",
+			"scope": "entity.name.namespace",
+			"settings": {
+				"foreground": "#77C0D0"
+			}
+		},
+		{
+			"name": "Comfort coverage: meta.object-literal.key",
+			"scope": "meta.object-literal.key",
+			"settings": {
+				"foreground": "#B6B6B4"
+			}
+		},
+		{
 			"scope": [
 				"emphasis"
 			],

@@ -382,6 +382,35 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: entity.name.type",
+			"scope": "entity.name.type",
+			"settings": {
+				"foreground": "#DBB46D"
+			}
+		},
+		{
+			"name": "Comfort coverage: entity.name.namespace",
+			"scope": "entity.name.namespace",
+			"settings": {
+				"foreground": "#A4BEC8"
+			}
+		},
+		{
+			"name": "Comfort coverage: meta.object-literal.key",
+			"scope": "meta.object-literal.key",
+			"settings": {
+				"foreground": "#70C4E5"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.heading",
+			"scope": "markup.heading",
+			"settings": {
+				"foreground": "#8CB2F0",
+				"fontStyle": "bold"
+			}
+		},
+		{
 			"name": "Global settings",
 			"settings": {
 				"foreground": "#B2BAC8"

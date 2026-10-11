@@ -344,6 +344,42 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: variable",
+			"scope": "variable",
+			"settings": {
+				"foreground": "#5C9BCE"
+			}
+		},
+		{
+			"name": "Comfort coverage: variable.parameter",
+			"scope": "variable.parameter",
+			"settings": {
+				"foreground": "#5C9BCE"
+			}
+		},
+		{
+			"name": "Comfort coverage: meta.object-literal.key",
+			"scope": "meta.object-literal.key",
+			"settings": {
+				"foreground": "#5C9BCE"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.quote",
+			"scope": "markup.quote",
+			"settings": {
+				"foreground": "#8D9C52",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.underline.link",
+			"scope": "markup.underline.link",
+			"settings": {
+				"foreground": "#34A59C"
+			}
+		},
+		{
 			"settings": {
 				"foreground": "#A6B4B4"
 			}

@@ -421,6 +421,28 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: meta.object-literal.key",
+			"scope": "meta.object-literal.key",
+			"settings": {
+				"foreground": "#3F4349"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.quote",
+			"scope": "markup.quote",
+			"settings": {
+				"foreground": "#236131",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.underline.link",
+			"scope": "markup.underline.link",
+			"settings": {
+				"foreground": "#204278"
+			}
+		},
+		{
 			"scope": [
 				"comment",
 				"punctuation.definition.comment",

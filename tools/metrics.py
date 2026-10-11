@@ -5,7 +5,7 @@
 # 计算主题的 清晰 / 护眼 指标并评级, 以及 柔和安静 / 护眼防疲劳 两项打分(规则见 comfort.py);
 # 支持 Terminal.app 的 .terminal 与 VS Code 颜色主题 .json.
 # 用法: uv run tools/metrics.py [--check] [--strict] [--detail] <文件>...
-#   --check: 任一受检主题未达标(清晰 >= 中高, 护眼 = 好, 覆盖全部硬编码默认色, 符合 vscode://schemas/color-theme)时退出码 1; themes.py 中 gate=False 的主题只报告不判定.
+#   --check: 任一受检主题未达标(清晰 >= 中高, 护眼 = 好, 覆盖全部硬编码默认色, 符合 vscode://schemas/color-theme, 常用 scope 全部着色)时退出码 1; themes.py 中 gate=False 的主题只报告不判定.
 #   --strict: 同时要求 柔和 与 防疲劳 两项通过(没有子指标越过限值).
 #   --detail: 逐主题列出 柔和 / 防疲劳 的子指标取值与得分.
 import json, os, plistlib, re, sys
@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from colorlib import Rgb, blend, cr, h, lum, oklch
 from comfort import NAMES, rate
 from schema import HEX, problems as schema_problems
+from coverage import missing as coverage_missing
 from gen_vscode import REGISTRY as REGISTRY_PATH, UI_PAIRS
 
 # VS Code 注册表里默认值硬编码的键; 主题不定义它们时界面落到与主题无关的颜色, 受检主题必须全部覆盖
@@ -109,7 +110,8 @@ def from_vscode(path: str) -> dict:
                syn_chroma=[oklch(x)[1] for x in syn], comment=cr(comment, bg) if comment else None,
                comment_main=cr(comment_main, bg) if comment_main else None,
                line_no=cr(col('editorLineNumber.foreground'), bg) if 'editorLineNumber.foreground' in c else None,
-               ui=min(ui) if ui else None, dark=t.get('type') == 'dark', uncovered=uncovered, schema=schema)
+               ui=min(ui) if ui else None, dark=t.get('type') == 'dark', uncovered=uncovered, schema=schema,
+               scopes=coverage_missing(t.get('tokenColors', [])))
     if all(pal):
         st = _ansi_stats(pal, col('terminal.background') or bg)
         out.update(term_accent=st['accent'], badge=st['badge'], chroma=st['chroma'] + out['syn_chroma'])
@@ -189,7 +191,9 @@ def main() -> int:
             why.append(f"未覆盖 VS Code 硬编码默认色的键 {len(m['uncovered'])} 个, 例: {', '.join(m['uncovered'][:4])}")
         if m.get('schema'):
             why.append(f"不符合 vscode://schemas/color-theme {len(m['schema'])} 处, 例: {'; '.join(m['schema'][:3])}")
-        ok = clear in ('高', '中高') and eye == '好' and not m.get('uncovered') and not m.get('schema')
+        if m.get('scopes'):
+            why.append(f"常用 scope 未着色 {len(m['scopes'])} 个: {', '.join(m['scopes'])}")
+        ok = clear in ('高', '中高') and eye == '好' and not m.get('uncovered') and not m.get('schema') and not m.get('scopes')
         if strict:
             for key, label in (('soft', '柔和'), ('fatigue', '防疲劳')):
                 if not r[key]['ok']:
@@ -206,11 +210,11 @@ def main() -> int:
             print(f"  {name:28} {fmt(m['text'])} {fmt(m['accent'])} {fmt(m['bright'])} {fmt(m['badge'])} {fmt(m['comment'])} |"
                   f" {lum(m['bg']):.3f}  {max(m['chroma']):.3f}  | {clear:3} {eye}  | {score(m['soft'])}  {score(m['fatigue'])}{tag}")
     if rows_v:
-        print('VS Code        主题               正文  语法  注释  行号  界面  终端  徽标 | 底亮度 最大彩度 | 未覆盖 规范 | 清晰 护眼 | 柔和 防疲劳')
+        print('VS Code        主题               正文  语法  注释  行号  界面  终端  徽标 | 底亮度 最大彩度 | 未覆盖 规范 着色 | 清晰 护眼 | 柔和 防疲劳')
         for name, m, clear, eye, tag in rows_v:
             print(f"  {name:28} {fmt(m['text'])} {fmt(m['syntax'])} {fmt(m['comment'])} {fmt(m['line_no'])} {fmt(m['ui'])}"
                   f" {fmt(m['term_accent'])} {fmt(m['badge'])} | {lum(m['bg']):.3f}  {max(m['chroma']):.3f}  |"
-                  f" {'-' if m['uncovered'] is None else len(m['uncovered']):>5}  {len(m['schema']):>4} | {clear:3} {eye}  | {score(m['soft'])}  {score(m['fatigue'])}{tag}")
+                  f" {'-' if m['uncovered'] is None else len(m['uncovered']):>5}  {len(m['schema']):>4} {len(m['scopes']):>4} | {clear:3} {eye}  | {score(m['soft'])}  {score(m['fatigue'])}{tag}")
     if detail:
         print('\n子指标(取值 得分; × 为越过限值):')
         for name, m, *_ in rows_t + rows_v:

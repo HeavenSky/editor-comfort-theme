@@ -334,6 +334,50 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: entity.name.namespace",
+			"scope": "entity.name.namespace",
+			"settings": {
+				"foreground": "#90661F"
+			}
+		},
+		{
+			"name": "Comfort coverage: meta.object-literal.key",
+			"scope": "meta.object-literal.key",
+			"settings": {
+				"foreground": "#A3584F"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.heading",
+			"scope": "markup.heading",
+			"settings": {
+				"foreground": "#A3584F",
+				"fontStyle": "bold"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.inline.raw",
+			"scope": "markup.inline.raw",
+			"settings": {
+				"foreground": "#457943"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.quote",
+			"scope": "markup.quote",
+			"settings": {
+				"foreground": "#6C6D73",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.underline.link",
+			"scope": "markup.underline.link",
+			"settings": {
+				"foreground": "#895486"
+			}
+		},
+		{
 			"name": "Comment",
 			"scope": [
 				"comment"

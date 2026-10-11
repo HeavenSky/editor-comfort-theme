@@ -386,6 +386,35 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: entity.name.type",
+			"scope": "entity.name.type",
+			"settings": {
+				"foreground": "#D5A364"
+			}
+		},
+		{
+			"name": "Comfort coverage: entity.name.namespace",
+			"scope": "entity.name.namespace",
+			"settings": {
+				"foreground": "#97B0BA"
+			}
+		},
+		{
+			"name": "Comfort coverage: meta.object-literal.key",
+			"scope": "meta.object-literal.key",
+			"settings": {
+				"foreground": "#86B5AD"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.heading",
+			"scope": "markup.heading",
+			"settings": {
+				"foreground": "#87ADEC",
+				"fontStyle": "bold"
+			}
+		},
+		{
 			"name": "Changed",
 			"scope": [
 				"markup.changed",

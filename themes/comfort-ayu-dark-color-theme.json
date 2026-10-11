@@ -515,6 +515,20 @@
 	},
 	"tokenColors": [
 		{
+			"name": "Comfort coverage: meta.object-literal.key",
+			"scope": "meta.object-literal.key",
+			"settings": {
+				"foreground": "#BCBAB2"
+			}
+		},
+		{
+			"name": "Comfort coverage: markup.inline.raw",
+			"scope": "markup.inline.raw",
+			"settings": {
+				"foreground": "#A9C37B"
+			}
+		},
+		{
 			"name": "Comment",
 			"scope": [
 				"comment"
