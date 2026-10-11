@@ -29,14 +29,14 @@
 	"contributes": {
 		"themes": [
 			{
-				"label": "One Dark Fit",
+				"label": "Comfort One Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/one-dark-fit-color-theme.json"
+				"path": "./themes/comfort-one-dark-color-theme.json"
 			},
 			{
-				"label": "One Light Fit",
+				"label": "Comfort One Light",
 				"uiTheme": "vs",
-				"path": "./themes/one-light-fit-color-theme.json"
+				"path": "./themes/comfort-one-light-color-theme.json"
 			},
 			{
 				"label": "Comfort Ayu Dark",
@@ -51,17 +51,17 @@
 			{
 				"label": "Comfort Solarized Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-solarized-dark-color-theme.json"
+				"path": "./themes/comfort-solar-ized-dark-color-theme.json"
 			},
 			{
 				"label": "Comfort Solarized Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-solarized-light-color-theme.json"
+				"path": "./themes/comfort-solar-ized-light-color-theme.json"
 			},
 			{
-				"label": "Comfort GitHub Dark Dimmed",
+				"label": "Comfort GitHub Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-github-dark-dimmed-color-theme.json"
+				"path": "./themes/comfort-github-dark-color-theme.json"
 			},
 			{
 				"label": "Comfort GitHub Light",
@@ -69,14 +69,14 @@
 				"path": "./themes/comfort-github-light-color-theme.json"
 			},
 			{
-				"label": "Comfort Dracula",
+				"label": "Comfort Dracula Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-dracula-color-theme.json"
+				"path": "./themes/comfort-dracula-dark-color-theme.json"
 			},
 			{
-				"label": "Comfort Night Owl",
+				"label": "Comfort Night Owl Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-night-owl-color-theme.json"
+				"path": "./themes/comfort-night-owl-dark-color-theme.json"
 			},
 			{
 				"label": "Comfort Night Owl Light",
@@ -84,14 +84,14 @@
 				"path": "./themes/comfort-night-owl-light-color-theme.json"
 			},
 			{
-				"label": "Comfort One Monokai",
+				"label": "Comfort One Monokai Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-one-monokai-color-theme.json"
+				"path": "./themes/comfort-one-monokai-dark-color-theme.json"
 			},
 			{
-				"label": "Comfort Palenight",
+				"label": "Comfort Pale Night Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-palenight-color-theme.json"
+				"path": "./themes/comfort-pale-night-dark-color-theme.json"
 			}
 		]
 	},

@@ -1,8 +1,8 @@
 # 全部主题的定义, 是 VS Code 主题与 Terminal.app 主题的唯一数据来源.
 #
-# VS Code 主题以 tools/sources/ 下的原主题为模板, 保留其全部界面键与语法规则, 由 gen_vscode.py 逐色变换;
+# VS Code 主题以 tools/sources/ 下的原主题为模板: 界面键逐色变换, 语法规则由规则池(pool.py)按本主题的角色色生成;
 # 本文件给出变换目标(底色, 前景, 16 色终端)与调色参数. Terminal 主题只用 bg / fg / bold / cursor / sel / ansi.
-# Fit 主题: 在保留参考主题风格(正文色, 终端色板)的同时做完整护眼适配, 与 Comfort 主题同样参与达标门禁.
+# 命名: comfort-<name>-dark / comfort-<name>-light, 显示名 Comfort <Name> Dark / Light; 原主题文件为 tools/sources/<name>-dark|light.json.
 import json, os, re
 
 from colorlib import blend, cr, from_oklch, h, hx, lum, oklch, shift, toward_bg, tune
@@ -83,22 +83,22 @@ def build() -> list[dict]:
     # cap: 彩度上限; token_min: 语法色相对编辑区底的对比度下限; comment_cr: 注释对比度(None 表示不调)
     T = []
 
-    # ---- One Dark Fit: One Dark Pro 的完整护眼适配. 保留原版全部界面键与语法规则, 底色与正文沿用原版;
+    # ---- Comfort One Dark: One Dark Pro 的完整护眼适配. 底色与正文沿用原版;
     #      注释随正文联动, 语法色不亮过正文, 彩度封顶; 终端色取 One Dark Pro 自己的终端色板(偏橙的黄)调校 ----
     bg = h('#282C34')
-    T.append(dict(name='one-dark-fit', label='One Dark Fit', dark=True, gate=True, terminal=True,
-                  source='one-dark-pro.json', cap=0.10, token_min=4.5, comment_cr=COMMENT_CR, syntax_max=SYNTAX_MAX,
+    T.append(dict(name='comfort-one-dark', label='Comfort One Dark', dark=True, gate=True, terminal=True,
+                  source='one-dark.json', cap=0.10, token_min=4.5, comment_cr=COMMENT_CR, syntax_max=SYNTAX_MAX,
                   bg=bg, fg=h('#ABB2BF'), bold=h('#D7DAE0'), cursor=h('#528BFF'), sel=h('#3E4451'),
                   ansi=_ansi({k: tune(v, bg, 0.10, 4.5) for k, v in ODP_NORMAL.items()},
                              {k: tune(v, bg, 0.10, 6.5, 0.05) for k, v in ODP_BRIGHT.items()},
                              dict(Black=h('#21252B'), BrightBlack=h('#7F848E'), White=h('#D7DAE0'), BrightWhite=h('#E6E6E6')))))
 
-    # ---- One Light Fit: akamud One Light 2.3.0 的完整护眼适配, 与 One Dark Fit 同方案;
+    # ---- Comfort One Light: akamud One Light 2.3.0 的完整护眼适配, 与 Comfort One Dark 同方案;
     #      底 #FAFAFA(亮度 0.956)眩光偏大, 压暗为 #F0F0F2(0.873), 正文压到对比度 8.5;
     #      原版没有终端色, 终端取原版语法色同口径调校, 亮白取原版底色 #FAFAFA 保证彩色底上的白字可读 ----
     bg = h('#F0F0F2')
     acc = dict(Red='E45649', Green='50A14F', Yellow='C18401', Blue='4078F2', Magenta='A626A4', Cyan='0184BC')
-    T.append(dict(name='one-light-fit', label='One Light Fit', dark=False, gate=True, terminal=True,
+    T.append(dict(name='comfort-one-light', label='Comfort One Light', dark=False, gate=True, terminal=True,
                   source='one-light.json', cap=0.10, token_min=4.5, comment_cr=COMMENT_CR,
                   bg=bg, fg=toward_bg(h('#383A42'), bg, 8.5), bold=h('#232324'), cursor=h('#526FFF'),
                   sel=blend(h('#526FFF'), bg, 0.18),
@@ -111,7 +111,7 @@ def build() -> list[dict]:
     nor = dict(Red='F06B5C', Green='BFE76D', Yellow='E6B752', Blue='3BBBF4', Magenta='D09FFD', Cyan='84CEB5')
     brt = dict(Red='F39184', Green='D5FF80', Yellow='FFCD66', Blue='73D0FF', Magenta='DFBFFF', Cyan='95E6CB')
     T.append(dict(
-        name='comfort-ayu-dark', label='Comfort Ayu Dark', dark=True, gate=True, terminal=True, source='ayu-mirage.json',
+        name='comfort-ayu-dark', label='Comfort Ayu Dark', dark=True, gate=True, terminal=True, source='ayu-dark.json',
         cap=0.10, token_min=5.0, comment_cr=COMMENT_CR, syntax_max=SYNTAX_MAX,
         bg=bg, fg=toward_bg(h('#CCCAC2'), bg, 7.5), bold=h('#E6E1CF'), cursor=h('#FFCC66'), sel=blend(h('#409FFF'), bg, 0.25),
         ansi=_ansi({n: tune(v, bg, 0.10, 5.0) for n, v in nor.items()},
@@ -130,20 +130,20 @@ def build() -> list[dict]:
                    {n: tune(v, bg, 0.10, 6.0, -0.06) for n, v in nor.items()},
                    dict(Black=h('#242936'), BrightBlack=tune('ADAEB1', bg, 0.02, 3.2), White=h('#C9CDD3'), BrightWhite=h('#DFE2E7')))))
 
-    # ---- solarized-dark: 官方 base03 底, 正文比 base1 稍亮, 对比度 7.0 ----
+    # ---- Comfort Solarized Dark: 官方 base03 底, 正文比 base1 稍亮, 对比度 7.0 ----
     bg = h('#002B36')
     T.append(dict(
-        name='comfort-solarized-dark', label='Comfort Solarized Dark', dark=True, gate=True, terminal=True, source='solarized-dark.json',
+        name='comfort-solar-ized-dark', label='Comfort Solarized Dark', dark=True, gate=True, terminal=True, source='solar-ized-dark.json',
         cap=0.10, token_min=5.0, comment_cr=COMMENT_CR, syntax_max=SYNTAX_MAX,
         bg=bg, fg=h('#A6B4B4'), bold=h('#EEE8D5'), cursor=h('#93A1A1'), sel=h('#0A4A5A'),
         ansi=_ansi({n: tune(v, bg, 0.10, 5.0) for n, v in SOL_NORMAL.items()},
                    {n: tune(v, bg, 0.10, 6.5, 0.06) for n, v in SOL_BRIGHT.items()},
                    dict(Black=h('#073642'), BrightBlack=tune('657B83', bg, 0.03, 3.4), White=h('#D3CDBB'), BrightWhite=h('#EEE8D5')))))
 
-    # ---- solarized-light: base3 #FDF6E3 压暗为 #F5EEDA, 正文取 base01 与 base02 之间, 对比度 7.0 ----
+    # ---- Comfort Solarized Light: base3 #FDF6E3 压暗为 #F5EEDA, 正文取 base01 与 base02 之间, 对比度 7.0 ----
     bg = h('#F5EEDA')
     T.append(dict(
-        name='comfort-solarized-light', label='Comfort Solarized Light', dark=False, gate=True, terminal=True, source='solarized-light.json',
+        name='comfort-solar-ized-light', label='Comfort Solarized Light', dark=False, gate=True, terminal=True, source='solar-ized-light.json',
         cap=0.10, token_min=4.8, comment_cr=COMMENT_CR,
         bg=bg, fg=h('#3E5259'), bold=h('#073642'), cursor=h('#586E75'), sel=h('#E3D9BC'),
         ansi=_ansi({n: tune(v, bg, 0.10, 4.8) for n, v in SOL_NORMAL.items()},
@@ -152,13 +152,13 @@ def build() -> list[dict]:
 
     # ---- 按原主题自动适配的主题(adapt): 底色, 正文与终端色取自原主题, 再按门禁口径调校 ----
     T += [
-        adapt('comfort-github-dark-dimmed', 'Comfort GitHub Dark Dimmed', 'github-dark-dimmed.json', dark=True),
-        adapt('comfort-github-light', 'Comfort GitHub Light', 'github-light-default.json', dark=False),
-        adapt('comfort-dracula', 'Comfort Dracula', 'dracula-soft.json', dark=True),
-        adapt('comfort-night-owl', 'Comfort Night Owl', 'night-owl.json', dark=True),
+        adapt('comfort-github-dark', 'Comfort GitHub Dark', 'github-dark.json', dark=True),
+        adapt('comfort-github-light', 'Comfort GitHub Light', 'github-light.json', dark=False),
+        adapt('comfort-dracula-dark', 'Comfort Dracula Dark', 'dracula-dark.json', dark=True),
+        adapt('comfort-night-owl-dark', 'Comfort Night Owl Dark', 'night-owl-dark.json', dark=True),
         adapt('comfort-night-owl-light', 'Comfort Night Owl Light', 'night-owl-light.json', dark=False),
-        adapt('comfort-one-monokai', 'Comfort One Monokai', 'one-monokai.json', dark=True),
-        adapt('comfort-palenight', 'Comfort Palenight', 'palenight.json', dark=True),
+        adapt('comfort-one-monokai-dark', 'Comfort One Monokai Dark', 'one-monokai-dark.json', dark=True),
+        adapt('comfort-pale-night-dark', 'Comfort Pale Night Dark', 'pale-night-dark.json', dark=True),
     ]
 
     # 终端暗灰(90m)多用来显示注释与次要信息, 与注释同口径: 正文 / 1.85, 限制在 3.4~4.2

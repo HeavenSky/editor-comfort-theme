@@ -268,7 +268,7 @@ def annotate(pool: dict, out: str, items: list | None = None, storage_key: str |
     from themes import build as build_themes
     from gen_vscode import render
     previews = []
-    for name in ('one-dark-fit', 'comfort-dracula', 'one-light-fit', 'comfort-github-light'):
+    for name in ('comfort-one-dark', 'comfort-dracula-dark', 'comfort-one-light', 'comfort-github-light'):
         t = next(x for x in build_themes() if x['name'] == name)
         g = render(t)
         roles = {r: role_value(g['tokenColors'], r, g['colors']['editor.foreground']) for r in ROLES}

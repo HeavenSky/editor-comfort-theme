@@ -20,21 +20,21 @@ Thirteen VS Code color themes for long coding sessions, every one tuned and adap
 
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
-| **One Dark Fit** | One Dark Pro 3.20.2 | Keeps One Dark Pro's background, body text, italic, bold and orange terminal yellow; softer accents, comments easier to read |
-| **One Light Fit** | Atom One Light 2.3.0 | Background dimmed (`#FAFAFA` → `#F0F0F2`), body text softened, softer accents |
+| **Comfort One Dark** | One Dark Pro 3.20.2 | Keeps One Dark Pro's background, body text, italic, bold and orange terminal yellow; softer accents, comments easier to read |
+| **Comfort One Light** | Atom One Light 2.3.0 | Background dimmed (`#FAFAFA` → `#F0F0F2`), body text softened, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Body text softened, calmer strings, readable punctuation |
 | **Comfort Ayu Light** | ayu Light | Background dimmed, darker text |
 | **Comfort Solarized Dark** | Solarized Dark | Brighter text, softer accents |
 | **Comfort Solarized Light** | Solarized Light | Background dimmed, darker text |
-| **Comfort GitHub Dark Dimmed** | GitHub Dark Dimmed 6.3.5 | Slightly softer text and accents; keeps the gray-blue background |
+| **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | Slightly softer text and accents; keeps the gray-blue background |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | Pure white background dimmed, body text softened from 15.8 to 8.5 contrast |
-| **Comfort Dracula** | Dracula Soft 2.25.1 | Body text softened from 13.2 to 7.0 contrast, softer accents |
-| **Comfort Night Owl** | Night Owl 2.1.1 | Near-black background lifted (keeping its deep blue), body text softened from 13.5 to 7.0 contrast |
+| **Comfort Dracula Dark** | Dracula Soft 2.25.1 | Body text softened from 13.2 to 7.0 contrast, softer accents |
+| **Comfort Night Owl Dark** | Night Owl 2.1.1 | Near-black background lifted (keeping its deep blue), body text softened from 13.5 to 7.0 contrast |
 | **Comfort Night Owl Light** | Night Owl Light 2.1.1 | Near-white background dimmed, comments much easier to read |
-| **Comfort One Monokai** | One Monokai 0.5.2 | Softer Monokai accents on the One Dark background |
-| **Comfort Palenight** | Palenight 2.0.5 | Body text and accents softened |
+| **Comfort One Monokai Dark** | One Monokai 0.5.2 | Softer Monokai accents on the One Dark background |
+| **Comfort Pale Night Dark** | Palenight 2.0.5 | Body text and accents softened |
 
-Every theme passes the same gate: body text, comments and line numbers in a comfortable contrast band, accents no louder than body text, near-neutral panels and no glaring highlights. **Fit** themes stay closest to their reference theme.
+Every theme passes the same gate: body text, comments and line numbers in a comfortable contrast band, accents no louder than body text, near-neutral panels and no glaring highlights. Every theme is named `Comfort <Name> Dark` or `Comfort <Name> Light`.
 
 Switch themes with **Preferences: Color Theme** (`⌘K ⌘T` / `Ctrl+K Ctrl+T`).
 

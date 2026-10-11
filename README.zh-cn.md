@@ -22,21 +22,21 @@
 
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
-| **One Dark Fit** | One Dark Pro 3.20.2 | 保留 One Dark Pro 的底色, 正文, italic, bold 与偏橙的终端黄; 彩色更柔和, 注释更易读 |
-| **One Light Fit** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#F0F0F2`), 正文减淡, 彩色更柔和 |
+| **Comfort One Dark** | One Dark Pro 3.20.2 | 保留 One Dark Pro 的底色, 正文, italic, bold 与偏橙的终端黄; 彩色更柔和, 注释更易读 |
+| **Comfort One Light** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#F0F0F2`), 正文减淡, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 正文减淡, 字符串不再刺眼, 半透明标点改为清楚可读 |
 | **Comfort Ayu Light** | ayu Light | 底色压暗, 正文加深 |
 | **Comfort Solarized Dark** | Solarized Dark | 正文提亮, 彩色更柔和 |
 | **Comfort Solarized Light** | Solarized Light | 底色压暗, 正文加深 |
-| **Comfort GitHub Dark Dimmed** | GitHub Dark Dimmed 6.3.5 | 正文与彩色略减淡, 保留灰蓝底色 |
+| **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | 正文与彩色略减淡, 保留灰蓝底色 |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | 纯白底压暗, 正文对比度从 15.8 减到 8.5 |
-| **Comfort Dracula** | Dracula Soft 2.25.1 | 正文对比度从 13.2 减到 7.0, 彩色更柔和 |
-| **Comfort Night Owl** | Night Owl 2.1.1 | 近纯黑底抬亮(保留深蓝色相), 正文对比度从 13.5 减到 7.0 |
+| **Comfort Dracula Dark** | Dracula Soft 2.25.1 | 正文对比度从 13.2 减到 7.0, 彩色更柔和 |
+| **Comfort Night Owl Dark** | Night Owl 2.1.1 | 近纯黑底抬亮(保留深蓝色相), 正文对比度从 13.5 减到 7.0 |
 | **Comfort Night Owl Light** | Night Owl Light 2.1.1 | 近纯白底压暗, 注释明显更易读 |
-| **Comfort One Monokai** | One Monokai 0.5.2 | One Dark 底色上的 Monokai 彩色更柔和 |
-| **Comfort Palenight** | Palenight 2.0.5 | 正文与彩色减淡 |
+| **Comfort One Monokai Dark** | One Monokai 0.5.2 | One Dark 底色上的 Monokai 彩色更柔和 |
+| **Comfort Pale Night Dark** | Palenight 2.0.5 | 正文与彩色减淡 |
 
-全部主题通过同一套门禁: 正文, 注释与行号的对比度落在舒适区间, 彩色不比正文更抢眼, 面板底色接近中性, 高亮不刺眼. **Fit** 主题最贴近参考主题的原貌.
+全部主题通过同一套门禁: 正文, 注释与行号的对比度落在舒适区间, 彩色不比正文更抢眼, 面板底色接近中性, 高亮不刺眼. 主题统一命名为 `Comfort <Name> Dark` / `Comfort <Name> Light`.
 
 通过 "首选项: 颜色主题"(`⌘K ⌘T` / `Ctrl+K Ctrl+T`)切换.
 
