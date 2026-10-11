@@ -8,6 +8,7 @@ import json, math, os, re, sys
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from colorlib import Rgb, blend, cr, from_oklch, h, hx, oklch, toward_bg, tune
+import pool
 from coverage import fill as fill_coverage
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
 from comfort import HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, HIGHLIGHT_TEXT_MIN, PANEL_KEYS, PANEL_MAX_CHROMA, PANEL_MAX_CR
@@ -326,39 +327,43 @@ def transform(t: dict, src: dict) -> dict:
         colors['editorLineNumber.foreground'] = hx(toward_bg(line_no, t['bg'], LINE_NO_MAX))
     calm(colors, t)
 
-    rules = []
-    for r in src['tokenColors']:
-        r = json.loads(json.dumps(r))
-        st = r.get('settings', {})
-        comment = any('comment' in s for s in scopes_of(r))
-        for field, fn in (('foreground', lambda v: m.token(v, comment)), ('background', m.ui)):
-            if field in st:
-                out = fn(st[field])
-                if out is None:
-                    del st[field]
-                else:
-                    st[field] = out
-        rules.append(r)
-
+    rules = pool_rules(src, m, t)
+    # 语义着色交给 VS Code 内置的语义 token -> TextMate scope 映射, 与规则池一致; 原主题自带的语义色不再沿用
     semantic = {}
-    for k, v in (src.get('semanticTokenColors') or {}).items():
-        if isinstance(v, str):
-            out = m.token(v)
-            if out is not None:
-                semantic[k] = out
-            continue
-        v = dict(v)
-        if 'foreground' in v:
-            out = m.token(v['foreground'])
-            if out is None:
-                del v['foreground']
-            else:
-                v['foreground'] = out
-        semantic[k] = v
     # 统一着色覆盖: 原主题没定义的常用 scope 从本主题的相近角色取色补上(见 coverage.py)
     rules[:0] = fill_coverage(rules, hx(t['fg']))
     conform(colors, rules, semantic, t)
     return dict(colors=dict(sorted(colors.items())), tokenColors=rules, semanticTokenColors=semantic)
+
+
+_POOL = None
+
+
+def pool_rules(src: dict, m: 'Mapper', t: dict) -> list[dict]:
+    """由规则池生成 tokenColors: 每个选择器按裁决出的角色取本主题的角色色(原主题的颜色经同样的调色), 设置相同的合为一条."""
+    global _POOL
+    if _POOL is None:
+        _POOL = pool.build(build())
+    src_rules = src.get('tokenColors', [])
+    fg = source_fg(src, t['dark'])
+    groups: dict[str, list[str]] = {}
+    styles: dict[str, dict] = {}
+    for sel, p in _POOL.items():
+        role = p['role']
+        if role == pool.INHERIT:
+            continue
+        if role not in styles:
+            settings = {}
+            color = m.token(pool.role_value(src_rules, role, fg), comment=role == 'comment')
+            if color:
+                settings['foreground'] = color
+            style = pool.role_value(src_rules, role, None, 'fontStyle')
+            if style is not None:
+                settings['fontStyle'] = style
+            styles[role] = settings
+        if styles[role]:
+            groups.setdefault(role, []).append(sel)
+    return [{'name': f'Comfort {role}', 'scope': sels, 'settings': styles[role]} for role, sels in groups.items()]
 
 
 def render(t: dict) -> dict:
