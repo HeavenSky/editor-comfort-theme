@@ -26,7 +26,8 @@ SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sources')
 OVERRIDES = os.path.join(SOURCES, 'pool-overrides.json')
 FG, INHERIT = 'fg', 'inherit'
 
-# 角色 -> (代表 scope 与取色链, 默认字体样式); 主题的角色色 = 取色链里第一个在该主题中有颜色的 scope, 都没有时退回正文
+# 角色 -> (代表 scope 与取色链, 默认字体样式); 主题的角色色 = 取色链里第一个在该主题中有颜色的 scope, 都没有时退回正文.
+# 例外: variable(普通变量)用派生专用色, 由 gen_vscode.derive_variable 按本主题其他角色色算出, 取色链只作兜底
 ROLES = {
     'comment': (['comment'], None),
     'string': (['string', 'string.quoted'], None),
@@ -67,7 +68,7 @@ ROLES = {
 }
 NAMES = dict(comment='注释', string='字符串', regexp='正则', escape='转义', number='数字', constant='常量字面量', constant_var='常量变量',
              keyword='关键字', control='流程控制', operator='运算符', storage='声明类型', modifier='修饰符', function='函数', builtin_fn='内置函数',
-             type='类型', class_='类', builtin_type='内置类型', inherited='父类', namespace='命名空间', variable='变量', parameter='参数',
+             type='类型', class_='类', builtin_type='内置类型', inherited='父类', namespace='命名空间', variable='变量(派生专用色)', parameter='参数',
              this='this/self', property='属性', key='对象键', tag='标签', attribute='属性名(标签)', heading='标题', bold='粗体',
              italic='斜体', quote='引用', raw='行内代码', link='链接', inserted='新增', deleted='删除', invalid='错误', text='正文',
              inherit='跟随外层')
@@ -109,6 +110,12 @@ _rank = {r: i for i, r in enumerate(PRIORITY)}
 def pick(counter: Counter, among=None) -> str:
     keys = list(among if among is not None else counter)
     return min(keys, key=lambda k: (-counter.get(k, 0), _rank.get(k, 99)))
+
+
+# 变量派生色要与之拉开色差的角色: 代码里常与变量相邻出现的颜色
+DERIVE_CONTEXT = ['parameter', 'storage', 'keyword', 'control', 'function', 'builtin_fn', 'string', 'number', 'constant', 'operator',
+                  'property', 'key', 'type', 'class', 'builtin_type', 'attribute', 'tag', 'this', 'comment', 'text',
+                  'inherited', 'namespace', 'constant_var', 'escape', 'regexp']
 
 
 # 常用语言排在标注页前面

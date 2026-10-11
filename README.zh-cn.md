@@ -81,7 +81,7 @@
 - `tools/sources/*.json`: 原主题模板. 全部主题保留其全部界面键与语法规则, 只逐色变换.
 - `tools/sources/vscode-color-registry.json`: VS Code 颜色注册表, 含核心颜色, 终端 16 色与内置扩展声明的颜色, 逐键记录默认值, 是否须半透明, 是否已废弃. 默认值写死的键, 原主题没定义的一律按本主题色板补齐; VS Code 升级后用 `npm run extract:registry` 重新提取.
 - 每套生成的主题都按 `vscode://schemas/color-theme` 校验(`tools/schema.py`): 未注册或已废弃的颜色键丢弃(有官方替代键的改名), 须半透明的颜色换算成等效的半透明值, VS Code 不生效的 token 规则字段(token 背景色, `fontStyle: normal` 等)删除或改成等效写法. 任意主题可用 `uv run tools/schema.py <文件>...` 校验.
-- 语法规则来自同一个规则池(`tools/pool.py`): 全部原主题的 token 选择器(约 1300 个)合并成池子, 每个选择器裁决出一个角色(关键字, 函数, 类型, 属性, 字符串等), 每套主题都用自己的角色色为整个池子着色, 覆盖面一致且丰富, 包括各语言专属的规则. 角色按 TextMate 命名约定且原主题不反对时自动确定; 标点与 `meta.*` 包裹 scope 跟随外层; 其余未标注前用推荐值, 人工标注存于 `tools/sources/pool-overrides.json`. `uv run tools/pool.py` 查看各层数量, `uv run tools/pool.py --annotate <out.html>` 生成带颜色预览, 键盘操作的标注页.
+- 语法规则来自同一个规则池(`tools/pool.py`): 全部原主题的 token 选择器(约 1300 个)合并成池子, 每个选择器裁决出一个角色(关键字, 函数, 类型, 属性, 字符串等), 每套主题都用自己的角色色为整个池子着色, 覆盖面一致且丰富, 包括各语言专属的规则. 角色按 TextMate 命名约定且原主题不反对时自动确定; 标点与 `meta.*` 包裹 scope 跟随外层; 其余未标注前用推荐值, 人工标注存于 `tools/sources/pool-overrides.json`. 普通变量在每套主题里有一个派生专用色: 彩度约 0.09, 明度贴近参数色, 色相取离本主题其他语法色最远的方向, 因为任何现成的角色色都会与某个角色撞色. `uv run tools/pool.py` 查看各层数量, `uv run tools/pool.py --annotate <out.html>` 生成带颜色预览, 键盘操作的标注页.
 - 语法着色统一覆盖(`tools/coverage.py`): 每套主题都为同样的 33 个常用 scope 着色(类型, 命名空间, 变量, 参数, 属性, 对象键, Markdown 标题, 粗体, 斜体, 引用, 链接等); 原主题没定义的, 取本主题最相近角色的颜色补上. 标点刻意不纳入: 引号与注释符号套在字符串和注释里, 应保持字符串色与注释色.
 
 ```bash

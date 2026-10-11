@@ -337,6 +337,28 @@ def transform(t: dict, src: dict) -> dict:
 
 
 _POOL = None
+VARIABLE_CHROMA = 0.09
+
+
+def derive_variable(colors: dict, t: dict) -> str | None:
+    """普通变量的派生专用色: 明度贴近参数色, 彩度 VARIABLE_CHROMA, 对比度在语法色下限与正文之间,
+    在色环上取与周围角色色(pool.DERIVE_CONTEXT)最小色差最大的色相; 现成角色色都会与某个角色撞色, 所以单独派生."""
+    from colorlib import de2000
+    bg = t['bg']
+    hi = cr(t['fg'], bg) * (t.get('syntax_max') or 1.0)
+    ctx = [parse(colors[r])[0] for r in pool.DERIVE_CONTEXT if colors.get(r)]
+    L0 = oklch(parse(colors['parameter'])[0])[0] if colors.get('parameter') else oklch(t['fg'])[0]
+    best, pick = -1.0, None
+    for dl in (0, -0.04, 0.04, -0.08, 0.08):
+        for deg in range(0, 360, 3):
+            c = from_oklch(L0 + dl, VARIABLE_CHROMA, math.radians(deg))
+            # 留 0.05 余量, 避免 hex 取整后越过对比度边界
+            if not (t['token_min'] + 0.05 <= cr(c, bg) <= hi - 0.05):
+                continue
+            score = min(de2000(c, x) for x in ctx)
+            if score > best:
+                best, pick = score, c
+    return hx(pick) if pick else None
 
 
 def pool_rules(src: dict, m: 'Mapper', t: dict) -> list[dict]:
@@ -346,6 +368,8 @@ def pool_rules(src: dict, m: 'Mapper', t: dict) -> list[dict]:
         _POOL = pool.build(build())
     src_rules = src.get('tokenColors', [])
     fg = source_fg(src, t['dark'])
+    colors = {r: m.token(pool.role_value(src_rules, r, fg), comment=r == 'comment') for r in pool.ROLES}
+    colors['variable'] = derive_variable(colors, t) or colors['variable']
     groups: dict[str, list[str]] = {}
     styles: dict[str, dict] = {}
     for sel, p in _POOL.items():
@@ -354,9 +378,8 @@ def pool_rules(src: dict, m: 'Mapper', t: dict) -> list[dict]:
             continue
         if role not in styles:
             settings = {}
-            color = m.token(pool.role_value(src_rules, role, fg), comment=role == 'comment')
-            if color:
-                settings['foreground'] = color
+            if colors.get(role):
+                settings['foreground'] = colors[role]
             style = pool.role_value(src_rules, role, None, 'fontStyle')
             if style is not None:
                 settings['fontStyle'] = style
