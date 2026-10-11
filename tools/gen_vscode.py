@@ -8,6 +8,7 @@ import json, math, os, re, sys
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from colorlib import Rgb, blend, cr, from_oklch, h, hx, oklch, toward_bg, tune
+from comfort import HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, HIGHLIGHT_TEXT_MIN, PANEL_KEYS, PANEL_MAX_CHROMA, PANEL_MAX_CR
 from themes import ANSI, build
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -17,7 +18,7 @@ OUT = os.path.join(ROOT, 'themes')
 
 # 界面上的文字与其底色, 及对比度下限; metrics.py 用同一张表评级
 UI_PAIRS = [
-    ('editorLineNumber.foreground', 'editor.background', 3.0),
+    ('editorLineNumber.foreground', 'editor.background', 2.2),
     ('sideBar.foreground', 'sideBar.background', 4.5),
     ('tab.activeForeground', 'tab.activeBackground', 4.5),
     ('tab.inactiveForeground', 'tab.inactiveBackground', 4.5),
@@ -25,12 +26,16 @@ UI_PAIRS = [
     ('activityBar.foreground', 'activityBar.background', 4.5),
     ('activityBar.inactiveForeground', 'activityBar.background', 4.5),
 ]
+# 行号对比度上限: 常驻视野边缘, 够读即可(防疲劳理想 2.0~2.6)
+LINE_NO_MAX = 2.6
 # 画在代码上的界面色, 按语法色的规则调色
 TEXT_ON_CODE = ('editorBracketHighlight.foreground',)
 # 原主题不定义括号色时, 用原主题的 数字 / 关键字 / 转义 色补上, 而不是落到注册表的通用补色
 BRACKET_FALLBACK = ['constant.numeric', 'keyword.control', 'constant.character.escape']
 NEUTRAL_CHROMA = 0.035
 SAME_COLOR = 0.012
+COMMENT_RATIO = 1.85
+COMMENT_RANGE = (3.4, 4.2)
 
 
 def load(path: str) -> dict:
@@ -74,6 +79,14 @@ def resolve(rules: list, scope: str) -> str | None:
     return color
 
 
+def source_fg(src: dict, dark: bool) -> str:
+    # 原主题的正文色: editor.foreground, foreground, 无 scope 的全局规则, 都没有时就是 VS Code 的默认正文色
+    c = src['colors']
+    glob = [r['settings']['foreground'] for r in src.get('tokenColors', []) if not r.get('scope') and r.get('settings', {}).get('foreground')]
+    reg = json.load(open(REGISTRY, encoding='utf-8'))['colors']['editor.foreground']
+    return c.get('editor.foreground') or c.get('foreground') or (glob[0] if glob else reg['dark' if dark else 'light'])
+
+
 def hardcoded_keys(dark: bool) -> dict[str, str]:
     """VS Code 注册表中默认值是硬编码字面量的键 -> 该默认值; 主题不定义这些键时界面会落到与主题无关的颜色."""
     reg = json.load(open(REGISTRY, encoding='utf-8'))
@@ -88,10 +101,15 @@ class Mapper:
         self.t = t
         c = src['colors']
         self.src_bg = parse(c['editor.background'])[0]
-        self.src_fg = parse(c.get('editor.foreground') or c['foreground'])[0]
+        self.src_fg = parse(source_fg(src, t['dark']))[0]
         self.dl = oklch(t['bg'])[0] - oklch(self.src_bg)[0]
         normal = [t['ansi'][n] for n in ANSI[1:7]]
         self.hues = [(oklch(c)[2], c) for c in normal]
+        # 注释对比度: 'auto' 随正文联动, 正文 / COMMENT_RATIO, 限制在 COMMENT_RANGE 内
+        target = t.get('comment_cr')
+        if target == 'auto':
+            target = min(COMMENT_RANGE[1], max(COMMENT_RANGE[0], cr(t['fg'], t['bg']) / COMMENT_RATIO))
+        self.comment_cr = target
 
     def token(self, v, comment: bool = False) -> str | None:
         p = parse(v)
@@ -106,10 +124,10 @@ class Mapper:
             rgb, alpha = blend(base, self.t['bg'], int(alpha, 16) / 255), ''
         bg = self.t['bg']
         if comment:
-            if self.t.get('comment_cr') is None:
+            if self.comment_cr is None:
                 return hx(rgb) + alpha
             # 注释统一到同一对比度: 偏低的提上来, 偏高的压下去
-            return hx(toward_bg(tune(hx(rgb), bg, 0.04, self.t['comment_cr']), bg, self.t['comment_cr'])) + alpha
+            return hx(toward_bg(tune(hx(rgb), bg, 0.04, self.comment_cr), bg, self.comment_cr)) + alpha
         out = tune(hx(rgb), bg, self.t['cap'], self.t['token_min'])
         if self.t.get('syntax_max'):
             # 语法色不亮过正文太多, 避免满屏最抢眼的是字符串一类的彩色
@@ -144,6 +162,19 @@ class Mapper:
         near = min(self.hues, key=lambda x: abs(math.atan2(math.sin(x[0] - H), math.cos(x[0] - H))))
         return hx(near[1]) + alpha
 
+    def tint(self, v, ref_bg: Rgb) -> str | None:
+        # 背景类默认色: 色相取本主题同色相的终端色, 明度保留默认值(随底色平移), 彩度封顶; 不把暗底色换成亮色块
+        p = parse(v)
+        if p is None:
+            return None
+        rgb, alpha = p
+        L, C, H = oklch(rgb)
+        if C < NEUTRAL_CHROMA:
+            return None
+        near = min(self.hues, key=lambda x: abs(math.atan2(math.sin(x[0] - H), math.cos(x[0] - H))))
+        L += oklch(self.t['bg'])[0] - oklch(ref_bg)[0]
+        return hx(from_oklch(L, min(C, self.t['cap']), oklch(near[1])[2])) + alpha
+
 
 def opaque(colors: dict, key: str, under: Rgb) -> Rgb | None:
     p = parse(colors.get(key))
@@ -160,8 +191,45 @@ def fill_hardcoded(colors: dict, t: dict, m: Mapper) -> None:
     for k, default in hard.items():
         if k in colors:
             continue
-        out = m.accent(default) if not k.startswith(TEXT_ON_CODE) else m.token(default)
+        if k.startswith(TEXT_ON_CODE):
+            out = m.token(default)
+        elif k.lower().endswith('background'):
+            out = m.tint(default, vs_bg)
+        else:
+            out = m.accent(default)
         colors[k] = out or m.ui(default, vs_bg)
+
+
+def calm(colors: dict, t: dict) -> None:
+    # 面板底色不成亮块, 高亮底色不刺眼且压在上面的正文可读; 口径与 comfort.py 的防疲劳规则一致
+    bg, fg = t['bg'], t['fg']
+    for k in PANEL_KEYS + HIGHLIGHT_KEYS:
+        p = parse(colors.get(k))
+        if p is None:
+            continue
+        rgb, alpha = p
+        if k in PANEL_KEYS and oklch(blend(rgb, bg, int(alpha, 16) / 255 if alpha else 1.0))[1] > PANEL_MAX_CHROMA:
+            L, C, H = oklch(rgb)
+            rgb = from_oklch(L, PANEL_MAX_CHROMA * (1 if not alpha else 255 / max(1, int(alpha, 16))), H)
+            colors[k] = hx(rgb) + alpha
+        a = int(alpha, 16) / 255 if alpha else 1.0
+        limit = PANEL_MAX_CR if k in PANEL_KEYS else HIGHLIGHT_MAX_CR
+        # 留 0.03 余量, 避免 hex 取整后又越过门禁边界
+        bad = lambda c, a: cr(blend(c, bg, a), bg) > limit - 0.03 or (
+            k in HIGHLIGHT_KEYS and cr(fg, blend(c, bg, a)) < HIGHLIGHT_TEXT_MIN + 0.03)
+        if not bad(rgb, a):
+            continue
+        if alpha:
+            while a > 0.05 and bad(rgb, a):
+                a -= 0.02
+            colors[k] = hx(rgb) + '%02X' % round(a * 255)
+        else:
+            L, C, H = oklch(rgb)
+            step = 0.004 if oklch(bg)[0] > L else -0.004
+            while bad(rgb, 1.0) and 0 < L < 1:
+                L += step
+                rgb = from_oklch(L, C, H)
+            colors[k] = hx(rgb)
 
 
 def transform(t: dict, src: dict) -> dict:
@@ -190,6 +258,10 @@ def transform(t: dict, src: dict) -> dict:
         fg = opaque(colors, fg_key, under)
         if fg is not None and cr(fg, under) < need:
             colors[fg_key] = hx(tune(hx(fg), under, 1.0, need))
+    line_no = opaque(colors, 'editorLineNumber.foreground', t['bg'])
+    if line_no is not None and cr(line_no, t['bg']) > LINE_NO_MAX:
+        colors['editorLineNumber.foreground'] = hx(toward_bg(line_no, t['bg'], LINE_NO_MAX))
+    calm(colors, t)
 
     rules = []
     for r in src['tokenColors']:

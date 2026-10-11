@@ -16,6 +16,7 @@ PANEL_KEYS = [
     'minimap.background',
 ]
 PANEL_MAX_CR = 1.6
+PANEL_MAX_CHROMA = 0.03     # 面板底色的理想最大彩度: 大面积底色应接近中性
 # 画在代码文字下面的高亮底色: 既不能刺眼, 也要让压在上面的正文仍然好读
 HIGHLIGHT_KEYS = [
     'editor.selectionBackground', 'editor.findMatchBackground', 'editor.findMatchHighlightBackground',
@@ -36,7 +37,7 @@ SOFT = dict(
     max_chroma=(None, 0.10, None, 0.14),     # 最鲜艳的一个颜色(语法, 括号, 终端)
     span=(None, 1.40, None, 1.75),           # 彩色语法色里最亮 / 最暗的对比度之比: 越大字面越"跳"
     top_ratio=(None, 1.00, None, 1.10),      # 最亮语法色 / 正文: 彩色不应比正文更抢眼
-    panel_chroma=(None, 0.03, None, 0.06),   # 面板底色的最大彩度: 大面积底色应接近中性
+    panel_chroma=(None, PANEL_MAX_CHROMA, None, 0.06),  # 面板底色的最大彩度: 大面积底色应接近中性
 )
 FATIGUE_DARK = dict(
     text=(6.0, 7.5, 5.0, 8.5),               # 正文对比度: 太低吃力, 太高在暗底上发光(光晕)

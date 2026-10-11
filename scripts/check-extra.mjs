@@ -38,9 +38,10 @@ export default function checks(root) {
 	const files = dir => readdirSync(join(root, dir)).map(name => join(dir, name));
 	return {
 		"主题生成物与 tools/themes.py 一致": () => runUv(root, ["tools/gen_vscode.py", "--check"]),
-		"配色指标达标 (清晰 >= 中高, 护眼 = 好)": () =>
+		"配色指标达标 (清晰 >= 中高, 护眼 = 好, 柔和与防疲劳通过)": () =>
 			runUv(root, [
 				"tools/metrics.py",
+				"--strict",
 				"--check",
 				...files("themes").filter(name => name.endsWith(".json")),
 				// .terminal 要用 macOS 的 AppKit 解码, 其他平台(如 CI 的 Linux)只检 VS Code 主题

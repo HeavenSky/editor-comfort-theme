@@ -1,5 +1,21 @@
 # Change Log
 
+## Unreleased
+
+### Added
+
+- Seven new themes, adapted automatically from their originals and tuned to the same gate: **Comfort GitHub Dark Dimmed**, **Comfort GitHub Light**, **Comfort Dracula** (from Dracula Soft), **Comfort Night Owl**, **Comfort Night Owl Light**, **Comfort One Monokai** and **Comfort Palenight**.
+- Terminal.app profiles for One Dark Fit and One Light Fit, so every theme now has one.
+
+### Changed
+
+- All themes retuned for a softer, less tiring look: accents less saturated, comments brighter and tied to body text contrast, dimmer line numbers, body text no harsher than 7.5 (dark) or 8.5 (light) contrast, panels near neutral and highlights no longer glaring. Bright validation, merge and drop backgrounds that used to flash in some panels are fixed.
+- **One Light Fit** now uses the dimmer `#F0F0F2` background.
+
+### Removed
+
+- **Comfort One Dark** and **Comfort One Light**: under the new gate they were nearly indistinguishable from One Dark Fit and One Light Fit. If you used one of them, switch to One Dark Fit or One Light Fit; VS Code otherwise falls back to its default theme.
+
 ## v0.0.2 2026-10-08
 
 ### Added

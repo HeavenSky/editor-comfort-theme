@@ -6,30 +6,35 @@
 
 **English** · [简体中文](./README.zh-cn.md)
 
-Eight VS Code color themes for long coding sessions, every one tuned and adapted for comfort. The palettes take their design cues from the official One Dark Pro, One Light, Ayu and Solarized themes, so they feel familiar from the first line.
+Thirteen VS Code color themes for long coding sessions, every one tuned and adapted for comfort. The palettes take their design cues from popular themes — One Dark Pro, One Light, Ayu, Solarized, GitHub, Dracula, Night Owl, One Monokai and Palenight — so they feel familiar from the first line.
 
 ## Highlights
 
-- **Comfort-tuned throughout** — all eight themes are adapted for long sessions and pass the same WCAG contrast and OKLCH chroma gate.
+- **Comfort-tuned throughout** — all thirteen themes are adapted for long sessions and pass the same gate: WCAG contrast, OKLCH chroma, plus softness and eye-fatigue scores.
 - **Familiar by design** — palettes reference the official themes; hues are kept while lightness and chroma are tuned.
 - **Complete coverage** — the ~200 UI colors VS Code otherwise hard-codes (bracket pairs, terminal, diff and more) are set from each theme's own palette.
 - **Zero overhead** — static theme files only: no settings, no activation, no runtime code.
-- **Matching terminal** — macOS Terminal.app profiles for all six Comfort themes.
+- **Matching terminal** — macOS Terminal.app profiles for every theme.
 
 ## Themes
 
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
-| **One Dark Fit** | One Dark Pro 3.20.2 | Full eye-comfort adaptation: comments unified, syntax and terminal colors lifted to the contrast floor, chroma capped, every hard-coded UI color themed; keeps One Dark Pro's body text, italic and bold |
-| **One Light Fit** | Atom One Light 2.3.0 | Full eye-comfort adaptation: glare reduced (`#FAFAFA` → `#F3F3F3`), comments unified, syntax and terminal colors lifted to the contrast floor, chroma capped, every hard-coded UI color themed; keeps One Light's body text |
-| **Comfort One Dark** | One Dark Pro | Softer accents, slightly brighter text |
-| **Comfort One Light** | Atom One Light | Dimmer background, softer accents |
-| **Comfort Ayu Dark** | ayu Mirage | Softer accents, calmer strings, readable punctuation |
-| **Comfort Ayu Light** | ayu Light | Dimmer background, darker text |
+| **One Dark Fit** | One Dark Pro 3.20.2 | Keeps One Dark Pro's background, body text, italic, bold and orange terminal yellow; softer accents, comments easier to read |
+| **One Light Fit** | Atom One Light 2.3.0 | Background dimmed (`#FAFAFA` → `#F0F0F2`), body text softened, softer accents |
+| **Comfort Ayu Dark** | ayu Mirage | Body text softened, calmer strings, readable punctuation |
+| **Comfort Ayu Light** | ayu Light | Background dimmed, darker text |
 | **Comfort Solarized Dark** | Solarized Dark | Brighter text, softer accents |
-| **Comfort Solarized Light** | Solarized Light | Dimmer background, darker text |
+| **Comfort Solarized Light** | Solarized Light | Background dimmed, darker text |
+| **Comfort GitHub Dark Dimmed** | GitHub Dark Dimmed 6.3.5 | Slightly softer text and accents; keeps the gray-blue background |
+| **Comfort GitHub Light** | GitHub Light Default 6.3.5 | Pure white background dimmed, body text softened from 15.8 to 8.5 contrast |
+| **Comfort Dracula** | Dracula Soft 2.25.1 | Body text softened from 13.2 to 7.0 contrast, softer accents |
+| **Comfort Night Owl** | Night Owl 2.1.1 | Near-black background lifted (keeping its deep blue), body text softened from 13.5 to 7.0 contrast |
+| **Comfort Night Owl Light** | Night Owl Light 2.1.1 | Near-white background dimmed, comments much easier to read |
+| **Comfort One Monokai** | One Monokai 0.5.2 | Softer Monokai accents on the One Dark background |
+| **Comfort Palenight** | Palenight 2.0.5 | Body text and accents softened |
 
-**Fit** themes add a full eye-comfort adaptation while keeping the character of their reference theme; **Comfort** themes go further toward a softer, quieter look.
+Every theme passes the same gate: body text, comments and line numbers in a comfortable contrast band, accents no louder than body text, near-neutral panels and no glaring highlights. **Fit** themes stay closest to their reference theme.
 
 Switch themes with **Preferences: Color Theme** (`⌘K ⌘T` / `Ctrl+K Ctrl+T`).
 
@@ -50,7 +55,7 @@ Requires VS Code `1.101.0` or newer.
 
 ### Terminal.app profiles
 
-The six Comfort themes have matching macOS Terminal.app profiles in the repository's [`terminal/`](./terminal/) folder. Double-click a `.terminal` file to import it; a profile with the same name is replaced. Run `bash terminal/terminal-preview.sh --full` to show the 16-color matrix.
+Every theme has a matching macOS Terminal.app profile in the repository's [`terminal/`](./terminal/) folder. Double-click a `.terminal` file to import it; a profile with the same name is replaced. Run `bash terminal/terminal-preview.sh --full` to show the 16-color matrix.
 
 ## Turning off italic or bold
 
@@ -98,7 +103,7 @@ uv run tools/metrics.py --detail <file>...  # list every softness / fatigue sub-
 - **Softness** and **fatigue** are scored 0–100 (rules in `tools/comfort.py`): a sub-metric inside its ideal range scores 100, drops to 60 at its limit, and fails beyond it.
   - Softness: average and maximum syntax chroma, lightness spread of the colored syntax colors, brightest syntax color versus body text, panel background chroma.
   - Fatigue: body text contrast, comment contrast, the gap between body text and comments, line number contrast, background luminance, bright panels (large backgrounds above 1.6 contrast against the editor) and highlight backgrounds that glare or make text hard to read.
-  - For now they are enforced only with `--strict`; they join the default gate once the themes are retuned.
+  - They are enforced with `--strict`; `npm run metrics` and `npm run check` pass it by default, so every theme must pass them.
 - Thresholds are the constants at the top of `tools/metrics.py`. `tune` in `tools/colorlib.py` is the tuning tool: cap chroma, then push lightness to the contrast minimum, without changing hue.
 - "Default text on a colored background" (such as `\e[41m` alone) is unreadable under any palette and is not scored; Terminal.app dims faint text by a fixed, non-configurable ratio.
 
@@ -107,7 +112,7 @@ uv run tools/metrics.py --detail <file>...  # list every softness / fatigue sub-
 `tools/similar.py` compares VS Code color themes item by item (CIEDE2000 color difference), finds pairs that are close overall with only a few clearly different spots, and groups those spots by color pair; after picking groups it can write a merge preview and run the gate on it:
 
 ```bash
-npm run similar                                              # compare the eight themes pairwise
+npm run similar                                              # compare all themes pairwise
 uv run tools/similar.py a.json b.json --merge out.json --take 1,3   # base on a, take groups 1 and 3 from b
 ```
 

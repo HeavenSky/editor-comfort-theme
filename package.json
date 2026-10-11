@@ -39,16 +39,6 @@
 				"path": "./themes/one-light-fit-color-theme.json"
 			},
 			{
-				"label": "Comfort One Dark",
-				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-one-dark-color-theme.json"
-			},
-			{
-				"label": "Comfort One Light",
-				"uiTheme": "vs",
-				"path": "./themes/comfort-one-light-color-theme.json"
-			},
-			{
 				"label": "Comfort Ayu Dark",
 				"uiTheme": "vs-dark",
 				"path": "./themes/comfort-ayu-dark-color-theme.json"
@@ -67,6 +57,41 @@
 				"label": "Comfort Solarized Light",
 				"uiTheme": "vs",
 				"path": "./themes/comfort-solarized-light-color-theme.json"
+			},
+			{
+				"label": "Comfort GitHub Dark Dimmed",
+				"uiTheme": "vs-dark",
+				"path": "./themes/comfort-github-dark-dimmed-color-theme.json"
+			},
+			{
+				"label": "Comfort GitHub Light",
+				"uiTheme": "vs",
+				"path": "./themes/comfort-github-light-color-theme.json"
+			},
+			{
+				"label": "Comfort Dracula",
+				"uiTheme": "vs-dark",
+				"path": "./themes/comfort-dracula-color-theme.json"
+			},
+			{
+				"label": "Comfort Night Owl",
+				"uiTheme": "vs-dark",
+				"path": "./themes/comfort-night-owl-color-theme.json"
+			},
+			{
+				"label": "Comfort Night Owl Light",
+				"uiTheme": "vs",
+				"path": "./themes/comfort-night-owl-light-color-theme.json"
+			},
+			{
+				"label": "Comfort One Monokai",
+				"uiTheme": "vs-dark",
+				"path": "./themes/comfort-one-monokai-color-theme.json"
+			},
+			{
+				"label": "Comfort Palenight",
+				"uiTheme": "vs-dark",
+				"path": "./themes/comfort-palenight-color-theme.json"
 			}
 		]
 	},
@@ -91,7 +116,7 @@
 		"gen:icon": "node scripts/gen-icon.mjs",
 		"extract:registry": "uv run tools/extract_registry.py",
 		"gen:themes": "uv run tools/gen_vscode.py && uv run tools/gen_terminal.py",
-		"metrics": "uv run tools/metrics.py --check themes/*.json terminal/*.terminal",
+		"metrics": "uv run tools/metrics.py --strict --check themes/*.json terminal/*.terminal",
 		"similar": "uv run tools/similar.py themes/*.json",
 		"package": "node scripts/package.mjs",
 		"vscode:prepublish": "npm run build"

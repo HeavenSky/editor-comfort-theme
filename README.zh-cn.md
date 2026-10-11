@@ -8,30 +8,35 @@
 
 > 市场页只渲染英文版 README, 不随访问者的显示语言切换; 插件描述会随 VS Code 显示语言切换为中文.
 
-面向长时间编码的 8 套 VS Code 配色主题, 每一套都经过舒适度调整与适配. 配色设计参考官方的 One Dark Pro, One Light, Ayu 与 Solarized 主题, 上手即熟悉.
+面向长时间编码的 13 套 VS Code 配色主题, 每一套都经过舒适度调整与适配. 配色设计参考广受欢迎的 One Dark Pro, One Light, Ayu, Solarized, GitHub, Dracula, Night Owl, One Monokai 与 Palenight 主题, 上手即熟悉.
 
 ## 特性
 
-- **全部舒适度适配**: 8 套主题都按长时间使用做了适配, 并全部通过同一套 WCAG 对比度与 OKLCH 彩度门禁.
+- **全部舒适度适配**: 13 套主题都按长时间使用做了适配, 并全部通过同一套门禁: WCAG 对比度, OKLCH 彩度, 以及柔和与防疲劳打分.
 - **熟悉的配色**: 配色参考官方主题, 保留色相, 调校明度与彩度.
 - **覆盖完整**: VS Code 约两百个写死默认值的界面色(括号对, 终端, diff 等)全部按本主题色板补齐.
 - **零开销**: 纯静态主题文件, 无设置项, 无激活事件, 无运行时代码.
-- **终端配套**: 6 套 Comfort 主题均附同色板的 macOS Terminal.app 配置.
+- **终端配套**: 每套主题都附同色板的 macOS Terminal.app 配置.
 
 ## 主题一览
 
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
-| **One Dark Fit** | One Dark Pro 3.20.2 | 完整护眼适配: 注释统一, 语法色与终端色达到对比度下限, 彩度封顶, 写死的界面色全部补齐; 保留 One Dark Pro 的正文, italic 与 bold |
-| **One Light Fit** | Atom One Light 2.3.0 | 完整护眼适配: 底色降眩光(`#FAFAFA` → `#F3F3F3`), 注释统一, 语法色与终端色达到对比度下限, 彩度封顶, 写死的界面色全部补齐; 保留 One Light 的正文 |
-| **Comfort One Dark** | One Dark Pro | 彩色更柔和, 正文略提亮 |
-| **Comfort One Light** | Atom One Light | 底色压暗, 彩色更柔和 |
-| **Comfort Ayu Dark** | ayu Mirage | 彩色更柔和, 字符串不再刺眼, 半透明标点改为清楚可读 |
+| **One Dark Fit** | One Dark Pro 3.20.2 | 保留 One Dark Pro 的底色, 正文, italic, bold 与偏橙的终端黄; 彩色更柔和, 注释更易读 |
+| **One Light Fit** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#F0F0F2`), 正文减淡, 彩色更柔和 |
+| **Comfort Ayu Dark** | ayu Mirage | 正文减淡, 字符串不再刺眼, 半透明标点改为清楚可读 |
 | **Comfort Ayu Light** | ayu Light | 底色压暗, 正文加深 |
 | **Comfort Solarized Dark** | Solarized Dark | 正文提亮, 彩色更柔和 |
 | **Comfort Solarized Light** | Solarized Light | 底色压暗, 正文加深 |
+| **Comfort GitHub Dark Dimmed** | GitHub Dark Dimmed 6.3.5 | 正文与彩色略减淡, 保留灰蓝底色 |
+| **Comfort GitHub Light** | GitHub Light Default 6.3.5 | 纯白底压暗, 正文对比度从 15.8 减到 8.5 |
+| **Comfort Dracula** | Dracula Soft 2.25.1 | 正文对比度从 13.2 减到 7.0, 彩色更柔和 |
+| **Comfort Night Owl** | Night Owl 2.1.1 | 近纯黑底抬亮(保留深蓝色相), 正文对比度从 13.5 减到 7.0 |
+| **Comfort Night Owl Light** | Night Owl Light 2.1.1 | 近纯白底压暗, 注释明显更易读 |
+| **Comfort One Monokai** | One Monokai 0.5.2 | One Dark 底色上的 Monokai 彩色更柔和 |
+| **Comfort Palenight** | Palenight 2.0.5 | 正文与彩色减淡 |
 
-Fit 主题在保留参考主题风格的同时做完整的护眼适配; Comfort 主题在此基础上更进一步, 整体更柔和, 更安静.
+全部主题通过同一套门禁: 正文, 注释与行号的对比度落在舒适区间, 彩色不比正文更抢眼, 面板底色接近中性, 高亮不刺眼. **Fit** 主题最贴近参考主题的原貌.
 
 通过 "首选项: 颜色主题"(`⌘K ⌘T` / `Ctrl+K Ctrl+T`)切换.
 
@@ -52,7 +57,7 @@ Fit 主题在保留参考主题风格的同时做完整的护眼适配; Comfort 
 
 ### Terminal.app 配置
 
-6 套 Comfort 主题在仓库的 [`terminal/`](./terminal/) 目录下有同色板的 macOS Terminal.app 配置. 双击 `.terminal` 文件导入, 同名配置会被覆盖; 运行 `bash terminal/terminal-preview.sh --full` 可显示 16 色矩阵.
+每套主题在仓库的 [`terminal/`](./terminal/) 目录下都有同色板的 macOS Terminal.app 配置. 双击 `.terminal` 文件导入, 同名配置会被覆盖; 运行 `bash terminal/terminal-preview.sh --full` 可显示 16 色矩阵.
 
 ## 关闭斜体或粗体
 
@@ -100,7 +105,7 @@ uv run tools/metrics.py --detail <文件>...  # 逐主题列出 柔和 / 防疲�
 - **柔和** 与 **防疲劳** 两项按 0~100 打分(规则见 `tools/comfort.py`): 每个子指标落在理想区间得 100, 到限值降到 60, 越过限值判不通过.
   - 柔和: 语法色平均彩度, 最大彩度, 彩色语法色的亮度跨度, 最亮语法色与正文之比, 面板底色彩度.
   - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色与编辑区底对比度超过 1.6)与高亮底色(刺眼或压字难读).
-  - 目前只在 `--strict` 下判定, 现有主题调完后再并入默认门禁.
+  - `--strict` 时判定; `npm run metrics` 与 `npm run check` 默认带 `--strict`, 全部主题须通过.
 - 各项阈值见 `tools/metrics.py` 顶部常量; `tools/colorlib.py` 的 `tune` 是调色手段: 彩度封顶 + 明度推到对比度下限, 色相不动.
 - "默认文字色配彩色背景"(如只写 `\e[41m`)在任何调色板下都看不清, 不计入指标; Terminal.app 的 dim 字按固定比例减淡且不可配置.
 
@@ -109,7 +114,7 @@ uv run tools/metrics.py --detail <文件>...  # 逐主题列出 柔和 / 防疲�
 `tools/similar.py` 逐项比对 VS Code 颜色主题(CIEDE2000 色差), 找出整体接近, 只有少数几处差别大的主题对, 把差别大的地方按颜色对归成差异组; 选定差异组后可生成合并预览并跑一遍门禁:
 
 ```bash
-npm run similar                                              # 8 套主题两两比对
+npm run similar                                              # 全部主题两两比对
 uv run tools/similar.py a.json b.json --merge out.json --take 1,3   # 以 a 为底, 差异组 1, 3 取 b 的颜色
 ```
 
