@@ -83,18 +83,6 @@ function listFiles(dir, prefix = "") {
 	return found;
 }
 
-// ── 推导允许清单 ────────────────────────────────────────────
-// 入口所在目录要在构建之后读: `.wasm` 这类无法内联的产物是构建阶段才落盘的。
-// l10n 要递归读: 捆绑第三方语言服务器时, 它自带的语言包按来源放在各自的子目录里。
-// 纯主题扩展没有 `main`, 也就没有入口目录可读。
-const outDir = pkg.main ? join(ROOT, pkg.main.replace(/^\.\//, "").split("/").slice(0, -1).join("/")) : undefined;
-const allowed = deriveAllowlist({
-	pkg,
-	rootEntries: readdirSync(ROOT),
-	l10nEntries: pkg.l10n ? listFiles(join(ROOT, pkg.l10n.replace(/^\.\//, ""))) : [],
-	outEntries: outDir && existsSync(outDir) ? readdirSync(outDir) : [],
-});
-
 // ── 打包 ────────────────────────────────────────────────────
 mkdirSync(OUT_DIR, { recursive: true });
 const vsce = join(ROOT, "node_modules", ".bin", "vsce");
@@ -111,6 +99,19 @@ runChild(
 	],
 	{ cwd: ROOT, stdio: "inherit", timeout: VSCE_TIMEOUT_MS }
 );
+
+// ── 推导允许清单 ────────────────────────────────────────────
+// 必须放在 vsce package 之后: 它先跑 `vscode:prepublish` 构建, `.wasm` 与捆绑的第三方语言包
+// 这类构建期产物此时才落盘; 提前推导会在全新 clone 的首次打包里把它们判成 unexpected entry。
+// l10n 要递归读: 捆绑第三方语言服务器时, 它自带的语言包按来源放在各自的子目录里。
+// 纯主题扩展没有 `main`, 也就没有入口目录可读。
+const outDir = pkg.main ? join(ROOT, pkg.main.replace(/^\.\//, "").split("/").slice(0, -1).join("/")) : undefined;
+const allowed = deriveAllowlist({
+	pkg,
+	rootEntries: readdirSync(ROOT),
+	l10nEntries: pkg.l10n ? listFiles(join(ROOT, pkg.l10n.replace(/^\.\//, ""))) : [],
+	outEntries: outDir && existsSync(outDir) ? readdirSync(outDir) : [],
+});
 
 // ── 断言包内容 ──────────────────────────────────────────────
 const listing = runChild("unzip -l", ["unzip", "-l", target], {

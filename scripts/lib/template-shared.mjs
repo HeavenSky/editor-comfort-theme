@@ -53,7 +53,7 @@ export const SHARED_FILES = [
 	"scripts/lib/vsix-allowlist.mjs",
 	"scripts/package.mjs",
 	"tsconfig.json",
-	"vitest.config.ts",
+	"vitest.config.mts",
 ];
 
 /** 记录用的短 hash: 16 个十六进制字符, 碰撞概率对这个用途足够低, 且一行读得完。 */
