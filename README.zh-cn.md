@@ -31,12 +31,12 @@
 | **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | 正文与彩色略减淡, 保留灰蓝底色 |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | 纯白底压暗, 正文对比度从 15.8 减到 8.5 |
 | **Comfort Dracula Dark** | Dracula Soft 2.25.1 | 正文对比度从 13.2 减到 7.0, 彩色更柔和 |
-| **Comfort Night Owl Dark** | Night Owl 2.1.1 | 近纯黑底抬亮(保留深蓝色相), 正文对比度从 13.5 减到 7.0 |
-| **Comfort Night Owl Light** | Night Owl Light 2.1.1 | 近纯白底压暗, 注释明显更易读 |
-| **Comfort One Monokai Dark** | One Monokai 0.5.2 | One Dark 底色上的 Monokai 彩色更柔和 |
-| **Comfort Pale Night Dark** | Palenight 2.0.5 | 正文与彩色减淡 |
+| **Comfort Owl Dark** | Night Owl 2.1.1 | 近纯黑底抬亮(保留深蓝色相), 正文对比度从 13.5 减到 7.0 |
+| **Comfort Owl Light** | Night Owl Light 2.1.1 | 近纯白底压暗, 注释明显更易读 |
+| **Comfort Moka Dark** | One Monokai 0.5.2 | One Dark 底色上的 Monokai 彩色更柔和 |
+| **Comfort Pale Dark** | Palenight 2.0.5 | 正文与彩色减淡 |
 
-全部主题通过同一套门禁: 正文, 注释与行号的对比度落在舒适区间, 彩色不比正文更抢眼, 面板底色接近中性, 高亮不刺眼. 主题统一命名为 `Comfort <Name> Dark` / `Comfort <Name> Light`.
+全部主题通过同一套门禁: 正文, 注释与行号的对比度落在舒适区间, 彩色与界面文字(侧边栏, 文件树, 标签页, 活动栏)不比正文更抢眼, 面板底色接近中性, 徽标安静, 高亮不刺眼. 主题统一命名为 `Comfort <Name> Dark` / `Comfort <Name> Light`.
 
 通过 "首选项: 颜色主题"(`⌘K ⌘T` / `Ctrl+K Ctrl+T`)切换.
 
@@ -107,7 +107,7 @@ uv run tools/metrics.py --detail <文件>...  # 逐主题列出 柔和 / 防疲�
 - VS Code 主题另有两条上限, 超出即判清晰为中: 注释对比度不超过 4.2; 深色主题最亮的语法色不超过正文对比度的 1.1 倍. 行号对比度下限 2.0; 深色主题评"高"要求正文对比度在 7.0~8.5 之间.
 - **柔和** 与 **防疲劳** 两项按 0~100 打分(规则见 `tools/comfort.py`): 每个子指标落在理想区间得 100, 到限值降到 60, 越过限值判不通过.
   - 柔和: 语法色平均彩度, 最大彩度, 彩色语法色的亮度跨度, 最亮语法色与正文之比, 面板底色彩度.
-  - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色与编辑区底对比度超过 1.6)与高亮底色(刺眼或压字难读).
+  - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色与编辑区底对比度超过 1.6), 高亮底色(刺眼或压字难读), 比正文更刺眼的界面文字与图标(侧边栏, 文件树, 扩展列表, 标签页标题, 活动栏), 以及刺眼(深色主题对比度超过 2.2)或字难读(低于 3.5)的徽标.
   - `--strict` 时判定; `npm run metrics` 与 `npm run check` 默认带 `--strict`, 全部主题须通过.
 - 各项阈值见 `tools/metrics.py` 顶部常量; `tools/colorlib.py` 的 `tune` 是调色手段: 彩度封顶 + 明度推到对比度下限, 色相不动.
 - "默认文字色配彩色背景"(如只写 `\e[41m`)在任何调色板下都看不清, 不计入指标; Terminal.app 的 dim 字按固定比例减淡且不可配置.

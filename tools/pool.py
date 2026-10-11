@@ -185,9 +185,15 @@ def build(themes: list[dict]) -> dict:
     from gen_vscode import source_fg
     cands = defaultdict(list)
     order = []
+    seen = set()
     for t in sorted(themes, key=lambda t: -len(_load(os.path.join(SOURCES, t['source'])).get('tokenColors', []))):
         src = _load(os.path.join(SOURCES, t['source']))
         rules = src.get('tokenColors', [])
+        # 同一主题的多个变体(如 Monokai 各 filter)规则结构相同, 只投一票, 免得一个家族靠变体数量压过其他原主题
+        shape = tuple(tuple(scopes_of(r)) for r in rules)
+        if shape in seen:
+            continue
+        seen.add(shape)
         fg = _rgb(source_fg(src, t['dark']))
         palette = {r: c for r in ROLES if (c := _rgb(role_value(rules, r, None))) is not None}
         palette['text'] = fg

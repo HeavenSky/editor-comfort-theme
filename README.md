@@ -29,12 +29,12 @@ Thirteen VS Code color themes for long coding sessions, every one tuned and adap
 | **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | Slightly softer text and accents; keeps the gray-blue background |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | Pure white background dimmed, body text softened from 15.8 to 8.5 contrast |
 | **Comfort Dracula Dark** | Dracula Soft 2.25.1 | Body text softened from 13.2 to 7.0 contrast, softer accents |
-| **Comfort Night Owl Dark** | Night Owl 2.1.1 | Near-black background lifted (keeping its deep blue), body text softened from 13.5 to 7.0 contrast |
-| **Comfort Night Owl Light** | Night Owl Light 2.1.1 | Near-white background dimmed, comments much easier to read |
-| **Comfort One Monokai Dark** | One Monokai 0.5.2 | Softer Monokai accents on the One Dark background |
-| **Comfort Pale Night Dark** | Palenight 2.0.5 | Body text and accents softened |
+| **Comfort Owl Dark** | Night Owl 2.1.1 | Near-black background lifted (keeping its deep blue), body text softened from 13.5 to 7.0 contrast |
+| **Comfort Owl Light** | Night Owl Light 2.1.1 | Near-white background dimmed, comments much easier to read |
+| **Comfort Moka Dark** | One Monokai 0.5.2 | Softer Monokai accents on the One Dark background |
+| **Comfort Pale Dark** | Palenight 2.0.5 | Body text and accents softened |
 
-Every theme passes the same gate: body text, comments and line numbers in a comfortable contrast band, accents no louder than body text, near-neutral panels and no glaring highlights. Every theme is named `Comfort <Name> Dark` or `Comfort <Name> Light`.
+Every theme passes the same gate: body text, comments and line numbers in a comfortable contrast band, accents and UI text (sidebar, file tree, tabs, activity bar) no louder than body text, near-neutral panels, calm badges and no glaring highlights. Every theme is named `Comfort <Name> Dark` or `Comfort <Name> Light`.
 
 Switch themes with **Preferences: Color Theme** (`⌘K ⌘T` / `Ctrl+K Ctrl+T`).
 
@@ -105,7 +105,7 @@ uv run tools/metrics.py --detail <file>...  # list every softness / fatigue sub-
 - VS Code themes have two more upper limits; exceeding either rates clarity as mid: comment contrast at most 4.2, and in dark themes the brightest syntax color at most 1.1× the body text contrast. Line numbers need a contrast of at least 2.0; a dark theme rates high clarity only with body text contrast between 7.0 and 8.5.
 - **Softness** and **fatigue** are scored 0–100 (rules in `tools/comfort.py`): a sub-metric inside its ideal range scores 100, drops to 60 at its limit, and fails beyond it.
   - Softness: average and maximum syntax chroma, lightness spread of the colored syntax colors, brightest syntax color versus body text, panel background chroma.
-  - Fatigue: body text contrast, comment contrast, the gap between body text and comments, line number contrast, background luminance, bright panels (large backgrounds above 1.6 contrast against the editor) and highlight backgrounds that glare or make text hard to read.
+  - Fatigue: body text contrast, comment contrast, the gap between body text and comments, line number contrast, background luminance, bright panels (large backgrounds above 1.6 contrast against the editor), highlight backgrounds that glare or make text hard to read, UI text and icons (sidebar, file tree, extension list, tab titles, activity bar) harsher than body text, and badges that glare (dark themes: above 2.2 contrast) or whose text is hard to read (below 3.5).
   - They are enforced with `--strict`; `npm run metrics` and `npm run check` pass it by default, so every theme must pass them.
 - Thresholds are the constants at the top of `tools/metrics.py`. `tune` in `tools/colorlib.py` is the tuning tool: cap chroma, then push lightness to the contrast minimum, without changing hue.
 - "Default text on a colored background" (such as `\e[41m` alone) is unreadable under any palette and is not scored; Terminal.app dims faint text by a fixed, non-configurable ratio.

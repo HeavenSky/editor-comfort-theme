@@ -4,17 +4,18 @@
 
 ### Added
 
-- Seven new themes, adapted automatically from their originals and tuned to the same gate: **Comfort GitHub Dark** (from GitHub Dark Dimmed), **Comfort GitHub Light**, **Comfort Dracula Dark** (from Dracula Soft), **Comfort Night Owl Dark**, **Comfort Night Owl Light**, **Comfort One Monokai Dark** and **Comfort Pale Night Dark** (from Palenight).
+- Seven new themes, adapted automatically from their originals and tuned to the same gate: **Comfort GitHub Dark** (from GitHub Dark Dimmed), **Comfort GitHub Light**, **Comfort Dracula Dark** (from Dracula Soft), **Comfort Owl Dark** (from Night Owl), **Comfort Owl Light** (from Night Owl Light), **Comfort Moka Dark** (from One Monokai) and **Comfort Pale Dark** (from Palenight).
 - Terminal.app profiles for Comfort One Dark and Comfort One Light, so every theme now has one.
 
 ### Changed
 
+- UI text and icons are no longer harsher than body text: sidebar, file tree, extension list, tab titles, activity bar icons and file-tree git colors used to be near-white in dark themes (up to twice the body text contrast) and near-black in light themes. Badges in dark themes are dimmer colored dots with body-colored text instead of bright blocks.
 - All themes retuned for a softer, less tiring look: accents less saturated, comments brighter and tied to body text contrast, dimmer line numbers, body text no harsher than 7.5 (dark) or 8.5 (light) contrast, panels near neutral and highlights no longer glaring. Bright validation, merge and drop backgrounds that used to flash in some panels are fixed.
 - **Comfort One Light** now uses the dimmer `#F0F0F2` background.
 - Every theme now validates against VS Code's color theme schema: dropped color keys VS Code ignores or has deprecated (renaming those with a successor), made colors that must be translucent translucent again so they no longer cover text, removed token background colors and other ignored token fields, and themed about 80 more UI colors whose defaults were previously missed.
 - Syntax rules now come from one shared pool built from all original themes (about 1,300 selectors, many language-specific), each assigned a role and colored with every theme's own role colors, so all themes share the same rich coverage. Theme-specific semantic token colors are dropped in favor of VS Code's built-in semantic-to-TextMate mapping. Ordinary variables get a derived color of their own in every theme, colorful yet clearly apart from parameters, keywords, strings, functions and types.
 - Syntax coverage unified across all themes: the same 33 common scopes (types, namespaces, variables, parameters, object keys, Markdown headings, bold, italic, quotes, links and more) are colored everywhere, borrowing each theme's own color for the nearest role where its original left them out.
-- Theme names simplified to `Comfort <Name> Dark` / `Comfort <Name> Light`: One Dark Fit → **Comfort One Dark**, One Light Fit → **Comfort One Light**. Theme files and Terminal.app profiles follow the same `comfort-<name>-dark|light` names, with compound names split into short words (`comfort-pale-night-dark`); Comfort Solarized Dark / Light are renamed **Comfort Sunlit Dark / Light**; reselect your theme and re-import the `.terminal` files.
+- Theme names simplified to `Comfort <Name> Dark` / `Comfort <Name> Light`: One Dark Fit → **Comfort One Dark**, One Light Fit → **Comfort One Light**. Theme files and Terminal.app profiles follow the same `comfort-<name>-dark|light` names, using short one-word names; Comfort Solarized Dark / Light are renamed **Comfort Sunlit Dark / Light**; reselect your theme and re-import the `.terminal` files.
 
 ### Removed
 

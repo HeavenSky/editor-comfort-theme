@@ -74,24 +74,29 @@
 				"path": "./themes/comfort-dracula-dark-color-theme.json"
 			},
 			{
-				"label": "Comfort Night Owl Dark",
+				"label": "Comfort Owl Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-night-owl-dark-color-theme.json"
+				"path": "./themes/comfort-owl-dark-color-theme.json"
 			},
 			{
-				"label": "Comfort Night Owl Light",
+				"label": "Comfort Owl Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-night-owl-light-color-theme.json"
+				"path": "./themes/comfort-owl-light-color-theme.json"
 			},
 			{
-				"label": "Comfort One Monokai Dark",
+				"label": "Comfort Moka Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-one-monokai-dark-color-theme.json"
+				"path": "./themes/comfort-moka-dark-color-theme.json"
 			},
 			{
-				"label": "Comfort Pale Night Dark",
+				"label": "Comfort Pale Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-pale-night-dark-color-theme.json"
+				"path": "./themes/comfort-pale-dark-color-theme.json"
+			},
+			{
+				"label": "Comfort Moka Light",
+				"uiTheme": "vs",
+				"path": "./themes/comfort-moka-light-color-theme.json"
 			}
 		]
 	},

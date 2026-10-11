@@ -7,11 +7,12 @@ import json, math, os, re, sys
 
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from colorlib import Rgb, blend, cr, from_oklch, h, hx, oklch, toward_bg, tune
+from colorlib import Rgb, blend, cr, from_oklch, h, hx, lum, oklch, toward_bg, tune
 import pool
 from coverage import fill as fill_coverage
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
-from comfort import HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, HIGHLIGHT_TEXT_MIN, PANEL_KEYS, PANEL_MAX_CHROMA, PANEL_MAX_CR
+from comfort import (BADGE_MAX_CR, BADGE_PAIRS, BADGE_TEXT_MIN, HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, HIGHLIGHT_TEXT_MIN, PANEL_KEYS,
+                     PANEL_MAX_CHROMA, PANEL_MAX_CR, UI_TEXT_MAX, UI_TEXT_SKIP, own_background)
 from themes import ANSI, build
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -296,6 +297,55 @@ def calm(colors: dict, t: dict) -> None:
             colors[k] = hx(rgb)
 
 
+def quiet_badges(colors: dict, t: dict) -> None:
+    # 徽标: 深色主题压到 BADGE_MAX_CR 以内, 不成亮块; 字取与徽标反差大的一侧(暗徽标配浅字, 亮徽标配深字), 推到可读
+    bg, dark = t['bg'], t['dark']
+    for bk, fk in BADGE_PAIRS:
+        badge = opaque(colors, bk, bg)
+        if badge is None:
+            continue
+        if dark and cr(badge, bg) > BADGE_MAX_CR - 0.03:
+            badge = toward_bg(badge, bg, BADGE_MAX_CR - 0.03)
+        # 亮度 0.18 附近白字与黑字对徽标的对比度相等; 字从正文(深色主题浅字)或底色一侧起步, 不额外提亮或加黑
+        light = lum(badge) < 0.18
+        text = (t['fg'] if dark else t['bg']) if light else (t['bg'] if dark else t['fg'])
+        step = 0.004 if light else -0.004
+        # 先把徽标往远离字的方向调(深色主题即再压暗); 靠近编辑区底时最多到面板上限, 免得徽标看不出来
+        L, C, H = oklch(badge)
+        toward = (-step > 0) == (oklch(bg)[0] > L)
+        while cr(text, badge) < BADGE_TEXT_MIN + 0.03 and 0 < L - step < 1 and not (toward and cr(badge, bg) < PANEL_MAX_CR + 0.1):
+            L -= step
+            badge = from_oklch(L, C, H)
+        L, C, H = oklch(text)
+        while cr(text, badge) < BADGE_TEXT_MIN + 0.03 and 0 < L + step < 1:
+            L += step
+            text = from_oklch(L, C, H)
+        colors[bk], colors[fk] = hx(badge), hx(text)
+
+
+def quiet_ui_text(colors: dict, t: dict) -> None:
+    # 界面文字与图标不比正文更刺眼(口径见 comfort.ui_text_glare); 彩色小块(按钮, 徽标)上的字不在此列
+    bg = t['bg']
+    limit = cr(t['fg'], bg) * UI_TEXT_MAX
+    for k in list(colors):
+        if not k.lower().endswith('foreground') or k.startswith(UI_TEXT_SKIP):
+            continue
+        under, colored = own_background(colors, k, bg)
+        p = parse(colors[k])
+        if colored or p is None:
+            continue
+        rgb, alpha = p
+        a = int(alpha, 16) / 255 if alpha else 1.0
+        if cr(blend(rgb, under, a), under) <= limit:
+            continue
+        if alpha:
+            while a > 0.05 and cr(blend(rgb, under, a), under) > limit - 0.02:
+                a -= 0.02
+            colors[k] = hx(rgb) + '%02X' % round(a * 255)
+        else:
+            colors[k] = hx(toward_bg(rgb, under, limit - 0.02))
+
+
 def transform(t: dict, src: dict) -> dict:
     m = Mapper(t, src)
     colors = {}
@@ -326,6 +376,8 @@ def transform(t: dict, src: dict) -> dict:
     if line_no is not None and cr(line_no, t['bg']) > LINE_NO_MAX:
         colors['editorLineNumber.foreground'] = hx(toward_bg(line_no, t['bg'], LINE_NO_MAX))
     calm(colors, t)
+    quiet_badges(colors, t)
+    quiet_ui_text(colors, t)
 
     rules = pool_rules(src, m, t)
     # 语义着色交给 VS Code 内置的语义 token -> TextMate scope 映射, 与规则池一致; 原主题自带的语义色不再沿用

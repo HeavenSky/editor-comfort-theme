@@ -10,9 +10,9 @@
 | [VS Code Solarized](https://github.com/microsoft/vscode/tree/main/extensions/theme-solarized-dark) | Copyright (c) Microsoft Corporation | Comfort Sunlit Dark, Comfort Sunlit Light |
 | [GitHub VS Code Theme](https://github.com/primer/github-vscode-theme) 6.3.5 | Copyright (c) 2020 Primer | Comfort GitHub Dark, Comfort GitHub Light |
 | [Dracula](https://github.com/dracula/visual-studio-code) 2.25.1 | Copyright (c) 2016 Dracula Theme | Comfort Dracula Dark |
-| [Night Owl](https://github.com/sdras/night-owl-vscode-theme) 2.1.1 | Copyright (c) 2018 Sarah Drasner | Comfort Night Owl Dark, Comfort Night Owl Light |
-| [One Monokai](https://github.com/azemoh/vscode-one-monokai) 0.5.2 | Copyright (c) 2018 Joshua Azemoh | Comfort One Monokai Dark |
-| [Palenight](https://github.com/whizkydee/vscode-palenight-theme) 2.0.5 | Copyright (c) 2017-present Olaolu Olawuyi | Comfort Pale Night Dark |
+| [Night Owl](https://github.com/sdras/night-owl-vscode-theme) 2.1.1 | Copyright (c) 2018 Sarah Drasner | Comfort Owl Dark, Comfort Owl Light |
+| [One Monokai](https://github.com/azemoh/vscode-one-monokai) 0.5.2 | Copyright (c) 2018 Joshua Azemoh | Comfort Moka Dark |
+| [Palenight](https://github.com/whizkydee/vscode-palenight-theme) 2.0.5 | Copyright (c) 2017-present Olaolu Olawuyi | Comfort Pale Dark |
 
 Solarized 配色由 Ethan Schoonover 设计(MIT). VS Code 颜色注册表(`tools/sources/vscode-color-registry.json`)提取自 VS Code, Copyright (c) Microsoft Corporation, MIT.
 

@@ -90,6 +90,8 @@ def toward_bg(c: Rgb, bg: Rgb, max_cr: float) -> Rgb:
     """沿靠近背景的方向调明度, 直到对比度 <= max_cr; 色相与彩度不变."""
     L, C, H = oklch(c)
     step = -0.002 if lum(bg) < 0.2 else 0.002
+    # 纯黑 / 纯白的 L 恰为 0 / 1, 不先挪进区间循环一步也不走
+    L = min(max(L, 0.001), 0.999)
     while cr(c, bg) > max_cr + 0.004 and 0 < L < 1:
         L += step
         c = from_oklch(L, C, H)

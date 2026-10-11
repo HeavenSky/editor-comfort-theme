@@ -155,10 +155,11 @@ def build() -> list[dict]:
         adapt('comfort-github-dark', 'Comfort GitHub Dark', 'github-dark.json', dark=True),
         adapt('comfort-github-light', 'Comfort GitHub Light', 'github-light.json', dark=False),
         adapt('comfort-dracula-dark', 'Comfort Dracula Dark', 'dracula-dark.json', dark=True),
-        adapt('comfort-night-owl-dark', 'Comfort Night Owl Dark', 'night-owl-dark.json', dark=True),
-        adapt('comfort-night-owl-light', 'Comfort Night Owl Light', 'night-owl-light.json', dark=False),
-        adapt('comfort-one-monokai-dark', 'Comfort One Monokai Dark', 'one-monokai-dark.json', dark=True),
-        adapt('comfort-pale-night-dark', 'Comfort Pale Night Dark', 'pale-night-dark.json', dark=True),
+        adapt('comfort-owl-dark', 'Comfort Owl Dark', 'owl-dark.json', dark=True),
+        adapt('comfort-owl-light', 'Comfort Owl Light', 'owl-light.json', dark=False),
+        adapt('comfort-moka-dark', 'Comfort Moka Dark', 'moka-dark.json', dark=True),
+        adapt('comfort-pale-dark', 'Comfort Pale Dark', 'pale-dark.json', dark=True),
+        adapt('comfort-moka-light', 'Comfort Moka Light', 'moka-light.json', dark=False),
     ]
 
     # 终端暗灰(90m)多用来显示注释与次要信息, 与注释同口径: 正文 / 1.85, 限制在 3.4~4.2

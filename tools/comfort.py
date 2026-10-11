@@ -27,6 +27,24 @@ HIGHLIGHT_KEYS = [
 ]
 HIGHLIGHT_MAX_CR = 2.2
 HIGHLIGHT_TEXT_MIN = 3.5
+# 界面文字与图标(侧边栏, 文件树, 扩展列表, 标签页标题, 活动栏图标, 文件树的 git 着色等)相对其所在底色的对比度
+# 不超过 正文 x UI_TEXT_MAX: 这些字常驻视野, 深色主题里比代码还白, 浅色主题里比代码还黑, 都比看代码更累
+UI_TEXT_MAX = 1.0
+# 不受此限的前景键: 终端色板与光标另有规则, 正文本身是基准
+UI_TEXT_SKIP = ('terminal.ansi', 'editorCursor.', 'terminalCursor.', 'editor.foreground', 'terminal.foreground')
+# 徽标(活动栏角标, 计数等): 深色主题里底色与编辑区底的对比度不超过上限, 免得一个个亮块抢眼; 徽标上的字要可读
+BADGE_PAIRS = [
+    ('activityBarBadge.background', 'activityBarBadge.foreground'), ('badge.background', 'badge.foreground'),
+    ('activityErrorBadge.background', 'activityErrorBadge.foreground'),
+    ('activityWarningBadge.background', 'activityWarningBadge.foreground'), ('agentsBadge.background', 'agentsBadge.foreground'),
+    ('agentsUnreadBadge.background', 'agentsUnreadBadge.foreground'), ('panelTitleBadge.background', 'panelTitleBadge.foreground'),
+    ('profileBadge.background', 'profileBadge.foreground'), ('extensionBadge.remoteBackground', 'extensionBadge.remoteForeground'),
+    ('testing.coverCountBadgeBackground', 'testing.coverCountBadgeForeground'),
+    ('testing.message.error.badgeBackground', 'testing.message.error.badgeForeground'),
+]
+# 徽标上是一两个粗体数字, 可读口径同高亮底上的字
+BADGE_MAX_CR = 2.2
+BADGE_TEXT_MIN = HIGHLIGHT_TEXT_MIN
 
 # 彩度低于它的语法色视为中性(与正文同色的标点, 运算符等), 不计入亮度跨度
 NEUTRAL_CHROMA = 0.035
@@ -47,12 +65,14 @@ FATIGUE_DARK = dict(
     bg=(0.015, 0.035, 0.010, 0.050),         # 底亮度: 近纯黑时字的光晕重
     panel_glare=(None, 0, None, 0),          # 与编辑区底对比度 > 1.6 的面板底色个数
     highlight=(None, 0, None, 0),            # 刺眼(> 2.2)或压字难读(< 4.5)的高亮底色个数
+    ui_glare=(None, 0, None, 0),             # 比正文更刺眼的界面文字 / 图标个数
+    badge=(None, 0, None, 0),                # 刺眼(深色 > 2.2)或字难读(< 3.5)的徽标个数
 )
 FATIGUE_LIGHT = dict(FATIGUE_DARK, text=(7.0, 9.0, 6.0, 11.0), bg=(0.70, 0.85, 0.60, 0.90))
 
 NAMES = dict(avg_chroma='平均彩度', max_chroma='最大彩度', span='语法亮度跨度', top_ratio='最亮语法/正文',
              panel_chroma='面板彩度', text='正文', comment='注释', gap='正文/注释', line_no='行号', bg='底亮度',
-             panel_glare='面板亮块', highlight='高亮底色')
+             panel_glare='面板亮块', highlight='高亮底色', ui_glare='界面文字刺眼', badge='徽标')
 
 
 def _score(v: float, spec: tuple) -> tuple[float, bool]:
@@ -105,6 +125,40 @@ def _patches(colors: dict, bg: Rgb, fg: Rgb) -> tuple[list[str], list[str]]:
     return glare, bad
 
 
+def own_background(colors: dict, key: str, bg: Rgb) -> tuple[Rgb, bool]:
+    """前景键所在的底色: 同名的 *background 键(如 tab.activeForeground -> tab.activeBackground), 没有时为编辑区底.
+    第二项为该底色是否是彩色小块(与编辑区底对比度超过面板上限, 如按钮, 徽标), 这类底上的字按各自规则另算."""
+    k = key[:-10] + ('Background' if key[-10] == 'F' else 'background')
+    if k not in colors:
+        return bg, False
+    under = _parse(colors[k], bg)
+    return under, cr(under, bg) > PANEL_MAX_CR
+
+
+def ui_text_glare(colors: dict, bg: Rgb, fg: Rgb) -> list[str]:
+    limit = cr(fg, bg) * UI_TEXT_MAX + 0.05
+    out = []
+    for k, v in colors.items():
+        if not k.lower().endswith('foreground') or k.startswith(UI_TEXT_SKIP):
+            continue
+        under, colored = own_background(colors, k, bg)
+        if not colored and cr(_parse(v, under), under) > limit:
+            out.append(k)
+    return out
+
+
+def badge_issues(colors: dict, bg: Rgb, dark: bool) -> list[str]:
+    out = []
+    for bk, fk in BADGE_PAIRS:
+        if bk not in colors:
+            continue
+        under = _parse(colors[bk], bg)
+        text = _parse(colors[fk], under) if fk in colors else None
+        if (dark and cr(under, bg) > BADGE_MAX_CR + 0.03) or (text is not None and cr(text, under) < BADGE_TEXT_MIN - 0.03):
+            out.append(bk)
+    return out
+
+
 def rate(m: dict) -> dict:
     """m 为 metrics.from_vscode / from_terminal 的结果; 返回 soft 与 fatigue 两条规则的评分."""
     bg, dark = m['bg'], lum(m['bg']) < 0.2
@@ -121,16 +175,21 @@ def rate(m: dict) -> dict:
     fat_v = dict(text=m['text'], comment=comment, line_no=m.get('line_no'), bg=lum(bg))
     if comment:
         fat_v['gap'] = m['text'] / comment
-    glare = bad = []
+    glare = bad = ui = badges = []
     colors = m.get('colors')
     if colors:
         soft_v['panel_chroma'] = max((oklch(_parse(colors[k], bg))[1] for k in PANEL_KEYS if k in colors), default=0.0)
         glare, bad = _patches(colors, bg, m['fg'])
-        fat_v.update(panel_glare=len(glare), highlight=len(bad))
+        ui, badges = ui_text_glare(colors, bg, m['fg']), badge_issues(colors, bg, dark)
+        fat_v.update(panel_glare=len(glare), highlight=len(bad), ui_glare=len(ui), badge=len(badges))
     soft = _rate(soft_v, SOFT)
     fatigue = _rate(fat_v, FATIGUE_DARK if dark else FATIGUE_LIGHT)
     if glare:
         fatigue['why'].append('面板亮块: ' + ', '.join(glare))
     if bad:
         fatigue['why'].append('高亮底色: ' + ', '.join(bad))
+    if ui:
+        fatigue['why'].append('界面文字刺眼: ' + ', '.join(ui))
+    if badges:
+        fatigue['why'].append('徽标: ' + ', '.join(badges))
     return dict(soft=soft, fatigue=fatigue)
