@@ -14,6 +14,7 @@
 # 用法:
 #   uv run tools/pool.py                      各层数量与待标注数
 #   uv run tools/pool.py --annotate <out.html>  生成标注页(键盘快捷, 浏览器本地保存, 导出 JSON 存为 pool-overrides.json)
+#   uv run tools/pool.py --review <out.html>    复核页: 只差语言后缀的同类选择器标注不一致的组, 每组选一个角色统一
 import json, math, os, re, sys
 from collections import Counter, defaultdict
 
@@ -230,7 +231,33 @@ _ALL_LANGS = set(LANG_ORDER) | {'haskell', 'elixir', 'clojure', 'elm', 'perl', '
                                 'stylus', 'pug', 'jade', 'unison', 'asciidoc', 'diff', 'nim', 'julia', 'crystal', 'zig', 'svelte'}
 
 
-def annotate(pool: dict, out: str) -> None:
+def families(pool: dict) -> list[dict]:
+    """标注里只差语言后缀(最后一段)而角色不一致的同类选择器组, 做成复核卡片."""
+    groups = defaultdict(dict)
+    for sel, p in pool.items():
+        base, _, last = sel.rpartition('.')
+        if ' ' not in sel and base and last in _ALL_LANGS:
+            groups[base][sel] = last
+    items = []
+    for base, members in sorted(groups.items()):
+        if len({pool[m]['role'] for m in members}) < 2:
+            continue
+        votes = Counter()
+        for m in members:
+            votes.update(pool[m]['votes'])
+        sr = struct_role(next(iter(members)))
+        top = pick(votes) if votes else (sr or 'text')
+        rec = sr if sr and sr != INHERIT and votes.get(sr, 0) >= votes.get(top, 0) else top
+        # 人工标注之间就不一致的排前面; 与自动裁决的成员不一致的排后面
+        manual = len({pool[m]['role'] for m in members if pool[m]['annotated']}) >= 2
+        items.append(dict(scope=base + '.*', sample=base, members=members, votes=dict(votes.most_common()), struct=sr,
+                          recommended=rec, themes=max(pool[m]['themes'] for m in members), tier=3, manual=manual,
+                          note=f"组内 {len(members)} 种语言的标注不一致{'' if manual else '(含自动裁决的成员)'}, 选一个角色整组统一"))
+    items.sort(key=lambda it: (not it['manual'], it['scope']))
+    return items
+
+
+def annotate(pool: dict, out: str, items: list | None = None, storage_key: str | None = None) -> None:
     from themes import build as build_themes
     from gen_vscode import render
     previews = []
@@ -240,18 +267,22 @@ def annotate(pool: dict, out: str) -> None:
         roles = {r: role_value(g['tokenColors'], r, g['colors']['editor.foreground']) for r in ROLES}
         roles[INHERIT] = g['colors']['editor.foreground']
         previews.append(dict(name=t['label'], bg=g['colors']['editor.background'], fg=g['colors']['editor.foreground'], roles=roles))
-    items = [dict(scope=s, **{k: v for k, v in p.items() if k != 'annotated'}) for s, p in pool.items() if p['tier'] >= 3]
-    items.sort(key=lambda x: (lang_rank(x['scope']), -x['themes'], x['tier'], x['scope']))
-    data = dict(items=items, previews=previews, names=NAMES, roles=list(ROLES) + [INHERIT],
+    if items is None:
+        items = [dict(scope=s, **{k: v for k, v in p.items() if k != 'annotated'}) for s, p in pool.items() if p['tier'] >= 3]
+        items.sort(key=lambda x: (lang_rank(x['scope']), -x['themes'], x['tier'], x['scope']))
+    data = dict(items=items, previews=previews, names=NAMES, roles=list(ROLES) + [INHERIT], storageKey=storage_key,
                 annotated=json.load(open(OVERRIDES, encoding='utf-8')) if os.path.exists(OVERRIDES) else {})
     html = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pool-annotate.html'), encoding='utf-8').read()
     open(out, 'w', encoding='utf-8').write(html.replace('/*__DATA__*/null', json.dumps(data, ensure_ascii=False)))
-    print(f'标注页已写入 {out}: 待标注 {len(items)} 个; 导出的 JSON 存为 {os.path.relpath(OVERRIDES)}')
+    print(f'标注页已写入 {out}: {len(items)} 张卡片; 导出的 JSON(完整标注)存为 {os.path.relpath(OVERRIDES)}')
 
 
 def main() -> int:
     from themes import build as build_themes
     pool = build(build_themes())
+    if '--review' in sys.argv:
+        annotate(pool, sys.argv[sys.argv.index('--review') + 1], families(pool), 'pool-review-v1')
+        return 0
     if '--annotate' in sys.argv:
         annotate(pool, sys.argv[sys.argv.index('--annotate') + 1])
         return 0
