@@ -8,6 +8,7 @@ import json, math, os, re, sys
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from colorlib import Rgb, blend, cr, from_oklch, h, hx, oklch, toward_bg, tune
+from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
 from comfort import HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, HIGHLIGHT_TEXT_MIN, PANEL_KEYS, PANEL_MAX_CHROMA, PANEL_MAX_CR
 from themes import ANSI, build
 
@@ -91,7 +92,68 @@ def hardcoded_keys(dark: bool) -> dict[str, str]:
     """VS Code 注册表中默认值是硬编码字面量的键 -> 该默认值; 主题不定义这些键时界面会落到与主题无关的颜色."""
     reg = json.load(open(REGISTRY, encoding='utf-8'))
     mode = 'dark' if dark else 'light'
-    return {k: v[mode] for k, v in reg['colors'].items() if v.get(mode)}
+    return {k: v[mode] for k, v in reg['colors'].items() if v.get(mode) and not v.get('deprecated')}
+
+
+# 已废弃颜色键的官方替代键(VS Code deprecationMessage 所指); 其余废弃键与未注册的键直接丢弃
+DEPRECATED_RENAME = {
+    'editorActiveLineNumber.foreground': 'editorLineNumber.activeForeground',
+    'editorIndentGuide.background': 'editorIndentGuide.background1',
+    'editorIndentGuide.activeBackground': 'editorIndentGuide.activeBackground1',
+}
+
+
+def translucent(target: Rgb, bg: Rgb) -> str:
+    # 须半透明的颜色: 取叠到编辑区底上后与 target 相同的最小透明度, 观感不变而不再遮住下面的内容
+    for i in range(25, 96):
+        a = i / 100
+        c = [(x - (1 - a) * y) / a for x, y in zip(target, bg)]
+        if all(-1e-6 <= v <= 1 + 1e-6 for v in c):
+            return hx(tuple(min(1, max(0, v)) for v in c)) + '%02X' % round(a * 255)
+    return hx(target) + 'F2'
+
+
+def conform(colors: dict, rules: list, semantic: dict, t: dict) -> None:
+    """按 vscode://schemas/color-theme 清理: VS Code 会忽略或报错的写法改成等效的合法写法, 改不了的丢弃."""
+    reg = json.load(open(REGISTRY, encoding='utf-8'))
+    known = reg['colors']
+    for old, new in DEPRECATED_RENAME.items():
+        if old in colors:
+            colors.setdefault(new, colors[old])
+    for k in list(colors):
+        info = known.get(k)
+        if info is None or info.get('deprecated') or not (isinstance(colors[k], str) and HEX.match(colors[k])):
+            del colors[k]
+        elif info.get('transparent') and not TRANSPARENT.match(colors[k]):
+            colors[k] = translucent(opaque(colors, k, t['bg']), t['bg'])
+    kept = []
+    for r in rules:
+        st = r.get('settings')
+        if not isinstance(st, dict):
+            continue
+        for k in [k for k in r if k not in RULE_KEYS]:
+            del r[k]
+        # token 背景色已废弃且不生效; 其余不在 schema 里的字段(CSS 属性等)同样不生效
+        for k in [k for k in st if k not in SETTINGS_KEYS or k == 'background']:
+            del st[k]
+        if 'fontStyle' in st and not FONT_STYLE.match(str(st['fontStyle'])):
+            # TextMate 的 normal / regular 意为取消样式, schema 里的等效写法是空字符串
+            st['fontStyle'] = '' if str(st['fontStyle']).strip().lower() in ('normal', 'regular', 'none') else None
+            if st['fontStyle'] is None:
+                del st['fontStyle']
+        if st:
+            kept.append(r)
+    rules[:] = kept
+    selector = re.compile(reg['semanticSelector'])
+    for k in list(semantic):
+        v = semantic[k]
+        if not selector.match(k):
+            del semantic[k]
+        elif isinstance(v, dict):
+            for f in [f for f in v if f not in SEMANTIC_STYLE_KEYS or f == 'background']:
+                del v[f]
+            if not v:
+                del semantic[k]
 
 
 class Mapper:
@@ -292,6 +354,7 @@ def transform(t: dict, src: dict) -> dict:
             else:
                 v['foreground'] = out
         semantic[k] = v
+    conform(colors, rules, semantic, t)
     return dict(colors=dict(sorted(colors.items())), tokenColors=rules, semanticTokenColors=semantic)
 
 
@@ -315,7 +378,12 @@ def main() -> int:
     stale = []
     for t in build():
         path = os.path.join(OUT, f"{t['name']}-color-theme.json")
-        text = json.dumps(render(t), indent='\t', ensure_ascii=False) + '\n'
+        theme = render(t)
+        bad = problems(theme)
+        if bad:
+            print(f"{t['name']}: 生成结果不符合 vscode://schemas/color-theme:", *bad[:10], sep='\n  ')
+            return 1
+        text = json.dumps(theme, indent='\t', ensure_ascii=False) + '\n'
         old = open(path, encoding='utf-8').read() if os.path.exists(path) else None
         if check:
             if old != text:

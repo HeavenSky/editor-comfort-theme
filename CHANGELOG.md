@@ -11,6 +11,7 @@
 
 - All themes retuned for a softer, less tiring look: accents less saturated, comments brighter and tied to body text contrast, dimmer line numbers, body text no harsher than 7.5 (dark) or 8.5 (light) contrast, panels near neutral and highlights no longer glaring. Bright validation, merge and drop backgrounds that used to flash in some panels are fixed.
 - **One Light Fit** now uses the dimmer `#F0F0F2` background.
+- Every theme now validates against VS Code's color theme schema: dropped color keys VS Code ignores or has deprecated (renaming those with a successor), made colors that must be translucent translucent again so they no longer cover text, removed token background colors and other ignored token fields, and themed about 80 more UI colors whose defaults were previously missed.
 
 ### Removed
 

@@ -17,6 +17,9 @@ from collections import defaultdict
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from colorlib import blend, de2000, h
+from schema import registry
+
+REGISTRY = registry()['colors']
 
 NEAR = 3.0          # 单独看无法分辨(并排时 2~3 仍可能察觉)
 DISTINCT = 5.0      # 明显差异, 归入差异组
@@ -55,6 +58,9 @@ def items(t: dict) -> dict:
     bg = parse(c['editor.background'], (0, 0, 0))
     out = {}
     for k, v in c.items():
+        info = REGISTRY.get(k)
+        if info is None or info.get('deprecated'):
+            continue  # 未注册或已废弃的键 VS Code 不生效, 不参与比对
         rgb = parse(v, bg)
         if rgb:
             out[k] = (v, rgb)

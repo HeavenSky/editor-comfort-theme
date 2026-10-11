@@ -1,3633 +1,6006 @@
 {
-	"vscodeVersion": "1.140.0",
+	"vscodeVersion": "1.141.0",
+	"semanticSelector": "^(\\w+[-_\\w+]*|\\*)(\\.\\w+[-_\\w+]*)*(:\\w+[-_\\w+]*)?$",
 	"colors": {
 		"actionBar.toggledBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activeSessionView.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activeSessionView.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.activeFocusBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.background": {
 			"dark": "#333333",
-			"light": "#2C2C2C"
+			"light": "#2C2C2C",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.dropBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBar.inactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarBadge.background": {
 			"dark": "#007ACC",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarBadge.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarTop.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarTop.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarTop.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarTop.dropBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarTop.foreground": {
 			"dark": "#E7E7E7",
-			"light": "#424242"
+			"light": "#424242",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityBarTop.inactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityErrorBadge.background": {
 			"dark": "#F14C4C",
-			"light": "#E51400"
+			"light": "#E51400",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityErrorBadge.foreground": {
 			"dark": null,
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityWarningBadge.background": {
 			"dark": "#B27C00",
-			"light": "#B27C00"
+			"light": "#B27C00",
+			"transparent": false,
+			"deprecated": false
 		},
 		"activityWarningBadge.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentFeedbackEditorWidget.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentFeedbackEditorWidget.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentFeedbackInputWidget.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentSessionReadIndicator.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentSessionSelectedBadge.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentSessionSelectedUnfocusedBadge.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentStatusIndicator.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agents.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsBadge.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsBadge.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsBottomPanel.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsCard.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsChatInput.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsChatInput.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsChatInput.focusBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsChatInput.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsChatInput.placeholderForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsDetail.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsGradient.tintColor": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"agentsNewSessionButton.background": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsNewSessionButton.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsNewSessionButton.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsNewSessionButton.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsPanel.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsPanel.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsPanel.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsUnreadBadge.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsUnreadBadge.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsUpdateButton.downloadedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsUpdateButton.downloadingBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsVoice.speakingBackground": {
 			"dark": "#A371F714",
-			"light": "#8250DF14"
+			"light": "#8250DF14",
+			"transparent": false,
+			"deprecated": false
 		},
 		"agentsVoice.speakingForeground": {
 			"dark": "#A371F7",
-			"light": "#8250DF"
+			"light": "#8250DF",
+			"transparent": false,
+			"deprecated": false
+		},
+		"archive": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"badge.background": {
 			"dark": "#4D4D4D",
-			"light": "#C4C4C4"
+			"light": "#C4C4C4",
+			"transparent": false,
+			"deprecated": false
 		},
 		"badge.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#333333"
+			"light": "#333333",
+			"transparent": false,
+			"deprecated": false
 		},
 		"banner.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"banner.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"banner.iconForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"breadcrumb.activeSelectionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"breadcrumb.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"breadcrumb.focusForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"breadcrumb.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"breadcrumbPicker.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"browser.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.background": {
 			"dark": "#0E639C",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.secondaryBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.secondaryBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.secondaryForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.secondaryHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"button.separator": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chart.axis": {
 			"dark": "#BFBFBF66",
-			"light": "#00000099"
+			"light": "#00000099",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chart.guide": {
 			"dark": "#BFBFBF33",
-			"light": "#00000033"
+			"light": "#00000033",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chart.line": {
 			"dark": "#236B8E",
-			"light": "#236B8E"
+			"light": "#236B8E",
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.blue": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.green": {
 			"dark": "#89D185",
-			"light": "#388A34"
+			"light": "#388A34",
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.lines": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.orange": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.purple": {
 			"dark": "#B180D7",
-			"light": "#652D90"
+			"light": "#652D90",
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.red": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"charts.yellow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.avatarBackground": {
 			"dark": "#1F1F1F",
-			"light": "#F2F2F2"
+			"light": "#F2F2F2",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.avatarForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.checkpointSeparator": {
 			"dark": "#585858",
-			"light": "#A9A9A9"
+			"light": "#A9A9A9",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.dictationActiveMicGlow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.editedFileForeground": {
 			"dark": "#E2C08D",
-			"light": "#895503"
+			"light": "#895503",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.findMatchBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.findMatchHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.inputWorkingBorderColor1": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.inputWorkingBorderColor2": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"chat.inputWorkingBorderColor3": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"chat.linesAddedForeground": {
 			"dark": "#54B054",
-			"light": "#107C10"
+			"light": "#107C10",
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.linesRemovedForeground": {
 			"dark": "#FC6A6A",
-			"light": "#BC2F32"
+			"light": "#BC2F32",
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.mcpCompatibilityWarningForeground": {
 			"dark": "#CCA700",
-			"light": "#8A6200"
+			"light": "#8A6200",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.requestBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.requestBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.requestBubbleBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.requestBubbleHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.requestCodeBorder": {
 			"dark": "#004972B8",
-			"light": "#0E639C40"
+			"light": "#0E639C40",
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.sessionStateIndicator.inProgressBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.sessionStateIndicator.needsInputBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.sessionStateIndicator.unvisitedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.slashCommandBackground": {
 			"dark": "#26477866",
-			"light": "#ADCEFF7A"
+			"light": "#ADCEFF7A",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.slashCommandForeground": {
 			"dark": "#85B6FF",
-			"light": "#26569E"
+			"light": "#26569E",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.statusBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.thinkingShimmer": {
 			"dark": "#FFFFFF",
-			"light": "#000000"
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.voiceGlowBaseColor": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.voiceListeningGlow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.voiceSpeakingGlow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"chat.workingProgressInsidersIconForeground": {
 			"dark": "#24BFA5",
-			"light": "#24BFA5"
+			"light": "#24BFA5",
+			"transparent": false,
+			"deprecated": false
 		},
 		"chat.workingProgressStableIconForeground": {
 			"dark": "#007ACC",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"checkbox.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"checkbox.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"checkbox.disabled.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"checkbox.disabled.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"checkbox.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"checkbox.selectBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"checkbox.selectBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.activeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.debuggingBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"commandCenter.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.inactiveBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commandCenter.inactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commentsView.resolvedIcon": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"commentsView.unresolvedIcon": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"contrastActiveBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"contrastBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugConsole.errorForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugConsole.infoForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugConsole.sourceForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugConsole.warningForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugConsoleInputIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugExceptionWidget.background": {
 			"dark": "#420B0D",
-			"light": "#F1DFDE"
+			"light": "#F1DFDE",
+			"transparent": false,
+			"deprecated": false
+		},
+		"debugExceptionWidget.border": {
+			"dark": "#A31515",
+			"light": "#A31515",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.breakpointCurrentStackframeForeground": {
 			"dark": "#FFCC00",
-			"light": "#BE8700"
+			"light": "#BE8700",
+			"transparent": false,
+			"deprecated": false
+		},
+		"debugIcon.breakpointDisabledForeground": {
+			"dark": "#848484",
+			"light": "#848484",
+			"transparent": false,
+			"deprecated": false
+		},
+		"debugIcon.breakpointForeground": {
+			"dark": "#E51400",
+			"light": "#E51400",
+			"transparent": false,
+			"deprecated": false
+		},
+		"debugIcon.breakpointStackframeForeground": {
+			"dark": "#89D185",
+			"light": "#89D185",
+			"transparent": false,
+			"deprecated": false
+		},
+		"debugIcon.breakpointUnverifiedForeground": {
+			"dark": "#848484",
+			"light": "#848484",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.continueForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.disconnectForeground": {
 			"dark": "#F48771",
-			"light": "#A1260D"
+			"light": "#A1260D",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.pauseForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.restartForeground": {
 			"dark": "#89D185",
-			"light": "#388A34"
+			"light": "#388A34",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.startForeground": {
 			"dark": "#89D185",
-			"light": "#388A34"
+			"light": "#388A34",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.stepBackForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.stepIntoForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.stepOutForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.stepOverForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugIcon.stopForeground": {
 			"dark": "#F48771",
-			"light": "#A1260D"
+			"light": "#A1260D",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugTokenExpression.boolean": {
 			"dark": "#4E94CE",
-			"light": "#0000FF"
+			"light": "#0000FF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugTokenExpression.error": {
 			"dark": "#F48771",
-			"light": "#E51400"
+			"light": "#E51400",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugTokenExpression.name": {
 			"dark": "#C586C0",
-			"light": "#9B46B0"
+			"light": "#9B46B0",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugTokenExpression.number": {
 			"dark": "#B5CEA8",
-			"light": "#098658"
+			"light": "#098658",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugTokenExpression.string": {
 			"dark": "#CE9178",
-			"light": "#A31515"
+			"light": "#A31515",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugTokenExpression.type": {
 			"dark": "#4A90E2",
-			"light": "#4A90E2"
+			"light": "#4A90E2",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugTokenExpression.value": {
 			"dark": "#CCCCCC99",
-			"light": "#6C6C6CCC"
+			"light": "#6C6C6CCC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugToolBar.background": {
 			"dark": "#333333",
-			"light": "#F3F3F3"
+			"light": "#F3F3F3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugToolBar.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugView.exceptionLabelBackground": {
 			"dark": "#6C2022",
-			"light": "#A31515"
+			"light": "#A31515",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugView.exceptionLabelForeground": {
 			"dark": null,
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
+		},
+		"debugView.stateLabelBackground": {
+			"dark": "#88888844",
+			"light": "#88888844",
+			"transparent": false,
+			"deprecated": false
 		},
 		"debugView.stateLabelForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"debugView.valueChangedHighlight": {
+			"dark": "#569CD6",
+			"light": "#569CD6",
+			"transparent": false,
+			"deprecated": false
 		},
 		"descriptionForeground": {
 			"dark": null,
-			"light": "#717171"
+			"light": "#717171",
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditor.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditor.diagonalFill": {
 			"dark": "#CCCCCC33",
-			"light": "#22222233"
+			"light": "#22222233",
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditor.insertedLineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"diffEditor.insertedTextBackground": {
 			"dark": "#9CCC2C33",
-			"light": "#9CCC2C40"
+			"light": "#9CCC2C40",
+			"transparent": true,
+			"deprecated": false
 		},
 		"diffEditor.insertedTextBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"diffEditor.move.border": {
+			"dark": "#8B8B8B9C",
+			"light": "#8B8B8B9C",
+			"transparent": false,
+			"deprecated": false
+		},
+		"diffEditor.moveActive.border": {
+			"dark": "#FFA500",
+			"light": "#FFA500",
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditor.removedLineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"diffEditor.removedTextBackground": {
 			"dark": "#FF000033",
-			"light": "#FF000033"
+			"light": "#FF000033",
+			"transparent": true,
+			"deprecated": false
 		},
 		"diffEditor.removedTextBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditor.unchangedCodeBackground": {
 			"dark": "#74747429",
-			"light": "#B8B8B829"
+			"light": "#B8B8B829",
+			"transparent": false,
+			"deprecated": false
+		},
+		"diffEditor.unchangedRegionBackground": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"diffEditor.unchangedRegionForeground": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditor.unchangedRegionShadow": {
 			"dark": "#000000",
-			"light": "#737373BF"
+			"light": "#737373BF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditorGutter.insertedLineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditorGutter.removedLineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditorOverview.insertedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"diffEditorOverview.removedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"disabledForeground": {
 			"dark": "#CCCCCC80",
-			"light": "#61616180"
+			"light": "#61616180",
+			"transparent": false,
+			"deprecated": false
 		},
 		"dropdown.background": {
 			"dark": "#3C3C3C",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"dropdown.border": {
 			"dark": null,
-			"light": "#CECECE"
+			"light": "#CECECE",
+			"transparent": false,
+			"deprecated": false
 		},
 		"dropdown.foreground": {
 			"dark": "#F0F0F0",
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"dropdown.listBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.background": {
 			"dark": "#1E1E1E",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.compositionBorder": {
 			"dark": "#FFFFFF",
-			"light": "#000000"
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.findMatchBackground": {
 			"dark": "#515C6A",
-			"light": "#A8AC94"
+			"light": "#A8AC94",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.findMatchBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.findMatchForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.findMatchHighlightBackground": {
 			"dark": "#EA5C0055",
-			"light": "#EA5C0055"
+			"light": "#EA5C0055",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.findMatchHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.findMatchHighlightForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.findRangeHighlightBackground": {
 			"dark": "#3A3D4166",
-			"light": "#B4B4B44D"
+			"light": "#B4B4B44D",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.findRangeHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.focusedStackFrameHighlightBackground": {
 			"dark": "#7ABD7A4D",
-			"light": "#CEE7CE73"
+			"light": "#CEE7CE73",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.foldBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.foldPlaceholderForeground": {
 			"dark": "#808080",
-			"light": "#808080"
+			"light": "#808080",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.foreground": {
 			"dark": "#BBBBBB",
-			"light": "#333333"
+			"light": "#333333",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.hoverHighlightBackground": {
 			"dark": "#264F7840",
-			"light": "#ADD6FF26"
+			"light": "#ADD6FF26",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.inactiveLineHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.inactiveSelectionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
+		},
+		"editor.inlineValuesBackground": {
+			"dark": "#FFC80033",
+			"light": "#FFC80033",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.inlineValuesForeground": {
 			"dark": "#FFFFFF80",
-			"light": "#00000080"
+			"light": "#00000080",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.lineHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.lineHighlightBorder": {
 			"dark": "#282828",
-			"light": "#EEEEEE"
+			"light": "#EEEEEE",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.linkedEditingBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.placeholder.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.rangeHighlightBackground": {
 			"dark": "#FFFFFF0B",
-			"light": "#FDFF0033"
+			"light": "#FDFF0033",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.rangeHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.selectionBackground": {
 			"dark": "#264F78",
-			"light": "#ADD6FF"
+			"light": "#ADD6FF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.selectionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.selectionHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.selectionHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.snippetFinalTabstopHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.snippetFinalTabstopHighlightBorder": {
 			"dark": "#525252",
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.snippetTabstopHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.snippetTabstopHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.stackFrameHighlightBackground": {
 			"dark": "#FFFF0033",
-			"light": "#FFFF6673"
+			"light": "#FFFF6673",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.symbolHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.symbolHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.wordHighlightBackground": {
 			"dark": "#575757B8",
-			"light": "#57575740"
+			"light": "#57575740",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.wordHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.wordHighlightStrongBackground": {
 			"dark": "#004972B8",
-			"light": "#0E639C40"
+			"light": "#0E639C40",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.wordHighlightStrongBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editor.wordHighlightTextBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editor.wordHighlightTextBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorActionList.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorActionList.focusBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorActionList.focusForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorActionList.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorActiveLineNumber.foreground": {
 			"dark": "#C6C6C6",
-			"light": "#0B216F"
+			"light": "#0B216F",
+			"transparent": false,
+			"deprecated": true
 		},
 		"editorBracketHighlight.foreground1": {
 			"dark": "#FFD700",
-			"light": "#0431FAFF"
+			"light": "#0431FAFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorBracketHighlight.foreground2": {
 			"dark": "#DA70D6",
-			"light": "#319331FF"
+			"light": "#319331FF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorBracketHighlight.foreground3": {
 			"dark": "#179FFF",
-			"light": "#7B3814FF"
+			"light": "#7B3814FF",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketHighlight.foreground4": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketHighlight.foreground5": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketHighlight.foreground6": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorBracketHighlight.unexpectedBracket.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorBracketMatch.background": {
 			"dark": "#0064001A",
-			"light": "#0064001A"
+			"light": "#0064001A",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorBracketMatch.border": {
 			"dark": "#888888",
-			"light": "#B9B9B9"
+			"light": "#B9B9B9",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorBracketMatch.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.activeBackground1": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.activeBackground2": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.activeBackground3": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.activeBackground4": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.activeBackground5": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.activeBackground6": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.background1": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.background2": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.background3": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.background4": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.background5": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorBracketPairGuide.background6": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCodeLens.foreground": {
 			"dark": "#999999",
-			"light": "#919191"
+			"light": "#919191",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCommentsWidget.rangeActiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCommentsWidget.rangeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCommentsWidget.replyInputBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCommentsWidget.resolvedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCommentsWidget.unresolvedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCursor.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorCursor.foreground": {
 			"dark": "#AEAFAD",
-			"light": "#000000"
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorError.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editorError.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorError.foreground": {
 			"dark": "#F14C4C",
-			"light": "#E51400"
+			"light": "#E51400",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGhostText.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGhostText.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGhostText.foreground": {
 			"dark": "#FFFFFF56",
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroup.border": {
 			"dark": "#444444",
-			"light": "#E7E7E7"
+			"light": "#E7E7E7",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroup.dropBackground": {
 			"dark": "#53595D80",
-			"light": "#2677CB2E"
+			"light": "#2677CB2E",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroup.dropIntoPromptBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroup.dropIntoPromptBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroup.dropIntoPromptForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroup.emptyBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroup.focusedEmptyBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroupHeader.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroupHeader.connectedTabsBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroupHeader.noTabsBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroupHeader.tabsBackground": {
 			"dark": "#252526",
-			"light": "#F3F3F3"
+			"light": "#F3F3F3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGroupHeader.tabsBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.addedBackground": {
 			"dark": "#487E02",
-			"light": "#48985D"
+			"light": "#48985D",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.addedSecondaryBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.commentDraftGlyphForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.commentGlyphForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.commentRangeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.commentUnresolvedGlyphForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.deletedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.deletedSecondaryBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.foldingControlForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.itemBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.itemGlyphForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.modifiedBackground": {
 			"dark": "#1B81A8",
-			"light": "#2090D3"
+			"light": "#2090D3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorGutter.modifiedSecondaryBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorHint.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorHint.foreground": {
 			"dark": "#EEEEEEB2",
-			"light": "#6C6C6C"
+			"light": "#6C6C6C",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorHoverWidget.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorHoverWidget.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorHoverWidget.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorHoverWidget.highlightForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorHoverWidget.statusBarBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorIndentGuide.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"editorIndentGuide.activeBackground1": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.activeBackground2": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.activeBackground3": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.activeBackground4": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.activeBackground5": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.activeBackground6": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorIndentGuide.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"editorIndentGuide.background1": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.background2": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.background3": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.background4": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.background5": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorIndentGuide.background6": {
+			"dark": "#00000000",
+			"light": "#00000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInfo.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editorInfo.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInfo.foreground": {
 			"dark": "#59A4F9",
-			"light": "#0063D3"
+			"light": "#0063D3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInlayHint.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInlayHint.foreground": {
 			"dark": "#969696",
-			"light": "#969696"
+			"light": "#969696",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInlayHint.parameterBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInlayHint.parameterForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInlayHint.typeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorInlayHint.typeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorLightBulb.foreground": {
 			"dark": "#FFCC00",
-			"light": "#DDB100"
+			"light": "#DDB100",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorLightBulbAi.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorLightBulbAutoFix.foreground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorLineNumber.activeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorLineNumber.dimmedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorLineNumber.foreground": {
 			"dark": "#858585",
-			"light": "#237893"
+			"light": "#237893",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorLink.activeForeground": {
 			"dark": "#4E94CE",
-			"light": "#0000FF"
+			"light": "#0000FF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMarkerNavigation.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMarkerNavigationError.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMarkerNavigationError.headerBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMarkerNavigationInfo.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMarkerNavigationInfo.headerBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMarkerNavigationWarning.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMarkerNavigationWarning.headerBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMinimap.inlineChatInserted": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMultiCursor.primary.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMultiCursor.primary.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMultiCursor.secondary.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorMultiCursor.secondary.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.addedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.border": {
 			"dark": "#7F7F7F4D",
-			"light": "#7F7F7F4D"
+			"light": "#7F7F7F4D",
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorOverviewRuler.bracketMatchForeground": {
+			"dark": "#A0A0A0",
+			"light": "#A0A0A0",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.commentDraftForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.commentForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.commentUnresolvedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.commonContentForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.currentContentForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.deletedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.errorForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.findMatchForeground": {
 			"dark": "#D186167E",
-			"light": "#D186167E"
+			"light": "#D186167E",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editorOverviewRuler.incomingContentForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.infoForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.inlineChatInserted": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.inlineChatRemoved": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.modifiedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorOverviewRuler.rangeHighlightForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
+		},
+		"editorOverviewRuler.selectionHighlightForeground": {
+			"dark": "#A0A0A0CC",
+			"light": "#A0A0A0CC",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editorOverviewRuler.warningForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"editorOverviewRuler.wordHighlightForeground": {
+			"dark": "#A0A0A0CC",
+			"light": "#A0A0A0CC",
+			"transparent": true,
+			"deprecated": false
+		},
+		"editorOverviewRuler.wordHighlightStrongForeground": {
+			"dark": "#C0A0C0CC",
+			"light": "#C0A0C0CC",
+			"transparent": true,
+			"deprecated": false
 		},
 		"editorOverviewRuler.wordHighlightTextForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editorPane.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorRuler.foreground": {
 			"dark": "#5A5A5A",
-			"light": "#D3D3D3"
+			"light": "#D3D3D3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorStickyScroll.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorStickyScroll.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorStickyScroll.shadow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorStickyScrollGutter.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorStickyScrollHover.background": {
 			"dark": "#2A2D2E",
-			"light": "#F0F0F0"
+			"light": "#F0F0F0",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.focusHighlightForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.focusOutline": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.highlightForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.selectedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.selectedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidget.selectedIconForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorSuggestWidgetStatus.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorUnicodeHighlight.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorUnicodeHighlight.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorUnnecessaryCode.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorUnnecessaryCode.opacity": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWarning.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"editorWarning.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWarning.foreground": {
 			"dark": "#CCA700",
-			"light": "#BF8803"
+			"light": "#BF8803",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWhitespace.foreground": {
 			"dark": "#E3E4E229",
-			"light": "#33333333"
+			"light": "#33333333",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWidget.background": {
 			"dark": "#252526",
-			"light": "#F3F3F3"
+			"light": "#F3F3F3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWidget.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWidget.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWidget.resizeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"editorWordWrapIndicator.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"errorForeground": {
 			"dark": "#F48771",
-			"light": "#A1260D"
+			"light": "#A1260D",
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionBadge.remoteBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionBadge.remoteForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.prominentBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.prominentForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.prominentHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionButton.separator": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionIcon.preReleaseForeground": {
 			"dark": "#1D9271",
-			"light": "#1D9271"
+			"light": "#1D9271",
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionIcon.privateForeground": {
 			"dark": "#FFFFFF60",
-			"light": "#00000060"
+			"light": "#00000060",
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionIcon.sponsorForeground": {
 			"dark": "#D758B3",
-			"light": "#B51E78"
+			"light": "#B51E78",
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionIcon.starForeground": {
 			"dark": "#FF8E00",
-			"light": "#DF6100"
+			"light": "#DF6100",
+			"transparent": false,
+			"deprecated": false
 		},
 		"extensionIcon.verifiedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"first": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"focusBorder": {
 			"dark": "#007FD4",
-			"light": "#0090F1"
+			"light": "#0090F1",
+			"transparent": false,
+			"deprecated": false
 		},
 		"foreground": {
 			"dark": "#CCCCCC",
-			"light": "#616161"
+			"light": "#616161",
+			"transparent": false,
+			"deprecated": false
+		},
+		"git.blame.editorDecorationForeground": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.addedResourceForeground": {
+			"dark": "#81B88B",
+			"light": "#587C0C",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.conflictingResourceForeground": {
+			"dark": "#E4676B",
+			"light": "#AD0707",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.deletedResourceForeground": {
+			"dark": "#C74E39",
+			"light": "#AD0707",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.ignoredResourceForeground": {
+			"dark": "#8C8C8C",
+			"light": "#8E8E90",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.modifiedResourceForeground": {
+			"dark": "#E2C08D",
+			"light": "#895503",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.renamedResourceForeground": {
+			"dark": "#73C991",
+			"light": "#007100",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.stageDeletedResourceForeground": {
+			"dark": "#C74E39",
+			"light": "#AD0707",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.stageModifiedResourceForeground": {
+			"dark": "#E2C08D",
+			"light": "#895503",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.submoduleResourceForeground": {
+			"dark": "#8DB9E2",
+			"light": "#1258A7",
+			"transparent": false,
+			"deprecated": false
+		},
+		"gitDecoration.untrackedResourceForeground": {
+			"dark": "#73C991",
+			"light": "#007100",
+			"transparent": false,
+			"deprecated": false
 		},
 		"icon.foreground": {
 			"dark": "#C5C5C5",
-			"light": "#424242"
+			"light": "#424242",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inactiveSessionView.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inactiveSessionView.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChat.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChat.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChat.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChat.shadow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChatDiff.inserted": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChatDiff.removed": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChatInput.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChatInput.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChatInput.focusBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineChatInput.placeholderForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.background": {
 			"dark": null,
-			"light": "#5F5F5F18"
+			"light": "#5F5F5F18",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.primaryBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.primaryBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.primaryForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.secondaryBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.secondaryBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.secondaryForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.successfulBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.successfulBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.gutterIndicator.successfulForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.modifiedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"inlineEdit.modifiedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.modifiedChangedLineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"inlineEdit.modifiedChangedTextBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"inlineEdit.originalBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"inlineEdit.originalBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.originalChangedLineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"inlineEdit.originalChangedTextBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"inlineEdit.tabWillAcceptModifiedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inlineEdit.tabWillAcceptOriginalBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"input.background": {
 			"dark": "#3C3C3C",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"input.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"input.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"input.placeholderForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputOption.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputOption.activeBorder": {
 			"dark": "#007ACC",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputOption.activeForeground": {
 			"dark": "#FFFFFF",
-			"light": "#000000"
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputOption.hoverBackground": {
 			"dark": "#5A5D5E80",
-			"light": "#B8B8B850"
+			"light": "#B8B8B850",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.errorBackground": {
 			"dark": "#5A1D1D",
-			"light": "#F2DEDE"
+			"light": "#F2DEDE",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.errorBorder": {
 			"dark": "#BE1100",
-			"light": "#BE1100"
+			"light": "#BE1100",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.errorForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.infoBackground": {
 			"dark": "#063B49",
-			"light": "#D6ECF2"
+			"light": "#D6ECF2",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.infoBorder": {
 			"dark": "#007ACC",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.infoForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.warningBackground": {
 			"dark": "#352A05",
-			"light": "#F6F5D2"
+			"light": "#F6F5D2",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.warningBorder": {
 			"dark": "#B89500",
-			"light": "#B89500"
+			"light": "#B89500",
+			"transparent": false,
+			"deprecated": false
 		},
 		"inputValidation.warningForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"interactive.activeCodeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"interactive.inactiveCodeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"keybindingLabel.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"keybindingLabel.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"keybindingLabel.bottomBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"keybindingLabel.foreground": {
 			"dark": "#CCCCCC",
-			"light": "#555555"
+			"light": "#555555",
+			"transparent": false,
+			"deprecated": false
 		},
 		"keybindingTable.headerBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"keybindingTable.rowsBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.activeSelectionBackground": {
 			"dark": "#04395E",
-			"light": "#0060C0"
+			"light": "#0060C0",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.activeSelectionForeground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.activeSelectionIconForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.deemphasizedForeground": {
 			"dark": "#8C8C8C",
-			"light": "#8E8E90"
+			"light": "#8E8E90",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.dropBackground": {
 			"dark": "#062F4A",
-			"light": "#D6EBFF"
+			"light": "#D6EBFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.dropBetweenBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.errorForeground": {
 			"dark": "#F88070",
-			"light": "#B01011"
+			"light": "#B01011",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.filterMatchBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.filterMatchBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.focusAndSelectionOutline": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.focusBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.focusForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.focusHighlightForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.focusOutline": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.highlightForeground": {
 			"dark": "#2AAAFF",
-			"light": "#0066BF"
+			"light": "#0066BF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.hoverBackground": {
 			"dark": "#2A2D2E",
-			"light": "#F0F0F0"
+			"light": "#F0F0F0",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.hoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.inactiveFocusBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.inactiveFocusOutline": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.inactiveSelectionBackground": {
 			"dark": "#37373D",
-			"light": "#E4E6F1"
+			"light": "#E4E6F1",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.inactiveSelectionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.inactiveSelectionIconForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.invalidItemForeground": {
 			"dark": "#B89500",
-			"light": "#B89500"
+			"light": "#B89500",
+			"transparent": false,
+			"deprecated": false
 		},
 		"list.warningForeground": {
 			"dark": "#CCA700",
-			"light": "#855F00"
+			"light": "#855F00",
+			"transparent": false,
+			"deprecated": false
 		},
 		"listFilterWidget.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"listFilterWidget.noMatchesOutline": {
 			"dark": "#BE1100",
-			"light": "#BE1100"
+			"light": "#BE1100",
+			"transparent": false,
+			"deprecated": false
 		},
 		"listFilterWidget.outline": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"listFilterWidget.shadow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"markdownAlert.caution.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"markdownAlert.important.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"markdownAlert.note.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"markdownAlert.tip.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"markdownAlert.warning.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"mcpIcon.starForeground": {
 			"dark": "#FF8E00",
-			"light": "#DF6100"
+			"light": "#DF6100",
+			"transparent": false,
+			"deprecated": false
 		},
 		"menu.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menu.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menu.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menu.selectionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menu.selectionBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menu.selectionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menu.separatorBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menubar.selectionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menubar.selectionBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"menubar.selectionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"merge.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"merge.commonContentBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"merge.commonHeaderBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"merge.currentContentBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"merge.currentHeaderBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"merge.incomingContentBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"merge.incomingHeaderBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
+		},
+		"mergeEditor.change.background": {
+			"dark": "#9BB95533",
+			"light": "#9BB95533",
+			"transparent": false,
+			"deprecated": false
 		},
 		"mergeEditor.change.word.background": {
 			"dark": "#9CCC2C33",
-			"light": "#9CCC2C66"
+			"light": "#9CCC2C66",
+			"transparent": false,
+			"deprecated": false
 		},
 		"mergeEditor.changeBase.background": {
 			"dark": "#4B1818FF",
-			"light": "#FFCCCCFF"
+			"light": "#FFCCCCFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"mergeEditor.changeBase.word.background": {
 			"dark": "#6F1313FF",
-			"light": "#FFA3A3FF"
+			"light": "#FFA3A3FF",
+			"transparent": false,
+			"deprecated": false
+		},
+		"mergeEditor.conflict.handled.minimapOverViewRuler": {
+			"dark": "#ADACA8EE",
+			"light": "#ADACA8EE",
+			"transparent": false,
+			"deprecated": false
+		},
+		"mergeEditor.conflict.handledFocused.border": {
+			"dark": "#C1C1C1CC",
+			"light": "#C1C1C1CC",
+			"transparent": false,
+			"deprecated": false
+		},
+		"mergeEditor.conflict.handledUnfocused.border": {
+			"dark": "#86868649",
+			"light": "#86868649",
+			"transparent": false,
+			"deprecated": false
 		},
 		"mergeEditor.conflict.input1.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"mergeEditor.conflict.input2.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"mergeEditor.conflict.unhandled.minimapOverViewRuler": {
+			"dark": "#FCBA03FF",
+			"light": "#FCBA03FF",
+			"transparent": false,
+			"deprecated": false
+		},
+		"mergeEditor.conflict.unhandledFocused.border": {
+			"dark": "#FFA600",
+			"light": "#FFA600",
+			"transparent": false,
+			"deprecated": false
 		},
 		"mergeEditor.conflict.unhandledUnfocused.border": {
 			"dark": "#FFA6007A",
-			"light": "#FFA600FF"
+			"light": "#FFA600FF",
+			"transparent": false,
+			"deprecated": false
+		},
+		"mergeEditor.conflictingLines.background": {
+			"dark": "#FFEA0047",
+			"light": "#FFEA0047",
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimap.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimap.chatEditHighlight": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimap.errorHighlight": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimap.findMatchHighlight": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"minimap.foregroundOpacity": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimap.infoHighlight": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimap.selectionHighlight": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"minimap.selectionOccurrenceHighlight": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"minimap.warningHighlight": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimapGutter.addedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimapGutter.deletedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimapGutter.modifiedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimapSlider.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimapSlider.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"minimapSlider.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernActivityBar.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"modernActivityBar.activeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"modernActivityBar.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernActivityBar.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernActivityBar.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"modernActivityBar.hoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"modernActivityBar.inactiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernActivityBarItem.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernActivityBarItem.activeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernActivityBarItem.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernActivityBarItem.hoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.activeActionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.activeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.activeHoverActionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.activeHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.hoverActionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.hoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.inactiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernEditorTab.selectedActionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernPanel.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernSash.gripForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernTab.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernTab.activeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernTab.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernTab.hoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernUI.inactiveShellBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"modernUI.shellBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"multiDiffEditor.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"multiDiffEditor.border": {
 			"dark": null,
-			"light": "#CCCCCC"
+			"light": "#CCCCCC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"multiDiffEditor.headerBackground": {
 			"dark": "#262626",
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.cellBorderColor": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.cellEditorBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.cellHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.cellInsertionIndicator": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.cellStatusBarItemHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.cellToolbarSeparator": {
 			"dark": "#80808059",
-			"light": "#80808059"
+			"light": "#80808059",
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.editorBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.focusedCellBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.focusedCellBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.focusedEditorBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.inactiveFocusedCellBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.inactiveSelectedCellBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.outputContainerBackgroundColor": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.outputContainerBorderColor": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.selectedCellBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.selectedCellBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebook.symbolHighlightBackground": {
 			"dark": "#FFFFFF0B",
-			"light": "#FDFF0033"
+			"light": "#FDFF0033",
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebookEditorOverviewRuler.runningCellForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebookScrollbarSlider.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebookScrollbarSlider.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebookScrollbarSlider.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebookStatusErrorIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebookStatusRunningIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notebookStatusSuccessIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationCenter.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationCenterHeader.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationCenterHeader.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationLink.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationToast.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notifications.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notifications.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notifications.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationsErrorIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationsInfoIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"notificationsWarningIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"outputView.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"outputViewStickyScroll.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panel.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panel.border": {
 			"dark": "#80808059",
-			"light": "#80808059"
+			"light": "#80808059",
+			"transparent": false,
+			"deprecated": false
 		},
 		"panel.dropBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelInput.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelSection.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelSection.dropBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelSectionHeader.background": {
 			"dark": "#80808033",
-			"light": "#80808033"
+			"light": "#80808033",
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelSectionHeader.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelSectionHeader.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelStickyScroll.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelStickyScroll.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelStickyScroll.shadow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelTitle.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelTitle.activeForeground": {
 			"dark": "#E7E7E7",
-			"light": "#424242"
+			"light": "#424242",
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelTitle.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelTitle.inactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelTitleBadge.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"panelTitleBadge.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"pasteIntoEditor": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekView.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewEditor.background": {
 			"dark": "#001F33",
-			"light": "#F2F8FC"
+			"light": "#F2F8FC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewEditor.matchHighlightBackground": {
 			"dark": "#FF8F0099",
-			"light": "#F5D802DE"
+			"light": "#F5D802DE",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewEditor.matchHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewEditorGutter.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewEditorStickyScroll.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewEditorStickyScrollGutter.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewResult.background": {
 			"dark": "#252526",
-			"light": "#F3F3F3"
+			"light": "#F3F3F3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewResult.fileForeground": {
 			"dark": "#FFFFFF",
-			"light": "#1E1E1E"
+			"light": "#1E1E1E",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewResult.lineForeground": {
 			"dark": "#BBBBBB",
-			"light": "#646465"
+			"light": "#646465",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewResult.matchHighlightBackground": {
 			"dark": "#EA5C004D",
-			"light": "#EA5C004D"
+			"light": "#EA5C004D",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewResult.selectionBackground": {
 			"dark": "#3399FF33",
-			"light": "#3399FF33"
+			"light": "#3399FF33",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewResult.selectionForeground": {
 			"dark": "#FFFFFF",
-			"light": "#6C6C6C"
+			"light": "#6C6C6C",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewTitle.background": {
 			"dark": "#252526",
-			"light": "#F3F3F3"
+			"light": "#F3F3F3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewTitleDescription.foreground": {
 			"dark": "#CCCCCCB3",
-			"light": "#616161"
+			"light": "#616161",
+			"transparent": false,
+			"deprecated": false
 		},
 		"peekViewTitleLabel.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#000000"
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"pickerGroup.border": {
 			"dark": "#3F3F46",
-			"light": "#CCCEDB"
+			"light": "#CCCEDB",
+			"transparent": false,
+			"deprecated": false
 		},
 		"pickerGroup.foreground": {
 			"dark": "#3794FF",
-			"light": "#0066BF"
+			"light": "#0066BF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"ports.iconRunningProcessForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"problemsErrorIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"problemsInfoIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"problemsWarningIcon.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"profileBadge.background": {
 			"dark": "#4D4D4D",
-			"light": "#C4C4C4"
+			"light": "#C4C4C4",
+			"transparent": false,
+			"deprecated": false
 		},
 		"profileBadge.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#333333"
+			"light": "#333333",
+			"transparent": false,
+			"deprecated": false
 		},
 		"profiles.sashBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"progressBar.background": {
 			"dark": "#0E70C0",
-			"light": "#0E70C0"
+			"light": "#0E70C0",
+			"transparent": false,
+			"deprecated": false
 		},
 		"quickInput.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"quickInput.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"quickInput.list.focusBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": true
 		},
 		"quickInputList.focusBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"quickInputList.focusForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"quickInputList.focusHighlightForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"quickInputList.focusIconForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"quickInputTitle.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"radio.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"radio.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"radio.activeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"radio.inactiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"radio.inactiveBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"radio.inactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"radio.inactiveHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"required": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sash.hoverBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"scmGraph.foreground1": {
+			"dark": "#FFB000",
+			"light": "#FFB000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"scmGraph.foreground2": {
+			"dark": "#DC267F",
+			"light": "#DC267F",
+			"transparent": false,
+			"deprecated": false
+		},
+		"scmGraph.foreground3": {
+			"dark": "#994F00",
+			"light": "#994F00",
+			"transparent": false,
+			"deprecated": false
+		},
+		"scmGraph.foreground4": {
+			"dark": "#40B0A6",
+			"light": "#40B0A6",
+			"transparent": false,
+			"deprecated": false
+		},
+		"scmGraph.foreground5": {
+			"dark": "#B66DFF",
+			"light": "#B66DFF",
+			"transparent": false,
+			"deprecated": false
+		},
+		"scmGraph.historyItemBaseRefColor": {
+			"dark": "#EA5C00",
+			"light": "#EA5C00",
+			"transparent": false,
+			"deprecated": false
 		},
 		"scmGraph.historyItemHoverAdditionsForeground": {
 			"dark": "#81B88B",
-			"light": "#587C0C"
+			"light": "#587C0C",
+			"transparent": false,
+			"deprecated": false
 		},
 		"scmGraph.historyItemHoverDefaultLabelBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"scmGraph.historyItemHoverDefaultLabelForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"scmGraph.historyItemHoverDeletionsForeground": {
 			"dark": "#C74E39",
-			"light": "#AD0707"
+			"light": "#AD0707",
+			"transparent": false,
+			"deprecated": false
 		},
 		"scmGraph.historyItemHoverLabelForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"scmGraph.historyItemRefColor": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"scmGraph.historyItemRemoteRefColor": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"scrollbar.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"scrollbar.shadow": {
 			"dark": "#000000",
-			"light": "#DDDDDD"
+			"light": "#DDDDDD",
+			"transparent": false,
+			"deprecated": false
 		},
 		"scrollbarSlider.activeBackground": {
 			"dark": "#BFBFBF66",
-			"light": "#00000099"
+			"light": "#00000099",
+			"transparent": false,
+			"deprecated": false
 		},
 		"scrollbarSlider.background": {
 			"dark": "#79797966",
-			"light": "#64646466"
+			"light": "#64646466",
+			"transparent": false,
+			"deprecated": false
 		},
 		"scrollbarSlider.hoverBackground": {
 			"dark": "#646464B2",
-			"light": "#646464B2"
+			"light": "#646464B2",
+			"transparent": false,
+			"deprecated": false
 		},
 		"search.resultsInfoForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"searchEditor.findMatchBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"searchEditor.findMatchBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"searchEditor.textInputBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"selection.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.checkboxBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.checkboxBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.checkboxForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.dropdownBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.dropdownBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.dropdownForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.dropdownListBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.focusedRowBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.focusedRowBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.headerBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.headerForeground": {
 			"dark": "#E7E7E7",
-			"light": "#444444"
+			"light": "#444444",
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.modifiedItemIndicator": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.numberInputBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.numberInputBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.numberInputForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.rowHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.sashBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.settingsHeaderHoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.textInputBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.textInputBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"settings.textInputForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBar.background": {
 			"dark": "#252526",
-			"light": "#F3F3F3"
+			"light": "#F3F3F3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBar.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBar.dropBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBar.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarActivityBarTop.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarSectionHeader.background": {
 			"dark": "#80808033",
-			"light": "#80808033"
+			"light": "#80808033",
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarSectionHeader.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarSectionHeader.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarStickyScroll.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarStickyScroll.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarStickyScroll.shadow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarTitle.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarTitle.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBarTitle.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBySideEditor.horizontalBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"sideBySideEditor.verticalBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"simpleFindWidget.sashBorder": {
 			"dark": "#454545",
-			"light": "#C8C8C8"
+			"light": "#C8C8C8",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.background": {
 			"dark": "#007ACC",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.debuggingBackground": {
 			"dark": "#CC6633",
-			"light": "#CC6633"
+			"light": "#CC6633",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.debuggingBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.debuggingForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.focusBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.inactiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.noFolderBackground": {
 			"dark": "#68217A",
-			"light": "#68217A"
+			"light": "#68217A",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.noFolderBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBar.noFolderForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.compactHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.errorBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.errorForeground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.errorHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.errorHoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.focusBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.hoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"statusBarItem.offlineBackground": {
+			"dark": "#6C1717",
+			"light": "#6C1717",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.offlineForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.offlineHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.offlineHoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.prominentBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.prominentForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.prominentHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.prominentHoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.remoteBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.remoteForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.remoteHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.remoteHoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.warningBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.warningForeground": {
 			"dark": "#FFFFFF",
-			"light": "#FFFFFF"
+			"light": "#FFFFFF",
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.warningHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"statusBarItem.warningHoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"strongForeground": {
 			"dark": "#FFFFFF",
-			"light": "#000000"
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"success": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"surface.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"surface.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"surface.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.arrayForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.booleanForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.classForeground": {
 			"dark": "#EE9D28",
-			"light": "#D67E00"
+			"light": "#D67E00",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.colorForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.constantForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.constructorForeground": {
 			"dark": "#B180D7",
-			"light": "#652D90"
+			"light": "#652D90",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.enumeratorForeground": {
 			"dark": "#EE9D28",
-			"light": "#D67E00"
+			"light": "#D67E00",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.enumeratorMemberForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.eventForeground": {
 			"dark": "#EE9D28",
-			"light": "#D67E00"
+			"light": "#D67E00",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.fieldForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.fileForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.folderForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.functionForeground": {
 			"dark": "#B180D7",
-			"light": "#652D90"
+			"light": "#652D90",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.interfaceForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.keyForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.keywordForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.methodForeground": {
 			"dark": "#B180D7",
-			"light": "#652D90"
+			"light": "#652D90",
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.moduleForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.namespaceForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.nullForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.numberForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.objectForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.operatorForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.packageForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.propertyForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.referenceForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.snippetForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.stringForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.structForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.textForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.typeParameterForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.unitForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"symbolIcon.variableForeground": {
 			"dark": "#75BEFF",
-			"light": "#007ACC"
+			"light": "#007ACC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.activeBorderTop": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.activeForeground": {
 			"dark": "#FFFFFF",
-			"light": "#333333"
+			"light": "#333333",
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.activeModifiedBorder": {
 			"dark": "#3399CC",
-			"light": "#33AAEE"
+			"light": "#33AAEE",
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.border": {
 			"dark": "#252526",
-			"light": "#F3F3F3"
+			"light": "#F3F3F3",
+			"transparent": false,
+			"deprecated": false
+		},
+		"tab.divider": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.dragAndDropBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.hoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.hoverBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.hoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.inactiveBackground": {
 			"dark": "#2D2D2D",
-			"light": "#ECECEC"
+			"light": "#ECECEC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.inactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.inactiveModifiedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.lastPinnedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.selectedBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.selectedBorderTop": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.selectedForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedActiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedActiveBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedActiveBorderTop": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedActiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedActiveModifiedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedHoverBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedHoverForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedInactiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedInactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tab.unfocusedInactiveModifiedBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBlack": {
+			"dark": "#000000",
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBlue": {
+			"dark": "#2472C8",
+			"light": "#0451A5",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightBlack": {
+			"dark": "#666666",
+			"light": "#666666",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightBlue": {
+			"dark": "#3B8EEA",
+			"light": "#3B8EEA",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightCyan": {
+			"dark": "#29B8DB",
+			"light": "#29B8DB",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightGreen": {
+			"dark": "#23D18B",
+			"light": "#14CE14",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightMagenta": {
+			"dark": "#D670D6",
+			"light": "#D670D6",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightRed": {
+			"dark": "#F14C4C",
+			"light": "#F14C4C",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightWhite": {
+			"dark": "#E5E5E5",
+			"light": "#A5A5A5",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiBrightYellow": {
+			"dark": "#F5F543",
+			"light": "#B5BA00",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiCyan": {
+			"dark": "#11A8CD",
+			"light": "#0598BC",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiGreen": {
+			"dark": "#0DBC79",
+			"light": "#107C10",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiMagenta": {
+			"dark": "#BC3FBC",
+			"light": "#BC05BC",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiRed": {
+			"dark": "#CD3131",
+			"light": "#CD3131",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiWhite": {
+			"dark": "#E5E5E5",
+			"light": "#555555",
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminal.ansiYellow": {
+			"dark": "#E5E510",
+			"light": "#949800",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.dropBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"terminal.findMatchBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"terminal.findMatchBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.findMatchHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": true,
+			"deprecated": false
 		},
 		"terminal.findMatchHighlightBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.foreground": {
 			"dark": "#CCCCCC",
-			"light": "#333333"
+			"light": "#333333",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.hoverHighlightBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.inactiveSelectionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.initialHintForeground": {
 			"dark": "#FFFFFF56",
-			"light": "#00000077"
+			"light": "#00000077",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.selectionBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.selectionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminal.tab.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalCommandDecoration.defaultBackground": {
 			"dark": "#FFFFFF40",
-			"light": "#00000040"
+			"light": "#00000040",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalCommandDecoration.errorBackground": {
 			"dark": "#F14C4C",
-			"light": "#E51400"
+			"light": "#E51400",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalCommandDecoration.successBackground": {
 			"dark": "#1B81A8",
-			"light": "#2090D3"
+			"light": "#2090D3",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalCommandGuide.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalCursor.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalCursor.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalOverviewRuler.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"terminalOverviewRuler.cursorForeground": {
+			"dark": "#A0A0A0CC",
+			"light": "#A0A0A0CC",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalOverviewRuler.findMatchForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalStickyScroll.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalStickyScroll.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalStickyScrollHover.background": {
 			"dark": "#2A2D2E",
-			"light": "#F0F0F0"
+			"light": "#F0F0F0",
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.aliasForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.argumentForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.branchForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.commitForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.fileForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.flagForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.folderForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.inlineSuggestionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.methodForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.optionForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.optionValueForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.pullRequestDoneForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.pullRequestForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.remoteForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.stashForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.symbolText": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.symbolicLinkFileForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.symbolicLinkFolderForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"terminalSymbolIcon.tagForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.coverCountBadgeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.coverCountBadgeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.coveredBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.coveredBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.coveredGutterBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.coveredMinimapBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconErrored": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconErrored.retired": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconFailed": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconFailed.retired": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconPassed": {
 			"dark": "#73C991",
-			"light": "#73C991"
+			"light": "#73C991",
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconPassed.retired": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconQueued": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconQueued.retired": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"testing.iconSkipped": {
+			"dark": "#848484",
+			"light": "#848484",
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconSkipped.retired": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"testing.iconUnset": {
+			"dark": "#848484",
+			"light": "#848484",
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.iconUnset.retired": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.message.error.badgeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.message.error.badgeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.message.error.badgeForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.message.error.lineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.message.info.decorationForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.message.info.lineBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.messagePeekBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.messagePeekHeaderBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.peekBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.peekHeaderBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.runAction": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.uncoveredBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.uncoveredBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.uncoveredBranchBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.uncoveredGutterBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"testing.uncoveredMinimapBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
+		},
+		"text": {
+			"dark": null,
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"textBlockQuote.background": {
 			"dark": "#222222",
-			"light": "#F2F2F2"
+			"light": "#F2F2F2",
+			"transparent": false,
+			"deprecated": false
 		},
 		"textBlockQuote.border": {
 			"dark": "#007ACC80",
-			"light": "#007ACC80"
+			"light": "#007ACC80",
+			"transparent": false,
+			"deprecated": false
 		},
 		"textCodeBlock.background": {
 			"dark": "#0A0A0A66",
-			"light": "#DCDCDC66"
+			"light": "#DCDCDC66",
+			"transparent": false,
+			"deprecated": false
 		},
 		"textLink.activeForeground": {
 			"dark": "#3794FF",
-			"light": "#006AB1"
+			"light": "#006AB1",
+			"transparent": false,
+			"deprecated": false
 		},
 		"textLink.foreground": {
 			"dark": "#3794FF",
-			"light": "#006AB1"
+			"light": "#006AB1",
+			"transparent": false,
+			"deprecated": false
 		},
 		"textPreformat.background": {
 			"dark": "#FFFFFF1A",
-			"light": "#0000001A"
+			"light": "#0000001A",
+			"transparent": false,
+			"deprecated": false
 		},
 		"textPreformat.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"textPreformat.foreground": {
 			"dark": "#D7BA7D",
-			"light": "#A31515"
+			"light": "#A31515",
+			"transparent": false,
+			"deprecated": false
 		},
 		"textSeparator.foreground": {
 			"dark": "#FFFFFF2E",
-			"light": "#0000002E"
+			"light": "#0000002E",
+			"transparent": false,
+			"deprecated": false
 		},
 		"titleBar.activeBackground": {
 			"dark": "#3C3C3C",
-			"light": "#DDDDDD"
+			"light": "#DDDDDD",
+			"transparent": false,
+			"deprecated": false
 		},
 		"titleBar.activeForeground": {
 			"dark": "#CCCCCC",
-			"light": "#333333"
+			"light": "#333333",
+			"transparent": false,
+			"deprecated": false
 		},
 		"titleBar.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"titleBar.inactiveBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"titleBar.inactiveForeground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"toolbar.activeBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"toolbar.hoverBackground": {
 			"dark": "#5A5D5E50",
-			"light": "#B8B8B850"
+			"light": "#B8B8B850",
+			"transparent": false,
+			"deprecated": false
 		},
 		"toolbar.hoverOutline": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tree.inactiveIndentGuidesStroke": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"tree.indentGuidesStroke": {
 			"dark": "#585858",
-			"light": "#A9A9A9"
+			"light": "#A9A9A9",
+			"transparent": false,
+			"deprecated": false
 		},
 		"tree.tableColumnsBorder": {
 			"dark": "#CCCCCC20",
-			"light": "#61616120"
+			"light": "#61616120",
+			"transparent": false,
+			"deprecated": false
 		},
 		"tree.tableOddRowsBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"walkThrough.embeddedEditorBackground": {
 			"dark": null,
-			"light": "#F4F4F4"
+			"light": "#F4F4F4",
+			"transparent": false,
+			"deprecated": false
 		},
 		"walkthrough.stepTitle.foreground": {
 			"dark": "#FFFFFF",
-			"light": "#000000"
+			"light": "#000000",
+			"transparent": false,
+			"deprecated": false
 		},
 		"welcomePage.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"welcomePage.progress.background": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"welcomePage.progress.foreground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"welcomePage.tileBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"welcomePage.tileBorder": {
 			"dark": "#FFFFFF1A",
-			"light": "#0000001A"
+			"light": "#0000001A",
+			"transparent": false,
+			"deprecated": false
 		},
 		"welcomePage.tileHoverBackground": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"widget.border": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"widget.shadow": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"window.activeBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		},
 		"window.inactiveBorder": {
 			"dark": null,
-			"light": null
+			"light": null,
+			"transparent": false,
+			"deprecated": false
 		}
 	}
 }

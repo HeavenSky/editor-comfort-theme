@@ -77,7 +77,8 @@ Themes are static, so there are no settings. Override font styles in your `setti
 
 - `tools/themes.py`: each theme's target background, foreground, 16 terminal colors and tuning parameters (chroma cap, contrast minimums for syntax and comment colors).
 - `tools/sources/*.json`: the reference theme templates. Every theme keeps all UI keys and syntax rules of its template and only transforms colors one by one.
-- `tools/sources/vscode-color-registry.json`: the VS Code color registry. Keys whose default is hard-coded and that the template leaves undefined are filled from the theme's own palette; after a VS Code upgrade, re-extract it with `npm run extract:registry`.
+- `tools/sources/vscode-color-registry.json`: the VS Code color registry — core colors, the terminal palette and colors contributed by built-in extensions, each with its defaults and whether it must be translucent or is deprecated. Keys whose default is hard-coded and that the template leaves undefined are filled from the theme's own palette; after a VS Code upgrade, re-extract it with `npm run extract:registry`.
+- Every generated theme is checked against `vscode://schemas/color-theme` (`tools/schema.py`): unregistered or deprecated color keys are dropped (deprecated keys with an official successor are renamed), colors that must be translucent are converted to an equivalent translucent value, and token rule fields VS Code ignores (token backgrounds, `fontStyle: normal`) are removed or rewritten. Run `uv run tools/schema.py <file>...` to check any theme.
 
 ```bash
 npm run extract:registry              # extract the color registry from /Applications/Visual Studio Code.app
@@ -98,7 +99,7 @@ uv run tools/metrics.py --detail <file>...  # list every softness / fatigue sub-
 ```
 
 - Contrast is always WCAG contrast; chroma is OKLCH C; background luminance is WCAG relative luminance (0 is pure black, 1 is pure white).
-- Clarity is rated high / mid-high / mid and eye comfort good / mid. A theme passes when clarity is at least mid-high, eye comfort is good, and a VS Code theme covers every registry key with a hard-coded default ("uncovered" is 0).
+- Clarity is rated high / mid-high / mid and eye comfort good / mid. A theme passes when clarity is at least mid-high, eye comfort is good, and a VS Code theme covers every non-deprecated registry key with a hard-coded default ("uncovered" is 0) and has no schema problems ("schema" is 0). Scores only count colors VS Code actually applies.
 - VS Code themes have two more upper limits; exceeding either rates clarity as mid: comment contrast at most 4.2, and in dark themes the brightest syntax color at most 1.1× the body text contrast. Line numbers need a contrast of at least 2.0; a dark theme rates high clarity only with body text contrast between 7.0 and 8.5.
 - **Softness** and **fatigue** are scored 0–100 (rules in `tools/comfort.py`): a sub-metric inside its ideal range scores 100, drops to 60 at its limit, and fails beyond it.
   - Softness: average and maximum syntax chroma, lightness spread of the colored syntax colors, brightest syntax color versus body text, panel background chroma.
