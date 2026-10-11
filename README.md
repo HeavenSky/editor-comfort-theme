@@ -1,10 +1,10 @@
 # Editor Comfort Theme
 
-[![Marketplace](https://img.shields.io/visual-studio-marketplace/v/HeavenSky.editor-comfort-theme?label=marketplace)](https://marketplace.visualstudio.com/items?itemName=HeavenSky.editor-comfort-theme)
-[![Installs](https://img.shields.io/visual-studio-marketplace/i/HeavenSky.editor-comfort-theme)](https://marketplace.visualstudio.com/items?itemName=HeavenSky.editor-comfort-theme)
-[![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/LICENSE.txt)
+[![VS Marketplace](https://vsmarketplacebadges.dev/version-short/HeavenSky.editor-comfort-theme.svg?label=VS%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=HeavenSky.editor-comfort-theme)
+[![Installs](https://vsmarketplacebadges.dev/installs-short/HeavenSky.editor-comfort-theme.svg)](https://marketplace.visualstudio.com/items?itemName=HeavenSky.editor-comfort-theme)
+[![License](https://img.shields.io/badge/license-MIT-blue)](./LICENSE.txt)
 
-**English** · [简体中文](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/README.zh-cn.md)
+**English** · [简体中文](./README.zh-cn.md)
 
 Eight VS Code color themes for long coding sessions, every one tuned and adapted for comfort. The palettes take their design cues from the official One Dark Pro, One Light, Ayu and Solarized themes, so they feel familiar from the first line.
 
@@ -50,7 +50,7 @@ Requires VS Code `1.101.0` or newer.
 
 ### Terminal.app profiles
 
-The six Comfort themes have matching macOS Terminal.app profiles in the repository's [`terminal/`](https://github.com/HeavenSky/editor-comfort-theme/tree/HEAD/terminal) folder. Double-click a `.terminal` file to import it; a profile with the same name is replaced. Run `bash terminal/terminal-preview.sh --full` to show the 16-color matrix.
+The six Comfort themes have matching macOS Terminal.app profiles in the repository's [`terminal/`](./terminal/) folder. Double-click a `.terminal` file to import it; a profile with the same name is replaced. Run `bash terminal/terminal-preview.sh --full` to show the 16-color matrix.
 
 ## Turning off italic or bold
 
@@ -109,4 +109,4 @@ This repository derives from the vsc-ext project template. Because it has no run
 
 ## License
 
-[MIT](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/LICENSE.txt). Built on One Dark Pro, One Light, ayu and VS Code's Solarized themes, all MIT — see [NOTICE.md](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/NOTICE.md).
+[MIT](./LICENSE.txt). Built on One Dark Pro, One Light, ayu and VS Code's Solarized themes, all MIT — see [NOTICE.md](./NOTICE.md).
