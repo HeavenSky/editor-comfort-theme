@@ -49,14 +49,14 @@
 				"path": "./themes/comfort-ayu-light-color-theme.json"
 			},
 			{
-				"label": "Comfort Solarized Dark",
+				"label": "Comfort Sunlit Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-solar-ized-dark-color-theme.json"
+				"path": "./themes/comfort-sunlit-dark-color-theme.json"
 			},
 			{
-				"label": "Comfort Solarized Light",
+				"label": "Comfort Sunlit Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-solar-ized-light-color-theme.json"
+				"path": "./themes/comfort-sunlit-light-color-theme.json"
 			},
 			{
 				"label": "Comfort GitHub Dark",

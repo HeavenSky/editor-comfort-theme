@@ -24,8 +24,8 @@ Thirteen VS Code color themes for long coding sessions, every one tuned and adap
 | **Comfort One Light** | Atom One Light 2.3.0 | Background dimmed (`#FAFAFA` → `#F0F0F2`), body text softened, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Body text softened, calmer strings, readable punctuation |
 | **Comfort Ayu Light** | ayu Light | Background dimmed, darker text |
-| **Comfort Solarized Dark** | Solarized Dark | Brighter text, softer accents |
-| **Comfort Solarized Light** | Solarized Light | Background dimmed, darker text |
+| **Comfort Sunlit Dark** | Solarized Dark | Brighter text, softer accents |
+| **Comfort Sunlit Light** | Solarized Light | Background dimmed, darker text |
 | **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | Slightly softer text and accents; keeps the gray-blue background |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | Pure white background dimmed, body text softened from 15.8 to 8.5 contrast |
 | **Comfort Dracula Dark** | Dracula Soft 2.25.1 | Body text softened from 13.2 to 7.0 contrast, softer accents |

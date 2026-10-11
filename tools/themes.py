@@ -130,20 +130,20 @@ def build() -> list[dict]:
                    {n: tune(v, bg, 0.10, 6.0, -0.06) for n, v in nor.items()},
                    dict(Black=h('#242936'), BrightBlack=tune('ADAEB1', bg, 0.02, 3.2), White=h('#C9CDD3'), BrightWhite=h('#DFE2E7')))))
 
-    # ---- Comfort Solarized Dark: 官方 base03 底, 正文比 base1 稍亮, 对比度 7.0 ----
+    # ---- Comfort Sunlit Dark(参考 Solarized Dark): 官方 base03 底, 正文比 base1 稍亮, 对比度 7.0 ----
     bg = h('#002B36')
     T.append(dict(
-        name='comfort-solar-ized-dark', label='Comfort Solarized Dark', dark=True, gate=True, terminal=True, source='solar-ized-dark.json',
+        name='comfort-sunlit-dark', label='Comfort Sunlit Dark', dark=True, gate=True, terminal=True, source='sunlit-dark.json',
         cap=0.10, token_min=5.0, comment_cr=COMMENT_CR, syntax_max=SYNTAX_MAX,
         bg=bg, fg=h('#A6B4B4'), bold=h('#EEE8D5'), cursor=h('#93A1A1'), sel=h('#0A4A5A'),
         ansi=_ansi({n: tune(v, bg, 0.10, 5.0) for n, v in SOL_NORMAL.items()},
                    {n: tune(v, bg, 0.10, 6.5, 0.06) for n, v in SOL_BRIGHT.items()},
                    dict(Black=h('#073642'), BrightBlack=tune('657B83', bg, 0.03, 3.4), White=h('#D3CDBB'), BrightWhite=h('#EEE8D5')))))
 
-    # ---- Comfort Solarized Light: base3 #FDF6E3 压暗为 #F5EEDA, 正文取 base01 与 base02 之间, 对比度 7.0 ----
+    # ---- Comfort Sunlit Light(参考 Solarized Light): base3 #FDF6E3 压暗为 #F5EEDA, 正文取 base01 与 base02 之间, 对比度 7.0 ----
     bg = h('#F5EEDA')
     T.append(dict(
-        name='comfort-solar-ized-light', label='Comfort Solarized Light', dark=False, gate=True, terminal=True, source='solar-ized-light.json',
+        name='comfort-sunlit-light', label='Comfort Sunlit Light', dark=False, gate=True, terminal=True, source='sunlit-light.json',
         cap=0.10, token_min=4.8, comment_cr=COMMENT_CR,
         bg=bg, fg=h('#3E5259'), bold=h('#073642'), cursor=h('#586E75'), sel=h('#E3D9BC'),
         ansi=_ansi({n: tune(v, bg, 0.10, 4.8) for n, v in SOL_NORMAL.items()},

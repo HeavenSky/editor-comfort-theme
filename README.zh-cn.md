@@ -26,8 +26,8 @@
 | **Comfort One Light** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#F0F0F2`), 正文减淡, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 正文减淡, 字符串不再刺眼, 半透明标点改为清楚可读 |
 | **Comfort Ayu Light** | ayu Light | 底色压暗, 正文加深 |
-| **Comfort Solarized Dark** | Solarized Dark | 正文提亮, 彩色更柔和 |
-| **Comfort Solarized Light** | Solarized Light | 底色压暗, 正文加深 |
+| **Comfort Sunlit Dark** | Solarized Dark | 正文提亮, 彩色更柔和 |
+| **Comfort Sunlit Light** | Solarized Light | 底色压暗, 正文加深 |
 | **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | 正文与彩色略减淡, 保留灰蓝底色 |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | 纯白底压暗, 正文对比度从 15.8 减到 8.5 |
 | **Comfort Dracula Dark** | Dracula Soft 2.25.1 | 正文对比度从 13.2 减到 7.0, 彩色更柔和 |

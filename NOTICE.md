@@ -7,7 +7,7 @@
 | [One Dark Pro](https://github.com/Binaryify/OneDark-Pro) 3.20.2 | Copyright (c) 2013-2022 Binaryify | Comfort One Dark |
 | [One Light](https://github.com/akamud/vscode-theme-onelight) 2.3.0 | Copyright (c) 2015 Mahmoud Ali | Comfort One Light |
 | [ayu](https://github.com/ayu-theme/vscode-ayu) | Copyright (c) 2016 Ike Kurghinyan | Comfort Ayu Dark, Comfort Ayu Light |
-| [VS Code Solarized](https://github.com/microsoft/vscode/tree/main/extensions/theme-solarized-dark) | Copyright (c) Microsoft Corporation | Comfort Solarized Dark, Comfort Solarized Light |
+| [VS Code Solarized](https://github.com/microsoft/vscode/tree/main/extensions/theme-solarized-dark) | Copyright (c) Microsoft Corporation | Comfort Sunlit Dark, Comfort Sunlit Light |
 | [GitHub VS Code Theme](https://github.com/primer/github-vscode-theme) 6.3.5 | Copyright (c) 2020 Primer | Comfort GitHub Dark, Comfort GitHub Light |
 | [Dracula](https://github.com/dracula/visual-studio-code) 2.25.1 | Copyright (c) 2016 Dracula Theme | Comfort Dracula Dark |
 | [Night Owl](https://github.com/sdras/night-owl-vscode-theme) 2.1.1 | Copyright (c) 2018 Sarah Drasner | Comfort Night Owl Dark, Comfort Night Owl Light |
