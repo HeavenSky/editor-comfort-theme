@@ -5,56 +5,58 @@
 <title>规则池人工标注</title>
 <style>
   :root { color-scheme: dark; }
-  body { margin: 0; font: 14px/1.5 -apple-system, "PingFang SC", sans-serif; background: #1e2127; color: #c8ccd4; }
-  header { position: sticky; top: 0; z-index: 1; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
-           padding: 10px 20px; background: #16181d; border-bottom: 1px solid #333; }
+  body { margin: 0; font: 13px/1.4 -apple-system, "PingFang SC", sans-serif; background: #1e2127; color: #c8ccd4; }
+  header { position: sticky; top: 0; z-index: 1; padding: 6px 16px; background: #16181d; border-bottom: 1px solid #333; }
+  header .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   header b { color: #fff; }
-  button, select { font: inherit; background: #2c313a; color: #d7dae0; border: 1px solid #444; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+  .help { margin-top: 4px; color: #7f848e; font-size: 12px; }
+  button, select { font: inherit; background: #2c313a; color: #d7dae0; border: 1px solid #444; border-radius: 5px; padding: 2px 8px; cursor: pointer; }
   button:hover { background: #3a404b; }
-  main { max-width: 1100px; margin: 0 auto; padding: 20px; }
-  .scope { font: 20px/1.4 ui-monospace, Menlo, monospace; color: #fff; word-break: break-all; }
-  .meta { margin: 6px 0 14px; color: #9aa1ad; }
+  #pos { min-width: 70px; text-align: center; color: #fff; font-variant-numeric: tabular-nums; }
+  main { max-width: 1200px; margin: 0 auto; padding: 8px 16px; }
+  .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 6px; }
+  .scope { font: 16px/1.3 ui-monospace, Menlo, monospace; color: #fff; word-break: break-all; }
+  .meta { color: #9aa1ad; font-size: 12px; }
   .meta code { color: #d7dae0; }
-  .cand { display: grid; grid-template-columns: 120px 34px 190px 1fr; gap: 10px; align-items: center; padding: 6px 8px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; }
-  .vote { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #9aa1ad; }
-  .vote .track { flex: 1; height: 10px; background: #2c313a; border-radius: 5px; overflow: hidden; }
-  .vote .fill { height: 100%; background: #61afef; border-radius: 5px; }
-  .vote .n { width: 22px; text-align: right; font-variant-numeric: tabular-nums; }
-  .badge { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 4px; font-size: 12px; line-height: 18px; }
-  .badge.combo { background: #2f4a2a; color: #98c379; }
-  .badge.intuit { background: #4a3a22; color: #e5c07b; }
+  .cand, .themes { display: grid; grid-template-columns: 96px 20px 180px 1fr; gap: 8px; align-items: center; padding: 1px 6px; }
+  .cand { border-radius: 5px; cursor: pointer; border: 1px solid transparent; }
   .cand:hover { background: #262a31; }
   .cand.chosen { border-color: #61afef; background: #22303f; }
-  .key { width: 26px; height: 26px; border-radius: 6px; background: #2c313a; display: grid; place-items: center; font-weight: 600; }
-  .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  .chip { padding: 5px 8px; border-radius: 6px; font: 13px ui-monospace, Menlo, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .themes { display: grid; grid-template-columns: 120px 34px 190px 1fr; gap: 10px; color: #7f848e; font-size: 12px; margin-bottom: 4px; padding: 0 9px; }
-  .themes div:last-child { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-  .nav { display: flex; gap: 10px; align-items: center; margin-top: 16px; color: #9aa1ad; }
-  .help { margin-top: 18px; color: #7f848e; font-size: 13px; }
+  .themes { color: #7f848e; font-size: 11px; }
+  .themes div:last-child, .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  /* 柱形右对齐, 从右往左画; 票数在柱左侧 */
+  .vote { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #9aa1ad; }
+  .vote .n { width: 16px; text-align: right; font-variant-numeric: tabular-nums; }
+  .vote .track { flex: 1; height: 8px; background: #2c313a; border-radius: 4px; overflow: hidden; display: flex; justify-content: flex-end; }
+  .vote .fill { height: 100%; background: #61afef; border-radius: 4px; }
+  .key { width: 20px; height: 20px; border-radius: 4px; background: #2c313a; display: grid; place-items: center; font-weight: 600; font-size: 12px; }
+  .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .badge { display: inline-block; margin-left: 4px; padding: 0 4px; border-radius: 3px; font-size: 11px; line-height: 16px; }
+  .badge.combo { background: #2f4a2a; color: #98c379; }
+  .badge.intuit { background: #4a3a22; color: #e5c07b; }
+  .chip { padding: 1px 6px; border-radius: 4px; font: 12px/18px ui-monospace, Menlo, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .done { color: #98c379; }
-  .bar { flex: 1; min-width: 160px; height: 6px; background: #2c313a; border-radius: 3px; overflow: hidden; }
+  .bar { flex: 1; min-width: 120px; height: 6px; background: #2c313a; border-radius: 3px; overflow: hidden; }
   .bar i { display: block; height: 100%; background: #98c379; }
 </style>
 </head>
 <body>
 <header>
-  <span>规则池标注 <b id="progress"></b></span>
-  <div class="bar"><i id="bar"></i></div>
-  <label>筛选 <select id="filter"><option value="todo">未标注</option><option value="all">全部</option></select></label>
-  <button id="acceptAll" title="把当前筛选里所有未标注项设为推荐值">剩余全部采用推荐</button>
-  <button id="export">导出 pool-overrides.json</button>
+  <div class="row">
+    <button id="prev">← 上一个</button><span id="pos"></span><button id="next">下一个 →</button>
+    <span>已标注 <b id="progress"></b></span>
+    <div class="bar"><i id="bar"></i></div>
+    <label>筛选 <select id="filter"><option value="todo">未标注</option><option value="all">全部</option></select></label>
+    <button id="acceptAll" title="把当前筛选里所有未标注项设为综合推荐">剩余全部采用综合推荐</button>
+    <button id="export">导出 pool-overrides.json</button>
+  </div>
+  <div class="help">
+    <b>1-9 a-z</b> 选候选 · <b>Enter</b> <span class="badge combo">综合推荐</span> · <b>空格</b> <span class="badge intuit">直觉推荐</span>(按命名约定) · <b>← →</b> 翻页 · <b>Backspace</b> 清除 · <b>0</b> 全部角色 ·
+    柱形 = 原主题投票数 · 进度自动保存, 导出后存为 <code>tools/sources/pool-overrides.json</code>
+  </div>
 </header>
 <main>
   <div id="card"></div>
-  <div class="nav">
-    <button id="prev">← 上一个</button><span id="pos"></span><button id="next">下一个 →</button>
-  </div>
-  <div class="help">
-    键盘: <b>1-9</b>, <b>a-z</b> 选对应候选并跳到下一个 · <b>Enter</b> 采用综合推荐 · <b>空格</b> 采用直觉推荐 · <b>← →</b> 翻页 · <b>Backspace</b> 清除当前标注 · <b>0</b> 打开全部角色下拉框.<br>
-    <span class="badge combo">综合推荐</span> 结构规则, 原主题投票与角色优先级综合得出 · <span class="badge intuit">直觉推荐</span> 只按 TextMate 命名约定得出 · 柱形为原主题投票数(颜色与该角色并列最近的主题数).
-    进度自动保存在本浏览器. 完成后点"导出", 把文件存为仓库的 <code>tools/sources/pool-overrides.json</code>, 再运行 <code>uv run tools/gen_vscode.py</code>.
-  </div>
 </main>
 <script>
 const DATA = /*__DATA__*/null;
@@ -102,20 +104,20 @@ function render() {
   index = Math.max(0, Math.min(index, items.length - 1));
   const it = items[index], word = sample(it.scope), chosen = saved[it.scope];
   const max = Math.max(1, ...Object.values(it.votes));
-  const votes = Object.entries(it.votes).map(([r, n]) => `${name(r)} ${n}`).join(', ');
   $('card').innerHTML = `
-    <div class="scope">${it.scope}</div>
-    <div class="meta">${TIER[it.tier]} · 结构规则建议: <code>${it.struct ? name(it.struct) : '无'}</code> · 定义它的原主题 ${it.themes} 个 · 原主题投票: ${votes || '无'}</div>
-    <div class="themes"><div>原主题投票</div><div></div><div></div><div>${DATA.previews.map(p => `<span>${p.name}</span>`).join('')}</div></div>
+    <div class="head">
+      <div class="scope">${it.scope}</div>
+      <div class="meta">${TIER[it.tier]} · 定义它的原主题 ${it.themes} 个${chosen ? ` · <span class="done">已标注: ${name(chosen)}</span>` : ''}</div>
+      <select id="all"><option value="">全部角色…</option>${DATA.roles.map(r => `<option value="${r}" ${r === chosen ? 'selected' : ''}>${name(r)}</option>`).join('')}</select>
+    </div>
+    <div class="themes"><div style="text-align:right">投票</div><div></div><div></div><div>${DATA.previews.map(p => `<span>${p.name}</span>`).join('')}</div></div>
     ${candidates(it).map((r, i) => `
       <div class="cand ${r === chosen ? 'chosen' : ''}" data-role="${r}">
-        <div class="vote"><div class="track"><div class="fill" style="width:${(100 * (it.votes[r] || 0) / max).toFixed(0)}%"></div></div><span class="n">${it.votes[r] || 0}</span></div>
+        <div class="vote"><span class="n">${it.votes[r] || ''}</span><div class="track"><div class="fill" style="width:${(100 * (it.votes[r] || 0) / max).toFixed(0)}%"></div></div></div>
         <div class="key">${KEYS[i]}</div>
         <div class="name">${name(r)}${r === it.recommended ? '<span class="badge combo">综合推荐</span>' : ''}${r === it.struct ? '<span class="badge intuit">直觉推荐</span>' : ''}</div>
         <div class="chips">${DATA.previews.map(p => chip(p, r, word)).join('')}</div>
-      </div>`).join('')}
-    <div style="margin-top:8px"><select id="all"><option value="">全部角色…</option>${DATA.roles.map(r => `<option value="${r}" ${r === chosen ? 'selected' : ''}>${name(r)}</option>`).join('')}</select>
-    ${chosen ? `<span class="done"> 已标注: ${name(chosen)}</span>` : ''}</div>`;
+      </div>`).join('')}`;
   $('pos').textContent = `${index + 1} / ${items.length}`;
   document.querySelectorAll('.cand').forEach(el => el.onclick = () => choose(el.dataset.role));
   $('all').onchange = e => e.target.value && choose(e.target.value);
