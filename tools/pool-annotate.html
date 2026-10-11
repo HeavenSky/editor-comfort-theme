@@ -15,14 +15,20 @@
   .scope { font: 20px/1.4 ui-monospace, Menlo, monospace; color: #fff; word-break: break-all; }
   .meta { margin: 6px 0 14px; color: #9aa1ad; }
   .meta code { color: #d7dae0; }
-  .cand { display: grid; grid-template-columns: 34px 150px 1fr; gap: 10px; align-items: center; padding: 6px 8px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; }
+  .cand { display: grid; grid-template-columns: 120px 34px 190px 1fr; gap: 10px; align-items: center; padding: 6px 8px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; }
+  .vote { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #9aa1ad; }
+  .vote .track { flex: 1; height: 10px; background: #2c313a; border-radius: 5px; overflow: hidden; }
+  .vote .fill { height: 100%; background: #61afef; border-radius: 5px; }
+  .vote .n { width: 22px; text-align: right; font-variant-numeric: tabular-nums; }
+  .badge { display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 4px; font-size: 12px; line-height: 18px; }
+  .badge.combo { background: #2f4a2a; color: #98c379; }
+  .badge.intuit { background: #4a3a22; color: #e5c07b; }
   .cand:hover { background: #262a31; }
   .cand.chosen { border-color: #61afef; background: #22303f; }
-  .cand.rec .name::after { content: " 推荐"; color: #98c379; font-size: 12px; }
   .key { width: 26px; height: 26px; border-radius: 6px; background: #2c313a; display: grid; place-items: center; font-weight: 600; }
   .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
   .chip { padding: 5px 8px; border-radius: 6px; font: 13px ui-monospace, Menlo, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .themes { display: grid; grid-template-columns: 34px 150px 1fr; gap: 10px; color: #7f848e; font-size: 12px; margin-bottom: 4px; }
+  .themes { display: grid; grid-template-columns: 120px 34px 190px 1fr; gap: 10px; color: #7f848e; font-size: 12px; margin-bottom: 4px; padding: 0 9px; }
   .themes div:last-child { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
   .nav { display: flex; gap: 10px; align-items: center; margin-top: 16px; color: #9aa1ad; }
   .help { margin-top: 18px; color: #7f848e; font-size: 13px; }
@@ -45,7 +51,8 @@
     <button id="prev">← 上一个</button><span id="pos"></span><button id="next">下一个 →</button>
   </div>
   <div class="help">
-    键盘: <b>1-9</b> 选候选并跳到下一个 · <b>Enter</b> 采用推荐 · <b>← →</b> 翻页 · <b>Backspace</b> 清除当前标注 · <b>0</b> 打开全部角色下拉框.
+    键盘: <b>1-9</b>, <b>a-z</b> 选对应候选并跳到下一个 · <b>Enter</b> 采用综合推荐 · <b>空格</b> 采用直觉推荐 · <b>← →</b> 翻页 · <b>Backspace</b> 清除当前标注 · <b>0</b> 打开全部角色下拉框.<br>
+    <span class="badge combo">综合推荐</span> 结构规则, 原主题投票与角色优先级综合得出 · <span class="badge intuit">直觉推荐</span> 只按 TextMate 命名约定得出 · 柱形为原主题投票数(颜色与该角色并列最近的主题数).
     进度自动保存在本浏览器. 完成后点"导出", 把文件存为仓库的 <code>tools/sources/pool-overrides.json</code>, 再运行 <code>uv run tools/gen_vscode.py</code>.
   </div>
 </main>
@@ -70,13 +77,12 @@ function sample(scope) {
 function list() {
   return DATA.items.filter(it => filter === 'all' || !(it.scope in saved));
 }
+const KEYS = '123456789abcdefghijklmnopqrstuvwxyz';
+// 全部有票的角色按票数排序, 推荐与已标注的角色即使没票也列出, 最后是"跟随外层"
 function candidates(it) {
-  const out = [it.recommended];
-  if (it.struct && !out.includes(it.struct)) out.push(it.struct);
-  for (const r of Object.keys(it.votes)) if (!out.includes(r) && out.length < 7) out.push(r);
-  if (!out.includes('inherit')) out.push('inherit');
-  if (saved[it.scope] && !out.includes(saved[it.scope])) out.push(saved[it.scope]);
-  return out.slice(0, 9);
+  const out = Object.keys(it.votes).sort((a, b) => it.votes[b] - it.votes[a]);
+  for (const r of [it.recommended, it.struct, saved[it.scope], 'inherit']) if (r && !out.includes(r)) out.push(r);
+  return out.slice(0, KEYS.length);
 }
 function chip(p, role, word) {
   const c = p.roles[role] || p.fg;
@@ -95,14 +101,17 @@ function render() {
   }
   index = Math.max(0, Math.min(index, items.length - 1));
   const it = items[index], word = sample(it.scope), chosen = saved[it.scope];
+  const max = Math.max(1, ...Object.values(it.votes));
   const votes = Object.entries(it.votes).map(([r, n]) => `${name(r)} ${n}`).join(', ');
   $('card').innerHTML = `
     <div class="scope">${it.scope}</div>
     <div class="meta">${TIER[it.tier]} · 结构规则建议: <code>${it.struct ? name(it.struct) : '无'}</code> · 定义它的原主题 ${it.themes} 个 · 原主题投票: ${votes || '无'}</div>
-    <div class="themes"><div></div><div></div><div>${DATA.previews.map(p => `<span>${p.name}</span>`).join('')}</div></div>
+    <div class="themes"><div>原主题投票</div><div></div><div></div><div>${DATA.previews.map(p => `<span>${p.name}</span>`).join('')}</div></div>
     ${candidates(it).map((r, i) => `
-      <div class="cand ${r === it.recommended ? 'rec' : ''} ${r === chosen ? 'chosen' : ''}" data-role="${r}">
-        <div class="key">${i + 1}</div><div class="name">${name(r)}</div>
+      <div class="cand ${r === chosen ? 'chosen' : ''}" data-role="${r}">
+        <div class="vote"><div class="track"><div class="fill" style="width:${(100 * (it.votes[r] || 0) / max).toFixed(0)}%"></div></div><span class="n">${it.votes[r] || 0}</span></div>
+        <div class="key">${KEYS[i]}</div>
+        <div class="name">${name(r)}${r === it.recommended ? '<span class="badge combo">综合推荐</span>' : ''}${r === it.struct ? '<span class="badge intuit">直觉推荐</span>' : ''}</div>
         <div class="chips">${DATA.previews.map(p => chip(p, r, word)).join('')}</div>
       </div>`).join('')}
     <div style="margin-top:8px"><select id="all"><option value="">全部角色…</option>${DATA.roles.map(r => `<option value="${r}" ${r === chosen ? 'selected' : ''}>${name(r)}</option>`).join('')}</select>
@@ -140,8 +149,11 @@ $('export').onclick = () => {
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'SELECT') return;
   const it = list()[index];
-  if (/^[1-9]$/.test(e.key) && it) { const c = candidates(it)[+e.key - 1]; if (c) choose(c); }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = KEYS.indexOf(e.key.toLowerCase());
+  if (e.key.length === 1 && k >= 0 && it) { const c = candidates(it)[k]; if (c) choose(c); }
   else if (e.key === 'Enter' && it) choose(it.recommended);
+  else if (e.key === ' ' && it) { e.preventDefault(); if (it.struct) choose(it.struct); }  // 没有直觉推荐(无结构规则)时不动作
   else if (e.key === 'ArrowRight') move(1);
   else if (e.key === 'ArrowLeft') move(-1);
   else if (e.key === 'Backspace' && it) { delete saved[it.scope]; persist(); render(); }
