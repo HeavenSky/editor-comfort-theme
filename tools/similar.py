@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # ///
 # 主题配色接近度检测: 逐项比对 VS Code 颜色主题, 找出"整体接近, 只有少数几处差别大"的可合并主题对,
-# 把差别大的地方按 (A 色, B 色) 归成差异组供选择, 并可按选择生成合并预览、跑一遍门禁.
+# 把差别大的地方按 (A 色, B 色) 归组, 再按底色聚成几处供选择, 并可按选择生成合并预览、跑一遍门禁.
 #
 # 用法:
 #   uv run tools/similar.py <a.json> <b.json> [更多...]         两两比对; 两个以上时先给接近度矩阵
@@ -24,7 +24,10 @@ DISTINCT = 5.0      # 明显差异, 归入差异组
 MERGE_NEAR_SHARE = 0.80
 # 难辨占比稍低(多半是正文一类覆盖面广的颜色差了 3~5), 其余条件满足时列为"可考虑合并", 由人看差异组决定
 CONSIDER_NEAR_SHARE = 0.60
-MERGE_MAX_GROUPS = 10
+MERGE_MAX_GROUPS = 6
+CONSIDER_MAX_GROUPS = 10
+# 差异组按底色聚类: A 侧与 B 侧的不透明色都在这个色差内即视为同一处选择(例如同一个终端黄派生出的图标, 高亮, 边框)
+CLUSTER_DE = 8.0
 # 编辑区主体: 这些项任何一个明显不同, 两主题写代码时的观感就不同, 不建议合并
 CORE = ['editor.background', 'editor.foreground', 'token:comment', 'token:keyword', 'token:string', 'token:entity.name.function',
         'token:variable', 'token:entity.name.type', 'token:constant.numeric', 'editor.selectionBackground']
@@ -82,14 +85,28 @@ def compare(a: dict, b: dict) -> dict:
         if d >= DISTINCT:
             groups[(ia[k][0].upper(), ib[k][0].upper())].append(k)
     ranked = sorted(groups.items(), key=lambda g: (-max(diffs[k] for k in g[1]), g[0]))
+    opaque = lambda v: h(v.lstrip('#')[:6])
+    clusters = []
+    for (ca, cb), keys in ranked:
+        for cl in clusters:
+            if de2000(opaque(ca), opaque(cl['a'])) < CLUSTER_DE and de2000(opaque(cb), opaque(cl['b'])) < CLUSTER_DE:
+                cl['keys'] += keys
+                cl['pairs'].append((ca, cb))
+                break
+        else:
+            clusters.append(dict(a=ca, b=cb, keys=list(keys), pairs=[(ca, cb)]))
     near = sum(d < NEAR for d in diffs.values()) / len(diffs) if diffs else 0
     core = {k: diffs[k] for k in CORE if k in diffs}
     core_ok = all(d < DISTINCT for d in core.values())
-    few = len(ranked) <= MERGE_MAX_GROUPS and core_ok
-    status = 'merge' if few and near >= MERGE_NEAR_SHARE else 'consider' if few and near >= CONSIDER_NEAR_SHARE else 'no'
+    if core_ok and len(clusters) <= MERGE_MAX_GROUPS and near >= MERGE_NEAR_SHARE:
+        status = 'merge'
+    elif core_ok and len(clusters) <= CONSIDER_MAX_GROUPS and near >= CONSIDER_NEAR_SHARE:
+        status = 'consider'
+    else:
+        status = 'no'
     return dict(n=len(diffs), only_a=len(set(ia) - set(ib)), only_b=len(set(ib) - set(ia)), near=near,
                 distinct=sum(d >= DISTINCT for d in diffs.values()), mean=sum(diffs.values()) / len(diffs) if diffs else 0,
-                core=core, core_ok=core_ok, groups=[(pair, keys, max(diffs[k] for k in keys)) for pair, keys in ranked],
+                core=core, core_ok=core_ok, groups=[((cl['a'], cl['b']), cl['keys'], max(diffs[k] for k in cl['keys'])) for cl in clusters],
                 status=status, diffs=diffs)
 
 
@@ -100,7 +117,7 @@ def name_of(path: str) -> str:
 def report(pa: str, pb: str, r: dict) -> None:
     print(f'\n== {name_of(pa)}  vs  {name_of(pb)}')
     print(f"  共同项 {r['n']} (仅 A {r['only_a']}, 仅 B {r['only_b']}); 难辨(ΔE<{NEAR:g}) {r['near']:.0%}; "
-          f"明显差异(ΔE>={DISTINCT:g}) {r['distinct']} 项 / {len(r['groups'])} 组; 平均 ΔE {r['mean']:.2f}")
+          f"明显差异(ΔE>={DISTINCT:g}) {r['distinct']} 项 / {len(r['groups'])} 处; 平均 ΔE {r['mean']:.2f}")
     core = ', '.join(f"{k.replace('token:', '')} {d:.1f}" for k, d in r['core'].items())
     print(f"  编辑区主体 ΔE: {core}")
     if r['status'] == 'merge':
@@ -173,7 +190,7 @@ def main() -> int:
     pairs = [(x, y) for i, x in enumerate(files) for y in files[i + 1:]]
     results = {p: compare(themes[p[0]], themes[p[1]]) for p in pairs}
     if len(files) > 2:
-        print('接近度矩阵(难辨项占比 / 明显差异组数; * 可合并, ? 可考虑合并):')
+        print('接近度矩阵(难辨项占比 / 明显差异处数; * 可合并, ? 可考虑合并):')
         for x, y in sorted(pairs, key=lambda p: -results[p]['near']):
             r = results[(x, y)]
             mark = {'merge': ' *', 'consider': ' ?'}.get(r['status'], '')
