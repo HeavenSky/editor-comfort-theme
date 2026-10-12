@@ -43,7 +43,7 @@
 		"chat.thinkingShimmer": "#FFFFFF",
 		"chat.workingProgressInsidersIconForeground": "#70C4E5",
 		"chat.workingProgressStableIconForeground": "#8DABEB",
-		"contrastBorder": "#292D3E",
+		"contrastBorder": "#292D3D",
 		"debugExceptionWidget.background": "#2A2D3C",
 		"debugExceptionWidget.border": "#7864A4",
 		"debugIcon.breakpointCurrentStackframeForeground": "#DBB46F",
@@ -81,7 +81,7 @@
 		"diffEditor.unchangedRegionShadow": "#010101",
 		"disabledForeground": "#E1E1E180",
 		"dropdown.background": "#2A2D3C",
-		"dropdown.border": "#7864A4",
+		"dropdown.border": "#5C576A",
 		"dropdown.foreground": "#FFFFFFA8",
 		"editor.background": "#292D3E",
 		"editor.border": "#676E954D",
@@ -129,7 +129,7 @@
 		"editorCursor.foreground": "#7E57C2",
 		"editorError.foreground": "#C67771",
 		"editorGhostText.foreground": "#FFFFFF56",
-		"editorGroup.border": "#6C7083",
+		"editorGroup.border": "#474B5D",
 		"editorGroup.dropBackground": "#7864A473",
 		"editorGroupHeader.noTabsBackground": "#32374C",
 		"editorGroupHeader.tabsBackground": "#323646",
@@ -188,7 +188,7 @@
 		"extensionIcon.privateForeground": "#FFFFFF60",
 		"extensionIcon.sponsorForeground": "#C09ADA",
 		"extensionIcon.starForeground": "#DBB46F",
-		"focusBorder": "#292D3E",
+		"focusBorder": "#71768A",
 		"foreground": "#B9B9B9",
 		"gitDecoration.addedResourceForeground": "#A7C37E",
 		"gitDecoration.conflictingResourceForeground": "#FDEB9CBD",
@@ -202,10 +202,10 @@
 		"gitDecoration.untrackedResourceForeground": "#AAC780F5",
 		"icon.foreground": "#B9B9B9",
 		"input.background": "#343948",
-		"input.border": "#7864A4",
+		"input.border": "#5C576A",
 		"input.foreground": "#FFFFFFB8",
-		"input.placeholderForeground": "#AAAABB",
-		"inputOption.activeBorder": "#FFFFFFCC",
+		"input.placeholderForeground": "#9B9BAB",
+		"inputOption.activeBorder": "#FFFFFF8F",
 		"inputOption.activeForeground": "#B9B9B9",
 		"inputOption.hoverBackground": "#6D707180",
 		"inputValidation.errorBackground": "#BD7D774F",
@@ -373,7 +373,7 @@
 		"titleBar.activeForeground": "#B8B8C8",
 		"titleBar.border": "#323647",
 		"titleBar.inactiveBackground": "#30364C",
-		"toolbar.hoverBackground": "#6D707150",
+		"toolbar.hoverBackground": "#6A6F8050",
 		"tree.indentGuidesStroke": "#6B6B6B",
 		"tree.tableColumnsBorder": "#E1E1E120",
 		"walkThrough.embeddedEditorBackground": "#232635",
@@ -421,37 +421,13 @@
 				"variable.other.global.php punctuation.definition.variable",
 				"variable.scss",
 				"variable.sass",
-				"entity.name.operator.custom-literal",
-				"meta.property-list.css variable.other",
-				"meta.type variable",
-				"meta.type variable.other.readwrite",
-				"meta.decorator variable.other.readwrite",
-				"source.sass variable.other",
-				"source.sass variable.sass",
-				"source.scss variable.other",
-				"source.scss variable.scss",
-				"source.scss variable.sass",
-				"source.css variable.other",
-				"source.css variable.scss",
-				"source.less variable.other",
-				"source.less variable.other.less",
-				"source.less variable.declaration.less",
-				"variable.other",
-				"parameters variable.function",
-				"variable.other.class",
-				"variable.other.member",
-				"variable.other.event",
-				"variable.other.substitution",
-				"source.ruby variable.other.readwrite.instance.ruby",
-				"source.ruby variable.other.readwrite.class.ruby",
-				"source.jinja2 variable.other.jinja2.block",
-				"source.jinja2 variable.other.jinja2",
 				"variable.qraphql",
 				"comment.block.documentation variable",
 				"meta.at-rule.function variable",
 				"meta.at-rule.mixin variable",
 				"meta.function.arguments variable.other.php",
 				"meta.selectionset.graphql meta.arguments.graphql variable.arguments.graphql",
+				"meta.decorator variable.other.readwrite",
 				"meta.decorator variable.other.object",
 				"variable.other.key.toml",
 				"variable.other.alias.yaml",
@@ -469,6 +445,7 @@
 				"variable.other.readwrite.batchfile",
 				"variable.readwrite",
 				"variable.readwrite.other.block",
+				"variable.other",
 				"variable.other.block",
 				"variable.css",
 				"variable.less",
@@ -525,12 +502,6 @@
 				"meta.type.parameters.ts entity.name.type",
 				"meta.type.parameters.tsx entity.name.type",
 				"meta.class entity.name.type.class.tsx",
-				"entity.name.type.class.templated",
-				"entity.name.type.class.generic",
-				"entity.name",
-				"entity.name.type.class.reference",
-				"entity.name.type.class.value",
-				"entity.name.type.object.console",
 				"constant.length.units.css",
 				"keyword.other.unit.less",
 				"constant.length.units.less",
@@ -545,8 +516,8 @@
 				"meta.type.parameters entity.name.type",
 				"source.haskell storage.type",
 				"source.c storage.type",
-				"source.css entity.name.tag",
-				"entity.name.scope-resolution"
+				"entity.name",
+				"source.css entity.name.tag"
 			],
 			"settings": {
 				"foreground": "#D6B57C"
@@ -559,8 +530,7 @@
 				"variable.parameter.function.language.special.cls.python",
 				"variable.language",
 				"variable.language.this.js",
-				"entity.scope.name.cpp",
-				"variable.language.arguments"
+				"entity.scope.name.cpp"
 			],
 			"settings": {
 				"foreground": "#CB888D"
@@ -571,8 +541,7 @@
 			"scope": [
 				"storage.modifier.lifetime.rust",
 				"storage.modifier.import",
-				"source.java storage.modifier.import",
-				"meta.type storage.modifier.array"
+				"source.java storage.modifier.import"
 			],
 			"settings": {
 				"foreground": "#AE8FC4",
@@ -594,15 +563,12 @@
 				"storage.class.std.rust",
 				"object",
 				"variable.assignment.coffee",
-				"support.function.builtin.python",
-				"support.macro",
-				"variable.other.enummember",
 				"support.function.any-method.lua",
 				"support",
-				"emphasis",
+				"support.macro",
 				"function.support.builtin",
 				"function.support.core",
-				"entity",
+				"variable.other.enummember",
 				"string variable"
 			],
 			"settings": {
@@ -649,7 +615,6 @@
 				"constant.language.symbol.double-quoted.elixir",
 				"constant.other.php",
 				"support.other.parenthesis.regexp",
-				"entity.name.label",
 				"constant.other.general.math.tex",
 				"constant.variable",
 				"source.elixir constant.language",
@@ -667,17 +632,8 @@
 				"source.elixir constant.other.symbol.elixir",
 				"source.elixir constant.other.keywords.elixir",
 				"source.go constant.language.go",
-				"constant.other.java",
-				"constant.other.caps",
-				"constant.other.property",
-				"constant.other.citation.latex",
-				"constant.other.character-class.escape",
-				"constant.other.key",
-				"constant.other.elm",
-				"entity.name.constant",
-				"punctuation.section.embedded constant.other",
-				"support.variable",
 				"support.constant.vendored.property-value",
+				"support.variable",
 				"constant.other.date",
 				"constant.other.timestamp",
 				"constant.other.character-class.set.regexp",
@@ -690,13 +646,14 @@
 				"support.constant.sass"
 			],
 			"settings": {
-				"foreground": "#9EB9EF"
+				"foreground": "#92ACE2"
 			}
 		},
 		{
 			"name": "Comfort constant muted",
 			"scope": [
 				"constant.other.character-class.regexp",
+				"entity.name.label",
 				"constant.language.import-export-all.js",
 				"constant.language.import-export-all.ts",
 				"constant.language.null",
@@ -704,7 +661,7 @@
 				"source.elixir meta.module.elixir entity.name.class.elixir",
 				"meta.structure.dictionary.json meta.structure.dictionary.value constant.language",
 				"constant.language.python",
-				"support.constant.handlebars"
+				"entity.name.constant"
 			],
 			"settings": {
 				"foreground": "#7BAAD7",
@@ -803,7 +760,6 @@
 				"keyword.operator.expression.in.jsx",
 				"keyword.operator.expression.in.ts",
 				"keyword.operator.expression.in.tsx",
-				"keyword.operator.member",
 				"markup.list.bullet",
 				"keyword.operator.function.infix",
 				"keyword.operator.other.powershell",
@@ -829,7 +785,6 @@
 				"variable.other.object.js",
 				"variable.parameter.url.scss",
 				"variable.parameter.url.sass",
-				"region.orangish",
 				"variable.parameter.handlebars",
 				"entity.other.attribute-name.handlebars variable.parameter.handlebars",
 				"entity.other.attribute-value.handlebars variable.parameter.handlebars",
@@ -837,7 +792,7 @@
 				"parameter.variable"
 			],
 			"settings": {
-				"foreground": "#9CA6DF"
+				"foreground": "#8C96CE"
 			}
 		},
 		{
@@ -847,17 +802,11 @@
 				"comment",
 				"punctuation.definition.comment",
 				"comment.line.double-slash",
-				"comment.git-status.header.remote",
-				"comment.git-status.header.local",
-				"comment.other.git-status.head",
-				"entity.other.jinja2.delimiter",
-				"markup.ignored",
-				"markup.untracked",
-				"region.whitish",
-				"comment support",
 				"unused.comment",
 				"wildcard.comment",
 				"string.comment",
+				"markup.ignored",
+				"markup.untracked",
 				"brackethighlighter.tag",
 				"brackethighlighter.curly",
 				"brackethighlighter.round",
@@ -914,7 +863,7 @@
 				"variable.other.constant.ruby"
 			],
 			"settings": {
-				"foreground": "#9EB9EF"
+				"foreground": "#92ACE2"
 			}
 		},
 		{
@@ -939,14 +888,6 @@
 				"meta.class.tsx meta.var.expr.tsx storage.type.tsx",
 				"meta.method.declaration storage.type.ts",
 				"meta.method.declaration storage.type.tsx",
-				"entity.other.pseudo-class.css",
-				"entity.other.pseudo-element.css",
-				"region.bluish",
-				"storage.type.extends",
-				"storage.type.function.arrow",
-				"storage.type.modifier",
-				"storage.class.restructuredtext.ref",
-				"storage.type.rust",
 				"meta.var.expr storage.type",
 				"comment.block.documentation storage.type.class",
 				"meta.implementation storage.type.objc",
@@ -974,12 +915,7 @@
 				"storage.modifier.import.java",
 				"storage.modifier.import.groovy",
 				"constant.regexp.xi",
-				"storage.modifier",
-				"storage.modifier.visibility.rust",
-				"storage.modifier.const.rust",
-				"storage.modifier.dyn.rust",
-				"storage.modifier.mut.rust",
-				"storage.modifier.static.rust"
+				"storage.modifier"
 			],
 			"settings": {
 				"foreground": "#BD9DD3"
@@ -1040,17 +976,9 @@
 				"source.go keyword.var.go",
 				"source.go keyword.map.go",
 				"source.go keyword.channel.go",
-				"comment keyword.codetag.notation",
-				"keyword.other.fn.rust",
-				"keyword.other.rust",
-				"keyword.other.where.rust",
-				"keyword.declaration.class.ruby",
-				"keyword.declaration.function.ruby",
-				"keyword.declaration.namespace.ruby",
-				"region.redish",
-				"region.pinkish",
 				"keyword.expressions-and-types.swift",
 				"keyword.other.this",
+				"comment keyword.codetag.notation",
 				"comment.block.documentation keyword",
 				"keyword.other.statement-separator.powershell",
 				"punctuation.section.embedded.coffee",
@@ -1080,11 +1008,6 @@
 				"punctuation.section.embedded.end.php",
 				"source.elixir keyword.special-method",
 				"source.ini keyword.other.definition.ini",
-				"comment keyword",
-				"keyword.other.substitution",
-				"keyword.other.parenthesis.elm",
-				"meta.annotation.rust keyword",
-				"string source punctuation.section.embedded",
 				"support.other.chomping-indicator.yaml"
 			],
 			"settings": {
@@ -1129,14 +1052,11 @@
 				"bold",
 				"support.class.component.js",
 				"support.class.component.tsx",
-				"entity.name.tag.js.jsx support.class.component.js.jsx",
-				"entity.name.tag support.class.component",
-				"source.vue support.class.component",
-				"punctuation.definition.variable",
 				"support.type.vendored.property-name",
 				"source.java storage.type.primitive",
 				"support.class.component",
-				"markup.table"
+				"markup.table",
+				"punctuation.definition.variable"
 			],
 			"settings": {
 				"foreground": "#D6B57C"
@@ -1181,7 +1101,6 @@
 				"variable.other.object.property.cs",
 				"variable.other.property",
 				"variable.other.property.php",
-				"variable.other.property.static",
 				"meta.decorator variable.other.property"
 			],
 			"settings": {
@@ -1220,7 +1139,7 @@
 				"variable.parameter.function-call"
 			],
 			"settings": {
-				"foreground": "#A69CD6",
+				"foreground": "#8C96CE",
 				"fontStyle": ""
 			}
 		},
@@ -1231,8 +1150,7 @@
 				"source.css property-name",
 				"source.elixir support.type.elixir",
 				"meta.method.declaration storage.type.js",
-				"support.type.vendor-prefix.css",
-				"comment support.class",
+				"entity.name.tag support.class.component",
 				"source.css support.type",
 				"source.sass support.type",
 				"source.scss support.type",
@@ -1273,24 +1191,17 @@
 				"support.function.powershell",
 				"meta.function-call.arguments.python",
 				"entity.name.function.decorator.python",
-				"entity.name.function.templated",
-				"entity.name.function.member.static",
-				"entity.name.function.preprocessor",
-				"entity.name.function.operator",
-				"entity.other.animation-name.css",
-				"meta.function-call.python meta.function-call.arguments.python",
-				"variable.annotation",
-				"region.greenish",
 				"entity.name.function.asciidoc",
 				"meta.function-call.object",
 				"meta.function-call.static",
 				"entity.name.function.target.makefile",
+				"variable.annotation",
 				"meta.function-call.generic",
 				"support.function.go",
 				"source.ruby variable.other.readwrite"
 			],
 			"settings": {
-				"foreground": "#9EB9EF"
+				"foreground": "#92ACE2"
 			}
 		},
 		{
@@ -1306,9 +1217,9 @@
 				"constant.character",
 				"keyword.other.new",
 				"source.go constant.other.placeholder.go",
-				"constant.other.placeholder",
 				"constant.character.string.escape",
 				"constant.character.escape.backslash.regexp",
+				"constant.other.placeholder",
 				"string.regexp constant.character.escape"
 			],
 			"settings": {
@@ -1337,9 +1248,6 @@
 				"variable.other.tsx",
 				"variable.tsx",
 				"variable.ts",
-				"comment variable",
-				"comment variable.other",
-				"variable.annotation.rust",
 				"variable.reaedwrite.instance",
 				"variable.language punctuation.definition.variable.php",
 				"variable.other.readwrite.instance.ruby",
@@ -1419,9 +1327,7 @@
 				"keyword.control.conditional.ts",
 				"keyword.control.switch.js",
 				"keyword.control.switch.ts",
-				"source.go keyword.control.go",
-				"keyword.control.directive",
-				"keyword.control.rust"
+				"source.go keyword.control.go"
 			],
 			"settings": {
 				"foreground": "#BD9DD3"
@@ -1442,13 +1348,10 @@
 				"source.python constant",
 				"variable.other.object.property",
 				"entity.other.attribute-name.id.html",
-				"entity.other.attribute-name.parent-selector-suffix.css",
-				"entity.other.attribute-name.css",
-				"entity.other.attribute-name.id.css",
-				"entity.other.attribute-name.pseudo-class.css",
 				"entity.other.attribute-name.handlebars",
 				"fenced_code.block.language",
 				"source.powershell entity.other.attribute-name",
+				"entity.other.attribute-name.pseudo-class.css",
 				"entity.other.attribute-name.pseudo-class.scss",
 				"entity.other.attribute-name.pseudo-class.less",
 				"entity.other.attribute-name.pseudo-class.sass",
@@ -1486,7 +1389,7 @@
 				"support.type.property-name.sass"
 			],
 			"settings": {
-				"foreground": "#B58EC0",
+				"foreground": "#C38AAC",
 				"fontStyle": ""
 			}
 		},
@@ -1511,24 +1414,6 @@
 				"string.interpolated.double.dart",
 				"source.elixir punctuation.definition.string",
 				"string.quoted.double.json punctuation.definition.string.json",
-				"entity.name.operator.custom-literal.string",
-				"meta.attribute-with-value.class string",
-				"meta.attribute.class.html string",
-				"meta.attribute-with-value.id string",
-				"meta.attribute.id.html string",
-				"source.json meta.mapping.key string",
-				"source.yaml meta.mapping.key string",
-				"punctuation.definition.string.template.begin",
-				"punctuation.definition.string.template.end",
-				"string.quoted.template punctuation.definition.string.begin",
-				"string.quoted.template punctuation.definition.string.end",
-				"region.yellowish",
-				"string.unquoted.label",
-				"string.regexp punctuation.definition.string.begin",
-				"string.regexp punctuation.definition.string.end",
-				"string.other.ref",
-				"string.other.restructuredtext.ref",
-				"string.other.git-status.remote",
 				"string.unquoted",
 				"entity.name.filename",
 				"entity.name.directive.restructuredtext",
@@ -1560,11 +1445,6 @@
 				"constant",
 				"constant.numeric.decimal.asm.x86_64",
 				"source.elixir constant.numeric",
-				"constant.numeric.line-number.match.find-in-files",
-				"entity.other.git-status.hex",
-				"entity.name.operator.custom-literal.number",
-				"entity.name.constant.preprocessor",
-				"region.purplish",
 				"unit.css",
 				"unit.scss",
 				"unit.less",
@@ -1593,8 +1473,6 @@
 				"entity.name.tag.scss",
 				"entity.name.tag.sass",
 				"entity.name.tag.yaml",
-				"source.ansible entity.name.tag",
-				"punctuation.section.embedded entity.name.tag",
 				"punctuation.definition.tag.cs",
 				"punctuation.definition.tag.end",
 				"punctuation.definition.tag.begin",
@@ -1646,7 +1524,8 @@
 		{
 			"name": "Comfort italic",
 			"scope": [
-				"markup.italic"
+				"markup.italic",
+				"emphasis"
 			],
 			"settings": {
 				"foreground": "#BD9DD3",
@@ -1704,9 +1583,6 @@
 				"markup.link",
 				"markup.underline.link",
 				"markup.underline.link.image",
-				"string.other.link.title",
-				"string.other.link.description",
-				"string.other.link.description.title",
 				"constant.other.reference.link"
 			],
 			"settings": {
@@ -1718,7 +1594,8 @@
 			"scope": [
 				"string.other.link.title.markdown",
 				"string.other.link.description.markdown",
-				"comment markup.underline.link"
+				"string.other.link.description",
+				"string.other.link.title"
 			],
 			"settings": {
 				"foreground": "#CC8992",
@@ -1743,9 +1620,7 @@
 				"punctuation.definition.tag.xi",
 				"entity.name.tag.doctype",
 				"entity.name.tag.css",
-				"entity.name.tag.custom.css",
-				"comment entity.name.tag",
-				"entity.name.tag.documentation"
+				"entity.name.tag.custom.css"
 			],
 			"settings": {
 				"foreground": "#CB888D",
@@ -1782,14 +1657,11 @@
 				"meta.structure.dictionary.value.json string.quoted.double",
 				"punctuation.definition.string.markdown",
 				"meta.link.inline.markdown punctuation.definition.string",
-				"comment string",
-				"string.quoted.docstring",
-				"meta.annotation.rust string",
-				"meta.attribute.rust string",
-				"string.other.git-status.help.key",
 				"markup.heading.markdown punctuation.definition.string.begin",
 				"markup.heading.markdown punctuation.definition.string.end",
 				"string.unquoted.heredoc punctuation.definition.string",
+				"string.regexp punctuation.definition.string.begin",
+				"string.regexp punctuation.definition.string.end",
 				"string.quoted.docstring.multi",
 				"string.quoted.docstring.multi.python punctuation.definition.string.begin",
 				"string.quoted.docstring.multi.python punctuation.definition.string.end",
@@ -1841,7 +1713,7 @@
 				"source.tsx support.variable"
 			],
 			"settings": {
-				"foreground": "#819BCF",
+				"foreground": "#7BAAD7",
 				"fontStyle": ""
 			}
 		},
@@ -1862,7 +1734,7 @@
 				"ng.attribute-with-value attribute-name",
 				"entity.name.type.module.ts",
 				"entity.name.type.module.jsx",
-				"comment entity.name.type",
+				"entity.name.scope-resolution",
 				"support.function.construct",
 				"support.type.exception"
 			],
@@ -1878,7 +1750,6 @@
 				"source.elixir array",
 				"source.elixir scope",
 				"source.elixir section",
-				"support.function.delimiter.elm",
 				"support.function.magic",
 				"variable.member"
 			],
@@ -1893,10 +1764,6 @@
 				"ng.interpolation bracket",
 				"keyword.operator.other.ruby",
 				"object.comma",
-				"keyword.operator.heading.restructuredtext",
-				"keyword.operator.table.row.restructuredtext keyword.operator.table.data.restructuredtext",
-				"meta.annotation.rust keyword.operator",
-				"keyword.operator.type.annotation",
 				"keyword.operator.negation.regexp"
 			],
 			"settings": {
@@ -1920,7 +1787,6 @@
 			"name": "Comfort storage muted",
 			"scope": [
 				"storage.type.primitive.array.java",
-				"comment storage.type",
 				"constant.regexp"
 			],
 			"settings": {
@@ -1981,24 +1847,10 @@
 				"source.css.sass meta.at-rule variable",
 				"support.class.node.ts",
 				"support.class.node.tsx",
-				"meta.brackets entity.name.function.operator",
-				"punctuation.separator entity.name.function.operator",
-				"meta.function-call.without-arguments.js",
-				"meta.function-call.method.without-arguments.js",
 				"entity.name.function.decorator"
 			],
 			"settings": {
-				"foreground": "#819BCF",
-				"fontStyle": ""
-			}
-		},
-		{
-			"name": "Comfort number muted",
-			"scope": [
-				"constant.numeric.line-number.find-in-files"
-			],
-			"settings": {
-				"foreground": "#CB8B78",
+				"foreground": "#8BA5DA",
 				"fontStyle": ""
 			}
 		}

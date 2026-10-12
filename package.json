@@ -1,12 +1,17 @@
 {
 	"name": "editor-comfort-theme",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"keywords": [
 		"theme",
 		"one dark",
 		"one light",
 		"ayu",
 		"solarized",
+		"github",
+		"dracula",
+		"night owl",
+		"monokai",
+		"palenight",
 		"eye care",
 		"terminal"
 	],
@@ -74,6 +79,11 @@
 				"path": "./themes/comfort-dracula-dark-color-theme.json"
 			},
 			{
+				"label": "Comfort Dracula Light",
+				"uiTheme": "vs",
+				"path": "./themes/comfort-dracula-light-color-theme.json"
+			},
+			{
 				"label": "Comfort Owl Dark",
 				"uiTheme": "vs-dark",
 				"path": "./themes/comfort-owl-dark-color-theme.json"
@@ -89,14 +99,19 @@
 				"path": "./themes/comfort-moka-dark-color-theme.json"
 			},
 			{
+				"label": "Comfort Moka Light",
+				"uiTheme": "vs",
+				"path": "./themes/comfort-moka-light-color-theme.json"
+			},
+			{
 				"label": "Comfort Pale Dark",
 				"uiTheme": "vs-dark",
 				"path": "./themes/comfort-pale-dark-color-theme.json"
 			},
 			{
-				"label": "Comfort Moka Light",
+				"label": "Comfort Pale Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-moka-light-color-theme.json"
+				"path": "./themes/comfort-pale-light-color-theme.json"
 			}
 		]
 	},
@@ -120,18 +135,22 @@
 		"check:template": "node scripts/check-template.mjs",
 		"gen:icon": "node scripts/gen-icon.mjs",
 		"extract:registry": "uv run tools/extract_registry.py",
-		"gen:themes": "uv run tools/gen_vscode.py && uv run tools/gen_terminal.py",
+		"gen:themes": "uv run tools/design.py && uv run tools/gen_vscode.py && uv run tools/gen_terminal.py",
 		"metrics": "uv run tools/metrics.py --strict --check themes/*.json terminal/*.terminal",
 		"similar": "uv run tools/similar.py themes/*.json",
+		"clash": "uv run tools/clash.py && uv run tools/clash.py --markdown",
+		"shots": "node tools/shoot.mjs media/screenshots --jpg",
 		"package": "node scripts/package.mjs",
 		"vscode:prepublish": "npm run build"
 	},
-	"dependencies": {},
 	"devDependencies": {
 		"@types/node": "^26.6.5",
 		"@vscode/vsce": "^4.0.0",
+		"playwright-core": "^1.64.0",
 		"typescript": "^7.0.2",
 		"vitest": "^5.0.3",
+		"vscode-oniguruma": "^2.0.1",
+		"vscode-textmate": "^9.3.2",
 		"vscode-types": "npm:@types/vscode@^1.140.0"
 	},
 	"engines": {
