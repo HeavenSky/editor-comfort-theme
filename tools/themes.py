@@ -6,6 +6,7 @@
 import json, os, re
 
 from colorlib import blend, cr, from_oklch, h, hx, lum, oklch, shift, toward_bg, tune
+from comfort import LIGHT_BG_MAX
 
 SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sources')
 
@@ -39,9 +40,9 @@ def _rgb(v: str):
 
 
 def fit_bg(c, dark: bool):
-    # 底亮度落到防疲劳理想区间: 深色 >= 0.016(近纯黑时字的光晕重), 浅色 <= 0.85(近纯白眩光大); 色相与彩度不变
+    # 底亮度落到防疲劳理想区间: 深色 >= 0.016(近纯黑时字的光晕重), 浅色 <= LIGHT_BG_MAX(0.80, 近纯白眩光大, 久看刺眼); 色相与彩度不变
     L, C, H = oklch(c)
-    while (lum(c) < 0.016 if dark else lum(c) > 0.85) and 0 < L < 1:
+    while (lum(c) < 0.016 if dark else lum(c) > LIGHT_BG_MAX) and 0 < L < 1:
         L += 0.002 if dark else -0.002
         c = from_oklch(L, C, H)
     return c
@@ -98,7 +99,7 @@ def build() -> list[dict]:
                              dict(Black=h('#21252B'), BrightBlack=h('#7F848E'), White=h('#D7DAE0'), BrightWhite=h('#E6E6E6')))))
 
     # ---- Comfort One Light: akamud One Light 2.3.0 的完整护眼适配, 与 Comfort One Dark 同方案;
-    #      底 #FAFAFA(亮度 0.956)眩光偏大, 压暗为 #F0F0F2 再落到底亮度 0.85 以内, 正文压到对比度 8.0(注释封顶 4.2, 两者落差不超过 1.9);
+    #      底 #FAFAFA(亮度 0.956)眩光偏大, 压暗为 #F0F0F2 再落到底亮度 0.80 以内, 正文压到对比度 8.0(注释封顶 4.2, 两者落差不超过 1.9);
     #      原版没有终端色, 终端取原版语法色同口径调校, 亮白取原版底色 #FAFAFA 保证彩色底上的白字可读 ----
     bg = fit_bg(h('#F0F0F2'), False)
     acc = dict(Red='E45649', Green='50A14F', Yellow='C18401', Blue='4078F2', Magenta='A626A4', Cyan='0184BC')
@@ -123,7 +124,7 @@ def build() -> list[dict]:
                    # 官方 black 为近纯黑 #0A0000, 改用 Mirage 的 sunk 面色, 仍够深以保证彩底黑字
                    dict(Black=h('#171B24'), BrightBlack=tune('707A8C', bg, 0.03, 3.4), White=h('#D2D6DC'), BrightWhite=h('#E3E6EA')))))
 
-    # ---- ayu-light: ayu Light, 底由 #FCFCFC 压暗到 #EFF0F2 再落到底亮度 0.85 以内, 字 #5C6166 加深到对比度 7.0 ----
+    # ---- ayu-light: ayu Light, 底由 #FCFCFC 压暗到 #EFF0F2 再落到底亮度 0.80 以内, 字 #5C6166 加深到对比度 7.0 ----
     bg = fit_bg(h('#EFF0F2'), False)
     nor = dict(Red='F07171', Green='86B300', Yellow='EBA400', Blue='22A4E6', Magenta='A37ACC', Cyan='4CBF99')
     T.append(dict(
@@ -144,7 +145,7 @@ def build() -> list[dict]:
                    {n: tune(v, bg, 0.10, 6.5, 0.06) for n, v in SOL_BRIGHT.items()},
                    dict(Black=h('#073642'), BrightBlack=tune('657B83', bg, 0.03, 3.4), White=h('#D3CDBB'), BrightWhite=h('#EEE8D5')))))
 
-    # ---- Comfort Sunlit Light(参考 Solarized Light): base3 #FDF6E3 压暗为 #F5EEDA 再落到底亮度 0.85 以内, 正文取 base01 与 base02 之间, 对比度 7.0 ----
+    # ---- Comfort Sunlit Light(参考 Solarized Light): base3 #FDF6E3 压暗为 #F5EEDA 再落到底亮度 0.80 以内, 正文取 base01 与 base02 之间, 对比度 7.0 ----
     bg = fit_bg(h('#F5EEDA'), False)
     T.append(dict(
         name='comfort-sunlit-light', label='Comfort Sunlit Light', dark=False, gate=True, terminal=True, source='sunlit-light.json',
@@ -160,17 +161,20 @@ def build() -> list[dict]:
         # GitHub Light 的蓝 / 绿原本就深, 与正文几乎一样黑; 最深的语法色压到正文的 0.9 倍, 彩色语法的亮度跨度回到柔和区间
         adapt('comfort-github-light', 'Comfort GitHub Light', 'github-light.json', dark=False, syntax_max=0.9),
         adapt('comfort-dracula-dark', 'Comfort Dracula Dark', 'dracula-dark.json', dark=True),
+        # Dracula / Pale / Moka Light 的原主题由 design.py 以深色原主题为模板生成(Dracula 官方 Alucard 色板, Palenight 色相, 经典 Monokai 色板)
+        adapt('comfort-dracula-light', 'Comfort Dracula Light', 'dracula-light.json', dark=False),
         adapt('comfort-owl-dark', 'Comfort Owl Dark', 'owl-dark.json', dark=True),
         adapt('comfort-owl-light', 'Comfort Owl Light', 'owl-light.json', dark=False),
         adapt('comfort-moka-dark', 'Comfort Moka Dark', 'moka-dark.json', dark=True),
-        adapt('comfort-pale-dark', 'Comfort Pale Dark', 'pale-dark.json', dark=True),
         adapt('comfort-moka-light', 'Comfort Moka Light', 'moka-light.json', dark=False),
+        adapt('comfort-pale-dark', 'Comfort Pale Dark', 'pale-dark.json', dark=True),
+        adapt('comfort-pale-light', 'Comfort Pale Light', 'pale-light.json', dark=False),
     ]
 
     for t in T:
         t.setdefault('syn_cap', min(t['cap'], SYNTAX_CAP))
     # 终端彩色不比正文更刺眼(深色主题): 普通色 <= 正文, 亮色 <= 正文 x 1.2, white <= 正文 x 1.05, 亮白 <= 正文 x 1.25;
-    # 原主题的亮黄 / 亮青 / 白常接近纯白, 满屏 ls / git 输出时成了亮块. 浅色主题的 white 要是浅色(Moka Light 原版把它设成了近黑)
+    # 原主题的亮黄 / 亮青 / 白常接近纯白, 满屏 ls / git 输出时成了亮块. 浅色主题的 white 要是浅色(有的浅色原主题把它设成了近黑)
     for t in T:
         a, bg, text = t['ansi'], t['bg'], cr(t['fg'], t['bg'])
         if t['dark']:

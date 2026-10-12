@@ -1,0 +1,10 @@
+// Less: 属性名应为暗彩, 不加粗
+@primary: #3366ff;
+.mixin(@size) { width: @size; }
+.card:hover > a[href^="http"] {
+  color: @primary;
+  margin: 0 auto;
+  font-weight: bold;
+  .mixin(12px);
+  &::after { content: "→"; }
+}

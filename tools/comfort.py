@@ -19,6 +19,38 @@ PANEL_KEYS = [
     'list.inactiveFocusBackground',
 ]
 PANEL_MAX_CR = 1.6
+# 浅色主题的大面积底色(编辑区底与上面的面板)亮度上限: 再亮就像对着白纸灯箱, 久看刺眼; 编辑区底理想 <= LIGHT_BG_MAX
+LIGHT_BG_MAX = 0.80
+LIGHT_PANEL_MAX = 0.85
+# 分隔布局的边框(编辑器拆分线, 侧栏 / 面板 / 标签栏边线): 只需看得出分界, 与编辑区底的对比度不超过上限, 否则一道道线条抢眼
+BORDER_KEYS = ['editorGroup.border', 'sideBar.border', 'panel.border', 'tab.border', 'editorGroupHeader.tabsBorder', 'activityBar.border',
+               'statusBar.border', 'titleBar.border', 'sideBarSectionHeader.border', 'editorGroupHeader.border', 'panelSection.border',
+               'contrastBorder', 'sideBySideEditor.horizontalBorder', 'sideBySideEditor.verticalBorder']
+BORDER_MAX_CR = 1.6
+# 底色带色调的主题(底色彩度 > TINTED_BG_CHROMA, 如 Sunlit 的青, Owl 的深蓝)里, 大面积底色与悬停 / 选中块不用纯灰:
+# 纯灰块(彩度 < GRAY_CHROMA, 多是 VS Code 硬编码默认色补出来的, 如活动栏 / 工具栏选中图标的底)在有色调的底上发灰, 与主题不搭
+TINT_KEYS = PANEL_KEYS + ['toolbar.hoverBackground', 'toolbar.activeBackground', 'activityBarTop.activeBackground',
+                          'activityBar.activeBackground']
+TINTED_BG_CHROMA, GRAY_CHROMA = 0.03, 0.008
+# 输入框 / 下拉框等控件(问题面板与输出面板的筛选框, 输出面板的通道下拉框, 设置页等): 描边看得出框即可, 不画亮框;
+# 占位提示字(如 Filter (e.g. text, **/...))比输入的字更淡, 落在注释的口径; 输入的字至少 4.5 可读(不超过正文由界面文字规则管);
+# 焦点 / 选项激活描边是指示器, 要看得见, 但不比彩色语法更亮
+CONTROL_BORDER_KEYS = ['input.border', 'dropdown.border', 'checkbox.border', 'panelInput.border', 'settings.textInputBorder',
+                       'settings.dropdownBorder', 'settings.checkboxBorder', 'settings.numberInputBorder']
+CONTROL_BORDER_MAX_CR = 2.0
+CONTROL_TEXT_PAIRS = [('input.foreground', 'input.background'), ('dropdown.foreground', 'dropdown.background'),
+                      ('settings.textInputForeground', 'settings.textInputBackground'),
+                      ('settings.dropdownForeground', 'settings.dropdownBackground')]
+CONTROL_TEXT_MIN = 4.5
+PLACEHOLDER_KEY = 'input.placeholderForeground'
+PLACEHOLDER_CR = (2.8, 4.2)
+# 占位字与注释一样接近中性: 彩色的提示字(如 Pale Light 的紫)在一排图标间很跳
+PLACEHOLDER_MAX_CHROMA = 0.04
+FOCUS_KEYS = ['focusBorder', 'inputOption.activeBorder']
+# 焦点描边对比度上限 = 正文 x FOCUS_MAX: 指示器比正文略收, 不在屏幕上画一圈亮框
+FOCUS_MAX = 0.8
+# 焦点描边对比度下限(WCAG 非文本 3:1): 聚焦的输入框必须比未聚焦时更醒目, 不能比 CONTROL_BORDER_MAX_CR 的普通描边还淡
+FOCUS_MIN_CR = 3.0
 PANEL_MAX_CHROMA = 0.03     # 面板底色的理想最大彩度: 大面积底色应接近中性
 # 画在代码文字下面的高亮底色: 既不能刺眼, 也要让压在上面的正文仍然好读
 HIGHLIGHT_KEYS = [
@@ -66,16 +98,21 @@ FATIGUE_DARK = dict(
     gap=(None, 1.9, None, 2.3),              # 正文 / 注释: 两者落差过大时视线反复调焦
     line_no=(2.0, 2.6, 1.8, 3.0),            # 行号对比度: 常驻视野边缘, 够读即可
     bg=(0.015, 0.035, 0.010, 0.050),         # 底亮度: 近纯黑时字的光晕重
+    bright_panel=(None, 0, None, 0),         # 浅色主题里亮度 > LIGHT_PANEL_MAX 的大面积底色个数(深色主题不计)
+    border=(None, 0, None, 0),               # 与编辑区底对比度 > BORDER_MAX_CR 的布局边框个数
+    gray_patch=(None, 0, None, 0),           # 有色调的底上的纯灰底色个数
+    control=(None, 0, None, 0),              # 抢眼的控件描边, 过亮或看不见的焦点描边, 过亮或过淡的占位字, 难读的输入字个数
     panel_glare=(None, 0, None, 0),          # 与编辑区底对比度 > 1.6 的面板底色个数
     highlight=(None, 0, None, 0),            # 刺眼(> 2.2)或压字难读(< 4.5)的高亮底色个数
     ui_glare=(None, 0, None, 0),             # 比正文更刺眼的界面文字 / 图标个数
     badge=(None, 0, None, 0),                # 刺眼(> 2.2)或字难读(< 3.5)的徽标个数
 )
-FATIGUE_LIGHT = dict(FATIGUE_DARK, text=(7.0, 9.0, 6.0, 11.0), bg=(0.70, 0.85, 0.60, 0.90))
+FATIGUE_LIGHT = dict(FATIGUE_DARK, text=(7.0, 9.0, 6.0, 11.0), bg=(0.65, LIGHT_BG_MAX, 0.55, LIGHT_PANEL_MAX))
 
 NAMES = dict(avg_chroma='平均彩度', max_chroma='最大彩度', span='语法亮度跨度', top_ratio='最亮语法/正文',
              panel_chroma='面板彩度', text='正文', comment='注释', gap='正文/注释', line_no='行号', bg='底亮度',
-             panel_glare='面板亮块', highlight='高亮底色', ui_glare='界面文字刺眼', badge='徽标')
+             panel_glare='面板亮块', highlight='高亮底色', ui_glare='界面文字刺眼', badge='徽标',
+             bright_panel='浅色亮底', border='边框抢眼', control='控件', gray_patch='灰块')
 
 
 def _score(v: float, spec: tuple) -> tuple[float, bool]:
@@ -128,6 +165,53 @@ def _patches(colors: dict, bg: Rgb, fg: Rgb) -> tuple[list[str], list[str]]:
     return glare, bad
 
 
+def border_glare(colors: dict, bg: Rgb) -> list[str]:
+    return [k for k in BORDER_KEYS if k in colors and cr(_parse(colors[k], bg), bg) > BORDER_MAX_CR + 0.03]
+
+
+def control_issues(colors: dict, bg: Rgb, fg: Rgb) -> list[str]:
+    out = []
+    inp = _parse(colors['input.background'], bg) if 'input.background' in colors else bg
+    for k in CONTROL_BORDER_KEYS:
+        if k in colors and cr(_parse(colors[k], bg), bg) > CONTROL_BORDER_MAX_CR + 0.03:
+            out.append(k)
+    for k in FOCUS_KEYS:
+        if k in colors and not FOCUS_MIN_CR - 0.03 <= cr(_parse(colors[k], bg), bg) <= cr(fg, bg) * FOCUS_MAX + 0.03:
+            out.append(k)
+    if PLACEHOLDER_KEY in colors:
+        v = cr(_parse(colors[PLACEHOLDER_KEY], inp), inp)
+        if not PLACEHOLDER_CR[0] - 0.03 <= v <= PLACEHOLDER_CR[1] + 0.03 or \
+                oklch(_parse(colors[PLACEHOLDER_KEY], inp))[1] > PLACEHOLDER_MAX_CHROMA + 0.005:
+            out.append(PLACEHOLDER_KEY)
+    for fk, bk in CONTROL_TEXT_PAIRS:
+        if fk in colors:
+            under = _parse(colors[bk], bg) if bk in colors else bg
+            if cr(_parse(colors[fk], under), under) < CONTROL_TEXT_MIN - 0.03:
+                out.append(fk)
+    return out
+
+
+def gray_patches(colors: dict, bg: Rgb) -> list[str]:
+    if oklch(bg)[1] <= TINTED_BG_CHROMA:
+        return []
+    # 纯黑 / 纯白的半透明叠层只压暗 / 提亮, 色调仍来自底色, 不算; 中间灰(L 0.12~0.92)且占比 >= 20% 才会把底色冲成灰
+    out = []
+    for k in TINT_KEYS:
+        if k not in colors:
+            continue
+        v = colors[k].lstrip('#')
+        L, C, _ = oklch(h(v[:6]))
+        a = int(v[6:8], 16) / 255 if len(v) == 8 else 1.0
+        if C < GRAY_CHROMA and 0.12 < L < 0.92 and a >= 0.2:
+            out.append(k)
+    return out
+
+
+def bright_panels(colors: dict, bg: Rgb) -> list[str]:
+    # 编辑区底本身由 bg 子指标管; 这里看压在视野里的其他大面积底色(侧栏, 面板, 输入框, 标签栏等)
+    return [k for k in PANEL_KEYS if k in colors and lum(_parse(colors[k], bg)) > LIGHT_PANEL_MAX + 0.005]
+
+
 def own_background(colors: dict, key: str, bg: Rgb) -> tuple[Rgb, bool]:
     """前景键所在的底色: 同名的 *background 键(如 tab.activeForeground -> tab.activeBackground), 没有时为编辑区底.
     第二项为该底色是否是彩色小块(与编辑区底对比度超过面板上限, 如按钮, 徽标), 这类底上的字按各自规则另算."""
@@ -178,13 +262,17 @@ def rate(m: dict) -> dict:
     fat_v = dict(text=m['text'], comment=comment, line_no=m.get('line_no'), bg=lum(bg))
     if comment:
         fat_v['gap'] = m['text'] / comment
-    glare = bad = ui = badges = []
+    glare = bad = ui = badges = borders = bright = controls = grays = []
     colors = m.get('colors')
     if colors:
         soft_v['panel_chroma'] = max((oklch(_parse(colors[k], bg))[1] for k in PANEL_KEYS if k in colors), default=0.0)
         glare, bad = _patches(colors, bg, m['fg'])
         ui, badges = ui_text_glare(colors, bg, m['fg']), badge_issues(colors, bg, dark)
-        fat_v.update(panel_glare=len(glare), highlight=len(bad), ui_glare=len(ui), badge=len(badges))
+        borders, bright = border_glare(colors, bg), ([] if dark else bright_panels(colors, bg))
+        controls = control_issues(colors, bg, m['fg'])
+        grays = gray_patches(colors, bg)
+        fat_v.update(panel_glare=len(glare), highlight=len(bad), ui_glare=len(ui), badge=len(badges), border=len(borders),
+                     bright_panel=len(bright), control=len(controls), gray_patch=len(grays))
     soft = _rate(soft_v, SOFT)
     fatigue = _rate(fat_v, FATIGUE_DARK if dark else FATIGUE_LIGHT)
     if glare:
@@ -195,4 +283,12 @@ def rate(m: dict) -> dict:
         fatigue['why'].append('界面文字刺眼: ' + ', '.join(ui))
     if badges:
         fatigue['why'].append('徽标: ' + ', '.join(badges))
+    if colors and borders:
+        fatigue['why'].append('边框抢眼: ' + ', '.join(borders))
+    if colors and grays:
+        fatigue['why'].append('灰块: ' + ', '.join(grays))
+    if colors and controls:
+        fatigue['why'].append('控件: ' + ', '.join(controls))
+    if colors and bright:
+        fatigue['why'].append('浅色亮底: ' + ', '.join(bright))
     return dict(soft=soft, fatigue=fatigue)

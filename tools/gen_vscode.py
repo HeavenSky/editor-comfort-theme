@@ -11,7 +11,10 @@ from colorlib import Rgb, blend, cr, from_oklch, h, hx, lum, oklch, toward_bg, t
 import pool
 from coverage import fill as fill_coverage
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
-from comfort import (BADGE_MAX_CR, BADGE_PAIRS, BADGE_TEXT_MIN, HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, HIGHLIGHT_TEXT_MIN, PANEL_KEYS,
+from comfort import (BADGE_MAX_CR, BADGE_PAIRS, BADGE_TEXT_MIN, BORDER_KEYS, BORDER_MAX_CR, CONTROL_BORDER_KEYS, CONTROL_BORDER_MAX_CR,
+                     CONTROL_TEXT_MIN, CONTROL_TEXT_PAIRS, FOCUS_KEYS, FOCUS_MAX, FOCUS_MIN_CR, GRAY_CHROMA, TINT_KEYS, TINTED_BG_CHROMA, PLACEHOLDER_CR, PLACEHOLDER_KEY, PLACEHOLDER_MAX_CHROMA,
+                     HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR,
+                     HIGHLIGHT_TEXT_MIN, LIGHT_PANEL_MAX, PANEL_KEYS,
                      PANEL_MAX_CHROMA, PANEL_MAX_CR, UI_TEXT_MAX, UI_TEXT_SKIP, own_background)
 from themes import ANSI, build
 
@@ -41,9 +44,6 @@ BUTTON_CHROMA = 0.06
 # 列表选中 / 悬停 / 聚焦行上的字: 用正文色, 不用彩色(彩色像报错或链接)
 LIST_TEXT_KEYS = ['list.activeSelectionForeground', 'list.inactiveSelectionForeground', 'list.focusForeground', 'list.hoverForeground',
                   'list.focusHighlightForeground']
-# 分隔布局的边框: 接近中性, 不画彩色线
-BORDER_KEYS = ['editorGroup.border', 'sideBar.border', 'panel.border', 'tab.border', 'editorGroupHeader.tabsBorder', 'activityBar.border',
-               'statusBar.border', 'titleBar.border', 'sideBarSectionHeader.border', 'editorGroupHeader.border', 'panelSection.border']
 # 行号对比度上限: 常驻视野边缘, 够读即可(防疲劳理想 2.0~2.6)
 LINE_NO_MAX = 2.6
 # 画在代码上的界面色, 按语法色的规则调色
@@ -290,7 +290,9 @@ def calm(colors: dict, t: dict) -> None:
         a = int(alpha, 16) / 255 if alpha else 1.0
         limit = PANEL_MAX_CR if k in PANEL_KEYS else HIGHLIGHT_MAX_CR
         # 留 0.03 余量, 避免 hex 取整后又越过门禁边界
-        bad = lambda c, a: cr(blend(c, bg, a), bg) > limit - 0.03 or (
+        # 浅色主题的大面积底色另有亮度上限(LIGHT_PANEL_MAX): 比编辑区底更亮的输入框, 弹窗等像一块块白纸
+        bright = lambda c, a: not t['dark'] and k in PANEL_KEYS and lum(blend(c, bg, a)) > LIGHT_PANEL_MAX - 0.01
+        bad = lambda c, a: cr(blend(c, bg, a), bg) > limit - 0.03 or bright(c, a) or (
             k in HIGHLIGHT_KEYS and cr(fg, blend(c, bg, a)) < HIGHLIGHT_TEXT_MIN + 0.03)
         if bad(rgb, a):
             if alpha:
@@ -393,6 +395,19 @@ def quiet_lists_and_borders(colors: dict, t: dict, m: 'Mapper') -> None:
         if p and oklch(p[0])[1] > PANEL_MAX_CHROMA:
             L, C, H = oklch(p[0])
             colors[k] = hx(from_oklch(L, PANEL_MAX_CHROMA, H)) + p[1]
+        # 只需看得出分界: 与编辑区底的对比度压到 BORDER_MAX_CR(如 Dracula 的拆分线原本 6.5, 一道亮线贯穿屏幕)
+        p = parse(colors.get(k))
+        if p is None:
+            continue
+        rgb, alpha = p
+        a = int(alpha, 16) / 255 if alpha else 1.0
+        if cr(blend(rgb, bg, a), bg) > BORDER_MAX_CR:
+            if alpha:
+                while a > 0.05 and cr(blend(rgb, bg, a), bg) > BORDER_MAX_CR - 0.02:
+                    a -= 0.02
+                colors[k] = hx(rgb) + '%02X' % round(a * 255)
+            else:
+                colors[k] = hx(toward_bg(rgb, bg, BORDER_MAX_CR - 0.02))
     k = 'gitDecoration.ignoredResourceForeground'
     p = parse(colors.get(k))
     if p and m.comment_cr:
@@ -425,6 +440,93 @@ def quiet_ui_text(colors: dict, t: dict) -> None:
             colors[k] = hx(rgb) + '%02X' % round(a * 255)
         else:
             colors[k] = hx(toward_bg(rgb, under, limit - 0.02))
+
+
+def cap_cr(colors: dict, k: str, under: Rgb, limit: float) -> None:
+    """k 的颜色与 under 的对比度压到 limit 以内: 半透明色降透明度, 不透明色朝底色收明度, 色相不变."""
+    p = parse(colors.get(k))
+    if p is None:
+        return
+    rgb, alpha = p
+    a = int(alpha, 16) / 255 if alpha else 1.0
+    if cr(blend(rgb, under, a), under) <= limit:
+        return
+    if alpha:
+        while a > 0.05 and cr(blend(rgb, under, a), under) > limit - 0.02:
+            a -= 0.02
+        colors[k] = hx(rgb) + '%02X' % round(a * 255)
+    else:
+        colors[k] = hx(toward_bg(rgb, under, limit - 0.02))
+
+
+def tint_grays(colors: dict, t: dict) -> None:
+    # 底色带色调的主题里, 中间灰的底色块(多为 VS Code 默认色补出, 如活动栏 / 工具栏选中图标的底, 列表失焦选中行)换成底色的色调:
+    # 色相取编辑区底, 彩度取底色彩度(封顶 PANEL_MAX_CHROMA), 明度与透明度不变; 口径见 comfort.gray_patches
+    L0, C0, H0 = oklch(t['bg'])
+    if C0 <= TINTED_BG_CHROMA:
+        return
+    for k in TINT_KEYS:
+        p = parse(colors.get(k))
+        if p is None:
+            continue
+        rgb, alpha = p
+        L, C, H = oklch(rgb)
+        a = int(alpha, 16) / 255 if alpha else 1.0
+        if C < GRAY_CHROMA and 0.12 < L < 0.92 and a >= 0.2:
+            colors[k] = hx(from_oklch(L, min(C0, PANEL_MAX_CHROMA - 0.002), H0)) + alpha
+
+
+def quiet_controls(colors: dict, t: dict) -> None:
+    # 输入框 / 下拉框(问题面板与输出面板的筛选框, 输出通道下拉框等): 描边去彩度并压到 CONTROL_BORDER_MAX_CR, 焦点描边不超过 正文 x FOCUS_MAX;
+    # 占位提示字落到 PLACEHOLDER_CR(注释口径, 比输入的字淡), 输入的字至少 CONTROL_TEXT_MIN; 口径见 comfort.control_issues
+    bg, fg = t['bg'], t['fg']
+    inp = opaque(colors, 'input.background', bg) or bg
+    for k in CONTROL_BORDER_KEYS:
+        p = parse(colors.get(k))
+        if p and oklch(p[0])[1] > PANEL_MAX_CHROMA:
+            L, C, H = oklch(p[0])
+            colors[k] = hx(from_oklch(L, PANEL_MAX_CHROMA, H)) + p[1]
+        cap_cr(colors, k, bg, CONTROL_BORDER_MAX_CR)
+    for k in FOCUS_KEYS:
+        cap_cr(colors, k, bg, cr(fg, bg) * FOCUS_MAX)
+        # 太淡时提到 FOCUS_MIN_CR(半透明色先叠成不透明), 色相不变: 否则聚焦的输入框反而比未聚焦的描边更暗(如 Owl / Pale 的焦点描边 1.0)
+        c = opaque(colors, k, bg)
+        if c is not None and cr(c, bg) < FOCUS_MIN_CR:
+            colors[k] = hx(tune(hx(c), bg, t['cap'], FOCUS_MIN_CR + 0.02))
+    ph = opaque(colors, PLACEHOLDER_KEY, inp)
+    if ph is not None:
+        lo, hi = PLACEHOLDER_CR
+        L, C, H = oklch(ph)
+        if C > PLACEHOLDER_MAX_CHROMA:
+            ph = from_oklch(L, PLACEHOLDER_MAX_CHROMA - 0.002, H)
+            colors[PLACEHOLDER_KEY] = hx(ph)
+        if cr(ph, inp) > hi:
+            colors[PLACEHOLDER_KEY] = hx(toward_bg(ph, inp, hi - 0.02))
+        elif cr(ph, inp) < lo:
+            colors[PLACEHOLDER_KEY] = hx(tune(hx(ph), inp, 1.0, lo + 0.02))
+    for fk, bk in CONTROL_TEXT_PAIRS:
+        under = opaque(colors, bk, bg) or bg
+        c = opaque(colors, fk, under)
+        if c is not None and cr(c, under) < CONTROL_TEXT_MIN:
+            colors[fk] = hx(tune(hx(c), under, 1.0, CONTROL_TEXT_MIN + 0.02))
+
+
+# 源代码管理 Graph 视图的分支标签: 字是 historyItemHoverLabelForeground(默认取面板底), 底是各 ref 色(默认取 charts.blue / charts.purple)
+GRAPH_LABEL_TEXT = 'scmGraph.historyItemHoverLabelForeground'
+GRAPH_REF_KEYS = [('scmGraph.historyItemRefColor', 'charts.blue', 'editorInfo.foreground'),
+                  ('scmGraph.historyItemRemoteRefColor', 'charts.purple'), ('scmGraph.historyItemBaseRefColor',)]
+GRAPH_LABEL_MIN = 4.5
+
+
+def graph_labels(colors: dict, t: dict) -> None:
+    # 标签字回到 VS Code 的默认取色(面板底); 原主题沿用的浅灰字落在 ref 色块上几乎看不清, 如 One Dark Pro 的 #B1B1B1 字压在蓝底上.
+    # ref 色与字不够 GRAPH_LABEL_MIN 时沿远离字色的方向推明度, 色相不变
+    colors.pop(GRAPH_LABEL_TEXT, None)
+    bg = opaque(colors, 'panel.background', t['bg']) or t['bg']
+    for chain in GRAPH_REF_KEYS:
+        ref = next((opaque(colors, k, bg) for k in chain if colors.get(k)), None)
+        if ref is not None and cr(ref, bg) < GRAPH_LABEL_MIN:
+            colors[chain[0]] = hx(tune(hx(ref), bg, t['cap'], GRAPH_LABEL_MIN))
 
 
 def transform(t: dict, src: dict) -> dict:
@@ -461,6 +563,9 @@ def transform(t: dict, src: dict) -> dict:
     quiet_buttons(colors, t)
     quiet_lists_and_borders(colors, t, m)
     quiet_ui_text(colors, t)
+    quiet_controls(colors, t)
+    tint_grays(colors, t)
+    graph_labels(colors, t)
 
     rules = pool_rules(src, m, t)
     # 语义着色交给 VS Code 内置的语义 token -> TextMate scope 映射, 与规则池一致; 原主题自带的语义色不再沿用
@@ -500,6 +605,7 @@ def derive_variable(colors: dict, t: dict) -> str | None:
 PROP_NAME_HUES = ['prop_name']
 # 调色后撞色: 两个不同族角色 ΔE < CLASH_DE 而原主题里 ΔE >= APART_DE, 说明是调色(统一对比度, 封顶彩度)把它们挤到了一起
 CLASH_DE, APART_DE, SEPARATE_DE = 5.0, 10.0, 6.0
+SEPARATE_FIXED = {'text', 'comment', 'bold', 'italic'}
 
 
 def muted_floor(colors: dict, t: dict) -> float:
@@ -583,24 +689,33 @@ def separate(keyed: dict, src_colors: dict, t: dict, floor: float) -> None:
                 break
         keyed[k] = hx(pick)
 
-    keys = [k for k in keyed if keyed[k] and oklch(parse(keyed[k])[0])[1] > NEUTRAL_CHROMA and src_colors.get(base(k))]
+    # 近中性的角色也参与(两个原本不同的灰被挤成一样同样是撞色), 但正文, 注释这类基准色不动
+    keys = [k for k in keyed if keyed[k] and src_colors.get(base(k))]
     for _ in range(4):
         moved = False
         for i, a in enumerate(keys):
             for b in keys[i + 1:]:
                 ra, rb = base(a), base(b)
-                if ra == rb or pool.FAMILY.get(ra, ra) == pool.FAMILY.get(rb, rb):
+                if ra == rb or pool.FAMILY.get(ra, ra) == pool.FAMILY.get(rb, rb) or (ra in SEPARATE_FIXED and rb in SEPARATE_FIXED):
+                    continue
+                # Markdown 角色只出现在文档里, 与代码角色不会同屏; 文档内部由 separate_markdown 分开
+                if (ra in MARKDOWN_ROLES) != (rb in MARKDOWN_ROLES):
                     continue
                 ca, cb = parse(keyed[a])[0], parse(keyed[b])[0]
                 if de2000(ca, cb) >= CLASH_DE or de2000(src_colors[ra], src_colors[rb]) < APART_DE:
                     continue
                 # 原主题里对比度高的一方仍更醒目
                 strong, weak = (a, b) if cr(src_colors[ra], t['src_bg']) >= cr(src_colors[rb], t['src_bg']) else (b, a)
-                push(strong, True, parse(keyed[weak])[0])
-                push(weak, False, parse(keyed[strong])[0])
+                # 正文, 注释等基准色(SEPARATE_FIXED)不动, 只移动另一方
+                if base(strong) not in SEPARATE_FIXED:
+                    push(strong, True, parse(keyed[weak])[0])
+                if base(weak) not in SEPARATE_FIXED:
+                    push(weak, False, parse(keyed[strong])[0])
                 if de2000(parse(keyed[a])[0], parse(keyed[b])[0]) < SEPARATE_DE:
                     # 明度拉不开(暗彩可动范围窄, 或已到对比度边界): 暗彩一方优先, 否则较弱一方, 色相在 ±25° 内转开
                     mover = a if a.endswith(' muted') and not b.endswith(' muted') else b if b.endswith(' muted') else weak
+                    if base(mover) in SEPARATE_FIXED:
+                        mover = b if mover == a else a
                     turn(mover, b if mover == a else a)
                 moved = True
         if not moved:
@@ -619,11 +734,16 @@ FORCED_APART = [('constant', 'prop_name')]
 
 
 def turn_apart(keyed: dict, key: str, others: list, t: dict, goal: float = SEPARATE_DE + 4) -> None:
-    """key 的颜色转色相(±90° 内), 取与 others 最小色差最大者; 明度与彩度不变, 对比度补回原值."""
+    """key 的颜色转色相(±90° 内), 与 others 的最小色差达到 goal; 达到的候选里取离本主题其余不同族颜色最远的,
+    免得为了与 others 分开又撞上别的角色(如行内代码转到转义色). 都达不到时取与 others 最小色差最大者.
+    明度与彩度不变, 对比度补回原值."""
     from colorlib import de2000
     c = parse(keyed[key])[0]
     L, C, H = oklch(c)
-    best, pick = min(de2000(c, o) for o in others), c
+    fam = pool.FAMILY.get(key.split()[0], key)
+    rest = [parse(v)[0] for k, v in keyed.items()
+            if v and k != key and pool.FAMILY.get(k.split()[0], k) != fam and oklch(parse(v)[0])[1] > NEUTRAL_CHROMA]
+    best, pick, ok = min(de2000(c, o) for o in others), c, None
     for deg in [d * s for d in range(4, 92, 4) for s in (1, -1)]:
         n = from_oklch(L, C, H + math.radians(deg))
         # 转色相会带动亮度; 对比度补回原值, 免得掉到语法色下限(或清晰评"高"的 5.0)以下
@@ -633,8 +753,10 @@ def turn_apart(keyed: dict, key: str, others: list, t: dict, goal: float = SEPAR
         if score > best:
             best, pick = score, n
         if score >= goal:
-            break
-    keyed[key] = hx(pick)
+            spare = min((de2000(n, o) for o in rest), default=99)
+            if ok is None or spare > ok[0]:
+                ok = (spare, n)
+    keyed[key] = hx(ok[1] if ok else pick)
 
 
 def separate_forced(keyed: dict, t: dict) -> None:

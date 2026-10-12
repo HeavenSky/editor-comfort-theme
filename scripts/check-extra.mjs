@@ -37,6 +37,7 @@ export default function checks(root) {
 	}
 	const files = dir => readdirSync(join(root, dir)).map(name => join(dir, name));
 	return {
+		"设计主题的原主题与 tools/design.py 一致": () => runUv(root, ["tools/design.py", "--check"]),
 		"主题生成物与 tools/themes.py 一致": () => runUv(root, ["tools/gen_vscode.py", "--check"]),
 		"配色指标达标 (清晰 >= 中高, 护眼 = 好, 柔和与防疲劳通过)": () =>
 			runUv(root, [
