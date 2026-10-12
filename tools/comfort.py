@@ -14,6 +14,9 @@ PANEL_KEYS = [
     'inputValidation.infoBackground', 'inputValidation.warningBackground', 'inputValidation.errorBackground',
     'mergeEditor.changeBase.background', 'list.dropBackground', 'editor.lineHighlightBackground', 'editorGutter.background',
     'minimap.background',
+    # 列表选中 / 悬停底色(文件树, 问题面板等): 同样是成片的底色, 不应是饱和色条
+    'list.activeSelectionBackground', 'list.inactiveSelectionBackground', 'list.focusBackground', 'list.hoverBackground',
+    'list.inactiveFocusBackground',
 ]
 PANEL_MAX_CR = 1.6
 PANEL_MAX_CHROMA = 0.03     # 面板底色的理想最大彩度: 大面积底色应接近中性
@@ -32,7 +35,7 @@ HIGHLIGHT_TEXT_MIN = 3.5
 UI_TEXT_MAX = 1.0
 # 不受此限的前景键: 终端色板与光标另有规则, 正文本身是基准
 UI_TEXT_SKIP = ('terminal.ansi', 'editorCursor.', 'terminalCursor.', 'editor.foreground', 'terminal.foreground')
-# 徽标(活动栏角标, 计数等): 深色主题里底色与编辑区底的对比度不超过上限, 免得一个个亮块抢眼; 徽标上的字要可读
+# 徽标(活动栏角标, 计数等): 底色与编辑区底的对比度不超过上限, 免得一个个亮块(深色主题)或暗斑(浅色主题)抢眼; 徽标上的字要可读
 BADGE_PAIRS = [
     ('activityBarBadge.background', 'activityBarBadge.foreground'), ('badge.background', 'badge.foreground'),
     ('activityErrorBadge.background', 'activityErrorBadge.foreground'),
@@ -66,7 +69,7 @@ FATIGUE_DARK = dict(
     panel_glare=(None, 0, None, 0),          # 与编辑区底对比度 > 1.6 的面板底色个数
     highlight=(None, 0, None, 0),            # 刺眼(> 2.2)或压字难读(< 4.5)的高亮底色个数
     ui_glare=(None, 0, None, 0),             # 比正文更刺眼的界面文字 / 图标个数
-    badge=(None, 0, None, 0),                # 刺眼(深色 > 2.2)或字难读(< 3.5)的徽标个数
+    badge=(None, 0, None, 0),                # 刺眼(> 2.2)或字难读(< 3.5)的徽标个数
 )
 FATIGUE_LIGHT = dict(FATIGUE_DARK, text=(7.0, 9.0, 6.0, 11.0), bg=(0.70, 0.85, 0.60, 0.90))
 
@@ -154,7 +157,7 @@ def badge_issues(colors: dict, bg: Rgb, dark: bool) -> list[str]:
             continue
         under = _parse(colors[bk], bg)
         text = _parse(colors[fk], under) if fk in colors else None
-        if (dark and cr(under, bg) > BADGE_MAX_CR + 0.03) or (text is not None and cr(text, under) < BADGE_TEXT_MIN - 0.03):
+        if cr(under, bg) > BADGE_MAX_CR + 0.03 or (text is not None and cr(text, under) < BADGE_TEXT_MIN - 0.03):
             out.append(bk)
     return out
 

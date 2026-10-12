@@ -68,7 +68,8 @@ def tune(hexc: str, bg: Rgb, cap: float, min_cr: float, dl: float = 0.0) -> Rgb:
     """彩度封顶 cap, 明度偏移 dl, 再沿远离背景的方向推明度直到对比度 >= min_cr; 色相不变."""
     L, C, H = oklch(h(hexc))
     L += dl
-    C = min(C, cap)
+    # 留 0.0015 余量, 避免 hex 取整后彩度越过 cap
+    C = min(C, cap - 0.0015)
     c = from_oklch(L, C, H)
     step = 0.002 if lum(bg) < 0.2 else -0.002
     while cr(c, bg) < min_cr and 0 < L < 1:

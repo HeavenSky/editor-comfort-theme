@@ -9,7 +9,7 @@
 #   1 结构规则: 按 TextMate 命名约定推出角色, 且没有被多数原主题反对
 #   2 无结构规则, 但各原主题的候选角色有交集
 #   3/4/5 需人工: 结构规则被多数原主题反对 / 只有一个原主题定义 / 原主题分歧; 未标注前用推荐值
-# 人工标注存于 tools/sources/pool-overrides.json({选择器: 角色}), 优先级最高.
+# 人工标注存于 tools/sources/pool-overrides.json({选择器: 角色}), 优先级最高; 角色写成 "<角色> muted" 时强制按暗彩生成.
 #
 # 用法:
 #   uv run tools/pool.py                      各层数量与待标注数
@@ -20,7 +20,7 @@ from collections import Counter, defaultdict
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from colorlib import oklch
+from colorlib import cr, oklch
 
 SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sources')
 OVERRIDES = os.path.join(SOURCES, 'pool-overrides.json')
@@ -52,6 +52,8 @@ ROLES = {
     'parameter': (['variable.parameter', 'variable', FG], None),
     'this': (['variable.language', 'keyword'], None),
     'property': (['variable.other.property', 'variable.other.object.property', 'support.type.property-name', 'variable', FG], None),
+    # 样式表 / 配置文件的属性名: 色相取声明类型(复核时用户选定), 由 gen_vscode 压暗到语法色下限, 不加粗不斜体(见 PLAIN)
+    'prop_name': (['storage.type', 'storage', 'keyword'], ''),
     'key': (['support.type.property-name', 'meta.object-literal.key', 'variable.other.property', 'entity.other.attribute-name'], None),
     'tag': (['entity.name.tag', 'keyword'], None),
     'attribute': (['entity.other.attribute-name', 'variable.other.property', 'constant.numeric'], None),
@@ -73,6 +75,19 @@ NAMES = dict(comment='注释', string='字符串', regexp='正则', escape='转�
              italic='斜体', quote='引用', raw='行内代码', link='链接', inserted='新增', deleted='删除', invalid='错误', text='正文',
              inherit='跟随外层')
 NAMES['class'] = '类'
+NAMES['prop_name'] = '属性名(样式表, 暗彩)'
+# 暗彩(muted): 原主题里该选择器被有意压暗(或人工把原本灰白的改成了彩色), 生成时用本角色色的暗淡版本, 不加粗(斜体保留).
+# 判据只看原主题里显式写出该选择器的规则(前缀继承不算), 多数原主题满足其一:
+#   比该原主题里本角色的正常色暗(对比度 < 它 x MUTED_REL), 且色相相近(< MUTED_HUE 度)或整体也偏暗(< 语法色中位数 x MUTED_ABS);
+#   灰白且比正文明显暗(< 正文 x MUTED_REL), 即原主题有意弱化的灰;
+#   或者是人工标注的选择器, 而原主题多数给的是灰白(彩度 < MUTED_NEUTRAL), 或整体偏暗(< 语法色中位数 x MUTED_ABS).
+# 人工标注用宽口径: 那一轮标注只看了色块, 没有看到字体样式与对比度(2026-10-12 复查), 偏暗的一律按弱化处理.
+# 只比中位数不比角色色会误伤: 某角色在原主题里本来就偏暗(如 Monokai 的标题), 那是它的正常色而不是弱化.
+MUTED_ABS, MUTED_REL, MUTED_HUE, MUTED_NEUTRAL = 0.80, 0.85, 30, 0.035
+# 不做暗彩的角色: 本身就是灰白或靠字体样式表意
+MUTED_SKIP = {'comment', 'text', 'bold', 'italic', 'quote', 'inserted', 'deleted', 'invalid', 'prop_name'}
+# 强制取消字体样式的角色: 不沿用原主题取色链上的 bold / italic(如 Solarized 的 storage 加粗)
+PLAIN = {'prop_name'}
 
 # 结构规则: TextMate 命名约定 -> 角色; 选择器(后代选择器取最右一段)按最长前缀命中
 STRUCT = [
@@ -101,7 +116,7 @@ STRUCT = [
 # 平票时的角色优先级: 一个原主题常把同一种颜色分给多个角色(如 One Dark 的变量, 标签, 删除同为红),
 # 按颜色反推只能得到并列候选; 并列时取常见的语法角色, 少见的 markup / diff 角色排最后
 PRIORITY = ['keyword', 'control', 'storage', 'modifier', 'function', 'builtin_fn', 'type', 'class', 'builtin_type', 'variable',
-            'property', 'key', 'parameter', 'this', 'string', 'number', 'constant', 'constant_var', 'escape', 'regexp', 'operator',
+            'property', 'key', 'prop_name', 'parameter', 'this', 'string', 'number', 'constant', 'constant_var', 'escape', 'regexp', 'operator',
             'tag', 'attribute', 'namespace', 'inherited', 'comment', 'text', 'raw', 'link', 'quote', 'heading', 'bold', 'italic',
             'inserted', 'deleted', 'invalid']
 _rank = {r: i for i, r in enumerate(PRIORITY)}
@@ -114,8 +129,14 @@ def pick(counter: Counter, among=None) -> str:
 
 # 变量派生色要与之拉开色差的角色: 代码里常与变量相邻出现的颜色
 DERIVE_CONTEXT = ['parameter', 'storage', 'keyword', 'control', 'function', 'builtin_fn', 'string', 'number', 'constant', 'operator',
-                  'property', 'key', 'type', 'class', 'builtin_type', 'attribute', 'tag', 'this', 'comment', 'text',
-                  'inherited', 'namespace', 'constant_var', 'escape', 'regexp']
+                  'property', 'key', 'prop_name', 'type', 'class', 'builtin_type', 'attribute', 'tag', 'this', 'comment', 'text',
+                  'inherited', 'namespace', 'constant_var', 'escape', 'regexp', 'invalid', 'deleted', 'link']
+# 语义同族的角色: 同族撞色可接受(原主题也常同色), 不同族的两个角色调色后撞色要拉开(gen_vscode.separate)
+FAMILIES = [['keyword', 'control', 'storage', 'modifier', 'operator', 'this'], ['function', 'builtin_fn'],
+            ['type', 'class', 'builtin_type', 'inherited', 'namespace'], ['constant', 'number', 'constant_var'],
+            ['string', 'raw', 'inserted', 'link'], ['escape', 'regexp'], ['key', 'property', 'prop_name', 'attribute'],
+            ['tag', 'heading'], ['comment', 'quote'], ['text', 'bold', 'italic'], ['deleted', 'invalid']]
+FAMILY = {r: i for i, fam in enumerate(FAMILIES) for r in fam}
 
 
 # 常用语言排在标注页前面
@@ -184,6 +205,7 @@ def build(themes: list[dict]) -> dict:
     """选择器 -> {struct, cands(各原主题里颜色并列最近的候选角色集合), tier, recommended, role}."""
     from gen_vscode import source_fg
     cands = defaultdict(list)
+    looks = defaultdict(list)  # 选择器 -> [(原主题规则, 底色, 正文色, 中位对比度, 该原主题里显式写的颜色)]
     order = []
     seen = set()
     for t in sorted(themes, key=lambda t: -len(_load(os.path.join(SOURCES, t['source'])).get('tokenColors', []))):
@@ -197,6 +219,17 @@ def build(themes: list[dict]) -> dict:
         fg = _rgb(source_fg(src, t['dark']))
         palette = {r: c for r in ROLES if (c := _rgb(role_value(rules, r, None))) is not None}
         palette['text'] = fg
+        bg = _rgb(src['colors'].get('editor.background'))
+        crs = sorted(cr(c, bg) for r in rules if (c := _rgb(r.get('settings', {}).get('foreground'))))
+        med = crs[len(crs) // 2] if crs else 0
+        last = {}
+        for rule in rules:
+            c = _rgb(rule.get('settings', {}).get('foreground'))
+            if c is not None:
+                for sel in scopes_of(rule):
+                    last[sel] = c
+        for sel, c in last.items():
+            looks[sel].append((rules, bg, fg, med, c))
         for rule in rules:
             rgb = _rgb(rule.get('settings', {}).get('foreground'))
             if rgb is None:
@@ -231,7 +264,35 @@ def build(themes: list[dict]) -> dict:
                 tier, rec = (4 if len(cs) == 1 else 5), pick(votes)
         pool[sel] = dict(struct=sr, votes=dict(votes.most_common()), themes=len(cs), tier=tier, recommended=rec,
                          role=overrides.get(sel, rec), annotated=sel in overrides)
+        role, _, flag = pool[sel]['role'].partition(' ')
+        pool[sel]['role'] = role
+        pool[sel]['muted'] = flag == 'muted' or _muted(looks[sel], role, pool[sel]['annotated'])
     return pool
+
+
+def _hue_gap(a, b) -> float:
+    d = oklch(a)[2] - oklch(b)[2]
+    return abs(math.degrees(math.atan2(math.sin(d), math.cos(d))))
+
+
+def _muted(seen: list, role: str, annotated: bool) -> bool:
+    if role == INHERIT or role in MUTED_SKIP or not seen:
+        return False
+    dim = neutral = dark = 0
+    for rules, bg, fg, med, c in seen:
+        rc = _rgb(role_value(rules, role, None)) if bg else None
+        is_gray = oklch(c)[1] < MUTED_NEUTRAL
+        neutral += is_gray
+        if not bg:
+            continue
+        v = cr(c, bg)
+        dark += v < med * MUTED_ABS
+        if is_gray:
+            dim += v < cr(fg, bg) * MUTED_REL
+        elif rc is not None and v < cr(rc, bg) * MUTED_REL:
+            same_hue = oklch(rc)[1] > MUTED_NEUTRAL and _hue_gap(c, rc) < MUTED_HUE
+            dim += same_hue or v < med * MUTED_ABS
+    return dim * 2 > len(seen) or (annotated and max(neutral, dark) * 2 > len(seen))
 
 
 def lang_rank(sel: str) -> int:

@@ -23,13 +23,13 @@
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
 | **Comfort One Dark** | One Dark Pro 3.20.2 | 保留 One Dark Pro 的底色, 正文, italic, bold 与偏橙的终端黄; 彩色更柔和, 注释更易读 |
-| **Comfort One Light** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#F0F0F2`), 正文减淡, 彩色更柔和 |
+| **Comfort One Light** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#EDEDEF`), 正文减淡, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 正文减淡, 字符串不再刺眼, 半透明标点改为清楚可读 |
 | **Comfort Ayu Light** | ayu Light | 底色压暗, 正文加深 |
 | **Comfort Sunlit Dark** | Solarized Dark | 正文提亮, 彩色更柔和 |
 | **Comfort Sunlit Light** | Solarized Light | 底色压暗, 正文加深 |
 | **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | 正文与彩色略减淡, 保留灰蓝底色 |
-| **Comfort GitHub Light** | GitHub Light Default 6.3.5 | 纯白底压暗, 正文对比度从 15.8 减到 8.5 |
+| **Comfort GitHub Light** | GitHub Light Default 6.3.5 | 纯白底压暗, 正文对比度从 15.8 减到 8.0 |
 | **Comfort Dracula Dark** | Dracula Soft 2.25.1 | 正文对比度从 13.2 减到 7.0, 彩色更柔和 |
 | **Comfort Owl Dark** | Night Owl 2.1.1 | 近纯黑底抬亮(保留深蓝色相), 正文对比度从 13.5 减到 7.0 |
 | **Comfort Owl Light** | Night Owl Light 2.1.1 | 近纯白底压暗, 注释明显更易读 |
@@ -81,7 +81,7 @@
 - `tools/sources/*.json`: 原主题模板. 全部主题保留其全部界面键与语法规则, 只逐色变换.
 - `tools/sources/vscode-color-registry.json`: VS Code 颜色注册表, 含核心颜色, 终端 16 色与内置扩展声明的颜色, 逐键记录默认值, 是否须半透明, 是否已废弃. 默认值写死的键, 原主题没定义的一律按本主题色板补齐; VS Code 升级后用 `npm run extract:registry` 重新提取.
 - 每套生成的主题都按 `vscode://schemas/color-theme` 校验(`tools/schema.py`): 未注册或已废弃的颜色键丢弃(有官方替代键的改名), 须半透明的颜色换算成等效的半透明值, VS Code 不生效的 token 规则字段(token 背景色, `fontStyle: normal` 等)删除或改成等效写法. 任意主题可用 `uv run tools/schema.py <文件>...` 校验.
-- 语法规则来自同一个规则池(`tools/pool.py`): 全部原主题的 token 选择器(约 1300 个)合并成池子, 每个选择器裁决出一个角色(关键字, 函数, 类型, 属性, 字符串等), 每套主题都用自己的角色色为整个池子着色, 覆盖面一致且丰富, 包括各语言专属的规则. 角色按 TextMate 命名约定且原主题不反对时自动确定; 标点与 `meta.*` 包裹 scope 跟随外层; 其余未标注前用推荐值, 人工标注存于 `tools/sources/pool-overrides.json`. 普通变量在每套主题里有一个派生专用色: 彩度约 0.09, 明度贴近参数色, 色相取离本主题其他语法色最远的方向, 因为任何现成的角色色都会与某个角色撞色. `uv run tools/pool.py` 查看各层数量, `uv run tools/pool.py --annotate <out.html>` 生成带颜色预览, 键盘操作的标注页.
+- 语法规则来自同一个规则池(`tools/pool.py`): 全部原主题的 token 选择器(约 1300 个)合并成池子, 每个选择器裁决出一个角色(关键字, 函数, 类型, 属性, 字符串等), 每套主题都用自己的角色色为整个池子着色, 覆盖面一致且丰富, 包括各语言专属的规则. 角色按 TextMate 命名约定且原主题不反对时自动确定; 标点与 `meta.*` 包裹 scope 跟随外层; 其余未标注前用推荐值, 人工标注存于 `tools/sources/pool-overrides.json`. 原主题有意弱化的选择器(标点, 文档字符串, 注释里的内容等)用本角色色的暗淡版本, 不加粗; 调色把同一主题里两个本不同色的角色挤到一起时, 再按明度(必要时稍转色相)拉开. 普通变量在每套主题里有一个派生专用色: 彩度约 0.085, 明度贴近参数色, 色相取离本主题其他语法色最远的方向, 因为任何现成的角色色都会与某个角色撞色. `uv run tools/pool.py` 查看各层数量, `uv run tools/pool.py --annotate <out.html>` 生成带颜色预览, 键盘操作的标注页.
 - 语法着色统一覆盖(`tools/coverage.py`): 每套主题都为同样的 33 个常用 scope 着色(类型, 命名空间, 变量, 参数, 属性, 对象键, Markdown 标题, 粗体, 斜体, 引用, 链接等); 原主题没定义的, 取本主题最相近角色的颜色补上. 标点刻意不纳入: 引号与注释符号套在字符串和注释里, 应保持字符串色与注释色.
 
 ```bash
@@ -107,7 +107,7 @@ uv run tools/metrics.py --detail <文件>...  # 逐主题列出 柔和 / 防疲�
 - VS Code 主题另有两条上限, 超出即判清晰为中: 注释对比度不超过 4.2; 深色主题最亮的语法色不超过正文对比度的 1.1 倍. 行号对比度下限 2.0; 深色主题评"高"要求正文对比度在 7.0~8.5 之间.
 - **柔和** 与 **防疲劳** 两项按 0~100 打分(规则见 `tools/comfort.py`): 每个子指标落在理想区间得 100, 到限值降到 60, 越过限值判不通过.
   - 柔和: 语法色平均彩度, 最大彩度, 彩色语法色的亮度跨度, 最亮语法色与正文之比, 面板底色彩度.
-  - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色与编辑区底对比度超过 1.6), 高亮底色(刺眼或压字难读), 比正文更刺眼的界面文字与图标(侧边栏, 文件树, 扩展列表, 标签页标题, 活动栏), 以及刺眼(深色主题对比度超过 2.2)或字难读(低于 3.5)的徽标.
+  - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色, 含列表选中行, 与编辑区底对比度超过 1.6), 高亮底色(刺眼或压字难读), 比正文更刺眼的界面文字与图标(侧边栏, 文件树, 扩展列表, 标签页标题, 活动栏), 以及抢眼(与编辑区底对比度超过 2.2, 深色与浅色主题同样适用)或字难读(低于 3.5)的徽标.
   - `--strict` 时判定; `npm run metrics` 与 `npm run check` 默认带 `--strict`, 全部主题须通过.
 - 各项阈值见 `tools/metrics.py` 顶部常量; `tools/colorlib.py` 的 `tune` 是调色手段: 彩度封顶 + 明度推到对比度下限, 色相不动.
 - "默认文字色配彩色背景"(如只写 `\e[41m`)在任何调色板下都看不清, 不计入指标; Terminal.app 的 dim 字按固定比例减淡且不可配置.
