@@ -8,11 +8,11 @@
 
 > 市场页只渲染英文版 README, 不随访问者的显示语言切换; 插件描述会随 VS Code 显示语言切换为中文.
 
-面向长时间编码的 13 套 VS Code 配色主题, 每一套都经过舒适度调整与适配. 配色设计参考广受欢迎的 One Dark Pro, One Light, Ayu, Solarized, GitHub, Dracula, Night Owl, One Monokai 与 Palenight 主题, 上手即熟悉.
+面向长时间编码的 16 套 VS Code 配色主题, 每一套都经过舒适度调整与适配. 配色设计参考广受欢迎的 One Dark Pro, One Light, Ayu, Solarized, GitHub, Dracula, Night Owl, Monokai, One Monokai 与 Palenight 主题, 上手即熟悉.
 
 ## 特性
 
-- **全部舒适度适配**: 13 套主题都按长时间使用做了适配, 并全部通过同一套门禁: WCAG 对比度, OKLCH 彩度, 以及柔和与防疲劳打分.
+- **全部舒适度适配**: 16 套主题都按长时间使用做了适配, 并全部通过同一套门禁: WCAG 对比度, OKLCH 彩度, 以及柔和与防疲劳打分.
 - **熟悉的配色**: 配色参考官方主题, 保留色相, 调校明度与彩度.
 - **覆盖完整**: VS Code 约两百个写死默认值的界面色(括号对, 终端, diff 等)全部按本主题色板补齐.
 - **零开销**: 纯静态主题文件, 无设置项, 无激活事件, 无运行时代码.
@@ -23,7 +23,7 @@
 | 主题 | 配色参考 | 舒适度调整 |
 | --- | --- | --- |
 | **Comfort One Dark** | One Dark Pro 3.20.2 | 保留 One Dark Pro 的底色, 正文, italic, bold 与偏橙的终端黄; 彩色更柔和, 注释更易读 |
-| **Comfort One Light** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#EDEDEF`), 正文减淡, 彩色更柔和 |
+| **Comfort One Light** | Atom One Light 2.3.0 | 底色压暗(`#FAFAFA` → `#E7E7E9`), 正文减淡, 彩色更柔和 |
 | **Comfort Ayu Dark** | ayu Mirage | 正文减淡, 字符串不再刺眼, 半透明标点改为清楚可读 |
 | **Comfort Ayu Light** | ayu Light | 底色压暗, 正文加深 |
 | **Comfort Sunlit Dark** | Solarized Dark | 正文提亮, 彩色更柔和 |
@@ -31,22 +31,40 @@
 | **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | 正文与彩色略减淡, 保留灰蓝底色 |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | 纯白底压暗, 正文对比度从 15.8 减到 8.0 |
 | **Comfort Dracula Dark** | Dracula Soft 2.25.1 | 正文对比度从 13.2 减到 7.0, 彩色更柔和 |
+| **Comfort Dracula Light** | Dracula 官方浅色色板 Alucard | 全新浅色设计: Dracula Soft 的结构换上 Alucard 色板, 米色底压暗, 正文对比度 8.0 |
 | **Comfort Owl Dark** | Night Owl 2.1.1 | 近纯黑底抬亮(保留深蓝色相), 正文对比度从 13.5 减到 7.0 |
 | **Comfort Owl Light** | Night Owl Light 2.1.1 | 近纯白底压暗, 注释明显更易读 |
 | **Comfort Moka Dark** | One Monokai 0.5.2 | One Dark 底色上的 Monokai 彩色更柔和 |
+| **Comfort Moka Light** | 经典 Monokai 色板 | 全新浅色设计: 以 Monokai 的正文色 `#F8F8F2` 作底, 底色 `#272822` 作正文, 彩色压深到浅底可读 |
 | **Comfort Pale Dark** | Palenight 2.0.5 | 正文与彩色减淡 |
+| **Comfort Pale Light** | Palenight 2.0.5 色相 | 全新浅色设计: 薰衣草色底, 偏紫的深靛正文, Palenight 彩色压深(关键字玫紫, 函数靛蓝), 与 Comfort Owl Light 明显区分 |
 
 全部主题通过同一套门禁: 正文, 注释与行号的对比度落在舒适区间, 彩色与界面文字(侧边栏, 文件树, 标签页, 活动栏)不比正文更抢眼, 面板底色接近中性, 徽标安静, 高亮不刺眼. 主题统一命名为 `Comfort <Name> Dark` / `Comfort <Name> Light`.
 
 通过 "首选项: 颜色主题"(`⌘K ⌘T` / `Ctrl+K Ctrl+T`)切换.
+
+## 主题截图
+
+由 `npm run shots` 在真实 VS Code 窗口里截取: 源代码管理, TypeScript, Python 与终端色板. 每张图下方的链接是 资源管理器 + Markdown + Less + 问题面板, 以及搜索视图(聚焦的搜索框) + 输出面板的截图.
+
+| 深色 | 浅色 |
+| --- | --- |
+| **Comfort One Dark**<br>![Comfort One Dark](media/screenshots/comfort-one-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-one-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-one-dark-c.jpg) | **Comfort One Light**<br>![Comfort One Light](media/screenshots/comfort-one-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-one-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-one-light-c.jpg) |
+| **Comfort Ayu Dark**<br>![Comfort Ayu Dark](media/screenshots/comfort-ayu-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-ayu-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-ayu-dark-c.jpg) | **Comfort Ayu Light**<br>![Comfort Ayu Light](media/screenshots/comfort-ayu-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-ayu-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-ayu-light-c.jpg) |
+| **Comfort Sunlit Dark**<br>![Comfort Sunlit Dark](media/screenshots/comfort-sunlit-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-sunlit-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-sunlit-dark-c.jpg) | **Comfort Sunlit Light**<br>![Comfort Sunlit Light](media/screenshots/comfort-sunlit-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-sunlit-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-sunlit-light-c.jpg) |
+| **Comfort GitHub Dark**<br>![Comfort GitHub Dark](media/screenshots/comfort-github-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-github-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-github-dark-c.jpg) | **Comfort GitHub Light**<br>![Comfort GitHub Light](media/screenshots/comfort-github-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-github-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-github-light-c.jpg) |
+| **Comfort Dracula Dark**<br>![Comfort Dracula Dark](media/screenshots/comfort-dracula-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-dracula-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-dracula-dark-c.jpg) | **Comfort Dracula Light**<br>![Comfort Dracula Light](media/screenshots/comfort-dracula-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-dracula-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-dracula-light-c.jpg) |
+| **Comfort Owl Dark**<br>![Comfort Owl Dark](media/screenshots/comfort-owl-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-owl-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-owl-dark-c.jpg) | **Comfort Owl Light**<br>![Comfort Owl Light](media/screenshots/comfort-owl-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-owl-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-owl-light-c.jpg) |
+| **Comfort Moka Dark**<br>![Comfort Moka Dark](media/screenshots/comfort-moka-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-moka-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-moka-dark-c.jpg) | **Comfort Moka Light**<br>![Comfort Moka Light](media/screenshots/comfort-moka-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-moka-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-moka-light-c.jpg) |
+| **Comfort Pale Dark**<br>![Comfort Pale Dark](media/screenshots/comfort-pale-dark-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-pale-dark-a.jpg) · [搜索与输出面板](media/screenshots/comfort-pale-dark-c.jpg) | **Comfort Pale Light**<br>![Comfort Pale Light](media/screenshots/comfort-pale-light-b.jpg)<br>[资源管理器与问题面板](media/screenshots/comfort-pale-light-a.jpg) · [搜索与输出面板](media/screenshots/comfort-pale-light-c.jpg) |
 
 ## 调校原则
 
 全部主题逐色按三个目标调校:
 
 - **清晰**: 正文, 语法色, 行号与终端色相对各自底色达到 WCAG 对比度下限.
-- **安静**: 注释在所有主题中统一为对比度 3.2; 深色主题的语法色对比度不超过正文的 1.1 倍.
-- **护眼**: 彩色封顶彩度; 深色底避开纯黑, 浅色底避开纯白.
+- **安静**: 注释的对比度随正文联动(正文 / 1.85, 限制在 3.4~4.2); 语法色不比正文更亮; 界面文字, 边框, 徽标与输入框描边都比代码更安静.
+- **护眼**: 彩色封顶彩度; 深色底避开纯黑, 浅色底亮度不超过 0.80; 面板与悬停底色跟随底色的色调.
 
 ## 安装
 
@@ -78,7 +96,7 @@
 `themes/*.json` 与 `terminal/*.terminal` 都是生成物, 不要手改, 下次生成会被覆盖, `npm run check` 也会报漂移. 生成的输入:
 
 - `tools/themes.py`: 每套主题的目标底色, 前景, 16 色终端与调色参数(彩度上限, 语法色与注释色的对比度下限).
-- `tools/sources/*.json`: 原主题模板. 全部主题保留其全部界面键与语法规则, 只逐色变换.
+- `tools/sources/*.json`: 原主题模板. 全部主题保留其全部界面键, 只逐色变换. 其中 `dracula-light.json`, `pale-light.json` 与 `moka-light.json` 由 `tools/design.py` 按深色模板与手定色板生成, 要改请改该脚本的 `DESIGNS`, 不要手改 JSON.
 - `tools/sources/vscode-color-registry.json`: VS Code 颜色注册表, 含核心颜色, 终端 16 色与内置扩展声明的颜色, 逐键记录默认值, 是否须半透明, 是否已废弃. 默认值写死的键, 原主题没定义的一律按本主题色板补齐; VS Code 升级后用 `npm run extract:registry` 重新提取.
 - 每套生成的主题都按 `vscode://schemas/color-theme` 校验(`tools/schema.py`): 未注册或已废弃的颜色键丢弃(有官方替代键的改名), 须半透明的颜色换算成等效的半透明值, VS Code 不生效的 token 规则字段(token 背景色, `fontStyle: normal` 等)删除或改成等效写法. 任意主题可用 `uv run tools/schema.py <文件>...` 校验.
 - 语法规则来自同一个规则池(`tools/pool.py`): 全部原主题的 token 选择器(约 1300 个)合并成池子, 每个选择器裁决出一个角色(关键字, 函数, 类型, 属性, 字符串等), 每套主题都用自己的角色色为整个池子着色, 覆盖面一致且丰富, 包括各语言专属的规则. 角色按 TextMate 命名约定且原主题不反对时自动确定; 标点与 `meta.*` 包裹 scope 跟随外层; 其余未标注前用推荐值, 人工标注存于 `tools/sources/pool-overrides.json`. 原主题有意弱化的选择器(标点, 文档字符串, 注释里的内容等)用本角色色的暗淡版本, 不加粗; 调色把同一主题里两个本不同色的角色挤到一起时, 再按明度(必要时稍转色相)拉开. 普通变量在每套主题里有一个派生专用色: 彩度约 0.085, 明度贴近参数色, 色相取离本主题其他语法色最远的方向, 因为任何现成的角色色都会与某个角色撞色. `uv run tools/pool.py` 查看各层数量, `uv run tools/pool.py --annotate <out.html>` 生成带颜色预览, 键盘操作的标注页.
@@ -86,6 +104,8 @@
 
 ```bash
 npm run extract:registry              # 从 /Applications/Visual Studio Code.app 提取颜色注册表
+npm run gen:themes                    # 依次执行下面三步: design.py, gen_vscode.py, gen_terminal.py
+uv run tools/design.py                # 生成 tools/sources/ 里的设计浅色模板
 uv run tools/gen_vscode.py            # 生成 themes/*.json
 uv run tools/gen_terminal.py          # 生成 terminal/*.terminal (仅 macOS), 可加 --font <PostScript 名> --size <字号>
 npm run metrics                       # 指标表 + 达标判定, 不达标退出码 1
@@ -107,7 +127,7 @@ uv run tools/metrics.py --detail <文件>...  # 逐主题列出 柔和 / 防疲�
 - VS Code 主题另有两条上限, 超出即判清晰为中: 注释对比度不超过 4.2; 深色主题最亮的语法色不超过正文对比度的 1.1 倍. 行号对比度下限 2.0; 深色主题评"高"要求正文对比度在 7.0~8.5 之间.
 - **柔和** 与 **防疲劳** 两项按 0~100 打分(规则见 `tools/comfort.py`): 每个子指标落在理想区间得 100, 到限值降到 60, 越过限值判不通过.
   - 柔和: 语法色平均彩度, 最大彩度, 彩色语法色的亮度跨度, 最亮语法色与正文之比, 面板底色彩度.
-  - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色, 含列表选中行, 与编辑区底对比度超过 1.6), 高亮底色(刺眼或压字难读), 比正文更刺眼的界面文字与图标(侧边栏, 文件树, 扩展列表, 标签页标题, 活动栏), 以及抢眼(与编辑区底对比度超过 2.2, 深色与浅色主题同样适用)或字难读(低于 3.5)的徽标.
+  - 防疲劳: 正文对比度, 注释对比度, 正文与注释的落差, 行号对比度, 底亮度, 面板亮块(大面积底色, 含列表选中行, 与编辑区底对比度超过 1.6), 浅色主题里亮度超过 0.85 的大面积底色(编辑区底理想不超过 0.80), 与编辑区底对比度超过 1.6 的布局边框(如编辑器拆分线), 有色调的底上的纯灰底色块(悬停 / 选中底), 筛选框与下拉框的问题(描边超过 2.0, 焦点描边低于 3.0(聚焦的输入框比未聚焦的还淡)或超过正文的 0.8 倍, 占位字不在 2.8~4.2 或带彩色, 输入的字低于 4.5), 高亮底色(刺眼或压字难读), 比正文更刺眼的界面文字与图标(侧边栏, 文件树, 扩展列表, 标签页标题, 活动栏), 以及抢眼(与编辑区底对比度超过 2.2, 深色与浅色主题同样适用)或字难读(低于 3.5)的徽标.
   - `--strict` 时判定; `npm run metrics` 与 `npm run check` 默认带 `--strict`, 全部主题须通过.
 - 各项阈值见 `tools/metrics.py` 顶部常量; `tools/colorlib.py` 的 `tune` 是调色手段: 彩度封顶 + 明度推到对比度下限, 色相不动.
 - "默认文字色配彩色背景"(如只写 `\e[41m`)在任何调色板下都看不清, 不计入指标; Terminal.app 的 dim 字按固定比例减淡且不可配置.
@@ -121,6 +141,22 @@ npm run similar                                              # 全部主题两�
 uv run tools/similar.py a.json b.json --merge out.json --take 1,3   # 以 a 为底, 差异组 1, 3 取 b 的颜色
 ```
 
+### 撞色, 标注审计与截图
+
+门禁之外, 按主题实际渲染效果做的检查:
+
+```bash
+npm run clash                          # 逐主题列出调色挤到一起的颜色, 并按真实分词检查 Markdown 各语义类
+uv run tools/clash.py --grammars       # 同样的检查按 VS Code 内置的每个语法文件(82 个)汇总
+uv run tools/pool_audit.py [--all]     # 渲染效果与原主题相悖的规则池标注: 原本弱化的被显示得明亮或加粗, 原本灰白的成了抢眼的彩色
+node tools/tokenize.mjs themes <文件>... # 用 VS Code 自带的语法与主题引擎把任意文件逐 token 着色(输出 JSON)
+npm run shots                          # 在临时 VS Code 窗口里给每个主题截图, 输出到 media/screenshots/(macOS; 本 README 引用)
+```
+
+- `tools/clash.py` 报告两个不同类的角色: 原主题里色差至少 10, 调色后却不到 5(CIEDE2000); `--markdown` 在标题, 行内代码, 链接, 引用, 粗体, 斜体之间的色差低于生成器的分色目标时退出码 1. 生成器在 `tools/gen_vscode.py` 的 `separate`, `separate_markdown`, `separate_forced` 里处理这两类问题.
+- `tools/pool_audit.py` 与生成器的暗彩(muted)规则同口径: 原主题有意压暗的选择器, 以及人工标注时原本是灰白的选择器, 都用本角色色的暗淡版本, 不加粗. 在 `tools/sources/pool-overrides.json` 里把角色写成 `"<角色> muted"` 可以强制暗彩.
+- `npm run shots` 启动一个独立的 VS Code 实例(配置目录在 `~/.cache/editor-comfort-shoot`, 扩展直接从本仓库加载), 用 `tools/samples/` 现建一个带已修改, 未跟踪, 已删除, 被忽略文件和一个类型错误的 git 工作区, 每个主题截三张: 资源管理器 + Markdown | Less + 问题面板, 源代码管理 + TypeScript | Python + 终端色板, 以及搜索视图(聚焦的搜索框) + 输出面板. 运行期间会出现一个 VS Code 窗口, 不要操作它. 截图压缩为 1600 宽, 每张约 100KB 的 jpg(`--jpg`, 质量 75, 渐进式); 重拍后提交 `media/screenshots/`, Marketplace 与 GitHub 上 README 里的截图才会更新. 只截部分主题时传主题名, 要 1024 宽的预览图另存目录时加 `--thumb`: `node tools/shoot.mjs out --thumb "one dark"`.
+
 ### 发布前
 
 ```bash
@@ -130,10 +166,12 @@ npm test
 npm run package     # 生成 artifacts/editor-comfort-theme-<版本>.vsix 并断言包内容
 ```
 
+截图不在发布流程里: 改色后手动执行 `npm run shots` 并提交 `media/screenshots/`. 截图不会打进 `.vsix`; README 用相对路径引用, 打包时会改写成 `https://github.com/HeavenSky/editor-comfort-theme/raw/HEAD/...`, Marketplace 页面与 VS Code 的扩展详情页按需从 GitHub 加载.
+
 使用 npm 12 时, `npm ci` 只接受从 `registry.npmjs.org` 解析的 lockfile, 且依赖的安装脚本(`esbuild`, `@vscode/vsce-sign`, `fsevents`)默认不执行. 检查, 测试与打包都不需要它们; 只有本地签名或发布报错时, 才用 `npm install-scripts approve <包>` 放行. CI 使用 `.nvmrc` 指定的 Node 版本自带的 npm, 不受影响.
 
 本仓库派生自 vsc-ext 工程骨架; 共享的骨架文件如有偏离, `npm run check` 会报出来.
 
 ## 许可
 
-[MIT](./LICENSE.txt). 基于 One Dark Pro, One Light, ayu 与 VS Code 的 Solarized 主题, 均为 MIT, 见 [NOTICE.md](./NOTICE.md).
+[MIT](./LICENSE.txt). 基于 One Dark Pro, One Light, ayu, VS Code 的 Solarized, GitHub, Dracula(含 Alucard 色板), Night Owl, One Monokai, Palenight 主题与经典 Monokai 色板, 均为 MIT, 见 [NOTICE.md](./NOTICE.md).

@@ -6,11 +6,11 @@
 
 **English** · [简体中文](./README.zh-cn.md)
 
-Thirteen VS Code color themes for long coding sessions, every one tuned and adapted for comfort. The palettes take their design cues from popular themes — One Dark Pro, One Light, Ayu, Solarized, GitHub, Dracula, Night Owl, One Monokai and Palenight — so they feel familiar from the first line.
+Sixteen VS Code color themes for long coding sessions, every one tuned and adapted for comfort. The palettes take their design cues from popular themes — One Dark Pro, One Light, Ayu, Solarized, GitHub, Dracula, Night Owl, Monokai, One Monokai and Palenight — so they feel familiar from the first line.
 
 ## Highlights
 
-- **Comfort-tuned throughout** — all thirteen themes are adapted for long sessions and pass the same gate: WCAG contrast, OKLCH chroma, plus softness and eye-fatigue scores.
+- **Comfort-tuned throughout** — all sixteen themes are adapted for long sessions and pass the same gate: WCAG contrast, OKLCH chroma, plus softness and eye-fatigue scores.
 - **Familiar by design** — palettes reference the official themes; hues are kept while lightness and chroma are tuned.
 - **Complete coverage** — the ~200 UI colors VS Code otherwise hard-codes (bracket pairs, terminal, diff and more) are set from each theme's own palette.
 - **Zero overhead** — static theme files only: no settings, no activation, no runtime code.
@@ -21,7 +21,7 @@ Thirteen VS Code color themes for long coding sessions, every one tuned and adap
 | Theme | Palette reference | Comfort adjustments |
 | --- | --- | --- |
 | **Comfort One Dark** | One Dark Pro 3.20.2 | Keeps One Dark Pro's background, body text, italic, bold and orange terminal yellow; softer accents, comments easier to read |
-| **Comfort One Light** | Atom One Light 2.3.0 | Background dimmed (`#FAFAFA` → `#EDEDEF`), body text softened, softer accents |
+| **Comfort One Light** | Atom One Light 2.3.0 | Background dimmed (`#FAFAFA` → `#E7E7E9`), body text softened, softer accents |
 | **Comfort Ayu Dark** | ayu Mirage | Body text softened, calmer strings, readable punctuation |
 | **Comfort Ayu Light** | ayu Light | Background dimmed, darker text |
 | **Comfort Sunlit Dark** | Solarized Dark | Brighter text, softer accents |
@@ -29,22 +29,40 @@ Thirteen VS Code color themes for long coding sessions, every one tuned and adap
 | **Comfort GitHub Dark** | GitHub Dark Dimmed 6.3.5 | Slightly softer text and accents; keeps the gray-blue background |
 | **Comfort GitHub Light** | GitHub Light Default 6.3.5 | Pure white background dimmed, body text softened from 15.8 to 8.0 contrast |
 | **Comfort Dracula Dark** | Dracula Soft 2.25.1 | Body text softened from 13.2 to 7.0 contrast, softer accents |
+| **Comfort Dracula Light** | Dracula's official Alucard light palette | New light design: Dracula Soft's structure recolored with Alucard, cream background dimmed, body text at 8.0 contrast |
 | **Comfort Owl Dark** | Night Owl 2.1.1 | Near-black background lifted (keeping its deep blue), body text softened from 13.5 to 7.0 contrast |
 | **Comfort Owl Light** | Night Owl Light 2.1.1 | Near-white background dimmed, comments much easier to read |
 | **Comfort Moka Dark** | One Monokai 0.5.2 | Softer Monokai accents on the One Dark background |
+| **Comfort Moka Light** | Classic Monokai palette | New light design: Monokai's text color `#F8F8F2` as the background, its background `#272822` as the text, accents deepened for a light background |
 | **Comfort Pale Dark** | Palenight 2.0.5 | Body text and accents softened |
+| **Comfort Pale Light** | Palenight 2.0.5 hues | New light design: lavender background, deep violet-indigo text, Palenight's accents deepened (rose-violet keywords, indigo functions) so it stays clearly apart from Comfort Owl Light |
 
 Every theme passes the same gate: body text, comments and line numbers in a comfortable contrast band, accents and UI text (sidebar, file tree, tabs, activity bar) no louder than body text, near-neutral panels, calm badges and no glaring highlights. Every theme is named `Comfort <Name> Dark` or `Comfort <Name> Light`.
 
 Switch themes with **Preferences: Color Theme** (`⌘K ⌘T` / `Ctrl+K Ctrl+T`).
+
+## Screenshots
+
+Real VS Code windows, taken by `npm run shots`: Source Control, TypeScript, Python and the terminal color matrix. Click the links under each shot for Explorer + Markdown + Less + Problems, and the Search view (focused search box) + Output panel.
+
+| Dark | Light |
+| --- | --- |
+| **Comfort One Dark**<br>![Comfort One Dark](media/screenshots/comfort-one-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-one-dark-a.jpg) · [Search & Output](media/screenshots/comfort-one-dark-c.jpg) | **Comfort One Light**<br>![Comfort One Light](media/screenshots/comfort-one-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-one-light-a.jpg) · [Search & Output](media/screenshots/comfort-one-light-c.jpg) |
+| **Comfort Ayu Dark**<br>![Comfort Ayu Dark](media/screenshots/comfort-ayu-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-ayu-dark-a.jpg) · [Search & Output](media/screenshots/comfort-ayu-dark-c.jpg) | **Comfort Ayu Light**<br>![Comfort Ayu Light](media/screenshots/comfort-ayu-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-ayu-light-a.jpg) · [Search & Output](media/screenshots/comfort-ayu-light-c.jpg) |
+| **Comfort Sunlit Dark**<br>![Comfort Sunlit Dark](media/screenshots/comfort-sunlit-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-sunlit-dark-a.jpg) · [Search & Output](media/screenshots/comfort-sunlit-dark-c.jpg) | **Comfort Sunlit Light**<br>![Comfort Sunlit Light](media/screenshots/comfort-sunlit-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-sunlit-light-a.jpg) · [Search & Output](media/screenshots/comfort-sunlit-light-c.jpg) |
+| **Comfort GitHub Dark**<br>![Comfort GitHub Dark](media/screenshots/comfort-github-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-github-dark-a.jpg) · [Search & Output](media/screenshots/comfort-github-dark-c.jpg) | **Comfort GitHub Light**<br>![Comfort GitHub Light](media/screenshots/comfort-github-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-github-light-a.jpg) · [Search & Output](media/screenshots/comfort-github-light-c.jpg) |
+| **Comfort Dracula Dark**<br>![Comfort Dracula Dark](media/screenshots/comfort-dracula-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-dracula-dark-a.jpg) · [Search & Output](media/screenshots/comfort-dracula-dark-c.jpg) | **Comfort Dracula Light**<br>![Comfort Dracula Light](media/screenshots/comfort-dracula-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-dracula-light-a.jpg) · [Search & Output](media/screenshots/comfort-dracula-light-c.jpg) |
+| **Comfort Owl Dark**<br>![Comfort Owl Dark](media/screenshots/comfort-owl-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-owl-dark-a.jpg) · [Search & Output](media/screenshots/comfort-owl-dark-c.jpg) | **Comfort Owl Light**<br>![Comfort Owl Light](media/screenshots/comfort-owl-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-owl-light-a.jpg) · [Search & Output](media/screenshots/comfort-owl-light-c.jpg) |
+| **Comfort Moka Dark**<br>![Comfort Moka Dark](media/screenshots/comfort-moka-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-moka-dark-a.jpg) · [Search & Output](media/screenshots/comfort-moka-dark-c.jpg) | **Comfort Moka Light**<br>![Comfort Moka Light](media/screenshots/comfort-moka-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-moka-light-a.jpg) · [Search & Output](media/screenshots/comfort-moka-light-c.jpg) |
+| **Comfort Pale Dark**<br>![Comfort Pale Dark](media/screenshots/comfort-pale-dark-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-pale-dark-a.jpg) · [Search & Output](media/screenshots/comfort-pale-dark-c.jpg) | **Comfort Pale Light**<br>![Comfort Pale Light](media/screenshots/comfort-pale-light-b.jpg)<br>[Explorer & Problems](media/screenshots/comfort-pale-light-a.jpg) · [Search & Output](media/screenshots/comfort-pale-light-c.jpg) |
 
 ## Tuning principles
 
 Every theme is tuned color by color against three goals:
 
 - **Clarity** — body text, syntax colors, line numbers and terminal colors meet a minimum WCAG contrast against their background.
-- **Calm** — comments share one quiet contrast level (3.2) across all themes; in dark themes no syntax color exceeds 1.1× the contrast of body text.
-- **Eye comfort** — accent chroma is capped; dark backgrounds avoid pure black and light backgrounds avoid pure white.
+- **Calm** — comments sit at a quiet contrast tied to body text (body / 1.85, within 3.4–4.2); no syntax color is brighter than body text; UI text, borders, badges and input outlines stay quieter than the code.
+- **Eye comfort** — accent chroma is capped; dark backgrounds avoid pure black, light backgrounds stay at or below 0.80 luminance, and panels and hover patches follow the background's tone.
 
 ## Install
 
@@ -76,7 +94,7 @@ Themes are static, so there are no settings. Override font styles in your `setti
 `themes/*.json` and `terminal/*.terminal` are generated. Do not edit them by hand: the next generation overwrites them, and `npm run check` reports the drift. The generator inputs are:
 
 - `tools/themes.py`: each theme's target background, foreground, 16 terminal colors and tuning parameters (chroma cap, contrast minimums for syntax and comment colors).
-- `tools/sources/*.json`: the reference theme templates. Every theme keeps all UI keys and syntax rules of its template and only transforms colors one by one.
+- `tools/sources/*.json`: the reference theme templates. Every theme keeps all UI keys of its template and only transforms colors one by one. `dracula-light.json`, `pale-light.json` and `moka-light.json` are themselves generated by `tools/design.py` from a dark template and a hand-picked palette; edit `DESIGNS` there, not the JSON.
 - `tools/sources/vscode-color-registry.json`: the VS Code color registry — core colors, the terminal palette and colors contributed by built-in extensions, each with its defaults and whether it must be translucent or is deprecated. Keys whose default is hard-coded and that the template leaves undefined are filled from the theme's own palette; after a VS Code upgrade, re-extract it with `npm run extract:registry`.
 - Every generated theme is checked against `vscode://schemas/color-theme` (`tools/schema.py`): unregistered or deprecated color keys are dropped (deprecated keys with an official successor are renamed), colors that must be translucent are converted to an equivalent translucent value, and token rule fields VS Code ignores (token backgrounds, `fontStyle: normal`) are removed or rewritten. Run `uv run tools/schema.py <file>...` to check any theme.
 - Syntax rules come from one shared pool (`tools/pool.py`): the token selectors of every template (about 1,300) are merged, each selector is assigned a role (keyword, function, type, property, string, ...) and every theme colors the whole pool with its own role colors, so all themes get the same, rich coverage, including language-specific rules. Roles come from TextMate naming conventions where the templates agree; punctuation and `meta.*` wrappers follow their enclosing scope; the rest uses a recommended role until annotated in `tools/sources/pool-overrides.json`. Selectors the templates deliberately dim (punctuation, docstrings, scopes inside comments, ...) get a dimmed, non-bold variant of their role color; when tuning pushes two distinct roles of a theme together, they are pulled apart again in lightness, or slightly in hue. Ordinary variables get a derived color of their own in every theme: about 0.085 chroma, lightness close to parameters, hue chosen to stay as far as possible from the theme's other syntax colors, since any existing role color would clash with one of them. Run `uv run tools/pool.py` for the tiers and `uv run tools/pool.py --annotate <out.html>` for a keyboard-driven annotation page with live color previews.
@@ -84,6 +102,8 @@ Themes are static, so there are no settings. Override font styles in your `setti
 
 ```bash
 npm run extract:registry              # extract the color registry from /Applications/Visual Studio Code.app
+npm run gen:themes                    # all of the below in order: design.py, gen_vscode.py, gen_terminal.py
+uv run tools/design.py                # generate the designed light templates in tools/sources/
 uv run tools/gen_vscode.py            # generate themes/*.json
 uv run tools/gen_terminal.py          # generate terminal/*.terminal (macOS only); accepts --font <PostScript name> --size <points>
 npm run metrics                       # metrics table and gate verdict; exits 1 when a theme falls short
@@ -105,7 +125,7 @@ uv run tools/metrics.py --detail <file>...  # list every softness / fatigue sub-
 - VS Code themes have two more upper limits; exceeding either rates clarity as mid: comment contrast at most 4.2, and in dark themes the brightest syntax color at most 1.1× the body text contrast. Line numbers need a contrast of at least 2.0; a dark theme rates high clarity only with body text contrast between 7.0 and 8.5.
 - **Softness** and **fatigue** are scored 0–100 (rules in `tools/comfort.py`): a sub-metric inside its ideal range scores 100, drops to 60 at its limit, and fails beyond it.
   - Softness: average and maximum syntax chroma, lightness spread of the colored syntax colors, brightest syntax color versus body text, panel background chroma.
-  - Fatigue: body text contrast, comment contrast, the gap between body text and comments, line number contrast, background luminance, bright panels (large backgrounds, including list selections, above 1.6 contrast against the editor), highlight backgrounds that glare or make text hard to read, UI text and icons (sidebar, file tree, extension list, tab titles, activity bar) harsher than body text, and badges that stand out (above 2.2 contrast against the editor, in dark and light themes alike) or whose text is hard to read (below 3.5).
+  - Fatigue: body text contrast, comment contrast, the gap between body text and comments, line number contrast, background luminance, bright panels (large backgrounds, including list selections, above 1.6 contrast against the editor), light-theme backgrounds brighter than 0.85 luminance (the editor background itself ideally at most 0.80), layout borders such as the editor split line above 1.6 contrast against the editor, plain gray patches (hover / selection backgrounds) on a tinted background, filter boxes and dropdowns with glaring outlines (above 2.0), focus outlines below 3.0 (a focused input dimmer than unfocused ones) or brighter than 0.8× body text, placeholder text outside 2.8–4.2 or colorful, or typed text below 4.5, highlight backgrounds that glare or make text hard to read, UI text and icons (sidebar, file tree, extension list, tab titles, activity bar) harsher than body text, and badges that stand out (above 2.2 contrast against the editor, in dark and light themes alike) or whose text is hard to read (below 3.5).
   - They are enforced with `--strict`; `npm run metrics` and `npm run check` pass it by default, so every theme must pass them.
 - Thresholds are the constants at the top of `tools/metrics.py`. `tune` in `tools/colorlib.py` is the tuning tool: cap chroma, then push lightness to the contrast minimum, without changing hue.
 - "Default text on a colored background" (such as `\e[41m` alone) is unreadable under any palette and is not scored; Terminal.app dims faint text by a fixed, non-configurable ratio.
@@ -119,6 +139,22 @@ npm run similar                                              # compare all theme
 uv run tools/similar.py a.json b.json --merge out.json --take 1,3   # base on a, take groups 1 and 3 from b
 ```
 
+### Collisions, annotation audit and screenshots
+
+Checks that look at what a theme actually renders, beyond the gate:
+
+```bash
+npm run clash                          # colors pushed together by tuning, per theme, and Markdown classes via real tokenization
+uv run tools/clash.py --grammars       # the same per built-in VS Code grammar (82 grammars)
+uv run tools/pool_audit.py [--all]     # pool annotations whose rendering contradicts the templates: dimmed scopes shown bright or bold, gray scopes turned into loud colors
+node tools/tokenize.mjs themes <file>... # color any file token by token with VS Code's own grammars and theme engine (JSON output)
+npm run shots                          # screenshot every theme in a throwaway VS Code window into media/screenshots/ (macOS; used by this README)
+```
+
+- `tools/clash.py` reports two roles of different kinds whose colors end up closer than CIEDE2000 5 although the template kept them at least 10 apart; `--markdown` fails when headings, inline code, links, quotes, bold or italic come closer than the generator's separation target. The generator handles both in `separate`, `separate_markdown` and `separate_forced` (`tools/gen_vscode.py`).
+- `tools/pool_audit.py` uses the same rules as the generator's dimmed ("muted") variant: scopes a template deliberately dims, and annotated scopes that were gray, render as a dimmed, non-bold variant of their role color. Annotate a scope as `"<role> muted"` in `tools/sources/pool-overrides.json` to force it.
+- `npm run shots` starts a separate VS Code instance (its own profile under `~/.cache/editor-comfort-shoot`, the extension loaded from this checkout), builds a sample git workspace from `tools/samples/` with modified, untracked, deleted and ignored files and a type error, and takes three shots per theme: Explorer + Markdown | Less + Problems, Source Control + TypeScript | Python + the terminal color matrix, and the Search view (focused search box) + Output panel. A VS Code window appears while it runs; leave it alone. Shots are compressed to 1600-wide JPEGs of about 100 KB each (`--jpg`, quality 75, progressive); commit `media/screenshots/` after a re-shoot so the README images on the Marketplace and GitHub stay current. Pass theme names to shoot only some, or `--thumb` for 1024-wide previews in another folder: `node tools/shoot.mjs out --thumb "one dark"`.
+
 ### Before release
 
 ```bash
@@ -128,10 +164,12 @@ npm test
 npm run package     # build artifacts/editor-comfort-theme-<version>.vsix and assert its contents
 ```
 
+Screenshots are not part of the release: re-run `npm run shots` by hand after color changes and commit `media/screenshots/`. They are not packaged into the `.vsix`; the README links them by relative path, which packaging rewrites to `https://github.com/HeavenSky/editor-comfort-theme/raw/HEAD/...`, so the Marketplace page and VS Code's extension details load them from GitHub on demand.
+
 With npm 12, `npm ci` only accepts a lockfile resolved from `registry.npmjs.org`, and dependency install scripts (`esbuild`, `@vscode/vsce-sign`, `fsevents`) are skipped by default. None of them is needed to check, test or package; approve one with `npm install-scripts approve <package>` only if signing or publishing locally fails. CI uses the npm bundled with the Node version in `.nvmrc` and is not affected.
 
 This repository derives from the vsc-ext project template; `npm run check` reports any drift of the shared template files.
 
 ## License
 
-[MIT](./LICENSE.txt). Built on One Dark Pro, One Light, ayu and VS Code's Solarized themes, all MIT — see [NOTICE.md](./NOTICE.md).
+[MIT](./LICENSE.txt). Built on One Dark Pro, One Light, ayu, VS Code's Solarized, GitHub, Dracula (including its Alucard palette), Night Owl, One Monokai and Palenight themes and the classic Monokai palette, all MIT — see [NOTICE.md](./NOTICE.md).
