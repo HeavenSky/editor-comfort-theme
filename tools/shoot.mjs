@@ -10,10 +10,11 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
 import { chromium } from 'playwright-core';
 
-const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const APP = process.env.VSCODE_APP || '/Applications/Visual Studio Code.app';
 const CODE = path.join(APP, 'Contents/MacOS/Code');
 const PORT = Number(process.env.SHOOT_PORT || 9333);
