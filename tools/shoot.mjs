@@ -12,13 +12,14 @@
 // 用法: node tools/shoot.mjs <输出目录> [--thumb] [--jpg] [主题名过滤...]   (VS Code 位置: 环境变量 VSCODE_APP; 调试端口: SHOOT_PORT, 默认 9333)
 //       node tools/shoot.mjs --serve   常驻: 启动一次 VS Code 并保持, 在 127.0.0.1:SHOOT_CTL_PORT(默认 9334)接收截图任务, Ctrl+C 或
 //                                      curl -X POST 127.0.0.1:9334/quit 退出; 常驻进程在时, 上面的单次用法与 --job 自动交给它, 省掉启动与搭布局的时间
-//       node tools/shoot.mjs --job <任务.json>   任务: { "sets": [{ "dir": 输出目录, "src": 主题 json 目录(可省) }], "filter": [...], "jpg": true, "thumb": false }
+//       node tools/shoot.mjs --job <任务.json>   任务: { "sets": [{ "dir": 输出目录, "src": 主题 json 目录(可省) }], "filter": [...], "jpg": true, "thumb": false,
+//                                      "audit": 检查模块路径(可省, 如 tools/audit-dom.mjs), "settings": 本任务期间叠加的 VS Code 设置(可省) }
 //                                      多组按 场景 -> 组 -> 主题 的顺序拍, 每个场景的布局只搭一次; 有 src 的组拍前把该组主题临时装进 themes/, 任务结束还原
 import fs from 'node:fs';
 import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
 import { chromium } from 'playwright-core';
 
@@ -48,7 +49,9 @@ const base = {
   'workbench.quickOpen.closeOnFocusLost': false,
 };
 // 切换主题只改设置文件, VS Code 监听到后立即应用
-const writeSettings = (theme) => fs.writeFileSync(settingsFile, JSON.stringify({ ...base, 'workbench.colorTheme': theme }, null, 1));
+// 任务的 settings 只在该任务期间叠加(如普查打开空白符显示), 任务结束清掉, 不影响之后的截图
+let jobSettings = {};
+const writeSettings = (theme) => fs.writeFileSync(settingsFile, JSON.stringify({ ...base, ...jobSettings, 'workbench.colorTheme': theme }, null, 1));
 
 // 切换主题按设置 ID(VS Code 取 id, 没有时取 label); 截图按主题文件名命名(themes/one-dark.json -> one-dark-a.png)
 const themeList = (only = []) => JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8')).contributes.themes
@@ -293,6 +296,9 @@ async function runJob(s, job, log) {
   const themes = themeList(job.filter || []);
   const sets = job.sets.map((x) => ({ ...x, dir: path.resolve(x.dir), src: x.src && path.resolve(x.src) }));
   const saved = Object.fromEntries(themes.map((t) => [t.file, fs.readFileSync(path.join(THEMES, `${t.file}.json`))]));
+  // job.audit: 检查模块路径(导出 audit(page, ctx)), 每张截图后在同一画面上调用; 每次任务重新加载, 常驻进程不用重启
+  const audit = job.audit ? (await import(`${pathToFileURL(path.resolve(job.audit)).href}?t=${Date.now()}`)).audit : null;
+  jobSettings = job.settings || {};
   const stopGuard = guardFront();
   const t0 = Date.now();
   try {
@@ -306,10 +312,12 @@ async function runJob(s, job, log) {
           await sleep(600);
           await s.page.screenshot({ path: path.join(x.dir, `${t.file}-${tag}.png`) });
           log(`截图 ${t.label} ${tag} -> ${path.basename(x.dir)}`);
+          if (audit) await audit(s.page, { dir: x.dir, name: `${t.file}-${tag}`, theme: t.file, scene: tag, log });
         }
       }
     }
   } finally {
+    jobSettings = {};
     stopGuard();
     for (const [f, buf] of Object.entries(saved)) {
       const p = path.join(THEMES, `${f}.json`);

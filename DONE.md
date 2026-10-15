@@ -1,5 +1,13 @@
 # DONE
 
+- 20261015_162026 /keys 键分层待用户复核, 线条中高于线条强(档位倒挂); 代理按普查实测与语义复核: 查找高亮(其他匹配 -> 底色中, 当前匹配 -> 底色强), 行号槽 git 标记 -> 线条强(解倒挂), titleBar / commandCenter / panelTitle.activeForeground 与 list.focusForeground, statusBar.foreground -> 内容中, list.dropBetweenBackground -> 不适用; 当前行号按参考主题实测(中位 100%)留内容强, 写进 tools/key-levels.mjs 逐键规则
+- 20261015_162026 标定台门槛待用户提交; 按参考主题推荐值提交 thresholds.json, 相对约束按参考主题比值范围外放一成校准, 导出 tools/sources/levels.json
+
+- 20261015_160603 extract_registry.py 把以 ae 结尾的其他函数调用(Qae( / Iae()误当成 registerColor, registry 混入 6 个假键(archive, first, pasteIntoEditor, required, text, success); 注册函数名查找与键匹配两处正则前加标识符边界 (?<![\w$.]), 按本机 VS Code 1.141.2 重跑: 1000 -> 994 键, 只删 6 个假键, 无新增, 默认值无变化; npm run check 与 94 个测试通过, themes/ 无变化
+- 20261015_160603 门槛重定的旧口径(5 档层级 强调 85 / 主要 80 / 次要 70 / 弱化 45 / 背景·线 15 相对正文 Lc, 背景·面 明度差 6; 主指标 APCA Lc; 下限 / 上限取实例 P10 / P90); 不复存在: 被 4 组 x 3 档的颜色键分层与统一相对指标(OKLab 明度差 / 正文明度差)取代
+- 20261015_160603 门槛重定的三个疑点: 徽标 / 按钮底是非文字却归强调(26/55 判不及), 背景·线受 APCA 截零影响(58/152 判不及), 禁用实测 56% 偏高; 不复存在: 徽标 / 按钮底改归底色强用 ΔE, 线条与底色改用明度差与 ΔE, 禁用改为状态归本组的弱且不设下限
+- 20261015_160603 推荐值规则 v2 的修复下限 = 各主题 P10 的跨主题中位数, 绝对下限 = 规范值(参考主题被拦 14~43%), 以及排查另报距上下限 10% 以内; 不复存在: 修复下限改为参考主题实例 P5, 绝对下限改为 min(规范值, 参考主题实例 P5), 排查改报低于混档线与高于上限
+
 - 20261014_173855 补全段按角色成组的池规则里混有 comment.block.documentation variable 这类选择器, gen_vscode.source_rules 与 metrics 按"选择器含 comment"把整组按注释口径处理, Sunlit Dark / Light 的 Pool variable #268BD2 只到 4.08 / 3.41 且门禁漏判; 新增 gen_vscode.is_comment_rule: Pool 规则按角色判, 原主题规则仍按选择器判(comment markup.link 等原主题给的是注释色), metrics 同口径; 修后 Sunlit variable #2993DD / #1F77B4, Pale Light 文档注释里的类型色 #926200, 其余主题不变
 - 20261014_173855 撞色分离先动明度再转色相(方案 S6 写先转色相); 不复存在: 调色后撞色拉开随旧重建移除(方案"定稿补充"), 唯一的同类步骤 term_separate 默认关, clash.py 实测调色带来的新撞色 0 对
 - 20261014_171255 README / CHANGELOG / 插件描述与 media/screenshots 仍是旧流程与旧配色; 中英 README 改写开头, 特性, 主题表(列改为 原主题 / 可读性修正, 按实测逐套写改动), 调校原则(原主题 -> 补全 -> 可读性修正, 刺眼与观感类默认关), CHANGELOG Unreleased 按现状重写, package.nls 描述改为保留原色只修看不清; npm run shots 重拍 48 张

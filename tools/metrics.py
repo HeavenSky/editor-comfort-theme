@@ -19,6 +19,8 @@ from comfort import DIM_NAMES, DIMS, MAIN_ROLES, NAMES, SCOPE_NAMES, SCOPES, rat
 from schema import HEX, problems as schema_problems
 from coverage import missing as coverage_missing
 from gen_vscode import REGISTRY as REGISTRY_PATH, UI_PAIRS, is_comment_rule
+from steps import on
+import levels
 
 # VS Code 注册表里默认值硬编码的键; 主题不定义它们时界面落到与主题无关的颜色, 受检主题必须全部覆盖
 REGISTRY = json.load(open(REGISTRY_PATH, encoding='utf-8'))['colors'] if os.path.exists(REGISTRY_PATH) else None
@@ -172,6 +174,8 @@ CLEAR_GATE = dict(
     ui=dict(ui_text=4.5, small_text=4.5, focus=3.0, input_selection=1.15, input_selection_text=3.5),  # ui_text_floor, badge / button / control_text, focus_floor, selections
 )
 CLEAR_TOL = 0.06
+# 已由分层门槛(level_floor)取代的旧子指标: 对应步骤都关着时只报告不门禁, 改由 level_gate 判
+CLEAR_STEPS = dict(ui_text=('ui_text_floor',), line_no=('ui_text_floor',), small_text=('badge_text', 'button_text', 'control_text'), focus=('focus_floor',))
 
 
 def clear_gate(r: dict) -> list[str]:
@@ -181,9 +185,23 @@ def clear_gate(r: dict) -> list[str]:
         cell = r['cells'].get(('clear', scope))
         for k, lo in subs.items():
             v = cell['subs'].get(k, (None,))[0] if cell else None
+            if k in CLEAR_STEPS and not any(on(x) for x in CLEAR_STEPS[k]):
+                continue
             if v is not None and v < lo - CLEAR_TOL:
                 out.append(f'{SCOPE_NAMES[scope]}/{NAMES[k]} {v:.3g} < {lo}')
     return out
+
+
+def level_gate(f: str) -> list[str]:
+    """分层门禁: 界面颜色在主要底色上不低于 tools/sources/levels.json 的修复下限 / 绝对下限(口径同调色步骤 level_floor)."""
+    if not f.endswith('.json') or not on('level_floor'):
+        return []
+    colors = json.load(open(f, encoding='utf-8')).get('colors') or {}
+    fg, bg = levels.parse(colors.get('editor.foreground')), levels.parse(colors.get('editor.background'))
+    if not fg or not bg:
+        return []
+    bad = levels.check(colors, dict(fg=fg[0], bg=bg[0]))
+    return [f'分层门禁 {len(bad)} 处, 例: ' + '; '.join(bad[:3])] if bad else []
 
 
 def main() -> int:
@@ -211,7 +229,7 @@ def main() -> int:
             why.append(f"不符合 vscode://schemas/color-theme {len(m['schema'])} 处, 例: {'; '.join(m['schema'][:3])}")
         if m.get('scopes'):
             why.append(f"常用 scope 未着色 {len(m['scopes'])} 个: {', '.join(m['scopes'])}")
-        gate = clear_gate(r) + ([f"不符合 vscode://schemas/color-theme {len(m['schema'])} 处, 例: {'; '.join(m['schema'][:3])}"] if m.get('schema') else [])
+        gate = clear_gate(r) + level_gate(f) + ([f"不符合 vscode://schemas/color-theme {len(m['schema'])} 处, 例: {'; '.join(m['schema'][:3])}"] if m.get('schema') else [])
         gated = name not in exempt
         if check and gated and gate:
             failed.append((f, gate))
@@ -249,12 +267,12 @@ def main() -> int:
             if notes:
                 print('    诊断: ' + ' | '.join(notes))
     if failed:
-        print('\n未达标(清晰门禁 CLEAR_GATE 与 color-theme 规范):')
+        print('\n未达标(清晰门禁 CLEAR_GATE, 分层门禁 levels.json 与 color-theme 规范):')
         for f, why in failed:
             print(f'  {f}: ' + '; '.join(why))
         return 1
     if check:
-        print('\n全部受检主题达标(清晰门禁)')
+        print('\n全部受检主题达标(清晰门禁与分层门禁)')
     return 0
 
 

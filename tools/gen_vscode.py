@@ -13,7 +13,7 @@ sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from colorlib import (Rgb, amber, blend, cr, de2000, deneon, fit, from_oklch, h, hx, lum, neon, oklch, sat, soften, toward_bg, tune,
                       unextreme, with_sat)
-import pool
+import levels, pool
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
 from comfort import (BADGE_MAX_CR, BRIGHT_TINT_L, BRIGHT_TINT_SAT, BADGE_PAIRS, BADGE_TEXT_MIN, BORDER_KEYS, BORDER_MAX_CR, CONTROL_BORDER_KEYS, CONTROL_BORDER_MAX_CR,
                      CONTROL_TEXT_MIN, CONTROL_TEXT_PAIRS, FOCUS_KEYS, FOCUS_MAX, FOCUS_MIN_CR, GRAY_CHROMA, TINT_KEYS, TINTED_BG_CHROMA, PLACEHOLDER_CR, PLACEHOLDER_KEY, PLACEHOLDER_MAX_CHROMA,
@@ -985,6 +985,9 @@ def transform(t: dict, src: dict) -> dict:
     quiet_controls(colors, t)
     tint_grays(colors, t)
     graph_labels(colors, t)
+    # 分层门槛: 取代 ui_text_floor / badge_text / button_text 等旧的逐对下限; 放在选区之前, 选区按调整后的输入框字色求
+    if on('level_floor'):
+        levels.fix(colors, t)
     # 输入框底色与文字在前面几步还会调整, 选区放到它们之后求
     if on('list_selection_text'):
         list_selection_text(colors, t)
