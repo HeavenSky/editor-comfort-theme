@@ -4,19 +4,23 @@
 
 - v0.0.4 已在本地提交(`chore: 发布 v0.0.4`), 门禁与打包已过, 未推送也未打标签; 待确认后执行 `git push origin main` 与 `git tag v0.0.4 && git push origin v0.0.4`, 标签推送会触发 Release 工作流发布到两个市场
 
-- 看不清门槛重定: 按颜色键分层(4 组 x 3 档)并以用户认可的参考主题标定, 调色步骤, 门禁与排查共用一套门槛; 方案: .ai-ctx/plans/20261015_135326_主题分层调色优化方案.md, 标定台 tools/threshold-lab.mjs(/keys 复核键分层)
+- 看不清门槛重定: 按颜色键分层(4 组 x 3 档)并以用户认可的参考主题标定, 调色步骤, 门禁与排查共用一套门槛; 方案: .ai-ctx/plans/20261015_135326_主题分层调色优化方案.md, 标定台 tools/lab/threshold-lab.mjs(/keys 复核键分层)
   - 已定(口径): 按长时间写代码的舒适度, 不对标 WCAG; 第一目标仍是还原原主题, 步骤只把低于修复下限的那一侧提到下限; 门禁越界即报; 排查更宽, 另报低于混档线(像弱一档)与高于上限(像强一档)的; 标注相对目标判断(不及目标 / 合适 / 超出目标), 与分位冲突时以标注为准
-  - 已定(分层): 内容 / 暗化 / 线条 / 底色 四组各分强中弱; 禁用是状态, 归本组的弱, 不跨组, 不设下限只报偏淡; 线条与底色弱同色(ΔE < 1)豁免, 焦点框 / 选区 / 当前匹配不豁免; 归属单位为颜色键(tools/key-levels.mjs 自动归类 + /keys 人工复核写 key-levels.json), 语法色代码归内容中, 注释归暗化强
+  - 已定(分层): 内容 / 暗化 / 线条 / 底色 四组各分强中弱; 禁用是状态, 归本组的弱, 不跨组, 不设下限只报偏淡; 线条与底色弱同色(ΔE < 1)豁免, 焦点框 / 选区 / 当前匹配不豁免; 归属单位为颜色键(tools/lab/key-levels.mjs 自动归类 + /keys 人工复核写 key-levels.json), 语法色代码归内容中, 注释归暗化强
   - 已定(指标): 相对 rd = OKLab 明度差 / 本主题正文明度差 x 100%; 绝对: 内容与暗化强 / 中用 APCA Lc, 暗化弱 / 线条 / 底色用 OKLab ΔE x 100; 区分度 = 同组相邻两档 rd 之差的最小值 + 跨组同档的最小区分度, 不同组不同档看分级矩阵
   - 已定(推荐值): 参考主题 = One / Ayu / Moka 深浅 + GitHub Light + Sunlit Light, 推荐只按参考主题算; 目标 = 各主题中位数的 20% 截尾均值, 规范锚点(Material / Apple 透明度梯度, Material 状态叠层)只作检验与补缺; 修复下限 = 参考主题实例 P5(不高于混档线); 混档线 = 与梯子上弱一档目标的中点; 上限 = 与强一档目标的中点; 绝对下限 = min(规范值, 参考主题实例 P5); 区分度推荐 = 各主题差值掐头去尾后的 P25(不低于 5). 实测参考主题不及目标 1~9%(Ayu Dark 15%), 其他 6~17%
   - 已定: 分层门禁与旧 CLEAR_GATE 并行一个版本, 结论对齐后删旧
-  - 已定(用户: 细节由代理做完再看大方向): 键分层由代理按普查实测与语义复核, 写进 tools/key-levels.mjs 的逐键规则; 门槛按参考主题推荐值提交, 相对约束按参考主题比值范围外放一成校准(表示先后关系的最大值封顶 1.0)
-  - 已实施(未提交): tools/sources/levels.json(threshold-lab export 导出), tools/levels.py, 调色步骤 level_floor(默认开, 9 个旧的逐对下限步骤默认关), metrics.py 分层门禁(旧 CLEAR_GATE 中被取代的子项只报告); 底色弱只报告不修不门禁, 终端键不处理, 线条与底色只往底色有余地的一侧调, 前景优先配同名底色键; npm run check 与 94 个测试通过; 逐键差异见 .ai-ctx/cache/sav_20261015_102515_门槛标定/analysis/level-floor-diff.md
+  - 已定(用户: 细节由代理做完再看大方向): 键分层由代理按普查实测与语义复核, 写进 tools/lab/key-levels.mjs 的逐键规则; 门槛按参考主题推荐值提交, 相对约束按参考主题比值范围外放一成校准(表示先后关系的最大值封顶 1.0)
+  - 已实施(未提交): assets/levels.json(threshold-lab export 导出), tools/gen/levels.py, 调色步骤 level_floor(默认开, 9 个旧的逐对下限步骤默认关), metrics.py 分层门禁(旧 CLEAR_GATE 中被取代的子项只报告); 底色弱只报告不修不门禁, 终端键不处理, 线条与底色只往底色有余地的一侧调, 前景优先配同名底色键; npm run check 与 94 个测试通过; 逐键差异见 .ai-ctx/cache/sav_20261015_102515_门槛标定/analysis/level-floor-diff.md
   - 已定(用户同意推荐): 采用 level_floor 取代旧步骤并提交; 第二期区分度与相对约束先只在门禁里报告, 不自动改色; 下一步先按新门槛重跑看不清排查, 再做刺眼规则
   - 待定: 截图场景覆盖(占位字, 通知, 补全, 悬停, diff 未覆盖, 这些键没有实测配对, level_floor 不处理); 线条中无实测样本(行号槽标记改归线条强后), 门槛暂用规范锚点
   - 待做(按顺序): 1. 看不清排查改读 levels.json 后按新门槛重跑(上一轮停在 8/16 且用旧门槛, 结果作废); 2. 区分度与相对约束加进门禁报告(只报告); 3. 刺眼规则(见方案确定); 4. 旧 CLEAR_GATE 与分层门禁并行一个版本后删旧
 
 ## 方案确定
+
+- 目录整理(用户定): 骨架 ai-rules/patterns/vsc-ext 的 scripts/ 只放 package.json 调用的 Node 入口脚本, 平铺不嵌套, 复杂内容(scripts/lib 等)放单独目录, 改完同步到本仓库; 每步跑 check / test / 门禁
+  - 已完成(本仓库): tools/ 按职责分 gen / check / lib / textmate / shoot / lab / terminal 子目录(Python 统一把 lib / gen / check / lab 加进搜索路径); 原主题等数据移到 assets/source/, 门槛数据 assets/levels.json, .terminal 配色 assets/terminal/, 中间主题 assets/full-theme/(整个不进版本库, complete.py 去掉 KEEP 与 --check)
+  - 待定: assets/source/ 里非原主题的数据(vscode-color-registry.json, vscode-color-docs.json, full-rule.json, pool-overrides.json)是否也拆出去
 
 - 刺眼规则(超出层级目标上限, 大块高饱和底, 高饱和长线)本次不做; 方案: 门槛标定后按层级上限加入调色步骤与门禁
 
@@ -28,6 +32,5 @@
 - Dracula Dark 粉色活动栏徽标 #F286C4 上白字 2.16, 只调底色要变 ΔE 20.2(超过 NUDGE_MAX_DE 15)才到 4.92, 已换成深色字 #282A36(6.09); 不修: 用户定维持
   - 已复查(level_floor 实施后): 粉底白字 rd 35.7 仍低于内容中修复下限 49.9(APCA 50.7 够), level_floor 仍换深色字, 但只到刚好达标的 #4B4B49(旧步骤 #282A36)
 - full-rule.json 颜色映射里有 123 个固定色(One Light 33, Owl Light 27, One Dark 19, Owl Dark 14, 其余 30): 原主题的角色色在它自己的颜色键里找不到同色键(如 One Dark 字符串 #98C379 与它的终端绿不同色); 不修: 用户定维持; 固定色就是原主题该角色的原值, 补全按它上色即还原原色. 颜色映射由 pool.color_map 读原主题(不读 full)计算, 在补全段补终端色不会减少固定色
-- 发布前检查只核对 one-dark-full.json(其余 full 由 complete.py --check 现写, 随后 gen_vscode --check 用它们核对 themes/, 补全段的漂移仍会在主题生成物一致性上暴露); 不修: 用户定维持
 - metrics.py fidelity 只给相对原主题的偏离, 未给相对 full 的(方案写了); 不修: 用户定不做, 全关时等于 full 已由恒等校验保证, 默认档相对 full 的偏离就是调色步骤的改动量
 - 补全段给原主题未定义的括号色 1~3 补主题色(按 constant.numeric / keyword.control / constant.character.escape 解析), 替代 VS Code 默认色(深色 金 #FFD700 / 紫 #DA70D6 / 蓝 #179FFF, 浅色 蓝 #0431FA / 绿 #319331 / 棕 #7B3814), 是截图差异最普遍的来源; 不修: 维持补全全盘接受, 括号色随主题色板; 4~6 保持透明(VS Code 只循环前 3 色)

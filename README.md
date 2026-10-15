@@ -75,7 +75,7 @@ Requires VS Code `1.101.0` or newer.
 
 ### Terminal.app profiles
 
-Every theme has a matching macOS Terminal.app profile in the repository's [`terminal/`](./terminal/) folder. Double-click a `.terminal` file to import it. Importing does not replace an existing profile of the same name: Terminal adds a copy named `<name> 1`, so delete the old profile in Settings → Profiles first (or rename the copy afterwards).
+Every theme has a matching macOS Terminal.app profile in the repository's [`assets/terminal/`](./terminal/) folder. Double-click a `.terminal` file to import it. Importing does not replace an existing profile of the same name: Terminal adds a copy named `<name> 1`, so delete the old profile in Settings → Profiles first (or rename the copy afterwards).
 
 ## Turning off italic or bold
 

@@ -77,7 +77,7 @@
 
 ### Terminal.app 配置
 
-每套主题在仓库的 [`terminal/`](./terminal/) 目录下都有同色板的 macOS Terminal.app 配置. 双击 `.terminal` 文件导入. 导入不会覆盖已有的同名配置, Terminal 会另建一份 `<名称> 1`, 所以先在 设置 → 描述文件 里删掉旧配置(或导入后再改名).
+每套主题在仓库的 [`assets/terminal/`](./terminal/) 目录下都有同色板的 macOS Terminal.app 配置. 双击 `.terminal` 文件导入. 导入不会覆盖已有的同名配置, Terminal 会另建一份 `<名称> 1`, 所以先在 设置 → 描述文件 里删掉旧配置(或导入后再改名).
 
 ## 关闭斜体或粗体
 

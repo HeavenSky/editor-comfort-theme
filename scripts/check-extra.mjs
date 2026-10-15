@@ -37,19 +37,19 @@ export default function checks(root) {
 	}
 	const files = dir => readdirSync(join(root, dir)).map(name => join(dir, name));
 	return {
-		"设计主题的原主题与 tools/design.py 一致": () => runUv(root, ["tools/design.py", "--check"]),
-		// 补全段先写出中间主题(<name>-full.json, 只有 one-dark 的进版本库并在此核对), 后面两项都读它
-		"补全的中间主题与 tools/complete.py 一致": () => runUv(root, ["tools/complete.py", "--check"]),
-		"主题生成物与 tools/themes.py 一致": () => runUv(root, ["tools/gen_vscode.py", "--check"]),
-		"调色步骤全关时产物与中间主题逐键相等(没有未登记的改色)": () => runUv(root, ["tools/gen_vscode.py", "--identity"], { COMFORT_STEPS: "none" }),
-		// 只门禁清晰维度里有对应看不清类步骤的子指标(口径见 tools/metrics.py 的 CLEAR_GATE); 其余维度只作参考报告(npm run metrics)
+		"设计主题的原主题与 tools/gen/design.py 一致": () => runUv(root, ["tools/gen/design.py", "--check"]),
+		// 补全段先写出中间主题(assets/full-theme/<name>-full.json, 不进版本库), 后面两项都读它; 补全的漂移由下一项核对 themes/ 时暴露
+		"补全段写出中间主题": () => runUv(root, ["tools/gen/complete.py"]),
+		"主题生成物与 tools/gen/themes.py 一致": () => runUv(root, ["tools/gen/gen_vscode.py", "--check"]),
+		"调色步骤全关时产物与中间主题逐键相等(没有未登记的改色)": () => runUv(root, ["tools/gen/gen_vscode.py", "--identity"], { COMFORT_STEPS: "none" }),
+		// 只门禁清晰维度里有对应看不清类步骤的子指标(口径见 tools/check/metrics.py 的 CLEAR_GATE); 其余维度只作参考报告(npm run metrics)
 		"配色清晰门禁达标 (终端 / 编辑区 / 界面的可读下限与选区可见)": () =>
 			runUv(root, [
-				"tools/metrics.py",
+				"tools/check/metrics.py",
 				"--check",
 				...files("themes").filter(name => name.endsWith(".json")),
 				// .terminal 要用 macOS 的 AppKit 解码, 其他平台(如 CI 的 Linux)只检 VS Code 主题
-				...(process.platform === "darwin" ? files("terminal").filter(name => name.endsWith(".terminal")) : []),
+				...(process.platform === "darwin" ? files("assets/terminal").filter(name => name.endsWith(".terminal")) : []),
 			]),
 	};
 }
