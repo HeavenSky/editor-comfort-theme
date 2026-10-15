@@ -9,7 +9,7 @@
 # 只有字可以调到底色的另一侧(深底浅字 <-> 浅底深字); 线条与底色只往底色有余地的一侧调(浅底往暗, 深底往亮), 不反转原设计.
 import json, math, os, re
 
-from colorlib import Rgb, blend, from_oklch, h, hx, oklch
+from colorlib import Rgb, blend, from_oklch, h, hx, lum, oklch
 
 PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'levels.json')
 _DOC = None
@@ -65,9 +65,92 @@ def body_dl(colors: dict, t: dict) -> float:
     return max(1.0, dl(fg[0] if fg else t['fg'], bg[0] if bg else t['bg']))
 
 
-def under(colors: dict, key: str, t: dict) -> Rgb:
-    """底色键的实际颜色: 半透明的叠在编辑区底上; 主题没定义时按编辑区底近似."""
+_DEFAULTS = None
+
+
+def _defaults() -> dict:
+    global _DEFAULTS
+    if _DEFAULTS is None:
+        docs = os.path.join(os.path.dirname(PATH), 'vscode', 'color-docs.json')
+        _DEFAULTS = {k: v.get('defaults') or {} for k, v in json.load(open(docs, encoding='utf-8'))['colors'].items()}
+    return _DEFAULTS
+
+
+def _hsl_l(c: Rgb, f: float) -> Rgb:
+    """VS Code Color.lighten / darken: HSL 明度乘 (1 + f), f 为负即变暗."""
+    import colorsys
+    hh, l, ss = colorsys.rgb_to_hls(*c)
+    return colorsys.hls_to_rgb(hh, min(1.0, max(0.0, l * (1 + f))), ss)
+
+
+def resolve(colors: dict, key: str, dark: bool, _depth: int = 0) -> tuple[Rgb, float] | None:
+    """键的实际取值: 主题定义了用主题值, 否则按 VS Code 默认值表达式(assets/vscode/color-docs.json)推导; 推导不出返回 None.
+    支持 transparent / opaque / lighten / darken / oneOf / ifDefinedThenElse / mix; lessProminent 近似为 transparent."""
     p = parse(colors.get(key))
+    if p is not None or _depth > 20:
+        return p
+    expr = _defaults().get(key, {}).get('dark' if dark else 'light')
+    if not isinstance(expr, str):
+        return None
+    toks = re.findall(r'#[0-9A-Fa-f]+|[A-Za-z][\w.-]*|-?\d*\.?\d+|[(),]', expr)
+    pos = 0
+
+    def node():
+        nonlocal pos
+        tok = toks[pos]
+        pos += 1
+        if pos < len(toks) and toks[pos] == '(':
+            pos += 1
+            args = []
+            while toks[pos] != ')':
+                args.append(node())
+                if toks[pos] == ',':
+                    pos += 1
+            pos += 1
+            return (tok, args)
+        return tok
+
+    def ev(n):
+        if isinstance(n, tuple):
+            fn, args = n
+            if fn == 'oneOf':
+                for x in args:
+                    v = ev(x)
+                    if v is not None:
+                        return v
+                return None
+            if fn == 'ifDefinedThenElse':
+                return ev(args[1] if parse(colors.get(args[0])) is not None else args[2])
+            c = ev(args[0])
+            if c is None:
+                return None
+            rgb, a = c
+            num = lambda i: float(args[i])
+            if fn in ('transparent', 'lessProminent'):
+                return rgb, a * num(1 if fn == 'transparent' else 3)
+            if fn in ('lighten', 'darken'):
+                return _hsl_l(rgb, num(1) if fn == 'lighten' else -num(1)), a
+            if fn == 'opaque':
+                b = ev(args[1])
+                return (blend(rgb, b[0], a), 1.0) if b and a < 1 else (rgb, a)
+            if fn == 'mix':
+                b = ev(args[1])
+                f = num(2)
+                return (tuple(x + (y - x) * f for x, y in zip(rgb, b[0])), a + (b[1] - a) * f) if b else None
+            return None
+        if n.startswith('#'):
+            return parse(n[:9] if len(n) >= 7 else '#' + ''.join(ch * 2 for ch in n[1:4]))
+        return resolve(colors, n, dark, _depth + 1)
+
+    try:
+        return ev(node())
+    except (IndexError, ValueError):
+        return None
+
+
+def under(colors: dict, key: str, t: dict) -> Rgb:
+    """底色键的实际颜色: 半透明的叠在编辑区底上; 主题没定义时按 VS Code 默认值推导, 推导不出按编辑区底近似."""
+    p = resolve(colors, key, t['dark'] if 'dark' in t else lum(t['bg']) < 0.2)
     if p is None:
         return t['bg']
     rgb, a = p
