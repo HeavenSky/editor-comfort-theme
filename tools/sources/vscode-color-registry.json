@@ -1,5 +1,5 @@
 {
-	"vscodeVersion": "1.141.0",
+	"vscodeVersion": "1.141.2",
 	"semanticSelector": "^(\\w+[-_\\w+]*|\\*)(\\.\\w+[-_\\w+]*)*(:\\w+[-_\\w+]*)?$",
 	"colors": {
 		"actionBar.toggledBackground": {
@@ -329,12 +329,6 @@
 		"agentsVoice.speakingForeground": {
 			"dark": "#A371F7",
 			"light": "#8250DF",
-			"transparent": false,
-			"deprecated": false
-		},
-		"archive": {
-			"dark": null,
-			"light": null,
 			"transparent": false,
 			"deprecated": false
 		},
@@ -2552,12 +2546,6 @@
 			"transparent": false,
 			"deprecated": false
 		},
-		"first": {
-			"dark": null,
-			"light": null,
-			"transparent": false,
-			"deprecated": false
-		},
 		"focusBorder": {
 			"dark": "#007FD4",
 			"light": "#0090F1",
@@ -3980,12 +3968,6 @@
 			"transparent": false,
 			"deprecated": false
 		},
-		"pasteIntoEditor": {
-			"dark": null,
-			"light": null,
-			"transparent": false,
-			"deprecated": false
-		},
 		"peekView.border": {
 			"dark": null,
 			"light": null,
@@ -4227,12 +4209,6 @@
 			"deprecated": false
 		},
 		"radio.inactiveHoverBackground": {
-			"dark": null,
-			"light": null,
-			"transparent": false,
-			"deprecated": false
-		},
-		"required": {
 			"dark": null,
 			"light": null,
 			"transparent": false,
@@ -4829,12 +4805,6 @@
 		"strongForeground": {
 			"dark": "#FFFFFF",
 			"light": "#000000",
-			"transparent": false,
-			"deprecated": false
-		},
-		"success": {
-			"dark": null,
-			"light": null,
 			"transparent": false,
 			"deprecated": false
 		},
@@ -5793,12 +5763,6 @@
 			"deprecated": false
 		},
 		"testing.uncoveredMinimapBackground": {
-			"dark": null,
-			"light": null,
-			"transparent": false,
-			"deprecated": false
-		},
-		"text": {
 			"dark": null,
 			"light": null,
 			"transparent": false,

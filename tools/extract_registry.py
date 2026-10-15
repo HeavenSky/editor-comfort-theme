@@ -31,10 +31,11 @@ def literal(expr: str, color_cls: str) -> str | None:
 def main() -> int:
     src = open(BUNDLE, encoding='utf-8', errors='replace').read()
     version = json.load(open(os.path.join(RES, 'package.json')))['version']
-    register = re.search(r'([\w$]+)\("editor\.background",\{', src).group(1)
+    # 前面要有标识符边界: 压缩后注册函数名很短(如 ae), 不加边界会把 Qae( / Iae( 这类同尾的其他调用当成颜色注册
+    register = re.search(r'(?<![\w$.])([\w$]+)\("editor\.background",\{', src).group(1)
     color_cls = re.search(r'([\w$]+)\.fromHex\("#', src).group(1)
     # 默认值的四种写法: null, {dark, light, ...}, "#RRGGBB" 字面量, 变量或 Color.fromHex(...) 表达式
-    pat = re.compile(re.escape(register) + r'\("([A-Za-z][\w.\-]*)",(null|\{[^{}]*\}|"[^"]*"|[\w$.]+(?:\([^()]*\))?(?:\.[\w$]+\([^()]*\))*)')
+    pat = re.compile(r'(?<![\w$.])' + re.escape(register) + r'\("([A-Za-z][\w.\-]*)",(null|\{[^{}]*\}|"[^"]*"|[\w$.]+(?:\([^()]*\))?(?:\.[\w$]+\([^()]*\))*)')
     # registerColor(id, defaults, description, needsTransparency = false, deprecationMessage)
     tail = re.compile(r'\s*,\s*(?:[\w$.]+\([^()]*\)|"[^"]*"|[\w$.]+)\s*(?:,\s*(!0|!1|true|false|void 0))?\s*(?:,\s*([\w$.]+\([^()]*\)|"[^"]*"))?\s*\)')
     colors = {}
