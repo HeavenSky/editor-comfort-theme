@@ -166,15 +166,14 @@ def merge(pa: str, pb: str, r: dict, take: set[int], out: str) -> None:
     with open(out, 'w', encoding='utf-8') as f:
         json.dump(a, f, ensure_ascii=False, indent='\t')
     print(f'\n合并预览已写入 {out}: 底 {name_of(pa)}, 取 {name_of(pb)} 的差异组 {sorted(take) or "无"} 共 {len(chosen)} 项')
-    from metrics import from_vscode, grade
-    from comfort import rate
-    m = from_vscode(out)
-    clear, eye, why = grade(m)
-    rr = rate(m)
-    print(f"门禁: 清晰 {clear}, 护眼 {eye}, 柔和 {rr['soft']['score']}{'' if rr['soft']['ok'] else ' ×'}, "
-          f"防疲劳 {rr['fatigue']['score']}{'' if rr['fatigue']['ok'] else ' ×'}")
-    for w in why + [f'柔和: {x}' for x in rr['soft']['why']] + [f'防疲劳: {x}' for x in rr['fatigue']['why']]:
-        print(f'  - {w}')
+    from metrics import from_vscode
+    from comfort import DIM_NAMES, SCOPE_NAMES, rate
+    rr = rate(from_vscode(out))
+    mark = lambda x: f"{x['score']}{'' if x['ok'] else ' ×'}"
+    print(f"门禁: 综合 {mark(rr['overall'])}, " + ', '.join(f'{DIM_NAMES[d]} {mark(x)}' for d, x in rr['dim'].items() if x['score'] is not None))
+    for (d, s), c in rr['cells'].items():
+        for w in c['why']:
+            print(f'  - {DIM_NAMES[d]}/{SCOPE_NAMES[s]}: {w}')
 
 
 def main() -> int:

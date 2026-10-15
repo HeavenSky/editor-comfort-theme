@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # dependencies = ["pyobjc-framework-Cocoa; sys_platform == 'darwin'"]
 # ///
-# 由 themes.py 生成 macOS Terminal.app 主题 terminal/<name>.terminal(颜色以 sRGB 存储).
+# 由 themes.py 生成 macOS Terminal.app 主题 terminal/<name>.terminal(颜色以 sRGB 存储); 手改 .terminal 会在下次生成时被覆盖.
 # 用法: uv run tools/gen_terminal.py [--font MapleMono-NF-CN-Regular] [--size 12]
 import argparse, os, plistlib, sys
 

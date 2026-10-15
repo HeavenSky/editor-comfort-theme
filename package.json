@@ -1,6 +1,6 @@
 {
 	"name": "editor-comfort-theme",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"keywords": [
 		"theme",
 		"one dark",
@@ -34,84 +34,100 @@
 	"contributes": {
 		"themes": [
 			{
-				"label": "Comfort One Dark",
+				"id": "C One Dark",
+				"label": "C One Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-one-dark-color-theme.json"
+				"path": "./themes/one-dark.json"
 			},
 			{
-				"label": "Comfort One Light",
+				"id": "C One Light",
+				"label": "C One Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-one-light-color-theme.json"
+				"path": "./themes/one-light.json"
 			},
 			{
-				"label": "Comfort Ayu Dark",
+				"id": "C Ayu Dark",
+				"label": "C Ayu Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-ayu-dark-color-theme.json"
+				"path": "./themes/ayu-dark.json"
 			},
 			{
-				"label": "Comfort Ayu Light",
+				"id": "C Ayu Light",
+				"label": "C Ayu Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-ayu-light-color-theme.json"
+				"path": "./themes/ayu-light.json"
 			},
 			{
-				"label": "Comfort Sunlit Dark",
+				"id": "C Sunlit Dark",
+				"label": "C Sunlit Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-sunlit-dark-color-theme.json"
+				"path": "./themes/sunlit-dark.json"
 			},
 			{
-				"label": "Comfort Sunlit Light",
+				"id": "C Sunlit Light",
+				"label": "C Sunlit Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-sunlit-light-color-theme.json"
+				"path": "./themes/sunlit-light.json"
 			},
 			{
-				"label": "Comfort GitHub Dark",
+				"id": "C GitHub Dark",
+				"label": "C GitHub Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-github-dark-color-theme.json"
+				"path": "./themes/github-dark.json"
 			},
 			{
-				"label": "Comfort GitHub Light",
+				"id": "C GitHub Light",
+				"label": "C GitHub Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-github-light-color-theme.json"
+				"path": "./themes/github-light.json"
 			},
 			{
-				"label": "Comfort Dracula Dark",
+				"id": "C Dracula Dark",
+				"label": "C Dracula Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-dracula-dark-color-theme.json"
+				"path": "./themes/dracula-dark.json"
 			},
 			{
-				"label": "Comfort Dracula Light",
+				"id": "C Dracula Light",
+				"label": "C Dracula Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-dracula-light-color-theme.json"
+				"path": "./themes/dracula-light.json"
 			},
 			{
-				"label": "Comfort Owl Dark",
+				"id": "C Owl Dark",
+				"label": "C Owl Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-owl-dark-color-theme.json"
+				"path": "./themes/owl-dark.json"
 			},
 			{
-				"label": "Comfort Owl Light",
+				"id": "C Owl Light",
+				"label": "C Owl Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-owl-light-color-theme.json"
+				"path": "./themes/owl-light.json"
 			},
 			{
-				"label": "Comfort Moka Dark",
+				"id": "C Moka Dark",
+				"label": "C Moka Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-moka-dark-color-theme.json"
+				"path": "./themes/moka-dark.json"
 			},
 			{
-				"label": "Comfort Moka Light",
+				"id": "C Moka Light",
+				"label": "C Moka Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-moka-light-color-theme.json"
+				"path": "./themes/moka-light.json"
 			},
 			{
-				"label": "Comfort Pale Dark",
+				"id": "C Pale Dark",
+				"label": "C Pale Dark",
 				"uiTheme": "vs-dark",
-				"path": "./themes/comfort-pale-dark-color-theme.json"
+				"path": "./themes/pale-dark.json"
 			},
 			{
-				"label": "Comfort Pale Light",
+				"id": "C Pale Light",
+				"label": "C Pale Light",
 				"uiTheme": "vs",
-				"path": "./themes/comfort-pale-light-color-theme.json"
+				"path": "./themes/pale-light.json"
 			}
 		]
 	},
@@ -135,8 +151,9 @@
 		"check:template": "node scripts/check-template.mjs",
 		"gen:icon": "node scripts/gen-icon.mjs",
 		"extract:registry": "uv run tools/extract_registry.py",
-		"gen:themes": "uv run tools/design.py && uv run tools/gen_vscode.py && uv run tools/gen_terminal.py",
-		"metrics": "uv run tools/metrics.py --strict --check themes/*.json terminal/*.terminal",
+		"gen:themes": "uv run tools/design.py && uv run tools/complete.py && uv run tools/gen_vscode.py && uv run tools/gen_terminal.py",
+		"pool:update": "uv run tools/pool.py --update && uv run tools/complete.py --guard",
+		"metrics": "uv run tools/metrics.py themes/*.json terminal/*.terminal",
 		"similar": "uv run tools/similar.py themes/*.json",
 		"clash": "uv run tools/clash.py && uv run tools/clash.py --markdown",
 		"shots": "node tools/shoot.mjs media/screenshots --jpg",

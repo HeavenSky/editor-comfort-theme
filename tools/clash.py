@@ -5,8 +5,8 @@
 #   默认         逐主题列出调色带来的新撞色: 两个不同族角色(pool.FAMILY)生成后 ΔE < CLASH, 而原主题里 ΔE >= APART
 #   --grammars   按 VS Code 内置的每个语法文件: 取语法里出现的全部 scope, 按各主题解析到的规则组算同样的新撞色, 汇总涉及的语法数
 #   --markdown   按真实分词着色(tools/tokenize.mjs)检查 Markdown 文件里各语义类(标题, 正文, 列表符, 粗体, 斜体, 代码, 链接, 引用)的色差;
-#                低于生成器的分色目标 SEPARATE_DE 判撞色(退出码 1), 再高 2 以内只提示偏近
-# 色差一律是 CIEDE2000. 生成器的对应处理见 gen_vscode.separate / separate_markdown / separate_forced.
+#                低于 SEPARATE_DE 判撞色(退出码 1), 再高 2 以内只提示偏近
+# 色差一律是 CIEDE2000. 只报告不改色: 撞色若来自调色步骤, 关掉对应步骤(tools/steps.py)即可还原原主题.
 # 用法: uv run tools/clash.py [主题名过滤...]
 #       uv run tools/clash.py --grammars [VS Code 扩展目录]
 #       uv run tools/clash.py --markdown [file.md]   (默认 tools/samples/sample.md; 需先 npm ci 装好 vscode-textmate)
@@ -17,7 +17,11 @@ sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pool
 from colorlib import cr, de2000, h
-from gen_vscode import MARKDOWN_ROLES, SEPARATE_DE, load, source_fg
+from gen_vscode import load, source_fg
+
+# Markdown 专用角色(文档里挨着出现, 与代码角色不同屏); 两色 ΔE 低于 SEPARATE_DE 时肉眼难分
+MARKDOWN_ROLES = ['heading', 'link', 'raw', 'quote', 'bold', 'italic']
+SEPARATE_DE = 6.0
 from themes import build
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -27,7 +31,7 @@ EXT = os.path.join(os.environ.get('VSCODE_APP', '/Applications/Visual Studio Cod
 
 
 def theme_file(name: str) -> str:
-    return os.path.join(THEMES, f'{name}-color-theme.json')
+    return os.path.join(THEMES, f'{name}.json')
 
 
 def source_roles(t: dict) -> dict:
@@ -64,7 +68,7 @@ def by_theme(only: list[str]) -> int:
                 if d < CLASH and d0 >= APART:
                     out.append(f'{a}~{b} {d0:.0f}->{d:.1f}')
         total += len(out)
-        print(f"{t['name'][8:]:13} {len(out):3}  {'; '.join(out)}")
+        print(f"{t['name']:13} {len(out):3}  {'; '.join(out)}")
     print(f'\n调色带来的新撞色共 {total} 对(生成后 ΔE < {CLASH}, 原主题 ΔE >= {APART})')
     return 0
 
@@ -113,7 +117,7 @@ def by_grammar(ext: str) -> int:
     if not grammars:
         print(f'没找到语法文件: {ext}')
         return 2
-    themes = {t['name'][8:]: (json.load(open(theme_file(t['name']), encoding='utf-8')), source_roles(t)) for t in build()}
+    themes = {t['name']: (json.load(open(theme_file(t['name']), encoding='utf-8')), source_roles(t)) for t in build()}
     report = defaultdict(lambda: defaultdict(set))
     for gname, scs in grammars.items():
         for tname, (th, sr) in themes.items():
@@ -177,7 +181,7 @@ def by_markdown(md: str) -> int:
                 elif de < SEPARATE_DE + 2:
                     near.append(f'{a}~{b} {de:.1f}')
         bad_total += len(bad)
-        print(name[8:].ljust(13), ' '.join(f"{k}{v[0]}{'粗' if v[1] else ''}({cr(h(v[0][1:7]), bg):.1f})" for k, v in c.items()))
+        print(name.ljust(13), ' '.join(f"{k}{v[0]}{'粗' if v[1] else ''}({cr(h(v[0][1:7]), bg):.1f})" for k, v in c.items()))
         print(' ' * 14, f'撞色(ΔE < {SEPARATE_DE:g}):', '; '.join(bad) or '无', f'| 偏近(< {SEPARATE_DE + 2:g}):', '; '.join(near) or '无')
     return 1 if bad_total else 0
 

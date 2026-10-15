@@ -1,0 +1,39 @@
+# DONE
+
+- 20261014_173855 补全段按角色成组的池规则里混有 comment.block.documentation variable 这类选择器, gen_vscode.source_rules 与 metrics 按"选择器含 comment"把整组按注释口径处理, Sunlit Dark / Light 的 Pool variable #268BD2 只到 4.08 / 3.41 且门禁漏判; 新增 gen_vscode.is_comment_rule: Pool 规则按角色判, 原主题规则仍按选择器判(comment markup.link 等原主题给的是注释色), metrics 同口径; 修后 Sunlit variable #2993DD / #1F77B4, Pale Light 文档注释里的类型色 #926200, 其余主题不变
+- 20261014_173855 撞色分离先动明度再转色相(方案 S6 写先转色相); 不复存在: 调色后撞色拉开随旧重建移除(方案"定稿补充"), 唯一的同类步骤 term_separate 默认关, clash.py 实测调色带来的新撞色 0 对
+- 20261014_171255 README / CHANGELOG / 插件描述与 media/screenshots 仍是旧流程与旧配色; 中英 README 改写开头, 特性, 主题表(列改为 原主题 / 可读性修正, 按实测逐套写改动), 调校原则(原主题 -> 补全 -> 可读性修正, 刺眼与观感类默认关), CHANGELOG Unreleased 按现状重写, package.nls 描述改为保留原色只修看不清; npm run shots 重拍 48 张
+- 20261014_171103 括号色 4~6 的透明 #00000000(VS Code 跳过, 只循环前 3 色)被 syntax_floor 当偏淡语法色抬成不透明灰(One Dark #8D929B 等, 第 4 层括号变灰); Mapper.token 遇全透明原样返回, 13 套主题恢复
+- 20261014_170835 配色指标门禁暂停后发布前不拦看不清; 用户定接回只含清晰维度: metrics.py --check 改为只判 CLEAR_GATE(清晰维度里有对应看不清类步骤的子指标, 口径取步骤目标, 误差留 0.06)与 color-theme 规范, 串色 / 角色与终端色差 / 硬编码覆盖 / 常用 scope 着色与其余维度只报告; scripts/check-extra.mjs 接回; 接回时拦出并修复: Sunlit Dark / Light 终端选区 1.04 / 1.00(正文仅 4.5~4.75, term_selection 一步就停在底色, 改为兼顾不了时按选区上的字限值 3.5 求色, 现 1.33 / 1.28), Sunlit Light 编辑区选区 1.14(selections 兼顾不了时取字可读前提下最看得出的一档, 现 1.27), Ayu / Owl Light VS Code 终端彩色 4.31~4.41(themes.py 按编辑区底提, VS Code 终端底更深; gen_vscode 按 terminal.background 再补一次)
+- 20261014_165719 补全段给未定义的界面前景色取原主题终端色, 浅色主题偏浅(Owl Light 修改标记 #E0AF02 对比度 1.97, Sunlit Light #B58900 2.98); gen_vscode.default_cr: 补出的界面文字 / 图标色(含 status_apart 的换色候选)对底色的对比度不低于 VS Code 默认色, 最多要求到 FILL_TEXT_CR 4.5, 色相与饱和度不变只调明度; 修改标记 Owl Light / Sunlit Light / One Light / Moka Light 提到 4.5~4.58(#907001 / #8F6C00 / #9C6A01 / #81710E); 不封顶(推荐方案原文)时深色主题本来够读的终端色被提到 9~10(One Dark 5.17 -> 9.76, 改 689 键), Moka / Sunlit Light 修改标记撞色后被换成蓝色, 故封顶 4.5(与看不清类可读下限一致), 改 391 键, 色相偏移 > 30° 的 0 个
+- 20261014_165719 规则池"严格增量"只按选择器判断, 原主题靠外层 scope 上色的 token 被补的内层规则改色(One Light 的 Less @primary 红变蓝); 新增 tools/pool-guard.mjs: 对 tools/samples 分词, 原主题已上色的字符若被池规则(各取唯一哨兵色)盖掉, 剔除该选择器并重复到稳定, 结果写入 full-rule.json 的 skip(16 套共 249 个), complete.py --guard 重算, 接为 npm run pool:update 的最后一步, 补全时跳过; TextMate 初始化抽成 tools/textmate.mjs 与 tokenize.mjs 共用; 验证: 样例中原主题非正文色 token 在 full 里改色 0 处(16 套), @primary 恢复 #E45649; 局限: 只覆盖样例出现的语法
+- 20261014_161151 生成链改为 原主题(jq -c) -> 补全段 <name>-full.json(jq .) -> 调色步骤; 用户定: 补全全盘接受, 规则池严格增量(full-rule.json 只增不减, 颜色映射以多数主题的颜色键为默认), 暗彩不再区分, 手写主题与旧重建及其改写逻辑删除; 全关产物与 full 逐键相等并加入 npm run check
+- 20261014_161151 关掉 fill_defaults / role_pool 后观感不统一的取舍; 不复存在: 补色与规则补全移入补全段, 全盘接受
+- 20261014_153744 刺眼类调色步骤默认开关取舍; 用户定第一目标为尽量还原原主题色彩: 刺眼类(glare)与指标类(metric)全部默认关, 只开看不清类且只改必要的一侧; 审计后另把未登记的改写步骤(手写主题, 规则池, 派生变量 / 暗彩, 标题加粗, 补 scope, 补 VS Code 默认色, 括号补色, 覆盖终端键, 丢语义色)登记为 restyle 类默认关; 全关时与原主题 0 处 ΔE>5, 默认时界面键 130/2901, 语法角色 52/272
+- 20261014_153744 Owl Light 字符串相对原主题转了 48°(原与函数同为 #4876D6); 强制拉开(forced_apart)与规则池默认关后沿用原色, 问题不复存在
+- 20261014_153744 One Light commit 按钮与多套主题徽标的字色被换边(蓝底白字 3.83 改成近黑字); 按钮 / 徽标 / 列表选中行改为字不换边: 先推字, 再微调底色(ΔE <= 15), 都不够才换字色, 全主题换边 25 处降到 1 处
+- 20261014_153744 括号色 4~6 的透明默认值 #00000000 被混成与底同色的不透明色, 括号看不见; fill_hardcoded 跳过全透明默认值
+- 20261013_231826 主题 ID 由 Comfort <Name> 改为 C <Name>, 旧设置找不到主题; 用户选接受新 ID, CHANGELOG 已有 Breaking 说明, 本机 settings.json 已是 C Sunlit Light
+- 20261013_231536 Claude Code 在 VS Code 终端 / tmux 里降到 256 色, 自定义主题淡色被取整; 不在本仓库兜底, terminal/claude-theme.sh 头注释给绕过办法(TERM_PROGRAM= claude, CLAUDE_CODE_TMUX_TRUECOLOR=1); README 是插件页面, 不写脚本内容
+- 20261013_230203 新配色真机目测(VS Code 与 Terminal.app); 用户已验, 发现的问题(选区, 输入框选中文字, a 图缺左栏, 浅色底色雷同)均已修复
+- 20261013_230203 Claude Code 主题刺眼的原因排查; 结论: VS Code 终端强制 256 色(TERM_PROGRAM=vscode 且远程开关 tengu_cobalt_thicket 开, 与 COLORTERM 无关), Terminal.app 无 COLORTERM 时 256 色, tmux 未设 CLAUDE_CODE_TMUX_TRUECOLOR 时 256 色; ~/.zshenv 两行不是原因; 亮背景块饱和度规则已加入门禁并用于求色; 不做 256 色取格点
+- 20261013_230052 5 套浅色主题底色都是暖白 #EEE6D9; themes.fit_bg 新增 hue 参数, One / GitHub / Ayu / Owl / Moka Light 按主题色(270 / 257 / 67 / 187 / 130 度)以同一彩度 0.012 偏移, 亮度带不变, 底色依次 #E4E7EF / #E2E8EF / #EDE5DF / #DEE9E8 / #E4E8E0, 各界面表面随之变色; 代价: GitHub / One Light 防蓝光 78 / 80(仍达标), One 与 GitHub 底色色差 1.7 仍接近
+- 20261013_224941 输入框里选中的文字看不清(Dracula Dark 1.09, Dracula Light 1.64, Owl / Sunlit 约 2~3), 6 套未定义 selection.background, Sunlit Light 编辑区选区仅 1.14; 门禁补 编辑区选区 / 输入框选区 可见(理想 1.3, 限值 1.15), 输入框选中的字(理想 4.0, 限值 3.5), 输入框选区刺眼(<= 2.2, 限值 2.6); gen_vscode.selections 在输入框配色定稿后求色, 惯常方向读不清时改往远离字色的方向, 16 套选中的字 4.08~6.63
+- 20261013_224941 截图 a 图左栏缺 Markdown(后台启动时命令行文件不打开); shoot.mjs 在 A 场景开头显式打开 sample.md
+- 20261013_222257 README 主题截图仍是 v0.0.3 旧配色; npm run shots 重拍 48 张(逐主题校验主题生效), 与旧图相比亮度差 > 8 的像素占 2.5%~5%(Pale Light 92%, 底色由 #E8E4F3 变 #DEDBE3), 浅色主题底色由中性灰变暖白
+- 20261013_221926 主题 id 与 label 统一为 C <名> Dark / Light(用户拍板, 接受已装用户需重选主题); package.json, themes.py, README, NOTICE, CHANGELOG(标注 Breaking) 同步
+- 20261013_221926 截图脚本加了 id 后按 label 切主题, 静默回退默认主题(截到的全是 Dark Modern); shoot.mjs 改按 id 切换, 按主题文件名命名, 截图前校验编辑区底色等于主题值否则报错退出; 同时改为后台启动不抢焦点(open -g -n, CDP 焦点模拟, 前台守护按 pid 切回, 关闭失焦降频)
+- 20261013_220135 主题显示名带 Comfort 前缀; label 去掉前缀(One Dark 等), package.json 每个主题加 id = 原名 Comfort One Dark 等(VS Code 设置 ID 取 id || label), 已有 workbench.colorTheme 设置照常生效且不与原主题重名; README, NOTICE, package.nls 同步
+- 20261013_220135 claude_theme.py 仍接受旧名 comfort-<名> 与 -color-theme.json 作参数; 去掉兼容, 只认 <名>
+- 20261013_215738 主题文件名冗长(comfort-<名>-color-theme.json / comfort-<名>.terminal / 截图 comfort-<名>-a.jpg); themes.py 名称去掉 comfort- 前缀, 产物与截图改为 <名>.json / <名>.terminal / <名>-a.jpg(git mv), 同步 package.json, README 图片链接, gen_vscode / pool / pool_audit / clash / tokenize / shoot / claude_theme 的路径与前缀切片, Terminal.app 配置改名为 <名>; VS Code 显示名不变
+- 20261013_214822 终端原生选区在浅色主题里几乎看不见(15 套未定义 terminal.selectionBackground, VS Code 回落编辑区选区色, Sunlit Light 对比度 1.14); 门禁终端范围补 选区 / 失焦选区 / 选区上的字(理想 1.3 / 1.15 / 4.5, 限值 1.2 / 1.08 / 3.5), themes.term_selection 取终端蓝混入底色求色, .terminal 的 SelectionColor 与 VS Code 的 terminal.selectionBackground / inactiveSelectionBackground 共用, 16 套选区 1.40~1.42, 失焦 1.20~1.22
+- 20261013_214756 查找当前不比其他匹配醒目(Owl Light 同色, Pale 当前更淡, 共 7 套差 < 5); gen_vscode 新增 find_order: 查找当前与底色差 >= 其他匹配 + 5(FIND_GAP_DE), 先挪当前, 到高亮口径边界再收其他匹配(不低于 5); 16 套全部满足
+- 20261013_214422 亮高亮底压饱和度后 Ayu Light 查找高亮与底几乎分不出(色差 16 -> 6), 查找当前与其他也同色; gen_vscode.calm 压完沿远离底色方向补明度, 色差补回压前水平(上限 HIGHLIGHT_MIN_DE 12, 查找当前 18), 不越过对比度口径; Ayu Light 查找当前 / 其他色差 16.4 / 10.0
+- 20261013_212936 终端彩字理想下限浅色提到 5.0(深色维持 4.5); comfort.term_spec 按深浅取值, themes.py 与 claude_theme.py 随之生成, 浅色主题终端彩字 5.04~5.07
+- 20261013_212936 编辑区门禁补亮高亮底饱和度(comfort.BRIGHT_TINT_L / BRIGHT_TINT_SAT, 理想 0.40 / 限值 0.55, 鲜艳柔和维度 bright_tint); gen_vscode.calm 按它二分压彩度, 浅色 8 套高亮底最高降到 0.38~0.39, 深色无变化; claude_theme.py 改引用同一常量
+- 20261013_204912 终端色生成借用编辑区口径(语法色下限 token_min, 注释口径的 90m, Claude Code 主题借 HIGHLIGHT_MAX_CR); 新增 comfort.term_spec, themes.py 与 claude_theme.py 只按终端范围取目标, 自动适配主题的界面图标另用 ui_src 色源不受牵连
+- 20261013_204912 README 门禁与调校原则描述过时(三目标, 彩度封顶, 浅色底 0.80, 变量彩度 0.085, 语法色不比正文亮); 中英 README 按五维度与现行参数改写
+- 20261013_191836 Claude Code 浅色 diff 荧光绿且自定义主题无法自动切换; 启动脚本按终端底色生成主题并用 --settings 指定给本次会话
+- 20261013_190148 门禁重构为 范围 x 维度(清晰 / 鲜艳柔和 / 防疲劳 / 护眼 / 防蓝光), 新增荧光度, 极端黑白, 蓝光量; 调色改为饱和度平滑压缩, 对比度按原顺序映射, 浅色底暖白, 全部主题重新生成并达标
+- 20261013_190148 语法色 SYNTAX_CAP = 0.085 统一封顶致偏灰; 取消绝对彩度封顶, 改为饱和度平滑压缩加下限
+- 20261013_190148 浅色主题终端最灰饱和度偏低; 终端色改为保持饱和度的明度调整(fit), 浅色深黄朝琥珀偏

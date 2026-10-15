@@ -1,18 +1,21 @@
 # /// script
 # requires-python = ">=3.11"
 # ///
-# 语法规则池: 把全部原主题(tools/sources/)的 tokenColors 选择器合并成一个池子, 每个选择器裁决出一个"角色",
-# 各主题只提供角色的颜色与字体样式, gen_vscode.py 据此为所有主题生成结构相同的 tokenColors.
+# 语法规则池: 把全部原主题(tools/sources/)的 tokenColors 选择器合并成一个池子, 每个选择器裁决出一个"角色", 存入
+# tools/sources/full-rule.json(只增不减): rules 为 选择器 -> 角色, colors 为 角色 -> 主题颜色键(default 为多数主题在用的键,
+# 各主题只记与默认不同的; 主题颜色键里找不到同色的记固定 hex). 补全段(complete.py)按它给原主题解析不出颜色的选择器补规则.
 #
 # 裁决分层(见 decide):
 #   0 跟随外层: 标点, meta.* 等包裹 scope 不出规则, 让外层(字符串, 注释等)决定颜色
 #   1 结构规则: 按 TextMate 命名约定推出角色, 且没有被多数原主题反对
 #   2 无结构规则, 但各原主题的候选角色有交集
 #   3/4/5 需人工: 结构规则被多数原主题反对 / 只有一个原主题定义 / 原主题分歧; 未标注前用推荐值
-# 人工标注存于 tools/sources/pool-overrides.json({选择器: 角色}), 优先级最高; 角色写成 "<角色> muted" 时强制按暗彩生成.
+# 人工标注存于 tools/sources/pool-overrides.json({选择器: 角色}), 优先级最高; 旧标注里 "<角色> muted" 的后缀已不再区分, 按角色处理.
 #
 # 用法:
 #   uv run tools/pool.py                      各层数量与待标注数
+#   uv run tools/pool.py --update             把裁决结果合并进 full-rule.json(已有选择器保留文件里的角色, 从不删除), 最后重算颜色映射
+#                                             (skip 原样保留, 由 npm run pool:update 随后的 complete.py --guard 重算)
 #   uv run tools/pool.py --annotate <out.html>  生成标注页(键盘快捷, 浏览器本地保存, 导出 JSON 存为 pool-overrides.json)
 #   uv run tools/pool.py --review <out.html>    复核页: 只差语言后缀的同类选择器标注不一致的组, 每组选一个角色统一
 import json, math, os, re, sys
@@ -27,7 +30,6 @@ OVERRIDES = os.path.join(SOURCES, 'pool-overrides.json')
 FG, INHERIT = 'fg', 'inherit'
 
 # 角色 -> (代表 scope 与取色链, 默认字体样式); 主题的角色色 = 取色链里第一个在该主题中有颜色的 scope, 都没有时退回正文.
-# 例外: variable(普通变量)用派生专用色, 由 gen_vscode.derive_variable 按本主题其他角色色算出, 取色链只作兜底
 ROLES = {
     'comment': (['comment'], None),
     'string': (['string', 'string.quoted'], None),
@@ -52,7 +54,7 @@ ROLES = {
     'parameter': (['variable.parameter', 'variable', FG], None),
     'this': (['variable.language', 'keyword'], None),
     'property': (['variable.other.property', 'variable.other.object.property', 'support.type.property-name', 'variable', FG], None),
-    # 样式表 / 配置文件的属性名: 色相取声明类型(复核时用户选定), 由 gen_vscode 压暗到语法色下限, 不加粗不斜体(见 PLAIN)
+    # 样式表 / 配置文件的属性名: 取声明类型的颜色(复核时用户选定)
     'prop_name': (['storage.type', 'storage', 'keyword'], ''),
     'key': (['support.type.property-name', 'meta.object-literal.key', 'variable.other.property', 'entity.other.attribute-name'], None),
     'tag': (['entity.name.tag', 'keyword'], None),
@@ -70,25 +72,12 @@ ROLES = {
 }
 NAMES = dict(comment='注释', string='字符串', regexp='正则', escape='转义', number='数字', constant='常量字面量', constant_var='常量变量',
              keyword='关键字', control='流程控制', operator='运算符', storage='声明类型', modifier='修饰符', function='函数', builtin_fn='内置函数',
-             type='类型', class_='类', builtin_type='内置类型', inherited='父类', namespace='命名空间', variable='变量(派生专用色)', parameter='参数',
+             type='类型', class_='类', builtin_type='内置类型', inherited='父类', namespace='命名空间', variable='变量', parameter='参数',
              this='this/self', property='属性', key='对象键', tag='标签', attribute='属性名(标签)', heading='标题', bold='粗体',
              italic='斜体', quote='引用', raw='行内代码', link='链接', inserted='新增', deleted='删除', invalid='错误', text='正文',
              inherit='跟随外层')
 NAMES['class'] = '类'
-NAMES['prop_name'] = '属性名(样式表, 暗彩)'
-# 暗彩(muted): 原主题里该选择器被有意压暗(或人工把原本灰白的改成了彩色), 生成时用本角色色的暗淡版本, 不加粗(斜体保留).
-# 判据只看原主题里显式写出该选择器的规则(前缀继承不算), 多数原主题满足其一:
-#   比该原主题里本角色的正常色暗(对比度 < 它 x MUTED_REL), 且色相相近(< MUTED_HUE 度)或整体也偏暗(< 语法色中位数 x MUTED_ABS);
-#   灰白且比正文明显暗(< 正文 x MUTED_REL), 即原主题有意弱化的灰;
-#   或者是人工标注的选择器, 而原主题多数给的是灰白(彩度 < MUTED_NEUTRAL), 或整体偏暗(< 语法色中位数 x MUTED_ABS).
-# 人工标注用宽口径: 那一轮标注只看了色块, 没有看到字体样式与对比度(2026-10-12 复查), 偏暗的一律按弱化处理.
-# 只比中位数不比角色色会误伤: 某角色在原主题里本来就偏暗(如 Monokai 的标题), 那是它的正常色而不是弱化.
-MUTED_ABS, MUTED_REL, MUTED_HUE, MUTED_NEUTRAL = 0.80, 0.85, 30, 0.035
-# 不做暗彩的角色: 本身就是灰白或靠字体样式表意
-MUTED_SKIP = {'comment', 'text', 'bold', 'italic', 'quote', 'inserted', 'deleted', 'invalid', 'prop_name'}
-# 强制取消字体样式的角色: 不沿用原主题取色链上的 bold / italic(如 Solarized 的 storage 加粗)
-PLAIN = {'prop_name'}
-
+NAMES['prop_name'] = '属性名(样式表)'
 # 结构规则: TextMate 命名约定 -> 角色; 选择器(后代选择器取最右一段)按最长前缀命中
 STRUCT = [
     ('comment', 'comment'), ('punctuation.definition.comment', 'comment'),
@@ -127,11 +116,7 @@ def pick(counter: Counter, among=None) -> str:
     return min(keys, key=lambda k: (-counter.get(k, 0), _rank.get(k, 99)))
 
 
-# 变量派生色要与之拉开色差的角色: 代码里常与变量相邻出现的颜色
-DERIVE_CONTEXT = ['parameter', 'storage', 'keyword', 'control', 'function', 'builtin_fn', 'string', 'number', 'constant', 'operator',
-                  'property', 'key', 'prop_name', 'type', 'class', 'builtin_type', 'attribute', 'tag', 'this', 'comment', 'text',
-                  'inherited', 'namespace', 'constant_var', 'escape', 'regexp', 'invalid', 'deleted', 'link']
-# 语义同族的角色: 同族撞色可接受(原主题也常同色), 不同族的两个角色调色后撞色要拉开(gen_vscode.separate)
+# 语义同族的角色: 同族撞色可接受(原主题也常同色), 撞色检查(clash.py)只看不同族
 FAMILIES = [['keyword', 'control', 'storage', 'modifier', 'operator', 'this'], ['function', 'builtin_fn'],
             ['type', 'class', 'builtin_type', 'inherited', 'namespace'], ['constant', 'number', 'constant_var'],
             ['string', 'raw', 'inserted', 'link'], ['escape', 'regexp'], ['key', 'property', 'prop_name', 'attribute'],
@@ -205,7 +190,6 @@ def build(themes: list[dict]) -> dict:
     """选择器 -> {struct, cands(各原主题里颜色并列最近的候选角色集合), tier, recommended, role}."""
     from gen_vscode import source_fg
     cands = defaultdict(list)
-    looks = defaultdict(list)  # 选择器 -> [(原主题规则, 底色, 正文色, 中位对比度, 该原主题里显式写的颜色)]
     order = []
     seen = set()
     for t in sorted(themes, key=lambda t: -len(_load(os.path.join(SOURCES, t['source'])).get('tokenColors', []))):
@@ -219,17 +203,6 @@ def build(themes: list[dict]) -> dict:
         fg = _rgb(source_fg(src, t['dark']))
         palette = {r: c for r in ROLES if (c := _rgb(role_value(rules, r, None))) is not None}
         palette['text'] = fg
-        bg = _rgb(src['colors'].get('editor.background'))
-        crs = sorted(cr(c, bg) for r in rules if (c := _rgb(r.get('settings', {}).get('foreground'))))
-        med = crs[len(crs) // 2] if crs else 0
-        last = {}
-        for rule in rules:
-            c = _rgb(rule.get('settings', {}).get('foreground'))
-            if c is not None:
-                for sel in scopes_of(rule):
-                    last[sel] = c
-        for sel, c in last.items():
-            looks[sel].append((rules, bg, fg, med, c))
         for rule in rules:
             rgb = _rgb(rule.get('settings', {}).get('foreground'))
             if rgb is None:
@@ -264,35 +237,8 @@ def build(themes: list[dict]) -> dict:
                 tier, rec = (4 if len(cs) == 1 else 5), pick(votes)
         pool[sel] = dict(struct=sr, votes=dict(votes.most_common()), themes=len(cs), tier=tier, recommended=rec,
                          role=overrides.get(sel, rec), annotated=sel in overrides)
-        role, _, flag = pool[sel]['role'].partition(' ')
-        pool[sel]['role'] = role
-        pool[sel]['muted'] = flag == 'muted' or _muted(looks[sel], role, pool[sel]['annotated'])
+        pool[sel]['role'] = pool[sel]['role'].partition(' ')[0]
     return pool
-
-
-def _hue_gap(a, b) -> float:
-    d = oklch(a)[2] - oklch(b)[2]
-    return abs(math.degrees(math.atan2(math.sin(d), math.cos(d))))
-
-
-def _muted(seen: list, role: str, annotated: bool) -> bool:
-    if role == INHERIT or role in MUTED_SKIP or not seen:
-        return False
-    dim = neutral = dark = 0
-    for rules, bg, fg, med, c in seen:
-        rc = _rgb(role_value(rules, role, None)) if bg else None
-        is_gray = oklch(c)[1] < MUTED_NEUTRAL
-        neutral += is_gray
-        if not bg:
-            continue
-        v = cr(c, bg)
-        dark += v < med * MUTED_ABS
-        if is_gray:
-            dim += v < cr(fg, bg) * MUTED_REL
-        elif rc is not None and v < cr(rc, bg) * MUTED_REL:
-            same_hue = oklch(rc)[1] > MUTED_NEUTRAL and _hue_gap(c, rc) < MUTED_HUE
-            dim += same_hue or v < med * MUTED_ABS
-    return dim * 2 > len(seen) or (annotated and max(neutral, dark) * 2 > len(seen))
 
 
 def lang_rank(sel: str) -> int:
@@ -335,7 +281,7 @@ def annotate(pool: dict, out: str, items: list | None = None, storage_key: str |
     from themes import build as build_themes
     from gen_vscode import render
     previews = []
-    for name in ('comfort-one-dark', 'comfort-dracula-dark', 'comfort-one-light', 'comfort-github-light'):
+    for name in ('one-dark', 'dracula-dark', 'one-light', 'github-light'):
         t = next(x for x in build_themes() if x['name'] == name)
         g = render(t)
         roles = {r: role_value(g['tokenColors'], r, g['colors']['editor.foreground']) for r in ROLES}
@@ -351,8 +297,64 @@ def annotate(pool: dict, out: str, items: list | None = None, storage_key: str |
     print(f'标注页已写入 {out}: {len(items)} 张卡片; 导出的 JSON(完整标注)存为 {os.path.relpath(OVERRIDES)}')
 
 
+FULL_RULE = os.path.join(SOURCES, 'full-rule.json')
+
+
+def norm_hex(v) -> str | None:
+    """颜色写法统一成大写 #RRGGBB / #RRGGBBAA; 不是 hex 时返回 None."""
+    if not isinstance(v, str) or not re.fullmatch(r'#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})', v):
+        return None
+    v = v[1:]
+    return '#' + (''.join(c * 2 for c in v) if len(v) in (3, 4) else v).upper()
+
+
+def color_map(themes: list[dict]) -> dict:
+    """角色 -> 主题颜色键: default 取多数主题在用的键(并列时 terminal.ansi* 优先, 再键名短), 各主题只记与默认不同的;
+    主题颜色键里找不到同色的记固定 hex."""
+    from gen_vscode import source_fg
+    cand = {}
+    for t in themes:
+        src = _load(os.path.join(SOURCES, t['source']))
+        index = defaultdict(list)
+        for k, v in src.get('colors', {}).items():
+            if (h := norm_hex(v)) is not None:
+                index[h].append(k)
+        fg = source_fg(src, t['dark'])
+        cand[t['name']] = {r: (h, index.get(h, [])) for r in ROLES if (h := norm_hex(role_value(src.get('tokenColors', []), r, fg)))}
+    rank = lambda cnt: (lambda k: (cnt[k], k.startswith('terminal.ansi'), -len(k), k))
+    default = {}
+    for r in ROLES:
+        cnt = Counter(k for c in cand.values() if r in c for k in c[r][1])
+        if cnt:
+            default[r] = max(cnt, key=rank(cnt))
+    out = {'default': default}
+    for name, c in cand.items():
+        cnt = Counter(k for v in c.values() for k in v[1])
+        out[name] = {r: (max(keys, key=rank(cnt)) if keys else h) for r, (h, keys) in c.items() if default.get(r) not in keys}
+    return out
+
+
+def update(themes: list[dict]) -> None:
+    pool = build(themes)
+    data = json.load(open(FULL_RULE, encoding='utf-8')) if os.path.exists(FULL_RULE) else {'rules': {}, 'colors': {}}
+    rules = data['rules']
+    added = [sel for sel, p in pool.items() if p['role'] != INHERIT and sel not in rules]
+    for sel in added:
+        rules[sel] = pool[sel]['role']
+    # 颜色映射按现有原主题重算(规则更新的最后一步); 已不在 sources 里的主题保留原记录
+    colors = color_map(themes)
+    data = {**data, 'rules': dict(sorted(rules.items())), 'colors': {**data.get('colors', {}), **colors}}
+    open(FULL_RULE, 'w', encoding='utf-8').write(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
+    fixed = {n: sum(v.startswith('#') for v in m.values()) for n, m in colors.items() if n != 'default'}
+    print(f"full-rule.json: 规则 {len(rules)} 条(新增 {len(added)}); 默认颜色键 {len(colors['default'])} 个角色; "
+          f"各主题另记 {sum(len(m) for n, m in colors.items() if n != 'default')} 个, 其中固定色 {sum(fixed.values())} 个")
+
+
 def main() -> int:
     from themes import build as build_themes
+    if '--update' in sys.argv:
+        update(build_themes())
+        return 0
     pool = build(build_themes())
     if '--review' in sys.argv:
         annotate(pool, sys.argv[sys.argv.index('--review') + 1], families(pool), 'pool-review-v1')

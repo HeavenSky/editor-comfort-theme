@@ -1,0 +1,3 @@
+# 补全段的中间主题由 npm run gen:themes 生成; 只跟踪 one-dark 的, 用来核对键值缺失
+*-full.json
+!one-dark-full.json

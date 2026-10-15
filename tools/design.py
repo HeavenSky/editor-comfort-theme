@@ -2,14 +2,15 @@
 # requires-python = ">=3.11"
 # ///
 # 设计主题的原主题生成脚本: 以开源深色原主题为模板, 按每套手定的色板逐色换色, 写到 tools/sources/<name>.json,
-# 之后与其他原主题一样经 themes.py / gen_vscode.py 做护眼适配. 多数是浅色版(明暗反转); dark=True 的设计只换色相与色板, 不反转.
+# 之后与其他原主题一样经补全(complete.py)与调色链(themes.py / gen_vscode.py)生成. 原主题一律存成紧凑格式(同 jq -c). 多数是浅色版(明暗反转); dark=True 的设计只换色相与色板, 不反转.
 #
 # 换色规则(recolor):
 #   1. 与色板里某个深色(PALETTE 的键)色差 < NEAR_DE: 换成对应的颜色, 原色比色板色亮多少, 浅色版就暗多少(明暗反转; 深色设计同向), 色相不变
-#   2. 彩色(彩度 > ACCENT_CHROMA): 色相不变, 浅色设计里明度落到浅色彩色带(ACCENT_L 附近, 原色越亮越深), 彩度略收; 深色设计原样保留
+#   2. 彩色(彩度 > ACCENT_CHROMA): 色相不变, 浅色设计里明度落到浅色彩色带(ACCENT_L 附近, 原色越亮越深), 彩度不收(出色域时降彩度); 深色设计原样保留
 #   3. 中性色: 明度按"深色底 -> 浅色底, 深色正文 -> 浅色正文"线性映射, 色相与(收窄的)彩度跟随浅色底
 #   透明度原样保留. tokenColors 的结构与模板完全相同, 规则池(pool.py)按结构去重, 浅色版不额外投票, 其他主题不受影响.
 #   终端黑白四色按浅色口径单独给(黑 = 正文, 白 = 浅灰, 亮白 = 比底更亮), 不走反转.
+#   生成的 tools/sources/<name>.json 不要手改, 下次生成会覆盖; 改 DESIGNS.
 #
 # 用法: uv run tools/design.py           生成全部
 #       uv run tools/design.py --check   只比对, 与现有文件不一致时退出码 1
@@ -23,7 +24,7 @@ SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sources')
 NEAR_DE, ACCENT_CHROMA, ACCENT_L = 8.0, 0.07, 0.52
 
 DESIGNS = [
-    # ---- Moka Light: 经典 Monokai 色板(Wimer Hazenberg)的浅色版, 与 Comfort Moka Dark(One Monokai)成对; 结构取 One Monokai(MIT), 其 One Dark 系颜色按角色换成 Monokai 色相.
+    # ---- Moka Light: 经典 Monokai 色板(Wimer Hazenberg)的浅色版, 与 C Moka Dark(One Monokai)成对; 结构取 One Monokai(MIT), 其 One Dark 系颜色按角色换成 Monokai 色相.
     #      底取 Monokai 的正文色 #F8F8F2(暖白), 正文取 Monokai 的底色 #272822, 彩色压深到浅底可读 ----
     dict(name='moka-light', label='Moka Light', template='moka-dark.json',
          bg='#F8F8F2', fg='#272822',
@@ -124,7 +125,7 @@ class Recolor:
         if C > ACCENT_CHROMA:
             if self.dark:
                 return c
-            return from_oklch(min(0.62, max(0.40, ACCENT_L - (L - 0.75) * 0.5)), C * 0.85, H)
+            return from_oklch(min(0.62, max(0.40, ACCENT_L - (L - 0.75) * 0.5)), C, H)
         # 中性色: 深色底 -> 浅色底, 深色正文 -> 浅色正文 的线性映射(两端外推后夹住)
         span = self.dfg[0] - self.dbg[0]
         t = (L - self.dbg[0]) / span if abs(span) > 1e-6 else 0
@@ -176,7 +177,7 @@ def main() -> int:
     stale = []
     for d in DESIGNS:
         path = os.path.join(SOURCES, d['name'] + '.json')
-        text = json.dumps(design(d), indent=4, ensure_ascii=False) + '\n'
+        text = json.dumps(design(d), ensure_ascii=False, separators=(',', ':')) + '\n'
         old = open(path, encoding='utf-8').read() if os.path.exists(path) else None
         if old == text:
             continue
