@@ -151,6 +151,7 @@
 		"check:template": "node scripts/check-template.mjs",
 		"gen:icon": "node scripts/gen-icon.mjs",
 		"extract:registry": "uv run tools/extract_registry.py",
+		"extract:docs": "uv run tools/extract_key_docs.py",
 		"gen:themes": "uv run tools/design.py && uv run tools/complete.py && uv run tools/gen_vscode.py && uv run tools/gen_terminal.py",
 		"pool:update": "uv run tools/pool.py --update && uv run tools/complete.py --guard",
 		"metrics": "uv run tools/metrics.py themes/*.json terminal/*.terminal",

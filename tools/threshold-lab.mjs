@@ -207,7 +207,7 @@ http.createServer(async (req, res) => {
       saved: readJson(path.join(out, 'key-levels.json')),
       effective: Object.fromEntries(allThemes.map((t) => [t.file, readJson(path.join(out, SET, 'census', `${t.file}-vars.json`))])),
       defaults: readJson(path.join(out, 'analysis', 'vscode-defaults.json')) || {},
-      docs: readJson(path.join(out, 'analysis', 'key-docs', 'key-docs.json')) || {},
+      docs: readJson(path.join(REPO, 'tools/sources/vscode-color-docs.json'))?.colors || {},
     }));
   }
   if (req.method === 'POST' && (url === '/submit' || url === '/keys-submit')) {
