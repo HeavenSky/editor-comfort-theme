@@ -231,7 +231,7 @@ if (cmd === 'report') {
     const k = it.key, u = pickUnder(it), pair = L.pairs[k];
     const why = it.level === '底色弱' ? '底色弱只报告' : disabled ? '禁用不设下限' : k.startsWith('terminal.') ? '终端键(终端步骤负责)'
       : k === '(语法色)' ? '语法色(语法步骤负责)' : !k ? '无来源键' : it.keyNote ? '来源键不可信(按值反查不符)'
-      : !colors[k] ? '主题未定义(VS Code 推导)' : drawn(colors[k], it.bg) !== it.fg && dE(drawn(colors[k], it.bg), it.fg) > 2 ? `渲染色与键值 ${colors[k]} 不同(界面另加透明度)`
+      : !colors[k] ? '主题未定义(VS Code 推导)' : drawn(colors[k], it.bg) !== it.fg && dE(drawn(colors[k], it.bg), it.fg) > 1 ? `渲染色与键值 ${colors[k]} 不同(界面另加透明度)`
       : !pair ? '无实测配对' : u && !pair.includes(u) ? `实测底色 ${u} 不在配对 ${pair.join(', ')}` : '有配对(按配对底色已达标)';
     rows.push({ theme: it.theme, ref: refs.has(it.theme), scene: it.scene, role: it.role, level: it.level, key: k, under: u || '', fg: it.fg, bg: it.bg,
       rd: it.rd, ab, metric: lv.abs_metric, lo: lv.lo, abs: lv.abs, mixLo: lv.mixLo, hi: lv.hi, verdict, why, count: it.count || 1,
@@ -258,7 +258,7 @@ img{max-width:420px;max-height:120px}.v0{color:#c00;font-weight:600}.v1{color:#b
 ${rows.map((r) => `<tr data-v="${r.verdict}" data-fix="${/^有配对|^实测底色/.test(r.why) ? 1 : 0}" class="${r.ref ? 'ref' : ''}"><td class="v${vo[r.verdict]}">${r.verdict}</td><td>${esc(r.theme)}</td>
 <td>${r.scene} / ${esc(r.role)}${r.text ? `<br><small>${esc(r.text)}</small>` : ''}</td><td>${r.level}</td><td><code>${esc(r.key)}</code><br><code>${esc(r.under)}</code></td>
 <td>${sw(r.fg)}${r.fg}<br>${sw(r.bg)}${r.bg}</td><td>${r.rd} (${r.lo} / ${r.mixLo ?? '-'} / ${r.hi ?? '-'})</td><td>${r.metric} ${r.ab} (${r.abs})</td><td>${esc(r.why)}</td>
-<td>${r.crop ? `<a href="${SET}/census/${r.crop}" target="_blank"><img loading="lazy" src="${SET}/census/${r.crop}"></a>` : `<a href="${r.shot}" target="_blank">整屏</a>`}</td></tr>`).join('\n')}</table>
+<td>${r.crop ? `<a href="${r.crop}" target="_blank"><img loading="lazy" src="${r.crop}"></a>` : `<a href="${r.shot}" target="_blank">整屏</a>`}</td></tr>`).join('\n')}</table>
 <script>const f=()=>{const on=[...document.querySelectorAll('#f input[value]:checked')].map(x=>x.value),fx=document.getElementById('onlyFix').checked;
 for(const tr of document.querySelectorAll('#t tr[data-v]'))tr.style.display=on.includes(tr.dataset.v)&&(!fx||tr.dataset.fix==='1')?'':'none'};
 document.querySelectorAll('#f input').forEach(x=>x.onchange=f);f();</script></body></html>`;

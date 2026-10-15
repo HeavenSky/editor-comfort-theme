@@ -14,7 +14,11 @@
   - 已实施(未提交): assets/levels.json(threshold-lab export 导出), tools/gen/levels.py, 调色步骤 level_floor(默认开, 9 个旧的逐对下限步骤默认关), metrics.py 分层门禁(旧 CLEAR_GATE 中被取代的子项只报告); 底色弱只报告不修不门禁, 终端键不处理, 线条与底色只往底色有余地的一侧调, 前景优先配同名底色键; npm run check 与 94 个测试通过; 逐键差异见 .ai-ctx/cache/sav_20261015_102515_门槛标定/analysis/level-floor-diff.md
   - 已定(用户同意推荐): 采用 level_floor 取代旧步骤并提交; 第二期区分度与相对约束先只在门禁里报告, 不自动改色; 下一步先按新门槛重跑看不清排查, 再做刺眼规则
   - 待定: 截图场景覆盖(占位字, 通知, 补全, 悬停, diff 未覆盖, 这些键没有实测配对, level_floor 不处理); 线条中无实测样本(行号槽标记改归线条强后), 门槛暂用规范锚点
-  - 待做(按顺序): 1. 看不清排查改读 levels.json 后按新门槛重跑(上一轮停在 8/16 且用旧门槛, 结果作废); 2. 区分度与相对约束加进门禁报告(只报告); 3. 刺眼规则(见方案确定); 4. 旧 CLEAR_GATE 与分层门禁并行一个版本后删旧
+  - 待做(按顺序): 1. 区分度与相对约束加进门禁报告(只报告); 2. 刺眼规则(见方案确定); 3. 旧 CLEAR_GATE 与分层门禁并行一个版本后删旧
+
+- level_floor 是否扩展到主题未定义的键(VS Code 推导值低于修复下限时写成显式值); 推荐: 不扩展, 只在排查报告里列出
+  - 证据: 新门槛排查 .ai-ctx/cache/sav_20261015_174653_新门槛看不清排查/report.html, 不及目标 72 组色对里 22 组属此类; 按推导值估算扩展后 16 套共多改 14 个键, 其中 11 个在参考主题(Ayu Dark 5: editorWidget / search.resultsInfo / statusBarItem.hover 等; One / Moka Dark 的 problemsErrorIcon; One / Moka Light 的 input.placeholder), 多为差一点
+  - 推荐依据: 缺口集中在用户认可的参考主题, 扩展会改动认可观感并新增原主题没有的键; 推导函数已备好(levels.resolve, 与实测推导值 7600/7610 一致), 决定扩展时改动很小
 
 ## 方案确定
 
@@ -32,3 +36,6 @@
 - full-rule.json 颜色映射里有 123 个固定色(One Light 33, Owl Light 27, One Dark 19, Owl Dark 14, 其余 30): 原主题的角色色在它自己的颜色键里找不到同色键(如 One Dark 字符串 #98C379 与它的终端绿不同色); 不修: 用户定维持; 固定色就是原主题该角色的原值, 补全按它上色即还原原色. 颜色映射由 pool.color_map 读原主题(不读 full)计算, 在补全段补终端色不会减少固定色
 - metrics.py fidelity 只给相对原主题的偏离, 未给相对 full 的(方案写了); 不修: 用户定不做, 全关时等于 full 已由恒等校验保证, 默认档相对 full 的偏离就是调色步骤的改动量
 - 补全段给原主题未定义的括号色 1~3 补主题色(按 constant.numeric / keyword.control / constant.character.escape 解析), 替代 VS Code 默认色(深色 金 #FFD700 / 紫 #DA70D6 / 蓝 #179FFF, 浅色 蓝 #0431FA / 绿 #319331 / 棕 #7B3814), 是截图差异最普遍的来源; 不修: 维持补全全盘接受, 括号色随主题色板; 4~6 保持透明(VS Code 只循环前 3 色)
+
+- 排查里 VS Code 界面另加透明度的元素(非活动组的编辑器操作图标, 资源管理器里被弱化的错误文件名, 非活动标签图标等)渲染色低于下限: 不修: 透明度来自 VS Code 的 CSS 状态(参考主题同样如此), 改颜色键值管不到; 排查报告标为 渲染色与键值不同
+- 排查里 4 组 有配对 却不及目标的边缘项(Ayu Dark button.border rd 5.3 / 5.4, Pale Light input.foreground 于按钮 Lc 29.9 / 30, Ayu Light 半透明徽标底按编辑区底近似差 1.5): 不修: 8 位取整与半透明底近似误差, 视觉无差别

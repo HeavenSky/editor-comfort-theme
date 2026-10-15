@@ -1,5 +1,6 @@
 # DONE
 
+- 20261015_180232 看不清排查改读 assets/levels.json 按新门槛重跑; 方案: threshold-lab collect --src themes 普查现成主题 + report 生成判定页(.ai-ctx/cache/sav_20261015_174653_新门槛看不清排查/report.html), 顺带修 levels.under 对未定义底色键按 VS Code 默认值推导
 - 20261015_174024 assets/source/ 混放原主题与非原主题数据; 用户按推荐拆分: 颜色注册表与颜色键说明 -> assets/vscode/, 补全规则 full-rule.json 与规则池覆盖 pool-overrides.json -> assets/pool/, source/ 只放 16 个原主题; check / 94 个测试通过, 数据内容未变
 
 - 20261015_172757 目录整理: tools/ 平铺 37 个文件, terminal/ 在根目录, 骨架 scripts/ 混放入口与模块; tools/ 按职责分 gen / check / lib / textmate / shoot / lab / terminal, 数据与产物移到 assets/(source, terminal, full-theme, levels.json), 中间主题不进版本库; 骨架 scripts/ 只留 package.json / 工作流运行的入口, 模块与插件配置移到 devkit/ 平铺, 根 .gitignore 统一忽略 full-theme/, README 补目录约定; 本仓库同步骨架, check / 94 个测试 / 打包通过
