@@ -260,7 +260,7 @@
 		"statusBarItem.errorForeground": "#D7D7D7",
 		"statusBarItem.hoverBackground": "#2C313A",
 		"statusBarItem.offlineBackground": "#7E2832",
-		"statusBarItem.warningForeground": "#D8D8D8",
+		"statusBarItem.warningForeground": "#D7D7D7",
 		"strongForeground": "#D7D7D7",
 		"symbolIcon.classForeground": "#E5C07B",
 		"symbolIcon.constructorForeground": "#C678DD",

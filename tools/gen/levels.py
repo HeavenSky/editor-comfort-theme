@@ -83,9 +83,13 @@ def _hsl_l(c: Rgb, f: float) -> Rgb:
     return colorsys.hls_to_rgb(hh, min(1.0, max(0.0, l * (1 + f))), ss)
 
 
+def _q(c: Rgb) -> Rgb:
+    return tuple(round(min(1.0, max(0.0, v)) * 255) / 255 for v in c)
+
+
 def resolve(colors: dict, key: str, dark: bool, _depth: int = 0) -> tuple[Rgb, float] | None:
     """键的实际取值: 主题定义了用主题值, 否则按 VS Code 默认值表达式(assets/vscode/color-docs.json)推导; 推导不出返回 None.
-    支持 transparent / opaque / lighten / darken / oneOf / ifDefinedThenElse / mix; lessProminent 近似为 transparent."""
+    支持 transparent / opaque / lighten / darken / oneOf / ifDefinedThenElse / mix / lessProminent, 口径同 VS Code colorUtils(每步结果取整到 8 位, 同 Color 存整数 RGBA)."""
     p = parse(colors.get(key))
     if p is not None or _depth > 20:
         return p
@@ -126,17 +130,26 @@ def resolve(colors: dict, key: str, dark: bool, _depth: int = 0) -> tuple[Rgb, f
                 return None
             rgb, a = c
             num = lambda i: float(args[i])
-            if fn in ('transparent', 'lessProminent'):
-                return rgb, a * num(1 if fn == 'transparent' else 3)
+            if fn == 'transparent':
+                return rgb, a * num(1)
+            if fn == 'lessProminent':
+                # 往底色方向推 factor 比例的亮度差(Color.getLighterColor / getDarkerColor), 再乘透明度; 取不到底色时只乘 factor x transparency
+                b = ev(args[1])
+                if b is None:
+                    return rgb, a * num(2) * num(3)
+                l1, l2 = lum(rgb), lum(b[0])
+                if (l1 + 0.05) / (l2 + 0.05) < 1:
+                    return _q(_hsl_l(rgb, num(2) * (l2 - l1) / l2)), a * num(3)
+                return _q(_hsl_l(rgb, -num(2) * (l1 - l2) / l1)), a * num(3)
             if fn in ('lighten', 'darken'):
-                return _hsl_l(rgb, num(1) if fn == 'lighten' else -num(1)), a
+                return _q(_hsl_l(rgb, num(1) if fn == 'lighten' else -num(1))), a
             if fn == 'opaque':
                 b = ev(args[1])
-                return (blend(rgb, b[0], a), 1.0) if b and a < 1 else (rgb, a)
+                return (_q(blend(rgb, b[0], a)), 1.0) if b and a < 1 else (rgb, a)
             if fn == 'mix':
                 b = ev(args[1])
                 f = num(2)
-                return (tuple(x + (y - x) * f for x, y in zip(rgb, b[0])), a + (b[1] - a) * f) if b else None
+                return (_q(tuple(x + (y - x) * f for x, y in zip(rgb, b[0]))), a + (b[1] - a) * f) if b else None
             return None
         if n.startswith('#'):
             return parse(n[:9] if len(n) >= 7 else '#' + ''.join(ch * 2 for ch in n[1:4]))
