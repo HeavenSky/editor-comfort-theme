@@ -197,9 +197,13 @@ def targets(colors: dict, t: dict) -> list[tuple[str, str, list[str]]]:
 
 
 def same_color(c: Rgb, a: float, bgs: list[Rgb], key: str, level: str) -> bool:
+    """原设计不画: 全透明(alpha 0)的一律算; 线条与层次底与第一个配对底色(它所在的那块底, 如 tab.activeBorder 于活动标签底)同色(ΔE < 1)也算,
+    焦点框 / 选区 / 当前匹配(exemptSameColor)除外."""
+    if a <= 0.5 / 255:
+        return True
     if not (level.startswith('线条') or level == '底色弱') or re.search(doc()['exemptSameColor'], key, re.I):
         return False
-    return all(de(blend(c, bg, a) if a < 1 else c, bg) < 1 for bg in bgs)
+    return de(blend(c, bgs[0], a) if a < 1 else c, bgs[0]) < 1
 
 
 def check(colors: dict, t: dict, all_unders: bool = False) -> list[str]:
@@ -219,8 +223,10 @@ def check(colors: dict, t: dict, all_unders: bool = False) -> list[str]:
     return out
 
 
-def fix(colors: dict, t: dict) -> list[str]:
-    """把低于修复下限 / 绝对下限的键提到刚好达标: 半透明的先加不透明度; 不够再只调 OKLCH 明度(远离底色), 色相与彩度不变(出色域时降彩度)."""
+def fix(colors: dict, t: dict, white_cap: tuple[float, float] | None = None) -> list[str]:
+    """把低于修复下限 / 绝对下限的键提到刚好达标: 半透明的先加不透明度; 不够再只调 OKLCH 明度(远离底色), 色相与彩度不变(出色域时降彩度).
+    white_cap = (明度上限, 彩度上限): 无彩色(彩度不超过上限)的颜色往亮调时最高到该明度, 不够换另一侧; 与调色步骤 white_cap 配合, 不把压下去的近纯白再推回去
+    (gen_vscode 传近纯白门槛下方一点: 字仍可提到比 white_cap 的 0.88 更亮以保对比度, 但不回到近纯白)."""
     base, log = body_dl(colors, t), []
     for k, lv, unders in targets(colors, t):
         c, a = parse(colors[k])
@@ -240,7 +246,8 @@ def fix(colors: dict, t: dict) -> list[str]:
         done = False
         for group in ([bgs, bgs[:1]] if len(bgs) > 1 else [bgs]):
             # 字: 先往远离底色的一侧, 到头不够再换另一侧; 线条与底色: 只往底色有余地的一侧(浅底往暗, 深底往亮), 与原值稍亮稍暗无关
-            ends = ([1.0, 0.0] if L0 >= main else [0.0, 1.0]) if lv[:2] in ('内容', '暗化') else [0.0 if main >= 0.5 else 1.0]
+            top = white_cap[0] if white_cap and C0 <= white_cap[1] else 1.0
+            ends = ([top, 0.0] if L0 >= main else [0.0, top]) if lv[:2] in ('内容', '暗化') else [0.0 if main >= 0.5 else top]
             for end in ends:
                 if short(from_oklch(end, C0, H0), 1.0, group, lv, base):
                     continue

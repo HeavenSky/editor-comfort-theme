@@ -11,9 +11,8 @@
   - 已定(推荐值): 参考主题 = One / Ayu / Moka 深浅 + GitHub Light + Sunlit Light, 推荐只按参考主题算; 目标 = 各主题中位数的 20% 截尾均值, 规范锚点(Material / Apple 透明度梯度, Material 状态叠层)只作检验与补缺; 修复下限 = 参考主题实例 P5(不高于混档线); 混档线 = 与梯子上弱一档目标的中点; 上限 = 与强一档目标的中点; 绝对下限 = min(规范值, 参考主题实例 P5); 区分度推荐 = 各主题差值掐头去尾后的 P25(不低于 5). 实测参考主题不及目标 1~9%(Ayu Dark 15%), 其他 6~17%
   - 已定: 分层门禁与旧 CLEAR_GATE 并行一个版本, 结论对齐后删旧
   - 已定(用户: 细节由代理做完再看大方向): 键分层由代理按普查实测与语义复核, 写进 tools/lab/key-levels.mjs 的逐键规则; 门槛按参考主题推荐值提交, 相对约束按参考主题比值范围外放一成校准(表示先后关系的最大值封顶 1.0)
-  - 已实施(未提交): assets/levels.json(threshold-lab export 导出), tools/gen/levels.py, 调色步骤 level_floor(默认开, 9 个旧的逐对下限步骤默认关), metrics.py 分层门禁(旧 CLEAR_GATE 中被取代的子项只报告); 底色弱只报告不修不门禁, 终端键不处理, 线条与底色只往底色有余地的一侧调, 前景优先配同名底色键; npm run check 与 94 个测试通过; 逐键差异见 .ai-ctx/cache/sav_20261015_102515_门槛标定/analysis/level-floor-diff.md
+  - 已实施(已提交 4807ba8): assets/levels.json(threshold-lab export 导出), tools/gen/levels.py, 调色步骤 level_floor(默认开, 9 个旧的逐对下限步骤默认关), metrics.py 分层门禁(旧 CLEAR_GATE 中被取代的子项只报告); 底色弱只报告不修不门禁, 终端键不处理, 线条与底色只往底色有余地的一侧调, 前景优先配同名底色键; npm run check 与 94 个测试通过; 逐键差异见 .ai-ctx/cache/sav_20261015_102515_门槛标定/analysis/level-floor-diff.md
   - 已定(用户同意推荐): 采用 level_floor 取代旧步骤并提交; 第二期区分度与相对约束先只在门禁里报告, 不自动改色; 下一步先按新门槛重跑看不清排查, 再做刺眼规则
-  - 待定: 截图场景覆盖(占位字, 通知, 补全, 悬停, diff 未覆盖, 这些键没有实测配对, level_floor 不处理); 线条中无实测样本(行号槽标记改归线条强后), 门槛暂用规范锚点
   - 待做: 旧 CLEAR_GATE 与分层门禁并行一个版本后删旧
 
 ## 方案确定
@@ -37,3 +36,4 @@
   - 证据: 新门槛排查 .ai-ctx/cache/sav_20261015_174653_新门槛看不清排查/report.html, 不及目标 72 组色对里 22 组属此类; 按推导值估算扩展后 16 套共多改 14 个键, 其中 11 个在参考主题(Ayu Dark 5: editorWidget / search.resultsInfo / statusBarItem.hover 等; One / Moka Dark 的 problemsErrorIcon; One / Moka Light 的 input.placeholder), 多为差一点
   - 依据: 缺口集中在用户认可的参考主题, 扩展会改动认可观感并新增原主题没有的键; 推导函数已备好(levels.resolve, 与实测推导值 7600/7610 一致), 决定扩展时改动很小
 - 近纯白以外的刺眼(大块高饱和底, 高饱和长线, 比正文亮很多的界面字等); 不修: 用户定暂不处理(不做人工标注); 之后要做时移入方案确定, 工具已备: threshold-lab report 的 glare.html(按元素类型与参考主题范围判, 只列拿不定的), levels.json 的 glare
+- 截图场景之外的键(占位字, 通知, 补全, 悬停, peek, 菜单, diff 等)只按语义规则配对, 没有截图实测核对; 不修: 用户定本次不截图, 只改代码与测试; 以后补截图场景时用普查配对覆盖规则配对(普查优先)

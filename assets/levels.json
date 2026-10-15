@@ -23,7 +23,8 @@
     "rd": 117.7,
     "chroma": null,
     "n": 16
-   }
+   },
+   "source": "census"
   },
   "内容中": {
    "pct": 76,
@@ -36,7 +37,8 @@
     "rd": 126.2,
     "chroma": null,
     "n": 229
-   }
+   },
+   "source": "census"
   },
   "内容弱": {
    "pct": 69.9,
@@ -49,7 +51,8 @@
     "rd": 73,
     "chroma": null,
     "n": 8
-   }
+   },
+   "source": "census"
   },
   "暗化强": {
    "pct": 52.1,
@@ -62,7 +65,8 @@
     "rd": 68.1,
     "chroma": null,
     "n": 16
-   }
+   },
+   "source": "census"
   },
   "暗化中": {
    "pct": 44.6,
@@ -75,7 +79,8 @@
     "rd": 84.5,
     "chroma": null,
     "n": 8
-   }
+   },
+   "source": "census"
   },
   "暗化弱": {
    "pct": 23.2,
@@ -88,12 +93,13 @@
     "rd": 50,
     "chroma": null,
     "n": 16
-   }
+   },
+   "source": "census"
   },
   "线条强": {
    "pct": 58,
    "lo": 10.5,
-   "mixLo": 46.5,
+   "mixLo": 53.9,
    "hi": 64.1,
    "abs": 5,
    "abs_metric": "de",
@@ -101,33 +107,36 @@
     "rd": 98.8,
     "chroma": 19.4,
     "n": 16
-   }
+   },
+   "source": "census"
   },
   "线条中": {
-   "pct": 35,
-   "lo": 21,
-   "mixLo": 24.7,
-   "hi": 46.5,
-   "abs": 10,
+   "pct": 49.7,
+   "lo": 11.1,
+   "mixLo": 32,
+   "hi": 53.9,
+   "abs": 5,
    "abs_metric": "de",
    "glare": {
     "rd": null,
     "chroma": null,
     "n": 0
-   }
+   },
+   "source": "keys(65 个实例, 8 套参考主题)"
   },
   "线条弱": {
    "pct": 14.3,
    "lo": 5.4,
    "mixLo": null,
-   "hi": 24.7,
+   "hi": 32,
    "abs": 3,
    "abs_metric": "de",
    "glare": {
     "rd": 31.2,
     "chroma": 2.6,
     "n": 11
-   }
+   },
+   "source": "census"
   },
   "底色强": {
    "pct": 54,
@@ -140,7 +149,8 @@
     "rd": 65.5,
     "chroma": 19.4,
     "n": 17
-   }
+   },
+   "source": "census"
   },
   "底色中": {
    "pct": 12,
@@ -153,7 +163,8 @@
     "rd": 33,
     "chroma": 6.1,
     "n": 15
-   }
+   },
+   "source": "census"
   },
   "底色弱": {
    "pct": 6.8,
@@ -166,7 +177,8 @@
     "rd": 22,
     "chroma": 0.5,
     "n": 40
-   }
+   },
+   "source": "census"
   }
  },
  "sep": {
@@ -1551,6 +1563,1719 @@
   ],
   "titleBar.border": [
    "titleBar.activeBackground"
+  ],
+  "activeSessionView.foreground": [
+   "activeSessionView.background"
+  ],
+  "activityBar.activeBorder": [
+   "activityBar.background",
+   "editor.background"
+  ],
+  "activityBar.activeFocusBorder": [
+   "activityBar.background",
+   "editor.background"
+  ],
+  "activityBar.border": [
+   "activityBar.background",
+   "editor.background"
+  ],
+  "activityBar.dropBorder": [
+   "activityBar.background",
+   "editor.background"
+  ],
+  "activityBarTop.activeBorder": [
+   "activityBarTop.background",
+   "editor.background",
+   "titleBar.activeBackground"
+  ],
+  "activityBarTop.dropBorder": [
+   "activityBarTop.background",
+   "editor.background",
+   "titleBar.activeBackground"
+  ],
+  "activityBarTop.foreground": [
+   "activityBarTop.background",
+   "titleBar.activeBackground"
+  ],
+  "activityBarTop.inactiveForeground": [
+   "activityBarTop.background",
+   "titleBar.activeBackground"
+  ],
+  "activityErrorBadge.foreground": [
+   "activityErrorBadge.background"
+  ],
+  "activityWarningBadge.foreground": [
+   "activityWarningBadge.background"
+  ],
+  "agentFeedbackEditorWidget.border": [
+   "agentFeedbackEditorWidget.background",
+   "editor.background"
+  ],
+  "agentFeedbackInputWidget.border": [
+   "editor.background"
+  ],
+  "agentSessionSelectedBadge.border": [
+   "editor.background"
+  ],
+  "agentSessionSelectedUnfocusedBadge.border": [
+   "editor.background"
+  ],
+  "agentsBadge.foreground": [
+   "agentsBadge.background"
+  ],
+  "agentsBottomPanel.border": [
+   "editor.background"
+  ],
+  "agentsCard.border": [
+   "editor.background"
+  ],
+  "agentsChatInput.border": [
+   "agentsChatInput.background",
+   "editor.background"
+  ],
+  "agentsChatInput.focusBorder": [
+   "agentsChatInput.background",
+   "editor.background"
+  ],
+  "agentsChatInput.foreground": [
+   "agentsChatInput.background"
+  ],
+  "agentsChatInput.placeholderForeground": [
+   "agentsChatInput.background",
+   "input.background"
+  ],
+  "agentsNewSessionButton.border": [
+   "agentsNewSessionButton.background",
+   "editor.background"
+  ],
+  "agentsNewSessionButton.foreground": [
+   "agentsNewSessionButton.background"
+  ],
+  "agentsPanel.border": [
+   "agentsPanel.background",
+   "editor.background"
+  ],
+  "agentsPanel.foreground": [
+   "agentsPanel.background"
+  ],
+  "agentsUnreadBadge.foreground": [
+   "agentsUnreadBadge.background"
+  ],
+  "agentsVoice.speakingForeground": [
+   "agentsVoice.speakingBackground"
+  ],
+  "banner.foreground": [
+   "banner.background"
+  ],
+  "banner.iconForeground": [
+   "banner.background"
+  ],
+  "breadcrumb.activeSelectionForeground": [
+   "breadcrumb.background",
+   "editor.background"
+  ],
+  "breadcrumb.focusForeground": [
+   "breadcrumb.background",
+   "editor.background"
+  ],
+  "browser.border": [
+   "editor.background"
+  ],
+  "button.secondaryBorder": [
+   "button.background",
+   "editor.background"
+  ],
+  "button.secondaryForeground": [
+   "button.secondaryBackground",
+   "button.background"
+  ],
+  "chat.avatarForeground": [
+   "chat.avatarBackground"
+  ],
+  "chat.requestBorder": [
+   "editor.background"
+  ],
+  "chat.requestCodeBorder": [
+   "editor.background"
+  ],
+  "chat.sessionStateIndicator.inProgressBorder": [
+   "editor.background"
+  ],
+  "chat.sessionStateIndicator.needsInputBorder": [
+   "editor.background"
+  ],
+  "chat.sessionStateIndicator.unvisitedBorder": [
+   "editor.background"
+  ],
+  "chat.slashCommandForeground": [
+   "chat.slashCommandBackground"
+  ],
+  "checkbox.border": [
+   "checkbox.background",
+   "editor.background"
+  ],
+  "checkbox.foreground": [
+   "checkbox.background"
+  ],
+  "checkbox.selectBorder": [
+   "checkbox.background",
+   "editor.background"
+  ],
+  "commandCenter.activeBorder": [
+   "commandCenter.background",
+   "editor.background"
+  ],
+  "commandCenter.activeForeground": [
+   "commandCenter.activeBackground",
+   "commandCenter.background"
+  ],
+  "commandCenter.inactiveBorder": [
+   "commandCenter.background",
+   "editor.background"
+  ],
+  "commandCenter.inactiveForeground": [
+   "commandCenter.background"
+  ],
+  "debugExceptionWidget.border": [
+   "debugExceptionWidget.background",
+   "editor.background"
+  ],
+  "debugToolBar.background": [
+   "editor.background"
+  ],
+  "debugToolBar.border": [
+   "editor.background"
+  ],
+  "debugView.exceptionLabelForeground": [
+   "debugView.exceptionLabelBackground"
+  ],
+  "debugView.stateLabelForeground": [
+   "debugView.stateLabelBackground"
+  ],
+  "diffEditor.border": [
+   "editor.background"
+  ],
+  "diffEditor.diagonalFill": [
+   "editor.background"
+  ],
+  "diffEditor.insertedLineBackground": [
+   "editor.background"
+  ],
+  "diffEditor.insertedTextBackground": [
+   "editor.background"
+  ],
+  "diffEditor.insertedTextBorder": [
+   "editor.background"
+  ],
+  "diffEditor.move.border": [
+   "editor.background"
+  ],
+  "diffEditor.moveActive.border": [
+   "editor.background"
+  ],
+  "diffEditor.removedLineBackground": [
+   "editor.background"
+  ],
+  "diffEditor.removedTextBackground": [
+   "editor.background"
+  ],
+  "diffEditor.removedTextBorder": [
+   "editor.background"
+  ],
+  "diffEditor.unchangedCodeBackground": [
+   "editor.background"
+  ],
+  "diffEditor.unchangedRegionBackground": [
+   "editor.background"
+  ],
+  "diffEditor.unchangedRegionForeground": [
+   "diffEditor.unchangedRegionBackground",
+   "editor.background"
+  ],
+  "diffEditorGutter.insertedLineBackground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "diffEditorGutter.removedLineBackground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "editor.border": [
+   "editor.background"
+  ],
+  "editor.compositionBorder": [
+   "editor.background"
+  ],
+  "editor.findMatchBorder": [
+   "editor.background"
+  ],
+  "editor.findMatchForeground": [
+   "editor.findMatchBackground",
+   "editor.background"
+  ],
+  "editor.findMatchHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.findMatchHighlightForeground": [
+   "editor.findMatchHighlightBackground",
+   "editor.background"
+  ],
+  "editor.findRangeHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.foldPlaceholderForeground": [
+   "editor.background"
+  ],
+  "editor.inlineValuesForeground": [
+   "editor.inlineValuesBackground",
+   "editor.background"
+  ],
+  "editor.lineHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.rangeHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.selectionForeground": [
+   "editor.selectionBackground",
+   "editor.background"
+  ],
+  "editor.selectionHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.snippetFinalTabstopHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.snippetTabstopHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.symbolHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.wordHighlightBorder": [
+   "editor.background"
+  ],
+  "editor.wordHighlightStrongBorder": [
+   "editor.background"
+  ],
+  "editor.wordHighlightTextBorder": [
+   "editor.background"
+  ],
+  "editorActionList.foreground": [
+   "editorActionList.background"
+  ],
+  "editorBracketMatch.border": [
+   "editorBracketMatch.background",
+   "editor.background"
+  ],
+  "editorBracketMatch.foreground": [
+   "editorBracketMatch.background"
+  ],
+  "editorBracketPairGuide.activeBackground1": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.activeBackground2": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.activeBackground3": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.activeBackground4": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.activeBackground5": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.activeBackground6": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.background1": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.background2": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.background3": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.background4": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.background5": [
+   "editor.background"
+  ],
+  "editorBracketPairGuide.background6": [
+   "editor.background"
+  ],
+  "editorCodeLens.foreground": [
+   "editor.background"
+  ],
+  "editorCommentsWidget.resolvedBorder": [
+   "editor.background"
+  ],
+  "editorCommentsWidget.unresolvedBorder": [
+   "editor.background"
+  ],
+  "editorCursor.foreground": [
+   "editorCursor.background"
+  ],
+  "editorError.border": [
+   "editorError.background",
+   "editor.background"
+  ],
+  "editorError.foreground": [
+   "editorError.background"
+  ],
+  "editorGhostText.border": [
+   "editorGhostText.background",
+   "editor.background"
+  ],
+  "editorGhostText.foreground": [
+   "editorGhostText.background"
+  ],
+  "editorGroup.border": [
+   "editor.background"
+  ],
+  "editorGroup.dropIntoPromptBorder": [
+   "editor.background"
+  ],
+  "editorGroup.dropIntoPromptForeground": [
+   "editorGroup.dropIntoPromptBackground"
+  ],
+  "editorGroup.focusedEmptyBorder": [
+   "editor.background"
+  ],
+  "editorGroupHeader.border": [
+   "editor.background"
+  ],
+  "editorGroupHeader.tabsBorder": [
+   "editor.background"
+  ],
+  "editorGutter.addedSecondaryBackground": [
+   "editor.background"
+  ],
+  "editorGutter.commentDraftGlyphForeground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "editorGutter.commentGlyphForeground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "editorGutter.commentRangeForeground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "editorGutter.commentUnresolvedGlyphForeground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "editorGutter.deletedBackground": [
+   "editor.background"
+  ],
+  "editorGutter.deletedSecondaryBackground": [
+   "editor.background"
+  ],
+  "editorGutter.foldingControlForeground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "editorGutter.itemGlyphForeground": [
+   "editorGutter.background",
+   "editor.background"
+  ],
+  "editorGutter.modifiedBackground": [
+   "editor.background"
+  ],
+  "editorGutter.modifiedSecondaryBackground": [
+   "editor.background"
+  ],
+  "editorHint.border": [
+   "editor.background"
+  ],
+  "editorHoverWidget.border": [
+   "editorHoverWidget.background",
+   "editor.background"
+  ],
+  "editorHoverWidget.foreground": [
+   "editorHoverWidget.background"
+  ],
+  "editorHoverWidget.highlightForeground": [
+   "editorHoverWidget.background"
+  ],
+  "editorIndentGuide.activeBackground": [
+   "editor.background"
+  ],
+  "editorIndentGuide.activeBackground1": [
+   "editor.background"
+  ],
+  "editorIndentGuide.activeBackground2": [
+   "editor.background"
+  ],
+  "editorIndentGuide.activeBackground3": [
+   "editor.background"
+  ],
+  "editorIndentGuide.activeBackground4": [
+   "editor.background"
+  ],
+  "editorIndentGuide.activeBackground5": [
+   "editor.background"
+  ],
+  "editorIndentGuide.activeBackground6": [
+   "editor.background"
+  ],
+  "editorIndentGuide.background": [
+   "editor.background"
+  ],
+  "editorIndentGuide.background1": [
+   "editor.background"
+  ],
+  "editorIndentGuide.background2": [
+   "editor.background"
+  ],
+  "editorIndentGuide.background3": [
+   "editor.background"
+  ],
+  "editorIndentGuide.background4": [
+   "editor.background"
+  ],
+  "editorIndentGuide.background5": [
+   "editor.background"
+  ],
+  "editorIndentGuide.background6": [
+   "editor.background"
+  ],
+  "editorInfo.border": [
+   "editorInfo.background",
+   "editor.background"
+  ],
+  "editorInfo.foreground": [
+   "editorInfo.background"
+  ],
+  "editorInlayHint.paramForeground": [
+   "editorInlayHint.background",
+   "editor.background"
+  ],
+  "editorInlayHint.parameterForeground": [
+   "editorInlayHint.parameterBackground",
+   "editorInlayHint.background",
+   "editor.background"
+  ],
+  "editorInlayHint.typeForeground": [
+   "editorInlayHint.typeBackground",
+   "editorInlayHint.background",
+   "editor.background"
+  ],
+  "editorLineNumber.dimmedForeground": [
+   "editorGutter.background"
+  ],
+  "editorOverviewRuler.addedForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.border": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.bracketMatchForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.commentDraftForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.commentForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.commentUnresolvedForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.commonContentForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.currentContentForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.deletedForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.errorForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.findMatchForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.incomingContentForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.infoForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.inlineChatInserted": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.inlineChatRemoved": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.modifiedForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.rangeHighlightForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.selectionHighlightForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.warningForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.wordHighlightForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.wordHighlightStrongForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorOverviewRuler.wordHighlightTextForeground": [
+   "editorOverviewRuler.background",
+   "editor.background"
+  ],
+  "editorStickyScroll.border": [
+   "editorStickyScroll.background",
+   "editor.background"
+  ],
+  "editorSuggestWidget.border": [
+   "editorSuggestWidget.background",
+   "editor.background"
+  ],
+  "editorSuggestWidget.focusHighlightForeground": [
+   "editorSuggestWidget.background"
+  ],
+  "editorSuggestWidget.foreground": [
+   "editorSuggestWidget.background"
+  ],
+  "editorSuggestWidget.highlightForeground": [
+   "editorSuggestWidget.background"
+  ],
+  "editorSuggestWidget.selectedForeground": [
+   "editorSuggestWidget.selectedBackground",
+   "editorSuggestWidget.background"
+  ],
+  "editorSuggestWidget.selectedIconForeground": [
+   "editorSuggestWidget.selectedBackground",
+   "editorSuggestWidget.background"
+  ],
+  "editorUnicodeHighlight.border": [
+   "editorUnicodeHighlight.background",
+   "editor.background"
+  ],
+  "editorUnnecessaryCode.border": [
+   "editor.background"
+  ],
+  "editorWarning.border": [
+   "editorWarning.background",
+   "editor.background"
+  ],
+  "editorWarning.foreground": [
+   "editorWarning.background"
+  ],
+  "editorWidget.resizeBorder": [
+   "editorWidget.background",
+   "editor.background"
+  ],
+  "extensionBadge.remoteForeground": [
+   "extensionBadge.remoteBackground"
+  ],
+  "extensionButton.border": [
+   "extensionButton.background",
+   "editor.background"
+  ],
+  "extensionButton.foreground": [
+   "extensionButton.background"
+  ],
+  "extensionButton.prominentForeground": [
+   "extensionButton.prominentBackground",
+   "extensionButton.background"
+  ],
+  "inactiveSessionView.foreground": [
+   "inactiveSessionView.background"
+  ],
+  "inlineChat.border": [
+   "inlineChat.background",
+   "editor.background"
+  ],
+  "inlineChat.foreground": [
+   "inlineChat.background"
+  ],
+  "inlineChatInput.border": [
+   "inlineChatInput.background",
+   "editor.background"
+  ],
+  "inlineChatInput.focusBorder": [
+   "inlineChatInput.background",
+   "editor.background"
+  ],
+  "inlineChatInput.placeholderForeground": [
+   "inlineChatInput.background",
+   "input.background"
+  ],
+  "inlineEdit.gutterIndicator.primaryBorder": [
+   "editor.background"
+  ],
+  "inlineEdit.gutterIndicator.secondaryBorder": [
+   "editor.background"
+  ],
+  "inlineEdit.gutterIndicator.successfulBorder": [
+   "editor.background"
+  ],
+  "inlineEdit.modifiedBorder": [
+   "editor.background"
+  ],
+  "inlineEdit.originalBorder": [
+   "editor.background"
+  ],
+  "inlineEdit.tabWillAcceptModifiedBorder": [
+   "editor.background"
+  ],
+  "inlineEdit.tabWillAcceptOriginalBorder": [
+   "editor.background"
+  ],
+  "inputOption.activeBorder": [
+   "editor.background"
+  ],
+  "inputValidation.errorBorder": [
+   "editor.background"
+  ],
+  "inputValidation.errorForeground": [
+   "inputValidation.errorBackground"
+  ],
+  "inputValidation.infoBorder": [
+   "editor.background"
+  ],
+  "inputValidation.infoForeground": [
+   "inputValidation.infoBackground"
+  ],
+  "inputValidation.warningBorder": [
+   "editor.background"
+  ],
+  "inputValidation.warningForeground": [
+   "inputValidation.warningBackground"
+  ],
+  "interactive.activeCodeBorder": [
+   "editor.background"
+  ],
+  "interactive.inactiveCodeBorder": [
+   "editor.background"
+  ],
+  "keybindingLabel.border": [
+   "keybindingLabel.background",
+   "editor.background"
+  ],
+  "keybindingLabel.bottomBorder": [
+   "keybindingLabel.background",
+   "editor.background"
+  ],
+  "keybindingLabel.foreground": [
+   "keybindingLabel.background"
+  ],
+  "list.activeSelectionIconForeground": [
+   "list.activeSelectionBackground",
+   "sideBar.background"
+  ],
+  "list.filterMatchBorder": [
+   "editor.background",
+   "sideBar.background"
+  ],
+  "list.focusAndSelectionOutline": [
+   "sideBar.background"
+  ],
+  "list.focusHighlightForeground": [
+   "sideBar.background"
+  ],
+  "list.inactiveFocusOutline": [
+   "sideBar.background"
+  ],
+  "list.inactiveSelectionIconForeground": [
+   "list.inactiveSelectionBackground",
+   "sideBar.background"
+  ],
+  "menu.border": [
+   "menu.background",
+   "editor.background"
+  ],
+  "menu.foreground": [
+   "menu.background"
+  ],
+  "menu.selectionBorder": [
+   "menu.background",
+   "editor.background"
+  ],
+  "menu.selectionForeground": [
+   "menu.selectionBackground",
+   "menu.background"
+  ],
+  "menu.separatorBackground": [
+   "menu.background"
+  ],
+  "menubar.selectionBorder": [
+   "editor.background"
+  ],
+  "menubar.selectionForeground": [
+   "menubar.selectionBackground"
+  ],
+  "merge.border": [
+   "editor.background"
+  ],
+  "mergeEditor.conflict.handledFocused.border": [
+   "editor.background"
+  ],
+  "mergeEditor.conflict.handledUnfocused.border": [
+   "editor.background"
+  ],
+  "mergeEditor.conflict.unhandledFocused.border": [
+   "editor.background"
+  ],
+  "mergeEditor.conflict.unhandledUnfocused.border": [
+   "editor.background"
+  ],
+  "modernActivityBar.border": [
+   "modernActivityBar.background",
+   "editor.background"
+  ],
+  "modernActivityBarItem.hoverForeground": [
+   "modernActivityBarItem.hoverBackground"
+  ],
+  "modernEditorTab.activeForeground": [
+   "modernEditorTab.activeBackground"
+  ],
+  "modernEditorTab.hoverForeground": [
+   "modernEditorTab.hoverBackground"
+  ],
+  "modernPanel.border": [
+   "editor.background"
+  ],
+  "modernTab.activeForeground": [
+   "modernTab.activeBackground"
+  ],
+  "modernTab.hoverForeground": [
+   "modernTab.hoverBackground"
+  ],
+  "multiDiffEditor.border": [
+   "multiDiffEditor.background",
+   "editor.background"
+  ],
+  "notebook.focusedCellBorder": [
+   "editor.background"
+  ],
+  "notebook.focusedEditorBorder": [
+   "editor.background"
+  ],
+  "notebook.inactiveFocusedCellBorder": [
+   "editor.background"
+  ],
+  "notebook.inactiveSelectedCellBorder": [
+   "editor.background"
+  ],
+  "notebook.selectedCellBorder": [
+   "editor.background"
+  ],
+  "notificationCenter.border": [
+   "notifications.background",
+   "editor.background"
+  ],
+  "notificationCenterHeader.foreground": [
+   "notificationCenterHeader.background",
+   "notifications.background"
+  ],
+  "notificationLink.foreground": [
+   "notifications.background"
+  ],
+  "notificationToast.border": [
+   "notifications.background",
+   "editor.background"
+  ],
+  "notifications.border": [
+   "notifications.background",
+   "editor.background"
+  ],
+  "notifications.foreground": [
+   "notifications.background"
+  ],
+  "notificationsErrorIcon.foreground": [
+   "notifications.background"
+  ],
+  "notificationsInfoIcon.foreground": [
+   "notifications.background"
+  ],
+  "notificationsWarningIcon.foreground": [
+   "notifications.background"
+  ],
+  "panel.border": [
+   "panel.background",
+   "editor.background"
+  ],
+  "panel.dropBorder": [
+   "panel.background",
+   "editor.background"
+  ],
+  "panelSection.border": [
+   "editor.background"
+  ],
+  "panelSectionHeader.border": [
+   "panelSectionHeader.background",
+   "editor.background"
+  ],
+  "panelSectionHeader.foreground": [
+   "panelSectionHeader.background"
+  ],
+  "panelStickyScroll.border": [
+   "panelStickyScroll.background",
+   "editor.background"
+  ],
+  "panelTitle.activeBorder": [
+   "editor.background",
+   "panel.background"
+  ],
+  "panelTitle.border": [
+   "editor.background",
+   "panel.background"
+  ],
+  "panelTitleBadge.foreground": [
+   "panelTitleBadge.background"
+  ],
+  "peekView.border": [
+   "editor.background"
+  ],
+  "peekViewEditor.background": [
+   "editor.background"
+  ],
+  "peekViewEditor.matchHighlightBackground": [
+   "peekViewEditor.background"
+  ],
+  "peekViewEditor.matchHighlightBorder": [
+   "peekViewEditor.background"
+  ],
+  "peekViewEditorGutter.background": [
+   "peekViewEditor.background"
+  ],
+  "peekViewEditorStickyScroll.background": [
+   "peekViewEditor.background"
+  ],
+  "peekViewEditorStickyScrollGutter.background": [
+   "peekViewEditor.background"
+  ],
+  "peekViewResult.background": [
+   "editor.background"
+  ],
+  "peekViewResult.fileForeground": [
+   "peekViewResult.background"
+  ],
+  "peekViewResult.lineForeground": [
+   "peekViewResult.background"
+  ],
+  "peekViewResult.matchHighlightBackground": [
+   "peekViewResult.background"
+  ],
+  "peekViewResult.selectionBackground": [
+   "peekViewResult.background"
+  ],
+  "peekViewResult.selectionForeground": [
+   "peekViewResult.selectionBackground",
+   "peekViewResult.background"
+  ],
+  "peekViewTitleDescription.foreground": [
+   "peekViewTitle.background"
+  ],
+  "peekViewTitleLabel.foreground": [
+   "peekViewTitle.background"
+  ],
+  "pickerGroup.border": [
+   "editor.background"
+  ],
+  "profileBadge.foreground": [
+   "profileBadge.background"
+  ],
+  "profiles.sashBorder": [
+   "editor.background"
+  ],
+  "quickInput.foreground": [
+   "quickInput.background"
+  ],
+  "quickInputList.focusForeground": [
+   "quickInputList.focusBackground"
+  ],
+  "quickInputList.focusIconForeground": [
+   "quickInputList.focusBackground"
+  ],
+  "radio.activeBorder": [
+   "editor.background"
+  ],
+  "radio.activeForeground": [
+   "radio.activeBackground"
+  ],
+  "radio.inactiveBorder": [
+   "editor.background"
+  ],
+  "radio.inactiveForeground": [
+   "radio.inactiveBackground"
+  ],
+  "sash.hoverBorder": [
+   "editor.background"
+  ],
+  "searchEditor.findMatchBorder": [
+   "editor.background"
+  ],
+  "searchEditor.textInputBorder": [
+   "editor.background"
+  ],
+  "settings.checkboxBorder": [
+   "editor.background"
+  ],
+  "settings.checkboxForeground": [
+   "settings.checkboxBackground"
+  ],
+  "settings.dropdownBorder": [
+   "editor.background"
+  ],
+  "settings.dropdownForeground": [
+   "settings.dropdownBackground"
+  ],
+  "settings.dropdownListBorder": [
+   "editor.background"
+  ],
+  "settings.focusedRowBorder": [
+   "editor.background"
+  ],
+  "settings.headerBorder": [
+   "editor.background"
+  ],
+  "settings.numberInputBorder": [
+   "editor.background"
+  ],
+  "settings.numberInputForeground": [
+   "settings.numberInputBackground"
+  ],
+  "settings.sashBorder": [
+   "editor.background"
+  ],
+  "settings.textInputBorder": [
+   "editor.background"
+  ],
+  "settings.textInputForeground": [
+   "settings.textInputBackground"
+  ],
+  "sideBar.border": [
+   "sideBar.background",
+   "editor.background"
+  ],
+  "sideBarActivityBarTop.border": [
+   "editor.background"
+  ],
+  "sideBarSectionHeader.foreground": [
+   "sideBarSectionHeader.background",
+   "sideBar.background"
+  ],
+  "sideBarStickyScroll.border": [
+   "sideBarStickyScroll.background",
+   "editor.background"
+  ],
+  "sideBarTitle.border": [
+   "sideBarTitle.background",
+   "editor.background"
+  ],
+  "sideBySideEditor.horizontalBorder": [
+   "editor.background"
+  ],
+  "sideBySideEditor.verticalBorder": [
+   "editor.background"
+  ],
+  "simpleFindWidget.sashBorder": [
+   "editor.background"
+  ],
+  "statusBar.border": [
+   "statusBar.background",
+   "editor.background"
+  ],
+  "statusBar.debuggingBorder": [
+   "statusBar.background",
+   "editor.background"
+  ],
+  "statusBar.debuggingForeground": [
+   "statusBar.debuggingBackground",
+   "statusBar.background"
+  ],
+  "statusBar.focusBorder": [
+   "statusBar.background",
+   "editor.background"
+  ],
+  "statusBar.noFolderBorder": [
+   "statusBar.background",
+   "editor.background"
+  ],
+  "statusBar.noFolderForeground": [
+   "statusBar.noFolderBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.errorForeground": [
+   "statusBarItem.errorBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.errorHoverForeground": [
+   "statusBarItem.errorHoverBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.focusBorder": [
+   "editor.background",
+   "statusBar.background"
+  ],
+  "statusBarItem.offlineForeground": [
+   "statusBarItem.offlineBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.offlineHoverForeground": [
+   "statusBarItem.offlineHoverBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.prominentForeground": [
+   "statusBarItem.prominentBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.prominentHoverForeground": [
+   "statusBarItem.prominentHoverBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.remoteForeground": [
+   "statusBarItem.remoteBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.remoteHoverForeground": [
+   "statusBarItem.remoteHoverBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.warningForeground": [
+   "statusBarItem.warningBackground",
+   "statusBar.background"
+  ],
+  "statusBarItem.warningHoverForeground": [
+   "statusBarItem.warningHoverBackground",
+   "statusBar.background"
+  ],
+  "surface.foreground": [
+   "surface.background"
+  ],
+  "tab.activeBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.activeBorderTop": [
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.activeForeground": [
+   "tab.activeBackground",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.activeModifiedBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.divider": [
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.dragAndDropBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.hoverBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.hoverForeground": [
+   "tab.hoverBackground",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.inactiveModifiedBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.lastPinnedBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.selectedForeground": [
+   "tab.selectedBackground",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedActiveBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedActiveBorderTop": [
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedActiveForeground": [
+   "tab.unfocusedActiveBackground",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedActiveModifiedBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedHoverBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedHoverForeground": [
+   "tab.unfocusedHoverBackground",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedInactiveForeground": [
+   "tab.unfocusedInactiveBackground",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "tab.unfocusedInactiveModifiedBorder": [
+   "editor.background",
+   "editorGroupHeader.tabsBackground"
+  ],
+  "terminalCursor.foreground": [
+   "terminalCursor.background"
+  ],
+  "terminalOverviewRuler.border": [
+   "editor.background"
+  ],
+  "terminalStickyScroll.border": [
+   "terminalStickyScroll.background",
+   "editor.background"
+  ],
+  "testing.coverCountBadgeForeground": [
+   "testing.coverCountBadgeBackground"
+  ],
+  "testing.coveredBorder": [
+   "editor.background"
+  ],
+  "testing.message.error.badgeBorder": [
+   "editor.background"
+  ],
+  "testing.messagePeekBorder": [
+   "editor.background"
+  ],
+  "testing.peekBorder": [
+   "editor.background"
+  ],
+  "testing.uncoveredBorder": [
+   "editor.background"
+  ],
+  "textBlockQuote.border": [
+   "textBlockQuote.background",
+   "editor.background"
+  ],
+  "textPreformat.border": [
+   "textPreformat.background",
+   "editor.background"
+  ],
+  "titleBar.inactiveForeground": [
+   "titleBar.inactiveBackground"
+  ],
+  "tree.inactiveIndentGuidesStroke": [
+   "sideBar.background"
+  ],
+  "tree.indentGuidesStroke": [
+   "sideBar.background"
+  ],
+  "tree.tableColumnsBorder": [
+   "editor.background",
+   "sideBar.background"
+  ],
+  "welcomePage.tileBorder": [
+   "welcomePage.background",
+   "editor.background"
+  ],
+  "widget.border": [
+   "editor.background"
+  ],
+  "window.activeBorder": [
+   "editor.background"
+  ],
+  "window.inactiveBorder": [
+   "editor.background"
   ]
+ },
+ "pairsFrom": {
+  "activeSessionView.foreground": "rule",
+  "activityBar.activeBorder": "rule",
+  "activityBar.activeFocusBorder": "rule",
+  "activityBar.background": "census",
+  "activityBar.border": "rule",
+  "activityBar.dropBorder": "rule",
+  "activityBar.foreground": "census",
+  "activityBar.inactiveForeground": "census",
+  "activityBarBadge.background": "census",
+  "activityBarBadge.foreground": "census",
+  "activityBarTop.activeBorder": "rule",
+  "activityBarTop.dropBorder": "rule",
+  "activityBarTop.foreground": "rule",
+  "activityBarTop.inactiveForeground": "rule",
+  "activityErrorBadge.foreground": "rule",
+  "activityWarningBadge.foreground": "rule",
+  "agentFeedbackEditorWidget.border": "rule",
+  "agentFeedbackInputWidget.border": "rule",
+  "agentSessionSelectedBadge.border": "rule",
+  "agentSessionSelectedUnfocusedBadge.border": "rule",
+  "agentsBadge.foreground": "rule",
+  "agentsBottomPanel.border": "rule",
+  "agentsCard.border": "rule",
+  "agentsChatInput.border": "rule",
+  "agentsChatInput.focusBorder": "rule",
+  "agentsChatInput.foreground": "rule",
+  "agentsChatInput.placeholderForeground": "rule",
+  "agentsNewSessionButton.border": "rule",
+  "agentsNewSessionButton.foreground": "rule",
+  "agentsPanel.border": "rule",
+  "agentsPanel.foreground": "rule",
+  "agentsUnreadBadge.foreground": "rule",
+  "agentsVoice.speakingForeground": "rule",
+  "badge.background": "census",
+  "badge.foreground": "census",
+  "banner.foreground": "rule",
+  "banner.iconForeground": "rule",
+  "breadcrumb.activeSelectionForeground": "rule",
+  "breadcrumb.background": "census",
+  "breadcrumb.focusForeground": "rule",
+  "breadcrumb.foreground": "census",
+  "browser.border": "rule",
+  "button.background": "census",
+  "button.border": "census",
+  "button.foreground": "census",
+  "button.secondaryBorder": "rule",
+  "button.secondaryForeground": "rule",
+  "chat.avatarForeground": "rule",
+  "chat.requestBorder": "rule",
+  "chat.requestCodeBorder": "rule",
+  "chat.sessionStateIndicator.inProgressBorder": "rule",
+  "chat.sessionStateIndicator.needsInputBorder": "rule",
+  "chat.sessionStateIndicator.unvisitedBorder": "rule",
+  "chat.slashCommandForeground": "rule",
+  "checkbox.border": "rule",
+  "checkbox.foreground": "rule",
+  "checkbox.selectBorder": "rule",
+  "commandCenter.activeBorder": "rule",
+  "commandCenter.activeForeground": "rule",
+  "commandCenter.background": "census",
+  "commandCenter.border": "census",
+  "commandCenter.foreground": "census",
+  "commandCenter.inactiveBorder": "rule",
+  "commandCenter.inactiveForeground": "rule",
+  "contrastBorder": "census",
+  "debugExceptionWidget.border": "rule",
+  "debugToolBar.background": "rule",
+  "debugToolBar.border": "rule",
+  "debugView.exceptionLabelForeground": "rule",
+  "debugView.stateLabelForeground": "rule",
+  "diffEditor.border": "rule",
+  "diffEditor.diagonalFill": "rule",
+  "diffEditor.insertedLineBackground": "rule",
+  "diffEditor.insertedTextBackground": "rule",
+  "diffEditor.insertedTextBorder": "rule",
+  "diffEditor.move.border": "rule",
+  "diffEditor.moveActive.border": "rule",
+  "diffEditor.removedLineBackground": "rule",
+  "diffEditor.removedTextBackground": "rule",
+  "diffEditor.removedTextBorder": "rule",
+  "diffEditor.unchangedCodeBackground": "rule",
+  "diffEditor.unchangedRegionBackground": "rule",
+  "diffEditor.unchangedRegionForeground": "rule",
+  "diffEditorGutter.insertedLineBackground": "rule",
+  "diffEditorGutter.removedLineBackground": "rule",
+  "disabledForeground": "census",
+  "dropdown.background": "census",
+  "dropdown.border": "census",
+  "dropdown.foreground": "census",
+  "editor.border": "rule",
+  "editor.compositionBorder": "rule",
+  "editor.findMatchBorder": "rule",
+  "editor.findMatchForeground": "rule",
+  "editor.findMatchHighlightBackground": "census",
+  "editor.findMatchHighlightBorder": "rule",
+  "editor.findMatchHighlightForeground": "rule",
+  "editor.findRangeHighlightBorder": "rule",
+  "editor.foldPlaceholderForeground": "rule",
+  "editor.foreground": "census",
+  "editor.inlineValuesForeground": "rule",
+  "editor.lineHighlightBorder": "rule",
+  "editor.rangeHighlightBorder": "rule",
+  "editor.selectionForeground": "rule",
+  "editor.selectionHighlightBorder": "rule",
+  "editor.snippetFinalTabstopHighlightBorder": "rule",
+  "editor.snippetTabstopHighlightBorder": "rule",
+  "editor.symbolHighlightBorder": "rule",
+  "editor.wordHighlightBorder": "rule",
+  "editor.wordHighlightStrongBorder": "rule",
+  "editor.wordHighlightTextBorder": "rule",
+  "editorActionList.focusForeground": "census",
+  "editorActionList.foreground": "rule",
+  "editorBracketHighlight.foreground2": "census",
+  "editorBracketHighlight.foreground3": "census",
+  "editorBracketMatch.border": "rule",
+  "editorBracketMatch.foreground": "rule",
+  "editorBracketPairGuide.activeBackground1": "rule",
+  "editorBracketPairGuide.activeBackground2": "rule",
+  "editorBracketPairGuide.activeBackground3": "rule",
+  "editorBracketPairGuide.activeBackground4": "rule",
+  "editorBracketPairGuide.activeBackground5": "rule",
+  "editorBracketPairGuide.activeBackground6": "rule",
+  "editorBracketPairGuide.background1": "rule",
+  "editorBracketPairGuide.background2": "rule",
+  "editorBracketPairGuide.background3": "rule",
+  "editorBracketPairGuide.background4": "rule",
+  "editorBracketPairGuide.background5": "rule",
+  "editorBracketPairGuide.background6": "rule",
+  "editorCodeLens.foreground": "rule",
+  "editorCommentsWidget.resolvedBorder": "rule",
+  "editorCommentsWidget.unresolvedBorder": "rule",
+  "editorCursor.foreground": "rule",
+  "editorError.border": "rule",
+  "editorError.foreground": "rule",
+  "editorGhostText.border": "rule",
+  "editorGhostText.foreground": "rule",
+  "editorGroup.border": "rule",
+  "editorGroup.dropIntoPromptBorder": "rule",
+  "editorGroup.dropIntoPromptForeground": "rule",
+  "editorGroup.focusedEmptyBorder": "rule",
+  "editorGroupHeader.border": "rule",
+  "editorGroupHeader.tabsBackground": "census",
+  "editorGroupHeader.tabsBorder": "rule",
+  "editorGutter.addedBackground": "census",
+  "editorGutter.addedSecondaryBackground": "rule",
+  "editorGutter.commentDraftGlyphForeground": "rule",
+  "editorGutter.commentGlyphForeground": "rule",
+  "editorGutter.commentRangeForeground": "rule",
+  "editorGutter.commentUnresolvedGlyphForeground": "rule",
+  "editorGutter.deletedBackground": "rule",
+  "editorGutter.deletedSecondaryBackground": "rule",
+  "editorGutter.foldingControlForeground": "rule",
+  "editorGutter.itemGlyphForeground": "rule",
+  "editorGutter.modifiedBackground": "rule",
+  "editorGutter.modifiedSecondaryBackground": "rule",
+  "editorHint.border": "rule",
+  "editorHoverWidget.border": "rule",
+  "editorHoverWidget.foreground": "rule",
+  "editorHoverWidget.highlightForeground": "rule",
+  "editorIndentGuide.activeBackground": "rule",
+  "editorIndentGuide.activeBackground1": "rule",
+  "editorIndentGuide.activeBackground2": "rule",
+  "editorIndentGuide.activeBackground3": "rule",
+  "editorIndentGuide.activeBackground4": "rule",
+  "editorIndentGuide.activeBackground5": "rule",
+  "editorIndentGuide.activeBackground6": "rule",
+  "editorIndentGuide.background": "rule",
+  "editorIndentGuide.background1": "rule",
+  "editorIndentGuide.background2": "rule",
+  "editorIndentGuide.background3": "rule",
+  "editorIndentGuide.background4": "rule",
+  "editorIndentGuide.background5": "rule",
+  "editorIndentGuide.background6": "rule",
+  "editorInfo.border": "rule",
+  "editorInfo.foreground": "rule",
+  "editorInlayHint.foreground": "census",
+  "editorInlayHint.paramForeground": "rule",
+  "editorInlayHint.parameterForeground": "rule",
+  "editorInlayHint.typeForeground": "rule",
+  "editorLightBulb.foreground": "census",
+  "editorLineNumber.activeForeground": "census",
+  "editorLineNumber.dimmedForeground": "rule",
+  "editorLineNumber.foreground": "census",
+  "editorOverviewRuler.addedForeground": "rule",
+  "editorOverviewRuler.border": "rule",
+  "editorOverviewRuler.bracketMatchForeground": "rule",
+  "editorOverviewRuler.commentDraftForeground": "rule",
+  "editorOverviewRuler.commentForeground": "rule",
+  "editorOverviewRuler.commentUnresolvedForeground": "rule",
+  "editorOverviewRuler.commonContentForeground": "rule",
+  "editorOverviewRuler.currentContentForeground": "rule",
+  "editorOverviewRuler.deletedForeground": "rule",
+  "editorOverviewRuler.errorForeground": "rule",
+  "editorOverviewRuler.findMatchForeground": "rule",
+  "editorOverviewRuler.incomingContentForeground": "rule",
+  "editorOverviewRuler.infoForeground": "rule",
+  "editorOverviewRuler.inlineChatInserted": "rule",
+  "editorOverviewRuler.inlineChatRemoved": "rule",
+  "editorOverviewRuler.modifiedForeground": "rule",
+  "editorOverviewRuler.rangeHighlightForeground": "rule",
+  "editorOverviewRuler.selectionHighlightForeground": "rule",
+  "editorOverviewRuler.warningForeground": "rule",
+  "editorOverviewRuler.wordHighlightForeground": "rule",
+  "editorOverviewRuler.wordHighlightStrongForeground": "rule",
+  "editorOverviewRuler.wordHighlightTextForeground": "rule",
+  "editorStickyScroll.border": "rule",
+  "editorSuggestWidget.border": "rule",
+  "editorSuggestWidget.focusHighlightForeground": "rule",
+  "editorSuggestWidget.foreground": "rule",
+  "editorSuggestWidget.highlightForeground": "rule",
+  "editorSuggestWidget.selectedForeground": "rule",
+  "editorSuggestWidget.selectedIconForeground": "rule",
+  "editorUnicodeHighlight.border": "rule",
+  "editorUnnecessaryCode.border": "rule",
+  "editorWarning.border": "rule",
+  "editorWarning.foreground": "rule",
+  "editorWhitespace.foreground": "census",
+  "editorWidget.border": "census",
+  "editorWidget.foreground": "census",
+  "editorWidget.resizeBorder": "rule",
+  "errorForeground": "census",
+  "extensionBadge.remoteForeground": "rule",
+  "extensionButton.border": "rule",
+  "extensionButton.foreground": "rule",
+  "extensionButton.prominentForeground": "rule",
+  "focusBorder": "census",
+  "gitDecoration.addedResourceForeground": "census",
+  "gitDecoration.ignoredResourceForeground": "census",
+  "gitDecoration.modifiedResourceForeground": "census",
+  "gitDecoration.renamedResourceForeground": "census",
+  "gitDecoration.submoduleResourceForeground": "census",
+  "gitDecoration.untrackedResourceForeground": "census",
+  "icon.foreground": "census",
+  "inactiveSessionView.foreground": "rule",
+  "inlineChat.border": "rule",
+  "inlineChat.foreground": "rule",
+  "inlineChatInput.border": "rule",
+  "inlineChatInput.focusBorder": "rule",
+  "inlineChatInput.placeholderForeground": "rule",
+  "inlineEdit.gutterIndicator.primaryBorder": "rule",
+  "inlineEdit.gutterIndicator.secondaryBorder": "rule",
+  "inlineEdit.gutterIndicator.successfulBorder": "rule",
+  "inlineEdit.modifiedBorder": "rule",
+  "inlineEdit.originalBorder": "rule",
+  "inlineEdit.tabWillAcceptModifiedBorder": "rule",
+  "inlineEdit.tabWillAcceptOriginalBorder": "rule",
+  "input.background": "census",
+  "input.border": "census",
+  "input.foreground": "census",
+  "input.placeholderForeground": "census",
+  "inputOption.activeBorder": "rule",
+  "inputOption.activeForeground": "census",
+  "inputValidation.errorBorder": "rule",
+  "inputValidation.errorForeground": "rule",
+  "inputValidation.infoBorder": "rule",
+  "inputValidation.infoForeground": "rule",
+  "inputValidation.warningBorder": "rule",
+  "inputValidation.warningForeground": "rule",
+  "interactive.activeCodeBorder": "rule",
+  "interactive.inactiveCodeBorder": "rule",
+  "keybindingLabel.border": "rule",
+  "keybindingLabel.bottomBorder": "rule",
+  "keybindingLabel.foreground": "rule",
+  "list.activeSelectionBackground": "census",
+  "list.activeSelectionForeground": "census",
+  "list.activeSelectionIconForeground": "rule",
+  "list.deemphasizedForeground": "census",
+  "list.errorForeground": "census",
+  "list.filterMatchBorder": "rule",
+  "list.focusAndSelectionOutline": "rule",
+  "list.focusBackground": "census",
+  "list.focusForeground": "census",
+  "list.focusHighlightForeground": "rule",
+  "list.focusOutline": "census",
+  "list.highlightForeground": "census",
+  "list.hoverForeground": "census",
+  "list.inactiveFocusOutline": "rule",
+  "list.inactiveSelectionBackground": "census",
+  "list.inactiveSelectionForeground": "census",
+  "list.inactiveSelectionIconForeground": "rule",
+  "list.invalidItemForeground": "census",
+  "list.warningForeground": "census",
+  "menu.border": "rule",
+  "menu.foreground": "rule",
+  "menu.selectionBorder": "rule",
+  "menu.selectionForeground": "rule",
+  "menu.separatorBackground": "rule",
+  "menubar.selectionBorder": "rule",
+  "menubar.selectionForeground": "rule",
+  "merge.border": "rule",
+  "mergeEditor.conflict.handledFocused.border": "rule",
+  "mergeEditor.conflict.handledUnfocused.border": "rule",
+  "mergeEditor.conflict.unhandledFocused.border": "rule",
+  "mergeEditor.conflict.unhandledUnfocused.border": "rule",
+  "modernActivityBar.border": "rule",
+  "modernActivityBarItem.activeForeground": "census",
+  "modernActivityBarItem.hoverForeground": "rule",
+  "modernEditorTab.activeForeground": "rule",
+  "modernEditorTab.hoverForeground": "rule",
+  "modernPanel.border": "rule",
+  "modernTab.activeForeground": "rule",
+  "modernTab.hoverForeground": "rule",
+  "multiDiffEditor.border": "rule",
+  "notebook.focusedCellBorder": "rule",
+  "notebook.focusedEditorBorder": "rule",
+  "notebook.inactiveFocusedCellBorder": "rule",
+  "notebook.inactiveSelectedCellBorder": "rule",
+  "notebook.selectedCellBorder": "rule",
+  "notificationCenter.border": "rule",
+  "notificationCenterHeader.foreground": "rule",
+  "notificationLink.foreground": "rule",
+  "notificationToast.border": "rule",
+  "notifications.border": "rule",
+  "notifications.foreground": "rule",
+  "notificationsErrorIcon.foreground": "rule",
+  "notificationsInfoIcon.foreground": "rule",
+  "notificationsWarningIcon.foreground": "rule",
+  "panel.background": "census",
+  "panel.border": "rule",
+  "panel.dropBorder": "rule",
+  "panelInput.border": "census",
+  "panelSection.border": "rule",
+  "panelSectionHeader.border": "rule",
+  "panelSectionHeader.foreground": "rule",
+  "panelStickyScroll.border": "rule",
+  "panelTitle.activeBorder": "rule",
+  "panelTitle.activeForeground": "census",
+  "panelTitle.border": "rule",
+  "panelTitle.inactiveForeground": "census",
+  "panelTitleBadge.background": "census",
+  "panelTitleBadge.foreground": "rule",
+  "peekView.border": "rule",
+  "peekViewEditor.background": "rule",
+  "peekViewEditor.matchHighlightBackground": "rule",
+  "peekViewEditor.matchHighlightBorder": "rule",
+  "peekViewEditorGutter.background": "rule",
+  "peekViewEditorStickyScroll.background": "rule",
+  "peekViewEditorStickyScrollGutter.background": "rule",
+  "peekViewResult.background": "rule",
+  "peekViewResult.fileForeground": "rule",
+  "peekViewResult.lineForeground": "rule",
+  "peekViewResult.matchHighlightBackground": "rule",
+  "peekViewResult.selectionBackground": "rule",
+  "peekViewResult.selectionForeground": "rule",
+  "peekViewTitleDescription.foreground": "rule",
+  "peekViewTitleLabel.foreground": "rule",
+  "pickerGroup.border": "rule",
+  "problemsErrorIcon.foreground": "census",
+  "profileBadge.foreground": "rule",
+  "profiles.sashBorder": "rule",
+  "quickInput.foreground": "rule",
+  "quickInputList.focusForeground": "rule",
+  "quickInputList.focusIconForeground": "rule",
+  "radio.activeBorder": "rule",
+  "radio.activeForeground": "rule",
+  "radio.inactiveBorder": "rule",
+  "radio.inactiveForeground": "rule",
+  "sash.hoverBorder": "rule",
+  "scmGraph.historyItemHoverAdditionsForeground": "census",
+  "scmGraph.historyItemHoverDefaultLabelForeground": "census",
+  "scmGraph.historyItemHoverLabelForeground": "census",
+  "scmGraph.historyItemRefColor": "census",
+  "search.resultsInfoForeground": "census",
+  "searchEditor.findMatchBorder": "rule",
+  "searchEditor.textInputBorder": "rule",
+  "settings.checkboxBorder": "rule",
+  "settings.checkboxForeground": "rule",
+  "settings.dropdownBorder": "rule",
+  "settings.dropdownForeground": "rule",
+  "settings.dropdownListBorder": "rule",
+  "settings.focusedRowBorder": "rule",
+  "settings.headerBorder": "rule",
+  "settings.numberInputBorder": "rule",
+  "settings.numberInputForeground": "rule",
+  "settings.sashBorder": "rule",
+  "settings.textInputBorder": "rule",
+  "settings.textInputForeground": "rule",
+  "sideBar.background": "census",
+  "sideBar.border": "rule",
+  "sideBar.foreground": "census",
+  "sideBarActivityBarTop.border": "rule",
+  "sideBarSectionHeader.border": "census",
+  "sideBarSectionHeader.foreground": "rule",
+  "sideBarStickyScroll.border": "rule",
+  "sideBarTitle.border": "rule",
+  "sideBarTitle.foreground": "census",
+  "sideBySideEditor.horizontalBorder": "rule",
+  "sideBySideEditor.verticalBorder": "rule",
+  "simpleFindWidget.sashBorder": "rule",
+  "statusBar.background": "census",
+  "statusBar.border": "rule",
+  "statusBar.debuggingBorder": "rule",
+  "statusBar.debuggingForeground": "rule",
+  "statusBar.focusBorder": "rule",
+  "statusBar.foreground": "census",
+  "statusBar.noFolderBorder": "rule",
+  "statusBar.noFolderForeground": "rule",
+  "statusBarItem.errorForeground": "rule",
+  "statusBarItem.errorHoverForeground": "rule",
+  "statusBarItem.focusBorder": "rule",
+  "statusBarItem.hoverForeground": "census",
+  "statusBarItem.offlineForeground": "rule",
+  "statusBarItem.offlineHoverForeground": "rule",
+  "statusBarItem.prominentForeground": "rule",
+  "statusBarItem.prominentHoverForeground": "rule",
+  "statusBarItem.remoteForeground": "rule",
+  "statusBarItem.remoteHoverForeground": "rule",
+  "statusBarItem.warningForeground": "rule",
+  "statusBarItem.warningHoverForeground": "rule",
+  "surface.background": "census",
+  "surface.border": "census",
+  "surface.foreground": "rule",
+  "symbolIcon.stringForeground": "census",
+  "tab.activeBorder": "rule",
+  "tab.activeBorderTop": "rule",
+  "tab.activeForeground": "rule",
+  "tab.activeModifiedBorder": "rule",
+  "tab.border": "census",
+  "tab.divider": "rule",
+  "tab.dragAndDropBorder": "rule",
+  "tab.hoverBorder": "rule",
+  "tab.hoverForeground": "rule",
+  "tab.inactiveForeground": "census",
+  "tab.inactiveModifiedBorder": "rule",
+  "tab.lastPinnedBorder": "rule",
+  "tab.selectedBorderTop": "census",
+  "tab.selectedForeground": "rule",
+  "tab.unfocusedActiveBorder": "rule",
+  "tab.unfocusedActiveBorderTop": "rule",
+  "tab.unfocusedActiveForeground": "rule",
+  "tab.unfocusedActiveModifiedBorder": "rule",
+  "tab.unfocusedHoverBorder": "rule",
+  "tab.unfocusedHoverForeground": "rule",
+  "tab.unfocusedInactiveForeground": "rule",
+  "tab.unfocusedInactiveModifiedBorder": "rule",
+  "terminal.background": "census",
+  "terminalCursor.foreground": "rule",
+  "terminalOverviewRuler.border": "rule",
+  "terminalStickyScroll.border": "rule",
+  "terminalSymbolIcon.fileForeground": "census",
+  "testing.coverCountBadgeForeground": "rule",
+  "testing.coveredBorder": "rule",
+  "testing.message.error.badgeBorder": "rule",
+  "testing.messagePeekBorder": "rule",
+  "testing.peekBorder": "rule",
+  "testing.uncoveredBorder": "rule",
+  "textBlockQuote.border": "rule",
+  "textLink.foreground": "census",
+  "textPreformat.border": "rule",
+  "textPreformat.foreground": "census",
+  "titleBar.activeForeground": "census",
+  "titleBar.border": "census",
+  "titleBar.inactiveForeground": "rule",
+  "tree.inactiveIndentGuidesStroke": "rule",
+  "tree.indentGuidesStroke": "rule",
+  "tree.tableColumnsBorder": "rule",
+  "welcomePage.tileBorder": "rule",
+  "widget.border": "rule",
+  "window.activeBorder": "rule",
+  "window.inactiveBorder": "rule"
  }
 }

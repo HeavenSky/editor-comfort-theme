@@ -25,6 +25,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn, spawnSync } from 'node:child_process';
 import { classify, keysData, KEYS_PAGE } from './key-levels.mjs';
+import { calibrateByKeys, rulePairs } from './rule-pairs.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const [cmd, outArg, ...rest] = process.argv.slice(2);
@@ -194,9 +195,9 @@ if (cmd === 'export') {
   // 刺眼线(宽口径, 只拦参考主题里也少见的): 参考主题实例(同主题同角色同色对合并)的 P95; 明度差看 rd, 底色与线条另看彩度超出所在底色的量(OKLCH 彩度差 x 100, 整套偏色的底如 Solarized 不算)
   const q95 = (v) => { if (!v.length) return null; const x = [...v].sort((a, b) => a - b), i = (x.length - 1) * 0.95, j = Math.floor(i); return +(x[j] + (x[Math.min(j + 1, x.length - 1)] - x[j]) * (i - j)).toFixed(1); };
   const chroma = (c) => { const [, a, b] = oklab(rgb(c)); return Math.hypot(a, b) * 100; };
-  const refInst = new Map();
+  const censusItems = data().items, refInst = new Map();
   // 只用来源键可靠的实例: 无键按角色兜底, 按值反查的会把指示线(如面板标签下的激活线)归成弱档, 把 P95 拉到离谱; 刺眼线不低于上限 hi
-  for (const it of data().items) {
+  for (const it of censusItems) {
     if (!(th.ref || []).includes(it.theme) || !it.key || it.keyNote || it.selfHow === 'value') continue;
     refInst.set(`${it.theme}|${it.role}|${it.fg}|${it.bg}`, it);
   }
@@ -204,12 +205,47 @@ if (cmd === 'export') {
     const v = [...refInst.values()].filter((x) => x.level === k), rd = q95(v.map((x) => x.rd));
     return { rd: rd == null ? null : Math.max(rd, hi ?? 0), chroma: /^(线条|底色)/.test(k) ? q95(v.map((x) => Math.max(0, chroma(x.fg) - chroma(x.bg)))) : null, n: v.length };
   };
-  const levels = Object.fromEntries(Object.entries(th.levels).map(([k, v]) => [k, { pct: v.pct, lo: v.lo, mixLo: v.mixLo, hi: v.hi, abs: v.abs, abs_metric: /^(内容|暗化强|暗化中)/.test(k) ? 'apca' : 'de', glare: glare(k, v.hi) }]));
+  const levels = Object.fromEntries(Object.entries(th.levels).map(([k, v]) => [k, { pct: v.pct, lo: v.lo, mixLo: v.mixLo, hi: v.hi, abs: v.abs, abs_metric: /^(内容|暗化强|暗化中)/.test(k) ? 'apca' : 'de', glare: glare(k, v.hi), source: 'census' }]));
+  // 普查覆盖不到的键(截图场景之外的界面)按语义规则推配对底色键(tools/lab/rule-pairs.mjs); 普查配对优先
+  const four = Object.keys(keyLevels).filter((k) => /^(内容|暗化|线条|底色)/.test(keyLevels[k]) && !pairs[k]);
+  const ruled = rulePairs(four, new Set(Object.keys(registry)), (k) => keyLevels[k]);
+  const pairsFrom = Object.fromEntries([...Object.keys(pairs).map((k) => [k, 'census']), ...Object.keys(ruled).map((k) => [k, 'rule'])].sort());
+  Object.assign(pairs, ruled);
+  // 普查样本为 0 的级按参考主题的颜色键取值标定: 键值(半透明的叠在配对底色上)对配对底色的 rd 与 ΔE; 相邻级的混档线与上限随之重算
+  const LADDERS = [['内容强', '内容中', '内容弱', '暗化强', '暗化中', '暗化弱'], ['线条强', '线条中', '线条弱'], ['底色强', '底色中', '底色弱']];
+  const ABS_SPEC = { 线条中: 10 };
+  const mid = (a, b) => +((a + b) / 2).toFixed(1);
+  for (const [k, lv] of Object.entries(levels)) {
+    if (censusItems.some((x) => x.level === k && (th.ref || []).includes(x.theme))) continue;
+    const samples = [];
+    for (const t of (th.ref || [])) {
+      const tj = themeJson(t);
+      if (!tj) continue;
+      const c = tj.colors, body = dL((c['editor.foreground'] || '#FFFFFF').slice(0, 7), (c['editor.background'] || '#000000').slice(0, 7));
+      for (const [key, l] of Object.entries(keyLevels)) {
+        if (l !== k || !/^#[0-9A-Fa-f]{6,8}$/.test(c[key] || '') || !pairs[key]) continue;
+        const u = (c[pairs[key][0]] || c['editor.background']).slice(0, 7), a = c[key].length === 9 ? parseInt(c[key].slice(7), 16) / 255 : 1;
+        const fg = '#' + rgb(c[key]).map((x, i) => Math.round(x * a + rgb(u)[i] * (1 - a)).toString(16).padStart(2, '0')).join('');
+        if (dE(fg, u) < 1) continue;
+        samples.push({ theme: t, rd: (dL(fg, u) / body) * 100, abs: dE(fg, u) });
+      }
+    }
+    const cal = calibrateByKeys(samples, ABS_SPEC[k] ?? lv.abs);
+    if (!cal) continue;
+    const lad = LADDERS.find((x) => x.includes(k)), i = lad.indexOf(k), up = levels[lad[i - 1]], dn = levels[lad[i + 1]];
+    Object.assign(lv, { pct: cal.pct, abs: cal.abs, source: `keys(${cal.n} 个实例, ${cal.themes} 套参考主题)` });
+    lv.mixLo = dn ? mid(lv.pct, dn.pct) : lv.mixLo;
+    lv.hi = up ? mid(lv.pct, up.pct) : lv.hi;
+    lv.lo = Math.min(cal.lo, lv.mixLo ?? cal.lo);
+    if (up) { up.mixLo = mid(up.pct, lv.pct); up.lo = Math.min(up.lo, up.mixLo); }
+    if (dn) dn.hi = mid(dn.pct, lv.pct);
+    console.log(`${k} 按颜色键标定: 目标 ${lv.pct}, 修复下限 ${lv.lo}, 绝对下限 ${lv.abs}, 混档线 ${lv.mixLo}, 上限 ${lv.hi} (${lv.source})`);
+  }
   const doc = { about: '分层门槛(tools/lab/threshold-lab.mjs export 生成, 勿手改): 相对指标 rd = OKLab 明度差 / 本主题正文明度差 x 100; 绝对指标 apca = APCA Lc, de = OKLab ΔE x 100',
-    thresholdsAt: th.at, ref: th.ref, levels, sep: th.sep, rules: th.rules, exemptSameColor: 'focus|selection|findMatch|Cursor', keyLevels, pairs };
+    thresholdsAt: th.at, ref: th.ref, levels, sep: th.sep, rules: th.rules, exemptSameColor: 'focus|selection|findMatch|Cursor', keyLevels, pairs, pairsFrom };
   const dest = path.resolve(rest[0] || path.join(REPO, 'assets/levels.json'));
   fs.writeFileSync(dest, JSON.stringify(doc, null, 1) + '\n');
-  console.log(`已导出 ${path.relative(REPO, dest)}: ${Object.keys(levels).length} 级, ${Object.keys(keyLevels).length} 个键, ${Object.keys(pairs).length} 个键有实测配对`);
+  console.log(`已导出 ${path.relative(REPO, dest)}: ${Object.keys(levels).length} 级, ${Object.keys(keyLevels).length} 个键, ${Object.keys(pairs).length} 个键有配对(普查 ${Object.keys(pairs).length - Object.keys(ruled).length}, 规则 ${Object.keys(ruled).length})`);
   process.exit(0);
 }
 

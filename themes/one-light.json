@@ -263,7 +263,7 @@
 		"simpleFindWidget.sashBorder": "#C3C3C3",
 		"statusBar.background": "#EAEAEB",
 		"statusBar.debuggingBackground": "#CB5B4F",
-		"statusBar.debuggingForeground": "#FFFFFF",
+		"statusBar.debuggingForeground": "#2B2B2B",
 		"statusBar.foreground": "#424243",
 		"statusBar.noFolderBackground": "#EAEAEB",
 		"statusBarItem.errorForeground": "#FAFAFA",

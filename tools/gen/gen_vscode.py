@@ -11,7 +11,7 @@ import json, math, os, re, sys
 
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
-from colorlib import (Rgb, unwhite, amber, blend, cr, de2000, deneon, fit, from_oklch, h, hx, lum, neon, oklch, sat, soften, toward_bg, tune,
+from colorlib import (WHITE_C, WHITE_L, Rgb, unwhite, amber, blend, cr, de2000, deneon, fit, from_oklch, h, hx, lum, neon, oklch, sat, soften, toward_bg, tune,
                       unextreme, with_sat)
 import levels, pool
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
@@ -1002,7 +1002,7 @@ def transform(t: dict, src: dict) -> dict:
         white_cap(colors)
     # 分层门槛: 取代 ui_text_floor / badge_text / button_text 等旧的逐对下限; 放在选区之前, 选区按调整后的输入框字色求
     if on('level_floor'):
-        levels.fix(colors, t)
+        levels.fix(colors, t, (WHITE_L - 0.01, WHITE_C) if on('white_cap') and t['dark'] else None)
     # 输入框底色与文字在前面几步还会调整, 选区放到它们之后求
     if on('list_selection_text'):
         list_selection_text(colors, t)
