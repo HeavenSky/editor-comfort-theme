@@ -2,12 +2,12 @@
 # requires-python = ">=3.11"
 # ///
 # 按 vscode://schemas/color-theme 校验 VS Code 颜色主题; 规则取自 VS Code 源码(颜色注册表 / textmate-colors / token-styling),
-# 颜色键的注册, 半透明要求与废弃标记来自 assets/vscode/vscode-color-registry.json(extract_registry.py 提取).
+# 颜色键的注册, 半透明要求与废弃标记来自 assets/vscode/color-registry.json(extract_registry.py 提取).
 # 用法: uv run tools/check/schema.py <主题.json>...   (有问题时逐条列出并退出码 1)
 import json, os, re, sys
 
 sys.dont_write_bytecode = True
-REGISTRY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'vscode-color-registry.json')
+REGISTRY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'color-registry.json')
 
 # format: color-hex 接受的写法; 另有 "default" 表示用默认色
 HEX = re.compile(r'^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$')

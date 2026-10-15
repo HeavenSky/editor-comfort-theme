@@ -1,7 +1,7 @@
 # /// script
 # requires-python = ">=3.11"
 # ///
-# 从本机 VS Code 安装包提取颜色注册表(registerColor), 写入 assets/vscode/vscode-color-registry.json.
+# 从本机 VS Code 安装包提取颜色注册表(registerColor), 写入 assets/vscode/color-registry.json.
 # 每个键记录 dark / light 下的默认值: 硬编码字面量记为 "#RRGGBB[AA]", 由其他颜色推导或无默认色记为 null;
 # transparent: 注册时要求半透明(needsTransparency, 不透明会遮住下面的内容); deprecated: 已废弃(带 deprecationMessage).
 # 另记 semanticSelector: semanticTokenColors 键必须匹配的正则; 这三项供 schema.py 按 vscode://schemas/color-theme 校验主题.
@@ -11,7 +11,7 @@ import json, os, re, sys
 APP = sys.argv[1] if len(sys.argv) > 1 else '/Applications/Visual Studio Code.app'
 RES = os.path.join(APP, 'Contents', 'Resources', 'app')
 BUNDLE = os.path.join(RES, 'out', 'vs', 'workbench', 'workbench.desktop.main.js')
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'vscode-color-registry.json')
+OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'color-registry.json')
 NAMED = {'white': 'FFFFFF', 'black': '000000', 'blue': '0000FF', 'lightgrey': 'D3D3D3'}
 
 

@@ -13,7 +13,7 @@
 //   梯子: 前景 内容强 > 内容中 > 内容弱 > 暗化强 > 暗化中 > 暗化弱; 线条 强 > 中 > 弱; 底色 强 > 中 > 弱.
 //   区分度取各主题差值掐头去尾后的 P25, 不低于 5(原主题有档位倒挂, 最小值会是负数).
 // 标注: 每个实例按所在级的目标标 不及目标 / 合适 / 超出目标; 页面按标注给出上下限建议.
-// 用法: node tools/lab/threshold-lab.mjs collect <输出目录> [主题名...]   普查(先开 node tools/shoot/shoot.mjs --serve; 普查期间打开空白符显示), 每查完一个主题页面就能看到
+// 用法: node tools/lab/threshold-lab.mjs collect <输出目录> [主题名...] [--src <主题目录>]   普查(--src: 不生成全关档, 直接普查该目录的主题; 先开 node tools/shoot/shoot.mjs --serve; 普查期间打开空白符显示), 每查完一个主题页面就能看到
 //       node tools/lab/threshold-lab.mjs export <输出目录> [目标文件]    把已提交的门槛, 颜色键分层与普查配对表导出成调色步骤与门禁的输入(默认 assets/levels.json)
 //       node tools/lab/threshold-lab.mjs serve <输出目录> [--port 9340]  打开 http://127.0.0.1:9340/ ; /keys 为颜色键分层复核, 提交写 key-levels.json;
 //                                                                    标定页提交写 thresholds.json(另存带时间的副本)与 labels.json
@@ -43,15 +43,23 @@ fs.mkdirSync(out, { recursive: true });
 
 // ======== 普查 ========
 if (cmd === 'collect') {
-  const filters = rest.filter((a) => !a.startsWith('--'));
+  const filters = rest.filter((a, i) => !a.startsWith('--') && rest[i - 1] !== '--src');
   const themes = allThemes.filter((t) => !filters.length || filters.some((f) => t.file.includes(f)));
   const run = (c, a, env = {}) => new Promise((res, rej) => {
     const p = spawn(c, a, { cwd: REPO, env: { ...process.env, ...env }, stdio: ['ignore', 'ignore', 'inherit'] });
     p.on('exit', (code) => (code === 0 ? res() : rej(new Error(`${c} ${a.join(' ')} 失败`))));
   });
-  console.log('== 生成全关主题');
-  await run('uv', ['run', '-q', 'tools/gen/complete.py']);
-  await run('uv', ['run', '-q', 'tools/gen/gen_vscode.py', '--out', path.join(out, '_themes', SET)], { COMFORT_STEPS: 'none' });
+  const src = rest.includes('--src') ? path.resolve(rest[rest.indexOf('--src') + 1]) : null;
+  if (src) {
+    // 普查现成主题(如 themes/ 的默认档), 用于按 assets/levels.json 排查看不清; 不重新生成
+    console.log(`== 复制主题 ${path.relative(REPO, src) || src}`);
+    fs.mkdirSync(path.join(out, '_themes', SET), { recursive: true });
+    for (const t of allThemes) fs.copyFileSync(path.join(src, `${t.file}.json`), path.join(out, '_themes', SET, `${t.file}.json`));
+  } else {
+    console.log('== 生成全关主题');
+    await run('uv', ['run', '-q', 'tools/gen/complete.py']);
+    await run('uv', ['run', '-q', 'tools/gen/gen_vscode.py', '--out', path.join(out, '_themes', SET)], { COMFORT_STEPS: 'none' });
+  }
   const pf = path.join(out, 'progress.json');
   const progress = { done: (readJson(pf)?.done || []).filter((f) => !themes.some((t) => t.file === f)), total: allThemes.length, running: true };
   fs.writeFileSync(pf, JSON.stringify(progress));
@@ -154,7 +162,7 @@ if (cmd === 'export') {
   const th = readJson(path.join(out, 'thresholds.json'));
   if (!th) { console.error('标定目录里没有 thresholds.json(先在标定台提交)'); process.exit(1); }
   const kl = readJson(path.join(out, 'key-levels.json'))?.levels || {};
-  const registry = readJson(path.join(REPO, 'assets/vscode/vscode-color-registry.json')).colors;
+  const registry = readJson(path.join(REPO, 'assets/vscode/color-registry.json')).colors;
   const keys = new Set(Object.keys(registry).filter((k) => !registry[k].deprecated));
   for (const t of allThemes) for (const k of Object.keys(readJson(path.join(REPO, 'assets/source', `${t.file}.json`))?.colors || {})) keys.add(k);
   const keyLevels = Object.fromEntries([...keys].sort().map((k) => [k, kl[k] || (({ group, level }) => group + level)(classify(k))]));
@@ -201,13 +209,13 @@ http.createServer(async (req, res) => {
   if (url === '/data.json') return json(data());
   if (url === '/keys.json') {
     return json(keysData({
-      registry: readJson(path.join(REPO, 'assets/vscode/vscode-color-registry.json')).colors,
+      registry: readJson(path.join(REPO, 'assets/vscode/color-registry.json')).colors,
       originals: Object.fromEntries(allThemes.map((t) => [t.file, readJson(path.join(REPO, 'assets/source', `${t.file}.json`))])),
       fulls: Object.fromEntries(allThemes.map((t) => [t.file, themeJson(t.file)])),
       saved: readJson(path.join(out, 'key-levels.json')),
       effective: Object.fromEntries(allThemes.map((t) => [t.file, readJson(path.join(out, SET, 'census', `${t.file}-vars.json`))])),
       defaults: readJson(path.join(out, 'analysis', 'vscode-defaults.json')) || {},
-      docs: readJson(path.join(REPO, 'assets/vscode/vscode-color-docs.json'))?.colors || {},
+      docs: readJson(path.join(REPO, 'assets/vscode/color-docs.json'))?.colors || {},
     }));
   }
   if (req.method === 'POST' && (url === '/submit' || url === '/keys-submit')) {
