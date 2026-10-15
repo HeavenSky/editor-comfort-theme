@@ -15,7 +15,8 @@
 // 标注: 每个实例按所在级的目标标 不及目标 / 合适 / 超出目标; 页面按标注给出上下限建议.
 // 用法: node tools/lab/threshold-lab.mjs collect <输出目录> [主题名...] [--src <主题目录>]   普查(--src: 不生成全关档, 直接普查该目录的主题; 先开 node tools/shoot/shoot.mjs --serve; 普查期间打开空白符显示), 每查完一个主题页面就能看到
 //       node tools/lab/threshold-lab.mjs export <输出目录> [目标文件]    把已提交的门槛, 颜色键分层与普查配对表导出成调色步骤与门禁的输入(默认 assets/levels.json)
-//       node tools/lab/threshold-lab.mjs report <输出目录>                 看不清排查: 按 assets/levels.json 判定普查到的每组色对, 写 <输出目录>/report.html 与 report.json
+//       node tools/lab/threshold-lab.mjs report <输出目录>                 看不清排查: 按 assets/levels.json 判定普查到的每组色对, 写 <输出目录>/report.html 与 report.json;
+//                                                                    另写刺眼审查 glare.html(只列脚本拿不定的, 用 serve 打开 /glare.html 才能保存标注)
 //       node tools/lab/threshold-lab.mjs serve <输出目录> [--port 9340]  打开 http://127.0.0.1:9340/ ; /keys 为颜色键分层复核, 提交写 key-levels.json;
 //                                                                    标定页提交写 thresholds.json(另存带时间的副本)与 labels.json
 import fs from 'node:fs';
@@ -309,12 +310,113 @@ for(const tr of document.querySelectorAll('#t tr[data-v]'))tr.style.display=on.i
 document.querySelectorAll('#f input').forEach(x=>x.onchange=f);f();</script></body></html>`;
   fs.writeFileSync(path.join(out, 'report.html'), html);
   console.log(`已写 ${path.relative(REPO, path.join(out, 'report.html'))}: ` + VS.map((v) => `${v} ${rows.filter((r) => r.verdict === v).length}`).join(', '));
+
+  // ======== 刺眼脚本审查(glare.html) ========
+  // 不按颜色键的级判, 按元素类型与物理量判(来源键归错不影响), 以参考主题为认可范围:
+  //   文字 / 图标 / 空白符: 亮度是正文的几倍(APCA Lc 之比), 彩度(OKLCH C x 100);  线条(细 1px / 粗 >= 2px): 与底色的 ΔE, 比底色多出的彩度;
+  //   色块(小 < 2000px² / 大): 与底色的 ΔE, 比底色多出的彩度.
+  // 每个量: 不超过参考主题同类实例 P97 为不刺眼; 超过参考主题最大值一成为刺眼; 之间为待看(只有这些给人看). 物理下限: 不比正文亮的字,
+  // ΔE < 8 的色块, ΔE < 15 的细线一律不刺眼. 人工标注(glare-labels.json, 在 serve 打开的 /glare.html 上标)优先于脚本判定.
+  const KIND = { 图标: 'icon', 活动栏图标: 'icon', 活动栏选中图标: 'icon', 空白符: 'dot', '焦点 / 指示线': 'line', '边框 / 分隔线': 'line', 高亮底: 'block', 色块底: 'block', '徽标 / 按钮底': 'block' };
+  const kindOf = (it) => KIND[it.role] || 'text';
+  const C = (c) => { const [, a, b] = oklab(rgb(c)); return Math.hypot(a, b) * 100; };
+  const bodyLc = Object.fromEntries(themes.map((t) => [t.file, apca(rgb(t.body.fg), rgb(t.body.bg))]));
+  const gi = new Map();
+  for (const it of items) {
+    const kind = kindOf(it);
+    if (it.de < 1) continue;
+    const cls = kind === 'line' ? ((it.thick || 1) >= 2 ? '粗线' : '细线') : kind === 'block' ? ((it.area || 0) >= 2000 ? '大块' : '小块') : kind === 'icon' ? '图标' : kind === 'dot' ? '空白符' : '文字';
+    const k = `${it.theme}|${cls}|${it.fg}|${it.bg}`;
+    if (gi.has(k)) { gi.get(k).n += it.count || 1; continue; }
+    const m = kind === 'line' || kind === 'block' ? { de: it.de, exC: Math.max(0, C(it.fg) - C(it.bg)) } : { lift: apca(rgb(it.fg), rgb(it.bg)) / bodyLc[it.theme], C: C(it.fg) };
+    gi.set(k, { id: k, theme: it.theme, ref: refs.has(it.theme), cls, kind, role: it.role, key: it.key, fg: it.fg, bg: it.bg, m, n: it.count || 1,
+      rect: it.rect, thick: it.thick, area: it.area, size: it.size, text: (it.texts || [])[0] || '', crop: it.crop || '', shot: `${SET}/${it.theme}-${it.scene}.jpg` });
+  }
+  const G = [...gi.values()];
+  const qq = (v, p) => { const x = [...v].sort((a, b) => a - b); if (!x.length) return null; const i = (x.length - 1) * p, j = Math.floor(i); return x[j] + (x[Math.min(j + 1, x.length - 1)] - x[j]) * (i - j); };
+  const band = {};
+  for (const g of G.filter((x) => x.ref)) for (const [mk, v] of Object.entries(g.m)) ((band[g.cls] ||= {})[mk] ||= []).push(v);
+  for (const c of Object.keys(band)) for (const mk of Object.keys(band[c])) { const v = band[c][mk]; band[c][mk] = { ok: qq(v, 0.97), max: Math.max(...v), n: v.length }; }
+  const MNAME = { lift: '亮度是正文的倍数', C: '彩度', de: '与底色色差 ΔE', exC: '比底色多出的彩度' };
+  const fmt = (mk, v) => (mk === 'lift' ? v.toFixed(2) + ' 倍' : v.toFixed(1));
+  const glabels = readJson(path.join(out, 'glare-labels.json')) || {};
+  for (const g of G) {
+    const why = [];
+    let state = '不刺眼';
+    const floor = (g.kind === 'text' || g.kind === 'icon' || g.kind === 'dot') ? g.m.lift <= 1 : g.kind === 'block' ? g.m.de < 8 : g.cls === '细线' && g.m.de < 15;
+    if (!floor) for (const [mk, v] of Object.entries(g.m)) {
+      const b = band[g.cls]?.[mk];
+      if (!b) continue;
+      if (v > b.max * 1.1 + 0.5) { state = '刺眼'; why.push(`${MNAME[mk]} ${fmt(mk, v)}, 超出参考主题最大 ${fmt(mk, b.max)}`); }
+      else if (v > b.ok + 0.05) { if (state !== '刺眼') state = '待看'; why.push(`${MNAME[mk]} ${fmt(mk, v)}, 在参考主题 P97 ${fmt(mk, b.ok)} 与最大 ${fmt(mk, b.max)} 之间`); }
+    }
+    g.auto = state; g.why = why.join('; ');
+    g.state = glabels[g.id] ? (glabels[g.id] === '刺眼' ? '刺眼' : '不刺眼') : state;
+    g.label = glabels[g.id] || '';
+  }
+  fs.writeFileSync(path.join(out, 'glare.json'), JSON.stringify({ at, band, groups: G }, null, 1));
+  // 看什么: 按类型写明, 并用精确颜色把元素按类型画出来, 旁边是本主题正文
+  const LOOK = { text: '文字颜色', icon: '图标颜色', dot: '空白符小点', line: '这条线的颜色', block: '这块底色' };
+  const sample = (g) => {
+    const t = themes.find((x) => x.file === g.theme);
+    const body = `<div class="smp" style="background:${t.body.bg};color:${t.body.fg}">正文 const value = 42;</div>`;
+    let el;
+    if (g.kind === 'text') el = `<div class="smp" style="background:${g.bg};color:${g.fg};font-size:${Math.max(11, Math.min(g.size || 13, 16))}px">${esc(g.text || 'Aa 示例文字')}</div>`;
+    else if (g.kind === 'icon') el = `<div class="smp" style="background:${g.bg};color:${g.fg};font-size:18px">✕ ⚙ ▸ ◉</div>`;
+    else if (g.kind === 'dot') el = `<div class="smp" style="background:${g.bg};color:${g.fg}">a·b·c→d</div>`;
+    else if (g.kind === 'line') { const w = g.rect.w >= g.rect.h, len = Math.min(360, Math.max(g.rect.w, g.rect.h)), th = g.thick || 1;
+      el = `<div class="smp" style="background:${g.bg};height:60px;position:relative"><div style="position:absolute;left:20px;top:${w ? 30 : 6}px;background:${g.fg};width:${w ? len : th}px;height:${w ? th : Math.min(48, len)}px"></div></div>`; }
+    else { const sc = Math.min(1, 360 / Math.max(1, g.rect.w), 80 / Math.max(1, g.rect.h));
+      el = `<div class="smp" style="background:${g.bg};height:${Math.round(g.rect.h * sc) + 24}px;position:relative"><div style="position:absolute;left:12px;top:12px;background:${g.fg};width:${Math.round(g.rect.w * sc)}px;height:${Math.round(g.rect.h * sc)}px"></div></div>`; }
+    return body + el;
+  };
+  // 没有局部图的从整屏截图(与视口 1:1)按坐标裁出, 叠上虚线框
+  // 整屏 jpg 由截图缩到 1600 宽; 视口尺寸取普查记录的 size, 旧普查没有时按状态栏底边估算视口高(宽高比同 jpg 1.6)
+  const viewOf = (g) => {
+    const r = readJson(path.join(out, SET, 'census', `${g.theme}-${g.shot.slice(-5, -4)}.json`));
+    if (r?.size) return r.size;
+    const hb = Math.max(...(r?.items || []).filter((i) => /statusbar/.test(i.path)).map((i) => i.rect.y + i.rect.h));
+    return isFinite(hb) ? [Math.round(hb * 1.6), hb] : [1600, 1000];
+  };
+  const shotClip = (g) => {
+    const r = g.rect, W = 560, H = 200, [vw, vh] = viewOf(g);
+    if (r.x >= vw || r.y >= vh) return `<span class="dim">元素在画面外, 没有截图</span>`;
+    const x0 = Math.max(0, Math.min(vw - W, r.x + r.w / 2 - W / 2)), y0 = Math.max(0, Math.min(vh - H, r.y + r.h / 2 - H / 2));
+    return `<a href="${g.shot}" target="_blank"><div style="width:${W}px;height:${H}px;position:relative;border:1px solid #ddd;background:url('${g.shot}') -${x0}px -${y0}px / ${vw}px ${vh}px no-repeat">
+<div style="position:absolute;left:${r.x - x0 - 3}px;top:${r.y - y0 - 3}px;width:${Math.min(r.w, W) + 6}px;height:${Math.min(r.h, H) + 6}px;outline:2px dashed #FF2BD6"></div></div></a><div class="dim">截图里粉色虚线框住的就是它</div>`;
+  };
+  const card = (g) => `<div class="card" data-id="${esc(JSON.stringify(g.ids || [g.id]))}" data-state="${g.state}"><div class="hd"><b>${esc(themes.find((x) => x.file === g.theme).label)}</b>${g.ref ? ' <span class="ref">参考主题</span>' : ''} · 看<b class="look">${LOOK[g.kind]}</b>
+ <span class="dim">${esc(g.role)}${g.kind === 'line' ? ` · ${g.thick || 1}px x ${Math.max(g.rect.w, g.rect.h)}px` : g.kind === 'block' ? ` · ${g.rect.w}x${g.rect.h}` : ''} · ${esc(g.key || '')}</span></div>
+<div class="row"><div class="sm">${sample(g)}<div class="dim">${g.fg} 于 ${g.bg}</div></div><div>${g.crop ? `<a href="${g.crop}" target="_blank"><img loading="lazy" src="${g.crop}"></a><div class="dim">截图里粉色虚线框住的就是它</div>` : shotClip(g)}</div></div>
+<div class="why">${esc(g.why)}${g.more ? `<br><span class="dim">同一颜色另有 ${g.more} 处落在别的底色上, 一并标注</span>` : ''}</div><div class="btn"><button data-v="刺眼">刺眼</button><button data-v="还行">还行</button> <span class="lab">${g.label ? '已标: ' + g.label : ''}</span></div></div>`;
+  const cnt = (st) => G.filter((g) => g.state === st).length;
+  // 同主题同类同色(只是落在不同底色上)合并成一张卡, 一次标注作用于全部; 卡片展示其中最可疑的一处
+  const merge = (list) => {
+    const m = new Map();
+    for (const g of list) { const k = `${g.theme}|${g.cls}|${g.fg}`; (m.get(k) || m.set(k, []).get(k)).push(g); }
+    return [...m.values()].map((v) => { v.sort((a, b) => (b.crop ? 1 : 0) - (a.crop ? 1 : 0) || b.why.length - a.why.length); return { ...v[0], ids: v.map((x) => x.id), more: v.length - 1 }; });
+  };
+  const todo = merge(G.filter((g) => g.auto === '待看' || g.label)).sort((a, b) => (a.label ? 1 : 0) - (b.label ? 1 : 0) || rank(a.theme) - rank(b.theme));
+  const bad = merge(G.filter((g) => g.state === '刺眼' && !g.label));
+  const ghtml = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>刺眼审查</title><style>
+body{font:13px/1.5 -apple-system,sans-serif;margin:16px;color:#222;max-width:1100px}.card{border:1px solid #ccc;border-radius:6px;padding:10px;margin:12px 0}.card[data-done]{opacity:.55}
+.hd{margin-bottom:6px}.look{color:#c0c;margin-left:4px}.dim{color:#888;font-size:12px}.ref{background:#e3efff;padding:0 4px;border-radius:3px;font-size:12px}
+.row{display:flex;gap:16px;align-items:flex-start}.sm{width:420px}.smp{padding:8px 12px;margin-bottom:4px;font-family:Menlo,monospace;border-radius:4px}
+img{max-width:560px;max-height:200px;border:1px solid #ddd}.why{margin:6px 0;color:#555}button{font-size:14px;padding:4px 16px;margin-right:8px}
+</style></head><body><h2>刺眼审查</h2><p>脚本已自动判定: 刺眼 ${cnt('刺眼')} 组, 不刺眼 ${cnt('不刺眼')} 组; 下面只列脚本拿不定的 ${G.filter((g) => g.auto === '待看').length} 组(同色合并为 ${todo.filter((g) => !g.label).length} 张卡). 每张卡片左边上一条是本主题正文, 下一条用精确颜色画出要看的那个元素(文字 / 图标 / 线 / 色块), 右边是实际截图. 点 刺眼 或 还行, 结果自动保存, 下次判定以你的标注为准.</p>
+<p class="dim">判定口径: 与参考主题同类元素比, 不超过其 P97 为不刺眼, 超出其最大值一成为刺眼, 之间为拿不定. 生成 ${at}</p>
+${todo.map(card).join('\n')}
+<details><summary>脚本判为刺眼的 ${bad.length} 组(可抽查)</summary>${bad.map(card).join('\n')}</details>
+<script>for(const c of document.querySelectorAll('.card'))c.querySelectorAll('button').forEach(b=>b.onclick=async()=>{const r=await fetch('/glare-labels',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({ids:JSON.parse(c.dataset.id),v:b.dataset.v})});
+if(r.ok){c.querySelector('.lab').textContent='已标: '+b.dataset.v;c.dataset.done=1}else alert('保存失败: 请用 threshold-lab serve 打开本页')});</script></body></html>`;
+  fs.writeFileSync(path.join(out, 'glare.html'), ghtml);
+  console.log(`已写 glare.html: 刺眼 ${cnt('刺眼')}, 待看 ${G.filter((g) => g.auto === '待看').length}, 不刺眼 ${cnt('不刺眼')}`);
   process.exit(0);
 }
 
 // ======== 服务 ========
 const port = Number(rest.includes('--port') ? rest[rest.indexOf('--port') + 1] : 9340);
-const MIME = { '.png': 'image/png', '.jpg': 'image/jpeg', '.json': 'application/json' };
+const MIME = { '.png': 'image/png', '.jpg': 'image/jpeg', '.json': 'application/json', '.html': 'text/html; charset=utf-8' };
 const readBody = (req) => new Promise((res) => { let b = ''; req.on('data', (d) => { b += d; }); req.on('end', () => res(JSON.parse(b))); });
 http.createServer(async (req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
@@ -332,6 +434,12 @@ http.createServer(async (req, res) => {
       defaults: readJson(path.join(out, 'analysis', 'vscode-defaults.json')) || {},
       docs: readJson(path.join(REPO, 'assets/vscode/color-docs.json'))?.colors || {},
     }));
+  }
+  if (req.method === 'POST' && url === '/glare-labels') {
+    const j = await readBody(req), f = path.join(out, 'glare-labels.json'), labels = readJson(f) || {};
+    for (const id of j.ids || [j.id]) labels[id] = j.v;
+    fs.writeFileSync(f, JSON.stringify(labels, null, 1));
+    return json({ ok: true });
   }
   if (req.method === 'POST' && (url === '/submit' || url === '/keys-submit')) {
     const j = await readBody(req);

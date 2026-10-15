@@ -160,7 +160,7 @@ function collect() {
     const rect = { x: Math.round(q.left), y: Math.round(q.top), w: Math.round(q.width), h: Math.round(q.height) };
     if (g) { g.count++; if (extra.text && g.texts.length < 4 && !g.texts.includes(extra.text)) g.texts.push(extra.text); return; }
     uniq.set(k, { role, fg: hex(self), bg: hex(under), wcag: +wcag(self, under).toFixed(2), apca: +apca(self, under).toFixed(1), rect, count: 1,
-      texts: extra.text ? [extra.text] : [], size: extra.size, weight: extra.weight, line: extra.line, area: extra.area, src });
+      texts: extra.text ? [extra.text] : [], size: extra.size, weight: extra.weight, line: extra.line, thick: extra.thick, area: extra.area, src });
   };
   for (const el of wb.querySelectorAll('*')) {
     // 颜色选择器色块画的是文件里写的颜色值, 不是主题颜色
@@ -196,22 +196,22 @@ function collect() {
     const lines = [];
     for (const side of ['Top', 'Right', 'Bottom', 'Left']) {
       const w = parseFloat(st[`border${side}Width`]), c = parse(st[`border${side}Color`]);
-      if (w >= 1 && c && c[3] > 0.02 && st[`border${side}Style`] !== 'none') lines.push({ side, c, kind: 'border', actual: st[`border${side}Color`] });
+      if (w >= 1 && c && c[3] > 0.02 && st[`border${side}Style`] !== 'none') lines.push({ side, c, w, kind: 'border', actual: st[`border${side}Color`] });
     }
-    if (st.outlineStyle !== 'none' && parseFloat(st.outlineWidth) >= 1) { const c = parse(st.outlineColor); if (c && c[3] > 0.02) lines.push({ side: 'Outline', c, focus: true, kind: 'outline', actual: st.outlineColor }); }
+    if (st.outlineStyle !== 'none' && parseFloat(st.outlineWidth) >= 1) { const c = parse(st.outlineColor); if (c && c[3] > 0.02) lines.push({ side: 'Outline', c, w: parseFloat(st.outlineWidth), focus: true, kind: 'outline', actual: st.outlineColor }); }
     for (const ps of ['::before', '::after']) {
       const p = getComputedStyle(el, ps);
       if (p.content === 'none') continue;
       const pw = parseFloat(p.width) || r.width, ph = parseFloat(p.height) || r.height, b = parse(p.backgroundColor);
-      if (b && b[3] > 0.02 && Math.min(pw, ph) <= 4 && Math.max(pw, ph) >= 16) lines.push({ side: pw > ph ? 'Top' : 'Left', c: b, kind: 'background', actual: p.backgroundColor, pseudo: ps });
+      if (b && b[3] > 0.02 && Math.min(pw, ph) <= 4 && Math.max(pw, ph) >= 16) lines.push({ side: pw > ph ? 'Top' : 'Left', c: b, w: Math.min(pw, ph), kind: 'background', actual: p.backgroundColor, pseudo: ps });
       for (const side of ['Top', 'Left']) {
         const w = parseFloat(p[`border${side}Width`]), c = parse(p[`border${side}Color`]);
-        if (w >= 1 && c && c[3] > 0.02 && p[`border${side}Style`] !== 'none') lines.push({ side, c, kind: 'border', actual: p[`border${side}Color`], pseudo: ps });
+        if (w >= 1 && c && c[3] > 0.02 && p[`border${side}Style`] !== 'none') lines.push({ side, c, w, kind: 'border', actual: p[`border${side}Color`], pseudo: ps });
       }
     }
     const ownBg = parse(st.backgroundColor);
     const thin = Math.min(r.width, r.height) <= 4 && Math.max(r.width, r.height) >= 16;
-    if (ownBg && ownBg[3] > 0.02 && thin) lines.push({ side: r.width > r.height ? 'Self-h' : 'Self-v', c: ownBg, kind: 'background', actual: st.backgroundColor });
+    if (ownBg && ownBg[3] > 0.02 && thin) lines.push({ side: r.width > r.height ? 'Self-h' : 'Self-v', c: ownBg, w: Math.min(r.width, r.height), kind: 'background', actual: st.backgroundColor });
     for (const ln of lines) {
       const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
       let ox = cx, oy = cy;
@@ -222,7 +222,11 @@ function collect() {
       const { c: out, src: bgEl } = bgAt(ox, oy, null);
       const col = over([...ln.c.slice(0, 3), ln.c[3] * op], out);
       const focus = ln.focus || /focus|active-item-indicator|tab-border-top|active-border|selected/.test(el.className + ' ' + (el.parentElement?.className || ''));
-      push(focus ? '焦点 / 指示线' : '边框 / 分隔线', col, out, r, { el, kind: ln.kind, actual: ln.actual, pseudo: ln.pseudo, bgEl }, { line: ln.side });
+      // 记那条线本身的位置与粗细(局部图只框这条线, 不框整个元素); 伪元素的位置取不到, 按所在元素的同侧边近似
+      const t = Math.max(1, Math.round(ln.w || 1));
+      const lr = ln.side === 'Top' ? { left: r.left, top: r.top, width: r.width, height: t } : ln.side === 'Bottom' ? { left: r.left, top: r.bottom - t, width: r.width, height: t }
+        : ln.side === 'Left' ? { left: r.left, top: r.top, width: t, height: r.height } : ln.side === 'Right' ? { left: r.right - t, top: r.top, width: t, height: r.height } : r;
+      push(focus ? '焦点 / 指示线' : '边框 / 分隔线', col, out, lr, { el, kind: ln.kind, actual: ln.actual, pseudo: ln.pseudo, bgEl }, { line: ln.side, thick: t });
     }
     // 高亮底与色块: 和它下面的底色比
     if (ownBg && ownBg[3] > 0.02 && !thin && r.width * r.height >= 60) {
@@ -284,7 +288,7 @@ export async function audit(page, { dir, name, log }) {
     await page.screenshot({ path: path.join(out, it.crop), clip });
     await page.evaluate(() => document.getElementById('__census_box')?.remove());
   }
-  fs.writeFileSync(path.join(out, `${name}.json`), JSON.stringify({ dark: res.dark, base: res.base, items }));
+  fs.writeFileSync(path.join(out, `${name}.json`), JSON.stringify({ dark: res.dark, base: res.base, size: res.size, items }));
   if (name.endsWith('-a')) {
     const vars = await page.evaluate(() => {
       const wb = document.querySelector('.monaco-workbench'), st = getComputedStyle(wb), names = new Set(), out = {};
