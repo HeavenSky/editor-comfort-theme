@@ -6,7 +6,7 @@
  * 预料到的路径, 任何新出现的生成目录都会静默混进包里。
  *
  * **应该进包的是什么**则完全从 `package.json` 的清单字段与仓库里实际存在的文档文件推导,
- * 因此本文件不需要随插件内容改动。推导规则在 `scripts/lib/vsix-allowlist.mjs` 里, 是纯函数且有单测。
+ * 因此本文件不需要随插件内容改动。推导规则在 `devkit/vsix-allowlist.mjs` 里, 是纯函数且有单测。
  *
  * 这两条路径互相独立 —— 一边是手写的 `files`, 一边是从 `contributes` 推导的期望集合 —— 所以
  * 加了贡献点却忘记加进 `files`, 或 `files` 里留着已经删掉的条目, 都会在下面的断言里暴露。
@@ -15,7 +15,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import deriveAllowlist from "./lib/vsix-allowlist.mjs";
+import deriveAllowlist from "../devkit/vsix-allowlist.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const OUT_DIR = join(ROOT, "artifacts");

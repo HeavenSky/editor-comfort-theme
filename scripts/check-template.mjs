@@ -6,10 +6,10 @@
  *   node scripts/check-template.mjs --update   按 SHARED_FILES 重写基线 (只在骨架仓库里用)
  *
  * `--update` 有门控: 在派生仓库执行它会把本地偏离固化成新基线, 检查从此永远通过且无人察觉。
- * 判据见 `lib/template-shared.mjs` 的 `isSkeletonRepo`。
+ * 判据见 `devkit/template-shared.mjs` 的 `isSkeletonRepo`。
  *
  * 没有 `.template-shared` 时直接跳过: 允许不关心骨架一致性的仓库删掉那份清单。
- * 规则与理由见 `scripts/lib/template-shared.mjs`。
+ * 规则与理由见 `devkit/template-shared.mjs`。
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -22,7 +22,7 @@ import {
 	isSkeletonRepo,
 	parseManifest,
 	renderManifest,
-} from "./lib/template-shared.mjs";
+} from "../devkit/template-shared.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const manifestPath = join(ROOT, MANIFEST_NAME);

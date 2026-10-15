@@ -1,5 +1,7 @@
 # DONE
 
+- 20261015_172757 目录整理: tools/ 平铺 37 个文件, terminal/ 在根目录, 骨架 scripts/ 混放入口与模块; tools/ 按职责分 gen / check / lib / textmate / shoot / lab / terminal, 数据与产物移到 assets/(source, terminal, full-theme, levels.json), 中间主题不进版本库; 骨架 scripts/ 只留 package.json / 工作流运行的入口, 模块与插件配置移到 devkit/ 平铺, 根 .gitignore 统一忽略 full-theme/, README 补目录约定; 本仓库同步骨架, check / 94 个测试 / 打包通过
+
 - 20261015_172304 发布前检查只核对 one-dark-full.json(确定不修); 不复存在: 用户定中间主题全部停止跟踪, 移到 assets/full-theme/ 整个忽略, complete.py 去掉 KEEP 与 --check, 补全漂移由 themes/ 生成物一致性检查暴露
 
 - 20261015_162026 /keys 键分层待用户复核, 线条中高于线条强(档位倒挂); 代理按普查实测与语义复核: 查找高亮(其他匹配 -> 底色中, 当前匹配 -> 底色强), 行号槽 git 标记 -> 线条强(解倒挂), titleBar / commandCenter / panelTitle.activeForeground 与 list.focusForeground, statusBar.foreground -> 内容中, list.dropBetweenBackground -> 不适用; 当前行号按参考主题实测(中位 100%)留内容强, 写进 tools/key-levels.mjs 逐键规则

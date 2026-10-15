@@ -48,7 +48,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 仓库在 tools/ 下有 Python 脚本时才装 uv: 插件专属门禁(scripts/check-extra.mjs)可能经 `uv run`
+      # 仓库在 tools/ 下有 Python 脚本时才装 uv: 插件专属门禁(devkit/check-extra.mjs)可能经 `uv run`
       # 调用它们. 没装 uv 时那类门禁只能跳过, 等于发布前少了一道检查.
       # setup-uv 不发布 v10 这类浮动大版本标签, 只能钉到完整版本号; 写成 @v10 会在 Set up job 阶段解析失败.
       - name: Set up uv

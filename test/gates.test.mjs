@@ -7,8 +7,8 @@ import {
 	isSkeletonRepo,
 	parseManifest,
 	renderManifest,
-} from "../scripts/lib/template-shared.mjs";
-import deriveAllowlist from "../scripts/lib/vsix-allowlist.mjs";
+} from "../devkit/template-shared.mjs";
+import deriveAllowlist from "../devkit/vsix-allowlist.mjs";
 
 /**
  * 门禁自身的测试。

@@ -1,4 +1,4 @@
-<!-- 由 scripts/gen-icon.mjs 从 scripts/icon-spec.mjs 生成, 请勿手工编辑。 -->
+<!-- 由 scripts/gen-icon.mjs 从 devkit/icon-spec.mjs 生成, 请勿手工编辑。 -->
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Editor Comfort Theme">
   <defs>
     <linearGradient id="g0" x1="0" y1="0" x2="1" y2="1">

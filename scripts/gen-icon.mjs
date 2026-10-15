@@ -1,8 +1,8 @@
 /**
  * 生成 `media/icon.svg` 与 `media/icon.png`。
  *
- * 图形定义在 `scripts/icon-spec.mjs`, 底座参数在 `scripts/lib/icon-brand.mjs`,
- * 渲染实现在 `scripts/lib/icon-render.mjs`。
+ * 图形定义在 `devkit/icon-spec.mjs`, 底座参数在 `devkit/icon-brand.mjs`,
+ * 渲染实现在 `devkit/icon-render.mjs`。
  *
  * 用法:
  *   node scripts/gen-icon.mjs           写入
@@ -11,8 +11,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import spec from "./icon-spec.mjs";
-import { renderPng, renderSvg } from "./lib/icon-render.mjs";
+import spec from "../devkit/icon-spec.mjs";
+import { renderPng, renderSvg } from "../devkit/icon-render.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 const CHECK_ONLY = process.argv.includes("--check");

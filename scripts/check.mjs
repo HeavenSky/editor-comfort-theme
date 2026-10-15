@@ -1,15 +1,15 @@
 /**
  * 发布前的一致性门禁。
  *
- * 本文件只做与插件内容无关的通用检查; 本插件专属的规则放在可选的 `scripts/check-extra.mjs`。
+ * 本文件只做与插件内容无关的通用检查; 本插件专属的规则放在可选的 `devkit/check-extra.mjs`。
  *
  * 检查项:
- * 1. 图标产物与 `scripts/icon-spec.mjs` 一致;
+ * 1. 图标产物与 `devkit/icon-spec.mjs` 一致;
  * 2. package.nls 中英 key 集一致, 且与清单占位符一一对应;
  * 3. l10n bundle 之间 key 集一致;
  * 4. src 内联的 l10n.t 字面量与中文 bundle 一一对应;
  * 5. `.template-shared` 存在时, A 类骨架文件未偏离骨架;
- * 6. `scripts/check-extra.mjs` 存在时执行它默认导出的 `checks(root)`。
+ * 6. `devkit/check-extra.mjs` 存在时执行它默认导出的 `checks(root)`。
  *
  * 用法: node scripts/check.mjs
  */
@@ -21,8 +21,8 @@ import {
 	checkInlineRuntimeStrings,
 	checkL10nBundleParity,
 	checkNlsParity,
-} from "./lib/check-manifest.mjs";
-import { MANIFEST_NAME, checkShared } from "./lib/template-shared.mjs";
+} from "../devkit/check-manifest.mjs";
+import { MANIFEST_NAME, checkShared } from "../devkit/template-shared.mjs";
 
 const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "..");
 
@@ -90,7 +90,7 @@ if (existsSync(manifestPath)) {
 	);
 }
 
-const extraPath = join(ROOT, "scripts/check-extra.mjs");
+const extraPath = join(ROOT, "devkit/check-extra.mjs");
 if (existsSync(extraPath)) {
 	const { default: checks } = await import(extraPath);
 	for (const [label, fn] of Object.entries(checks(ROOT))) run(label, fn);

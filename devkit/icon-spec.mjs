@@ -3,10 +3,10 @@
  * 下排一行六色主题色点, 表达"编辑器配色"。
  * 画法与配色对齐 HeavenSky 系列插件图标: 深色底座上直接放扁平圆头图形, 前景色取自系列的同一组强调色。
  *
- * 底座 (画布尺寸, 圆角, 背景渐变, 描边) 来自 `lib/icon-brand.mjs`, 这里只描述前景。
+ * 底座 (画布尺寸, 圆角, 背景渐变, 描边) 来自 `icon-brand.mjs`, 这里只描述前景。
  * SVG 与 PNG 都由 `scripts/gen-icon.mjs` 从这一份数据生成, 不要手写 `media/icon.svg`。
  */
-import { BACKGROUND_FROM, BACKGROUND_TO, SIZE, baseShapes } from "./lib/icon-brand.mjs";
+import { BACKGROUND_FROM, BACKGROUND_TO, SIZE, baseShapes } from "./icon-brand.mjs";
 
 const PURPLE = "#C792EA";
 const YELLOW = "#FFC145";

@@ -3,7 +3,7 @@
  *
  * 存在的理由: 以前 `media/icon.svg` 手写一遍几何, `scripts/render-icon.mjs` 又用解析式
  * 重写同一套几何, 两处真源改一处忘另一处就会静默漂移。现在图形只在
- * `scripts/icon-spec.mjs` 里描述一次, SVG 与 PNG 都由本文件从同一份数据生成。
+ * `devkit/icon-spec.mjs` 里描述一次, SVG 与 PNG 都由本文件从同一份数据生成。
  *
  * 本文件是通用渲染实现, 不含任何与具体图形有关的信息; 图形只在 `icon-spec.mjs` 里描述。
  *
@@ -389,7 +389,7 @@ export function renderSvg(spec) {
 	}
 
 	const lines = [
-		"<!-- 由 scripts/gen-icon.mjs 从 scripts/icon-spec.mjs 生成, 请勿手工编辑。 -->",
+		"<!-- 由 scripts/gen-icon.mjs 从 devkit/icon-spec.mjs 生成, 请勿手工编辑。 -->",
 		`<svg xmlns="http://www.w3.org/2000/svg" width="${spec.size}" height="${spec.size}" viewBox="0 0 ${spec.size} ${spec.size}" role="img" aria-label="${spec.label}">`,
 	];
 	if (defs.length > 0) lines.push("  <defs>", ...defs, "  </defs>");
