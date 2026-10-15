@@ -18,7 +18,12 @@
    "mixLo": 87.6,
    "hi": 114.5,
    "abs": 32,
-   "abs_metric": "apca"
+   "abs_metric": "apca",
+   "glare": {
+    "rd": 117.7,
+    "chroma": null,
+    "n": 16
+   }
   },
   "内容中": {
    "pct": 76,
@@ -26,7 +31,12 @@
    "mixLo": 73,
    "hi": 87.6,
    "abs": 30,
-   "abs_metric": "apca"
+   "abs_metric": "apca",
+   "glare": {
+    "rd": 126.2,
+    "chroma": null,
+    "n": 229
+   }
   },
   "内容弱": {
    "pct": 69.9,
@@ -34,7 +44,12 @@
    "mixLo": 61,
    "hi": 73,
    "abs": 20,
-   "abs_metric": "apca"
+   "abs_metric": "apca",
+   "glare": {
+    "rd": 73,
+    "chroma": null,
+    "n": 8
+   }
   },
   "暗化强": {
    "pct": 52.1,
@@ -42,7 +57,12 @@
    "mixLo": 48.4,
    "hi": 61,
    "abs": 22,
-   "abs_metric": "apca"
+   "abs_metric": "apca",
+   "glare": {
+    "rd": 68.1,
+    "chroma": null,
+    "n": 16
+   }
   },
   "暗化中": {
    "pct": 44.6,
@@ -50,7 +70,12 @@
    "mixLo": 33.9,
    "hi": 48.4,
    "abs": 10,
-   "abs_metric": "apca"
+   "abs_metric": "apca",
+   "glare": {
+    "rd": 84.5,
+    "chroma": null,
+    "n": 8
+   }
   },
   "暗化弱": {
    "pct": 23.2,
@@ -58,7 +83,12 @@
    "mixLo": null,
    "hi": 33.9,
    "abs": 3,
-   "abs_metric": "de"
+   "abs_metric": "de",
+   "glare": {
+    "rd": 50,
+    "chroma": null,
+    "n": 16
+   }
   },
   "线条强": {
    "pct": 58,
@@ -66,7 +96,12 @@
    "mixLo": 46.5,
    "hi": 64.1,
    "abs": 5,
-   "abs_metric": "de"
+   "abs_metric": "de",
+   "glare": {
+    "rd": 98.8,
+    "chroma": 19.4,
+    "n": 16
+   }
   },
   "线条中": {
    "pct": 35,
@@ -74,7 +109,12 @@
    "mixLo": 24.7,
    "hi": 46.5,
    "abs": 10,
-   "abs_metric": "de"
+   "abs_metric": "de",
+   "glare": {
+    "rd": null,
+    "chroma": null,
+    "n": 0
+   }
   },
   "线条弱": {
    "pct": 14.3,
@@ -82,7 +122,12 @@
    "mixLo": null,
    "hi": 24.7,
    "abs": 3,
-   "abs_metric": "de"
+   "abs_metric": "de",
+   "glare": {
+    "rd": 31.2,
+    "chroma": 2.6,
+    "n": 11
+   }
   },
   "底色强": {
    "pct": 54,
@@ -90,7 +135,12 @@
    "mixLo": 33,
    "hi": 62,
    "abs": 6,
-   "abs_metric": "de"
+   "abs_metric": "de",
+   "glare": {
+    "rd": 65.5,
+    "chroma": 19.4,
+    "n": 17
+   }
   },
   "底色中": {
    "pct": 12,
@@ -98,7 +148,12 @@
    "mixLo": 9.4,
    "hi": 33,
    "abs": 2,
-   "abs_metric": "de"
+   "abs_metric": "de",
+   "glare": {
+    "rd": 33,
+    "chroma": 6.1,
+    "n": 15
+   }
   },
   "底色弱": {
    "pct": 6.8,
@@ -106,7 +161,12 @@
    "mixLo": null,
    "hi": 9.4,
    "abs": 2,
-   "abs_metric": "de"
+   "abs_metric": "de",
+   "glare": {
+    "rd": 22,
+    "chroma": 0.5,
+    "n": 40
+   }
   }
  },
  "sep": {

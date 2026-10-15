@@ -190,7 +190,20 @@ if (cmd === 'export') {
     const s = Object.entries(v).sort((a, b) => b[1] - a[1]);
     return [k, s.filter(([, n]) => n >= s[0][1] * 0.3).map(([u]) => u)];
   }));
-  const levels = Object.fromEntries(Object.entries(th.levels).map(([k, v]) => [k, { pct: v.pct, lo: v.lo, mixLo: v.mixLo, hi: v.hi, abs: v.abs, abs_metric: /^(内容|暗化强|暗化中)/.test(k) ? 'apca' : 'de' }]));
+  // 刺眼线(宽口径, 只拦参考主题里也少见的): 参考主题实例(同主题同角色同色对合并)的 P95; 明度差看 rd, 底色与线条另看彩度超出所在底色的量(OKLCH 彩度差 x 100, 整套偏色的底如 Solarized 不算)
+  const q95 = (v) => { if (!v.length) return null; const x = [...v].sort((a, b) => a - b), i = (x.length - 1) * 0.95, j = Math.floor(i); return +(x[j] + (x[Math.min(j + 1, x.length - 1)] - x[j]) * (i - j)).toFixed(1); };
+  const chroma = (c) => { const [, a, b] = oklab(rgb(c)); return Math.hypot(a, b) * 100; };
+  const refInst = new Map();
+  // 只用来源键可靠的实例: 无键按角色兜底, 按值反查的会把指示线(如面板标签下的激活线)归成弱档, 把 P95 拉到离谱; 刺眼线不低于上限 hi
+  for (const it of data().items) {
+    if (!(th.ref || []).includes(it.theme) || !it.key || it.keyNote || it.selfHow === 'value') continue;
+    refInst.set(`${it.theme}|${it.role}|${it.fg}|${it.bg}`, it);
+  }
+  const glare = (k, hi) => {
+    const v = [...refInst.values()].filter((x) => x.level === k), rd = q95(v.map((x) => x.rd));
+    return { rd: rd == null ? null : Math.max(rd, hi ?? 0), chroma: /^(线条|底色)/.test(k) ? q95(v.map((x) => Math.max(0, chroma(x.fg) - chroma(x.bg)))) : null, n: v.length };
+  };
+  const levels = Object.fromEntries(Object.entries(th.levels).map(([k, v]) => [k, { pct: v.pct, lo: v.lo, mixLo: v.mixLo, hi: v.hi, abs: v.abs, abs_metric: /^(内容|暗化强|暗化中)/.test(k) ? 'apca' : 'de', glare: glare(k, v.hi) }]));
   const doc = { about: '分层门槛(tools/lab/threshold-lab.mjs export 生成, 勿手改): 相对指标 rd = OKLab 明度差 / 本主题正文明度差 x 100; 绝对指标 apca = APCA Lc, de = OKLab ΔE x 100',
     thresholdsAt: th.at, ref: th.ref, levels, sep: th.sep, rules: th.rules, exemptSameColor: 'focus|selection|findMatch|Cursor', keyLevels, pairs };
   const dest = path.resolve(rest[0] || path.join(REPO, 'assets/levels.json'));
@@ -201,7 +214,7 @@ if (cmd === 'export') {
 
 // ======== 排查报告 ========
 // 按 assets/levels.json(调色步骤与门禁的同一份门槛)判定普查到的每组色对:
-//   不及目标 = 相对指标低于修复下限或绝对指标低于绝对下限(禁用不判, 底色弱只报告); 偏淡 = 低于混档线(像弱一档); 偏重 = 高于上限(像强一档).
+//   不及目标 = 相对指标低于修复下限或绝对指标低于绝对下限(禁用不判, 底色弱只报告); 刺眼 = 高于 levels.json 的刺眼线 glare(明度差 rd, 底色与线条另看比底色多出的彩度; 只判来源键可靠的实例); 偏淡 = 低于混档线(像弱一档); 偏重 = 高于上限(像强一档).
 //   线条与底色弱同色(ΔE < 1)按原设计不画豁免, 焦点框 / 选区 / 当前匹配不豁免.
 // 另给出 level_floor 为什么没管到它(终端键, 语法色, 主题未定义, 无实测配对, 实测底色与配对底色不同), 用来判断是补配对, 补步骤还是确实不用修.
 // 区分度与相对约束也在这里按普查实例报告(口径同标定台); 不放进 metrics.py: 按颜色键近似测不准, 会把参考主题大面积误报.
@@ -211,6 +224,9 @@ if (cmd === 'report') {
   const { themes, items } = data();
   const bodyOf = Object.fromEntries(themes.map((t) => [t.file, t.body]));
   // 键值叠在实测底色上应画出的颜色; 与实测字色不同说明界面另加了透明度(禁用, 非活动的工具栏按钮等), 改键值管不到
+  // 刺眼只判来源键可靠的实例(口径同 export 标定刺眼线): 无键或按值反查的级别可能归错
+  const reliable = (it) => it.key && !it.keyNote && it.selfHow !== 'value';
+  const fgChroma = (c) => { const [, a, b] = oklab(rgb(c)); return Math.hypot(a, b) * 100; };
   const drawn = (v, bg) => {
     const a = v.length === 9 ? parseInt(v.slice(7), 16) / 255 : 1, c = rgb(v), b = rgb(bg);
     return '#' + c.map((x, i) => Math.round(x * a + b[i] * (1 - a)).toString(16).padStart(2, '0')).join('').toUpperCase();
@@ -225,6 +241,7 @@ if (cmd === 'report') {
     if ((/^线条/.test(it.level) || it.level === '底色弱') && it.de < 1 && !new RegExp(L.exemptSameColor, 'i').test(it.key)) continue;
     let verdict = null;
     if (!disabled && (it.rd < lv.lo - 0.05 || ab < lv.abs - 0.05)) verdict = '不及目标';
+    else if (reliable(it) && ((lv.glare?.rd != null && it.rd > lv.glare.rd + 0.05) || (lv.glare?.chroma != null && fgChroma(it.fg) - fgChroma(it.bg) > lv.glare.chroma + 0.05))) verdict = '刺眼';
     else if (lv.mixLo != null && it.rd < lv.mixLo - 0.05) verdict = '偏淡';
     else if (lv.hi != null && it.rd > lv.hi + 0.05) verdict = '偏重';
     if (!verdict) continue;
@@ -263,24 +280,24 @@ if (cmd === 'report') {
     }
     rel[t.file] = out;
   }
-  const vo = { 不及目标: 0, 偏淡: 1, 偏重: 2 };
+  const vo = { 不及目标: 0, 刺眼: 1, 偏淡: 2, 偏重: 3 }, VS = Object.keys(vo);
   rows.sort((a, b) => vo[a.verdict] - vo[b.verdict] || rank(a.theme) - rank(b.theme) || a.theme.localeCompare(b.theme) || a.rd - b.rd);
   const at = stamp('+%Y-%m-%d %H:%M:%S');
   fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify({ at, thresholdsAt: L.thresholdsAt, relations: rel, rows }, null, 1));
   const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const sw = (c) => `<i style="background:${c}"></i>`;
   const tally = {};
-  for (const r of rows) ((tally[r.theme] ||= { 不及目标: 0, 偏淡: 0, 偏重: 0 })[r.verdict]++);
+  for (const r of rows) ((tally[r.theme] ||= Object.fromEntries(VS.map((v) => [v, 0])))[r.verdict]++);
   const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>看不清排查(分层门槛)</title><style>
 body{font:13px/1.5 -apple-system,sans-serif;margin:16px;color:#222}table{border-collapse:collapse}td,th{border:1px solid #ddd;padding:3px 6px;vertical-align:top}
 th{background:#f4f4f4;position:sticky;top:0}i{display:inline-block;width:12px;height:12px;border:1px solid #888;vertical-align:middle;margin-right:2px}
-img{max-width:420px;max-height:120px}.v0{color:#c00;font-weight:600}.v1{color:#b70}.v2{color:#06c}.ref{background:#eef6ff}#f label{margin-right:12px}code{font-size:12px}
+img{max-width:420px;max-height:120px}.v0{color:#c00;font-weight:600}.v1{color:#c0c;font-weight:600}.v2{color:#b70}.v3{color:#06c}.ref{background:#eef6ff}#f label{margin-right:12px}code{font-size:12px}
 </style></head><body><h2>看不清排查(按 assets/levels.json, 门槛 ${esc(L.thresholdsAt)}; 生成 ${at})</h2>
-<p>不及目标 = 低于修复下限或绝对下限(调色步骤与门禁的口径, 应为 0 或有原因); 偏淡 = 低于混档线, 像弱一档; 偏重 = 高于上限, 像强一档. 蓝底行是参考主题. 数值: rd = 相对正文明度差 %, 绝对指标 apca = Lc, de = ΔE x 100.</p>
-<table><tr><th>主题</th><th>不及目标</th><th>偏淡</th><th>偏重</th></tr>${themes.map((t) => `<tr class="${refs.has(t.file) ? 'ref' : ''}"><td>${esc(t.label)}</td>${['不及目标', '偏淡', '偏重'].map((v) => `<td>${tally[t.file]?.[v] || 0}</td>`).join('')}</tr>`).join('')}</table>
+<p>不及目标 = 低于修复下限或绝对下限(调色步骤与门禁的口径, 应为 0 或有原因); 刺眼 = 高于刺眼线(参考主题实例 P95 的明度差, 底色与线条另看比所在底色多出的彩度; 只判来源键可靠的; 只报告); 偏淡 = 低于混档线, 像弱一档; 偏重 = 高于上限, 像强一档. 蓝底行是参考主题. 数值: rd = 相对正文明度差 %, 绝对指标 apca = Lc, de = ΔE x 100.</p>
+<table><tr><th>主题</th>${VS.map((v) => `<th>${v}</th>`).join('')}</tr>${themes.map((t) => `<tr class="${refs.has(t.file) ? 'ref' : ''}"><td>${esc(t.label)}</td>${VS.map((v) => `<td>${tally[t.file]?.[v] || 0}</td>`).join('')}</tr>`).join('')}</table>
 <h3>区分度与相对约束(只报告)</h3><p>区分度: 同组相邻两档 / 跨组同档的 rd 中位数之差不低于 levels.json 的 sep(按参考主题差值的 P25 定, 参考主题约四分之一越界是预期); 相对约束: 两类角色 rd 中位数之比落在 rules 范围(按参考主题范围外放一成).</p>
 <table><tr><th>主题</th><th>越界</th></tr>${themes.map((t) => `<tr class="${refs.has(t.file) ? 'ref' : ''}"><td>${esc(t.label)}</td><td>${rel[t.file].map(esc).join('<br>') || '-'}</td></tr>`).join('')}</table>
-<p id="f">${['不及目标', '偏淡', '偏重'].map((v, i) => `<label><input type="checkbox" value="${v}" ${i === 0 ? 'checked' : ''}> ${v}</label>`).join('')}
+<p id="f">${VS.map((v, i) => `<label><input type="checkbox" value="${v}" ${i === 0 ? 'checked' : ''}> ${v}</label>`).join('')}
 <label><input type="checkbox" id="onlyFix"> 只看 level_floor 本应管到的(有配对)</label></p>
 <table id="t"><tr><th>判定</th><th>主题</th><th>场景 / 角色</th><th>级</th><th>颜色键 / 底色键</th><th>色</th><th>rd(下限 / 混档 / 上限)</th><th>绝对(下限)</th><th>level_floor</th><th>局部图</th></tr>
 ${rows.map((r) => `<tr data-v="${r.verdict}" data-fix="${/^有配对|^实测底色/.test(r.why) ? 1 : 0}" class="${r.ref ? 'ref' : ''}"><td class="v${vo[r.verdict]}">${r.verdict}</td><td>${esc(r.theme)}</td>
@@ -291,7 +308,7 @@ ${rows.map((r) => `<tr data-v="${r.verdict}" data-fix="${/^有配对|^实测底�
 for(const tr of document.querySelectorAll('#t tr[data-v]'))tr.style.display=on.includes(tr.dataset.v)&&(!fx||tr.dataset.fix==='1')?'':'none'};
 document.querySelectorAll('#f input').forEach(x=>x.onchange=f);f();</script></body></html>`;
   fs.writeFileSync(path.join(out, 'report.html'), html);
-  console.log(`已写 ${path.relative(REPO, path.join(out, 'report.html'))}: ` + ['不及目标', '偏淡', '偏重'].map((v) => `${v} ${rows.filter((r) => r.verdict === v).length}`).join(', '));
+  console.log(`已写 ${path.relative(REPO, path.join(out, 'report.html'))}: ` + VS.map((v) => `${v} ${rows.filter((r) => r.verdict === v).length}`).join(', '));
   process.exit(0);
 }
 
