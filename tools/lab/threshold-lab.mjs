@@ -15,6 +15,7 @@
 // 标注: 每个实例按所在级的目标标 不及目标 / 合适 / 超出目标; 页面按标注给出上下限建议.
 // 用法: node tools/lab/threshold-lab.mjs collect <输出目录> [主题名...] [--src <主题目录>]   普查(--src: 不生成全关档, 直接普查该目录的主题; 先开 node tools/shoot/shoot.mjs --serve; 普查期间打开空白符显示), 每查完一个主题页面就能看到
 //       node tools/lab/threshold-lab.mjs export <输出目录> [目标文件]    把已提交的门槛, 颜色键分层与普查配对表导出成调色步骤与门禁的输入(默认 assets/levels.json)
+//       node tools/lab/threshold-lab.mjs report <输出目录>                 看不清排查: 按 assets/levels.json 判定普查到的每组色对, 写 <输出目录>/report.html 与 report.json
 //       node tools/lab/threshold-lab.mjs serve <输出目录> [--port 9340]  打开 http://127.0.0.1:9340/ ; /keys 为颜色键分层复核, 提交写 key-levels.json;
 //                                                                    标定页提交写 thresholds.json(另存带时间的副本)与 labels.json
 import fs from 'node:fs';
@@ -26,7 +27,7 @@ import { classify, keysData, KEYS_PAGE } from './key-levels.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const [cmd, outArg, ...rest] = process.argv.slice(2);
-if (!['collect', 'serve', 'export'].includes(cmd) || !outArg) {
+if (!['collect', 'serve', 'export', 'report'].includes(cmd) || !outArg) {
   console.error('用法: node tools/lab/threshold-lab.mjs collect <输出目录> [主题名...] | serve <输出目录> [--port 9340]');
   process.exit(2);
 }
@@ -156,6 +157,18 @@ function data() {
     labels: readJson(path.join(out, 'labels.json')) || {}, keyLevelsAt: readJson(path.join(out, 'key-levels.json'))?.at || null };
 }
 
+// 按颜色值反查到的底色键是一串同色候选, 第一个可能是别处的同色键(如 Pale Light 侧栏底被认成 inputValidation.infoBackground, 而它在本主题里是深蓝),
+// 从候选里优先挑常见的真实界面底色
+const SURFACES = ['editor.background', 'editorGutter.background', 'editorGroupHeader.tabsBackground', 'tab.activeBackground', 'tab.inactiveBackground', 'breadcrumb.background',
+  'sideBar.background', 'sideBarSectionHeader.background', 'sideBarTitle.background', 'panel.background', 'activityBar.background', 'statusBar.background',
+  'titleBar.activeBackground', 'commandCenter.background', 'editorWidget.background', 'list.activeSelectionBackground', 'list.inactiveSelectionBackground',
+  'list.focusBackground', 'list.hoverBackground', 'button.background', 'badge.background', 'activityBarBadge.background', 'input.background', 'dropdown.background'];
+const pickUnder = (it) => {
+  const us = it.underKeys || [];
+  if (it.underHow !== 'value' || us.length < 2) return us[0];
+  return SURFACES.find((x) => us.includes(x)) || us[0];
+};
+
 // ======== 导出 ========
 // levels.json: levels(各级门槛, 来自 thresholds.json), keyLevels(颜色键 -> 级, 复核结果优先), pairs(颜色键 -> 普查实测画在其上的底色键, 按出现次数排序)
 if (cmd === 'export') {
@@ -166,17 +179,6 @@ if (cmd === 'export') {
   const keys = new Set(Object.keys(registry).filter((k) => !registry[k].deprecated));
   for (const t of allThemes) for (const k of Object.keys(readJson(path.join(REPO, 'assets/source', `${t.file}.json`))?.colors || {})) keys.add(k);
   const keyLevels = Object.fromEntries([...keys].sort().map((k) => [k, kl[k] || (({ group, level }) => group + level)(classify(k))]));
-  // 按颜色值反查到的底色键是一串同色候选, 第一个可能是别处的同色键(如 Pale Light 侧栏底被认成 inputValidation.infoBackground, 而它在本主题里是深蓝),
-  // 从候选里优先挑常见的真实界面底色
-  const SURFACES = ['editor.background', 'editorGutter.background', 'editorGroupHeader.tabsBackground', 'tab.activeBackground', 'tab.inactiveBackground', 'breadcrumb.background',
-    'sideBar.background', 'sideBarSectionHeader.background', 'sideBarTitle.background', 'panel.background', 'activityBar.background', 'statusBar.background',
-    'titleBar.activeBackground', 'commandCenter.background', 'editorWidget.background', 'list.activeSelectionBackground', 'list.inactiveSelectionBackground',
-    'list.focusBackground', 'list.hoverBackground', 'button.background', 'badge.background', 'activityBarBadge.background', 'input.background', 'dropdown.background'];
-  const pickUnder = (it) => {
-    const us = it.underKeys || [];
-    if (it.underHow !== 'value' || us.length < 2) return us[0];
-    return SURFACES.find((x) => us.includes(x)) || us[0];
-  };
   const cnt = {};
   for (const it of data().items) {
     const k = it.selfKeys?.[0], u = pickUnder(it);
@@ -194,6 +196,74 @@ if (cmd === 'export') {
   const dest = path.resolve(rest[0] || path.join(REPO, 'assets/levels.json'));
   fs.writeFileSync(dest, JSON.stringify(doc, null, 1) + '\n');
   console.log(`已导出 ${path.relative(REPO, dest)}: ${Object.keys(levels).length} 级, ${Object.keys(keyLevels).length} 个键, ${Object.keys(pairs).length} 个键有实测配对`);
+  process.exit(0);
+}
+
+// ======== 排查报告 ========
+// 按 assets/levels.json(调色步骤与门禁的同一份门槛)判定普查到的每组色对:
+//   不及目标 = 相对指标低于修复下限或绝对指标低于绝对下限(禁用不判, 底色弱只报告); 偏淡 = 低于混档线(像弱一档); 偏重 = 高于上限(像强一档).
+//   线条与底色弱同色(ΔE < 1)按原设计不画豁免, 焦点框 / 选区 / 当前匹配不豁免.
+// 另给出 level_floor 为什么没管到它(终端键, 语法色, 主题未定义, 无实测配对, 实测底色与配对底色不同), 用来判断是补配对, 补步骤还是确实不用修.
+if (cmd === 'report') {
+  const L = readJson(path.join(REPO, 'assets/levels.json'));
+  const refs = new Set(L.ref);
+  const { themes, items } = data();
+  const bodyOf = Object.fromEntries(themes.map((t) => [t.file, t.body]));
+  // 键值叠在实测底色上应画出的颜色; 与实测字色不同说明界面另加了透明度(禁用, 非活动的工具栏按钮等), 改键值管不到
+  const drawn = (v, bg) => {
+    const a = v.length === 9 ? parseInt(v.slice(7), 16) / 255 : 1, c = rgb(v), b = rgb(bg);
+    return '#' + c.map((x, i) => Math.round(x * a + b[i] * (1 - a)).toString(16).padStart(2, '0')).join('').toUpperCase();
+  };
+  const rows = [];
+  for (const it of items) {
+    const lv = L.levels[it.level];
+    if (!lv) continue;
+    const body = bodyOf[it.theme];
+    const ab = +(lv.abs_metric === 'apca' ? apca(rgb(it.fg), rgb(it.bg)) : dE(it.fg, it.bg)).toFixed(1);
+    const disabled = it.role === '禁用' || /disabled/i.test(it.key);
+    if ((/^线条/.test(it.level) || it.level === '底色弱') && it.de < 1 && !new RegExp(L.exemptSameColor, 'i').test(it.key)) continue;
+    let verdict = null;
+    if (!disabled && (it.rd < lv.lo - 0.05 || ab < lv.abs - 0.05)) verdict = '不及目标';
+    else if (lv.mixLo != null && it.rd < lv.mixLo - 0.05) verdict = '偏淡';
+    else if (lv.hi != null && it.rd > lv.hi + 0.05) verdict = '偏重';
+    if (!verdict) continue;
+    const colors = themeJson(it.theme)?.colors || {};
+    const k = it.key, u = pickUnder(it), pair = L.pairs[k];
+    const why = it.level === '底色弱' ? '底色弱只报告' : disabled ? '禁用不设下限' : k.startsWith('terminal.') ? '终端键(终端步骤负责)'
+      : k === '(语法色)' ? '语法色(语法步骤负责)' : !k ? '无来源键' : it.keyNote ? '来源键不可信(按值反查不符)'
+      : !colors[k] ? '主题未定义(VS Code 推导)' : drawn(colors[k], it.bg) !== it.fg && dE(drawn(colors[k], it.bg), it.fg) > 2 ? `渲染色与键值 ${colors[k]} 不同(界面另加透明度)`
+      : !pair ? '无实测配对' : u && !pair.includes(u) ? `实测底色 ${u} 不在配对 ${pair.join(', ')}` : '有配对(按配对底色已达标)';
+    rows.push({ theme: it.theme, ref: refs.has(it.theme), scene: it.scene, role: it.role, level: it.level, key: k, under: u || '', fg: it.fg, bg: it.bg,
+      rd: it.rd, ab, metric: lv.abs_metric, lo: lv.lo, abs: lv.abs, mixLo: lv.mixLo, hi: lv.hi, verdict, why, count: it.count || 1,
+      text: (it.texts || []).slice(0, 2).join(' / ').slice(0, 60), crop: it.crop || '', shot: `${SET}/${it.theme}-${it.scene}.jpg` });
+  }
+  const vo = { 不及目标: 0, 偏淡: 1, 偏重: 2 };
+  rows.sort((a, b) => vo[a.verdict] - vo[b.verdict] || rank(a.theme) - rank(b.theme) || a.theme.localeCompare(b.theme) || a.rd - b.rd);
+  const at = stamp('+%Y-%m-%d %H:%M:%S');
+  fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify({ at, thresholdsAt: L.thresholdsAt, rows }, null, 1));
+  const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  const sw = (c) => `<i style="background:${c}"></i>`;
+  const tally = {};
+  for (const r of rows) ((tally[r.theme] ||= { 不及目标: 0, 偏淡: 0, 偏重: 0 })[r.verdict]++);
+  const html = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>看不清排查(分层门槛)</title><style>
+body{font:13px/1.5 -apple-system,sans-serif;margin:16px;color:#222}table{border-collapse:collapse}td,th{border:1px solid #ddd;padding:3px 6px;vertical-align:top}
+th{background:#f4f4f4;position:sticky;top:0}i{display:inline-block;width:12px;height:12px;border:1px solid #888;vertical-align:middle;margin-right:2px}
+img{max-width:420px;max-height:120px}.v0{color:#c00;font-weight:600}.v1{color:#b70}.v2{color:#06c}.ref{background:#eef6ff}#f label{margin-right:12px}code{font-size:12px}
+</style></head><body><h2>看不清排查(按 assets/levels.json, 门槛 ${esc(L.thresholdsAt)}; 生成 ${at})</h2>
+<p>不及目标 = 低于修复下限或绝对下限(调色步骤与门禁的口径, 应为 0 或有原因); 偏淡 = 低于混档线, 像弱一档; 偏重 = 高于上限, 像强一档. 蓝底行是参考主题. 数值: rd = 相对正文明度差 %, 绝对指标 apca = Lc, de = ΔE x 100.</p>
+<table><tr><th>主题</th><th>不及目标</th><th>偏淡</th><th>偏重</th></tr>${themes.map((t) => `<tr class="${refs.has(t.file) ? 'ref' : ''}"><td>${esc(t.label)}</td>${['不及目标', '偏淡', '偏重'].map((v) => `<td>${tally[t.file]?.[v] || 0}</td>`).join('')}</tr>`).join('')}</table>
+<p id="f">${['不及目标', '偏淡', '偏重'].map((v, i) => `<label><input type="checkbox" value="${v}" ${i === 0 ? 'checked' : ''}> ${v}</label>`).join('')}
+<label><input type="checkbox" id="onlyFix"> 只看 level_floor 本应管到的(有配对)</label></p>
+<table id="t"><tr><th>判定</th><th>主题</th><th>场景 / 角色</th><th>级</th><th>颜色键 / 底色键</th><th>色</th><th>rd(下限 / 混档 / 上限)</th><th>绝对(下限)</th><th>level_floor</th><th>局部图</th></tr>
+${rows.map((r) => `<tr data-v="${r.verdict}" data-fix="${/^有配对|^实测底色/.test(r.why) ? 1 : 0}" class="${r.ref ? 'ref' : ''}"><td class="v${vo[r.verdict]}">${r.verdict}</td><td>${esc(r.theme)}</td>
+<td>${r.scene} / ${esc(r.role)}${r.text ? `<br><small>${esc(r.text)}</small>` : ''}</td><td>${r.level}</td><td><code>${esc(r.key)}</code><br><code>${esc(r.under)}</code></td>
+<td>${sw(r.fg)}${r.fg}<br>${sw(r.bg)}${r.bg}</td><td>${r.rd} (${r.lo} / ${r.mixLo ?? '-'} / ${r.hi ?? '-'})</td><td>${r.metric} ${r.ab} (${r.abs})</td><td>${esc(r.why)}</td>
+<td>${r.crop ? `<a href="${SET}/census/${r.crop}" target="_blank"><img loading="lazy" src="${SET}/census/${r.crop}"></a>` : `<a href="${r.shot}" target="_blank">整屏</a>`}</td></tr>`).join('\n')}</table>
+<script>const f=()=>{const on=[...document.querySelectorAll('#f input[value]:checked')].map(x=>x.value),fx=document.getElementById('onlyFix').checked;
+for(const tr of document.querySelectorAll('#t tr[data-v]'))tr.style.display=on.includes(tr.dataset.v)&&(!fx||tr.dataset.fix==='1')?'':'none'};
+document.querySelectorAll('#f input').forEach(x=>x.onchange=f);f();</script></body></html>`;
+  fs.writeFileSync(path.join(out, 'report.html'), html);
+  console.log(`已写 ${path.relative(REPO, path.join(out, 'report.html'))}: ` + ['不及目标', '偏淡', '偏重'].map((v) => `${v} ${rows.filter((r) => r.verdict === v).length}`).join(', '));
   process.exit(0);
 }
 
