@@ -154,7 +154,7 @@ if (cmd === 'export') {
   const th = readJson(path.join(out, 'thresholds.json'));
   if (!th) { console.error('标定目录里没有 thresholds.json(先在标定台提交)'); process.exit(1); }
   const kl = readJson(path.join(out, 'key-levels.json'))?.levels || {};
-  const registry = readJson(path.join(REPO, 'assets/source/vscode-color-registry.json')).colors;
+  const registry = readJson(path.join(REPO, 'assets/vscode/vscode-color-registry.json')).colors;
   const keys = new Set(Object.keys(registry).filter((k) => !registry[k].deprecated));
   for (const t of allThemes) for (const k of Object.keys(readJson(path.join(REPO, 'assets/source', `${t.file}.json`))?.colors || {})) keys.add(k);
   const keyLevels = Object.fromEntries([...keys].sort().map((k) => [k, kl[k] || (({ group, level }) => group + level)(classify(k))]));
@@ -201,13 +201,13 @@ http.createServer(async (req, res) => {
   if (url === '/data.json') return json(data());
   if (url === '/keys.json') {
     return json(keysData({
-      registry: readJson(path.join(REPO, 'assets/source/vscode-color-registry.json')).colors,
+      registry: readJson(path.join(REPO, 'assets/vscode/vscode-color-registry.json')).colors,
       originals: Object.fromEntries(allThemes.map((t) => [t.file, readJson(path.join(REPO, 'assets/source', `${t.file}.json`))])),
       fulls: Object.fromEntries(allThemes.map((t) => [t.file, themeJson(t.file)])),
       saved: readJson(path.join(out, 'key-levels.json')),
       effective: Object.fromEntries(allThemes.map((t) => [t.file, readJson(path.join(out, SET, 'census', `${t.file}-vars.json`))])),
       defaults: readJson(path.join(out, 'analysis', 'vscode-defaults.json')) || {},
-      docs: readJson(path.join(REPO, 'assets/source/vscode-color-docs.json'))?.colors || {},
+      docs: readJson(path.join(REPO, 'assets/vscode/vscode-color-docs.json'))?.colors || {},
     }));
   }
   if (req.method === 'POST' && (url === '/submit' || url === '/keys-submit')) {

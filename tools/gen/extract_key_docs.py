@@ -4,12 +4,12 @@
 # 从本机 VS Code 安装包静态提取全部颜色键的官方说明与四种主题类型的默认值(不执行安装包内任何代码).
 # 数据源: out/vs/workbench/workbench.desktop.main.js 里的 registerColor 包装函数调用 + out/nls.messages.json(说明按下标引用)
 #        + extensions/*/package.json 的 contributes.colors(说明经 package.nls.json 引用).
-# 产物 assets/source/vscode-color-docs.json 供 tools/lab/threshold-lab.mjs 的颜色键分层复核页(/keys)显示说明与默认值; VS Code 升级后与 extract_registry.py 一起重跑.
+# 产物 assets/vscode/vscode-color-docs.json 供 tools/lab/threshold-lab.mjs 的颜色键分层复核页(/keys)显示说明与默认值; VS Code 升级后与 extract_registry.py 一起重跑.
 # 用法: uv run tools/gen/extract_key_docs.py [VS Code.app 路径] [输出 json 路径]
 import json, os, re, sys
 
 APP = sys.argv[1] if len(sys.argv) > 1 else '/Applications/Visual Studio Code.app'
-OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source', 'vscode-color-docs.json')
+OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'vscode-color-docs.json'))
 RES = os.path.join(APP, 'Contents', 'Resources', 'app')
 BUNDLE = os.path.join(RES, 'out', 'vs', 'workbench', 'workbench.desktop.main.js')
 MODES = ('dark', 'light', 'hcDark', 'hcLight')

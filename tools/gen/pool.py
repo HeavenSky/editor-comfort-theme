@@ -2,7 +2,7 @@
 # requires-python = ">=3.11"
 # ///
 # 语法规则池: 把全部原主题(assets/source/)的 tokenColors 选择器合并成一个池子, 每个选择器裁决出一个"角色", 存入
-# assets/source/full-rule.json(只增不减): rules 为 选择器 -> 角色, colors 为 角色 -> 主题颜色键(default 为多数主题在用的键,
+# assets/pool/full-rule.json(只增不减): rules 为 选择器 -> 角色, colors 为 角色 -> 主题颜色键(default 为多数主题在用的键,
 # 各主题只记与默认不同的; 主题颜色键里找不到同色的记固定 hex). 补全段(complete.py)按它给原主题解析不出颜色的选择器补规则.
 #
 # 裁决分层(见 decide):
@@ -10,7 +10,7 @@
 #   1 结构规则: 按 TextMate 命名约定推出角色, 且没有被多数原主题反对
 #   2 无结构规则, 但各原主题的候选角色有交集
 #   3/4/5 需人工: 结构规则被多数原主题反对 / 只有一个原主题定义 / 原主题分歧; 未标注前用推荐值
-# 人工标注存于 assets/source/pool-overrides.json({选择器: 角色}), 优先级最高; 旧标注里 "<角色> muted" 的后缀已不再区分, 按角色处理.
+# 人工标注存于 assets/pool/pool-overrides.json({选择器: 角色}), 优先级最高; 旧标注里 "<角色> muted" 的后缀已不再区分, 按角色处理.
 #
 # 用法:
 #   uv run tools/gen/pool.py                      各层数量与待标注数
@@ -26,7 +26,7 @@ sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d
 from colorlib import cr, oklch
 
 SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source')
-OVERRIDES = os.path.join(SOURCES, 'pool-overrides.json')
+OVERRIDES = os.path.join(SOURCES, '..', 'pool', 'pool-overrides.json')
 FG, INHERIT = 'fg', 'inherit'
 
 # 角色 -> (代表 scope 与取色链, 默认字体样式); 主题的角色色 = 取色链里第一个在该主题中有颜色的 scope, 都没有时退回正文.
@@ -297,7 +297,7 @@ def annotate(pool: dict, out: str, items: list | None = None, storage_key: str |
     print(f'标注页已写入 {out}: {len(items)} 张卡片; 导出的 JSON(完整标注)存为 {os.path.relpath(OVERRIDES)}')
 
 
-FULL_RULE = os.path.join(SOURCES, 'full-rule.json')
+FULL_RULE = os.path.join(SOURCES, '..', 'pool', 'full-rule.json')
 
 
 def norm_hex(v) -> str | None:

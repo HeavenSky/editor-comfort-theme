@@ -27,7 +27,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source')
 # 补全段的中间主题 <name>-full.json(complete.py 生成, 不进版本库)
 FULL = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'full-theme')
-REGISTRY = os.path.join(SOURCES, 'vscode-color-registry.json')
+REGISTRY = os.path.join(SOURCES, '..', 'vscode', 'vscode-color-registry.json')
 OUT = os.path.join(ROOT, 'themes')
 
 # 界面上的文字与其底色, 及对比度下限(非活动的图标 / 标签本就该淡一档, 下限 3.0); metrics.py 用同一张表评级

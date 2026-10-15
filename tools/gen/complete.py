@@ -5,7 +5,7 @@
 # 只做格式规范与完整性补全, 不改原主题已有的颜色与规则:
 #   1. 格式: 颜色统一成大写 #RRGGBB(AA); 非 hex 的语法前景(如 inherit)VS Code 不认, 丢掉; schema 清理(gen_vscode.conform)
 #   2. 界面颜色键: 编辑区 / 终端的底色, 前景, 光标, 输入框选区缺了就补; VS Code 硬编码默认色的键按原主题终端色(没有终端色的按语法色)同色相补
-#   3. 语法规则: 按 assets/source/full-rule.json 严格增量补 —— 原主题规则原样保留, 池里的选择器只在原主题解析不出颜色时补, 补的规则放最前;
+#   3. 语法规则: 按 assets/pool/full-rule.json 严格增量补 —— 原主题规则原样保留, 池里的选择器只在原主题解析不出颜色时补, 补的规则放最前;
 #      full-rule.json 的 skip 记各主题经分词实测会改掉原主题已上色 token 的池选择器(外层上色, 内层被补), 不补
 #   4. 语义色原样保留
 # 中间主题都不进版本库(assets/full-theme/ 整个忽略); 补全段的漂移由 gen_vscode.py --check 核对 themes/ 生成物暴露.
@@ -22,7 +22,7 @@ from gen_vscode import (ANSI, BRACKET_FALLBACK, FULL, NEUTRAL_CHROMA, REGISTRY, 
                         source_fg, status_apart)
 import pool
 
-FULL_RULE = os.path.join(SOURCES, 'full-rule.json')
+FULL_RULE = os.path.join(SOURCES, '..', 'pool', 'full-rule.json')
 SAMPLES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'samples')
 
 

@@ -18,7 +18,6 @@
 
 ## 方案确定
 
-- assets/source/ 里非原主题的数据(vscode-color-registry.json, vscode-color-docs.json, full-rule.json, pool-overrides.json)是否也拆出 source/; 方案: 待用户定, 推荐拆到 assets/ 下按用途分(注册表与说明 -> assets/vscode/, 补全规则与规则池覆盖 -> assets/pool/)
 - 骨架仓库(/Users/sky/Desktop/repo/exec)的 vsc-ext 改动未提交: 那个仓库另有他人已暂存的改动(含 vsc-ext/package.json), 为不混入只改工作区不暂存; 方案: 用户检查后在骨架仓库自行提交
 
 - 刺眼规则(超出层级目标上限, 大块高饱和底, 高饱和长线)本次不做; 方案: 门槛标定后按层级上限加入调色步骤与门禁
