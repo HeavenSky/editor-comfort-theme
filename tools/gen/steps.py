@@ -36,7 +36,8 @@ STEPS = {
     'placeholder_floor': (False, 'clear', 'gen_vscode.quiet_controls', '(被 level_floor 取代) 输入框占位字不低于 2.8'),
     'control_text': (False, 'clear', 'gen_vscode.quiet_controls', '(被 level_floor 取代) 输入框 / 下拉框里的字不低于 4.5'),
     'graph_labels': (False, 'clear', 'gen_vscode.graph_labels', '(被 level_floor 取代) 源代码管理图的分支标签字可读'),
-    # ---- 刺眼: 第一目标是还原原主题色彩, 全部默认关(逐项实测见 TODO.md) ----
+    # ---- 刺眼: 第一目标是还原原主题色彩, 除 white_cap 外默认关(逐项实测见 TODO.md) ----
+    'white_cap': (True, 'glare', 'themes.adapt / gen_vscode.white_cap', '深色主题里近纯白(#FFF 这类, OKLCH 明度 >= 0.95 且彩度 <= 0.04)的正文, 界面字 / 图标 / 线, 语法色与终端白压到明度 0.88, 色相不变; 用户定: 只有这一类按刺眼处理'),
     'text_cap': (False, 'glare', 'themes.adapt', '正文对比度高于目标时压下来'),
     'syntax_cap': (False, 'glare', 'gen_vscode.Mapper.token', '语法色不亮过 正文 x 1.05(浅色 1.12)'),
     'term_glare_cap': (False, 'glare', 'themes.build', '深色主题终端彩色 / White / 亮白不比正文刺眼, 普通色亮暗跨度封顶'),

@@ -6,7 +6,7 @@
 # 命名: <name>-dark / <name>-light(与 assets/source/ 的原主题同名), 显示名 C <Name> Dark / Light.
 import json, math, os, re
 
-from colorlib import (amber, blend, blue_light, cr, de2000, deneon, fit, from_oklch, h, hx, lum, oklch, sat, shift, soften,
+from colorlib import (unwhite, amber, blend, blue_light, cr, de2000, deneon, fit, from_oklch, h, hx, lum, oklch, sat, shift, soften,
                       toward_bg, tune, unextreme, with_sat)
 from comfort import BRIGHT_TINT_L, LIGHT_BG_MAX, TERM_COLORS, TERM_HUES, term_spec
 from steps import on
@@ -334,6 +334,10 @@ def build() -> list[dict]:
             t['sel_inactive'] = blend(t['sel'], bg, 0.5)
     # 不用纯黑 / 乌黑, 纯白 / 亮白(口径见 comfort 的护眼维度); 语法色下限统一到 SYNTAX_MIN(终端色已在上面定好)
     for t in T:
+        if on('white_cap') and t['dark']:
+            for k in ('fg', 'bold', 'cursor'):
+                t[k] = unwhite(t[k])
+            t['ansi'] = {n: unwhite(c) for n, c in t['ansi'].items()}
         if on('unextreme'):
             for k in ('bg', 'fg', 'bold', 'cursor', 'sel', 'sel_inactive'):
                 t[k] = unextreme(t[k])

@@ -148,6 +148,15 @@ def deneon(c: Rgb, target: float, bg: Rgb | None = None, min_cr: float | None = 
     return out
 
 
+WHITE_L, WHITE_C, WHITE_CAP = 0.95, 0.04, 0.88
+
+
+def unwhite(c: Rgb) -> Rgb:
+    """近纯白(OKLCH 明度 >= 0.95 且彩度 <= 0.04, 如 #FFFFFF / #F8F8F2 / #EEFFFF)压到明度 0.88(约 VS Code 深色默认正文 #D4D4D4), 色相与彩度不变; 其他颜色原样返回."""
+    L, C, H = oklch(c)
+    return from_oklch(WHITE_CAP, C, H) if L >= WHITE_L and C <= WHITE_C else c
+
+
 def unextreme(c: Rgb, lo: float = 0.0085, hi: float = 0.875) -> Rgb:
     """把纯黑 / 乌黑, 纯白 / 亮白收回到亮度 [lo, hi] 之内, 色相与饱和度不变."""
     if lo <= lum(c) <= hi:

@@ -11,7 +11,7 @@ import json, math, os, re, sys
 
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
-from colorlib import (Rgb, amber, blend, cr, de2000, deneon, fit, from_oklch, h, hx, lum, neon, oklch, sat, soften, toward_bg, tune,
+from colorlib import (Rgb, unwhite, amber, blend, cr, de2000, deneon, fit, from_oklch, h, hx, lum, neon, oklch, sat, soften, toward_bg, tune,
                       unextreme, with_sat)
 import levels, pool
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
@@ -916,6 +916,17 @@ def graph_labels(colors: dict, t: dict) -> None:
             colors[chain[0]] = hx(fit(ref, bg, lo=GRAPH_LABEL_MIN))
 
 
+def white_cap(colors: dict) -> None:
+    """深色主题里近纯白的界面前景(字, 图标, 线)压到明度 0.88(colorlib.unwhite); 底色类键与阴影不动; 终端 16 色已在 themes.py 压过, 这里再遇到不会变."""
+    for k, v in list(colors.items()):
+        p = parse(v)
+        if p is None or 'shadow' in k.lower() or re.search(r'(?i)background$', k) or levels.doc()['keyLevels'].get(k, '').startswith('底色'):
+            continue
+        new = unwhite(p[0])
+        if new != p[0]:
+            colors[k] = hx(new) + p[1]
+
+
 def comfortable(colors: dict, t: dict) -> None:
     """最后一遍(口径见 comfort 的护眼与鲜艳柔和维度): 不透明色收回极端黑白(阴影类不动);
     荧光感过强的颜色(按叠到底色上的实际颜色算)降彩度, 明度与透明度不变."""
@@ -987,6 +998,8 @@ def transform(t: dict, src: dict) -> dict:
     quiet_controls(colors, t)
     tint_grays(colors, t)
     graph_labels(colors, t)
+    if on('white_cap') and t['dark']:
+        white_cap(colors)
     # 分层门槛: 取代 ui_text_floor / badge_text / button_text 等旧的逐对下限; 放在选区之前, 选区按调整后的输入框字色求
     if on('level_floor'):
         levels.fix(colors, t)
@@ -1007,6 +1020,13 @@ def transform(t: dict, src: dict) -> dict:
             v = dict(v, foreground=m.token(v['foreground']))
         if v:
             semantic[k] = v
+    if on('white_cap') and t['dark']:
+        cap = lambda v: (lambda p: hx(unwhite(p[0])) + p[1] if p else v)(parse(v))
+        for r in rules:
+            if isinstance(r.get('settings'), dict) and r['settings'].get('foreground'):
+                r['settings']['foreground'] = cap(r['settings']['foreground'])
+        for k, v in semantic.items():
+            semantic[k] = cap(v) if isinstance(v, str) else dict(v, foreground=cap(v['foreground'])) if isinstance(v, dict) and v.get('foreground') else v
     conform(colors, rules, semantic, t)
     return dict(colors=dict(sorted(colors.items())), tokenColors=rules, semanticTokenColors=semantic)
 
