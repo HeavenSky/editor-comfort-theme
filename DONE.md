@@ -1,5 +1,6 @@
 # DONE
 
+- 20261015_180505 区分度与相对约束加进报告(只报告); 方案: 放在 threshold-lab report 按普查实例算(口径同标定台, 参考主题只在用户定的封顶 1.0 处越界), 被否决: metrics.py 按颜色键近似(参考主题大面积误报, 如 One Dark 非活动/活动标签 0.56); 当前主题与原主题相比层次关系基本不变
 - 20261015_180232 看不清排查改读 assets/levels.json 按新门槛重跑; 方案: threshold-lab collect --src themes 普查现成主题 + report 生成判定页(.ai-ctx/cache/sav_20261015_174653_新门槛看不清排查/report.html), 顺带修 levels.under 对未定义底色键按 VS Code 默认值推导
 - 20261015_174024 assets/source/ 混放原主题与非原主题数据; 用户按推荐拆分: 颜色注册表与颜色键说明 -> assets/vscode/, 补全规则 full-rule.json 与规则池覆盖 pool-overrides.json -> assets/pool/, source/ 只放 16 个原主题; check / 94 个测试通过, 数据内容未变
 

@@ -204,6 +204,7 @@ if (cmd === 'export') {
 //   不及目标 = 相对指标低于修复下限或绝对指标低于绝对下限(禁用不判, 底色弱只报告); 偏淡 = 低于混档线(像弱一档); 偏重 = 高于上限(像强一档).
 //   线条与底色弱同色(ΔE < 1)按原设计不画豁免, 焦点框 / 选区 / 当前匹配不豁免.
 // 另给出 level_floor 为什么没管到它(终端键, 语法色, 主题未定义, 无实测配对, 实测底色与配对底色不同), 用来判断是补配对, 补步骤还是确实不用修.
+// 区分度与相对约束也在这里按普查实例报告(口径同标定台); 不放进 metrics.py: 按颜色键近似测不准, 会把参考主题大面积误报.
 if (cmd === 'report') {
   const L = readJson(path.join(REPO, 'assets/levels.json'));
   const refs = new Set(L.ref);
@@ -237,10 +238,35 @@ if (cmd === 'report') {
       rd: it.rd, ab, metric: lv.abs_metric, lo: lv.lo, abs: lv.abs, mixLo: lv.mixLo, hi: lv.hi, verdict, why, count: it.count || 1,
       text: (it.texts || []).slice(0, 2).join(' / ').slice(0, 60), crop: it.crop || '', shot: `${SET}/${it.theme}-${it.scene}.jpg` });
   }
+  // 区分度与相对约束(只报告): 口径同标定台 pairs() / cells() / rulesPage(): 同主题同角色同色对跨场景合并, 线条与底色弱同色的不计; 每级取 rd 中位数
+  const medOf = (v) => { if (!v.length) return null; const x = [...v].sort((a, b) => a - b), n = x.length; return n % 2 ? x[(n - 1) / 2] : (x[n / 2 - 1] + x[n / 2]) / 2; };
+  const uniq = new Map();
+  for (const it of items) {
+    if (it.de < 1 && (/^线条/.test(it.level) || it.level === '底色弱') && !new RegExp(L.exemptSameColor, 'i').test(it.key || '')) continue;
+    uniq.set(`${it.theme}|${it.role}|${it.fg}|${it.bg}`, it);
+  }
+  const rel = {};
+  for (const t of themes) {
+    const P = [...uniq.values()].filter((x) => x.theme === t.file), out = [];
+    const M = (k) => medOf(P.filter((x) => x.level === k).map((x) => x.rd));
+    for (const [k, lo] of Object.entries(L.sep?.inGroup || {})) {
+      const x = M(k.slice(0, 2) + k[2]), y = M(k.slice(0, 2) + k[4]);
+      if (lo != null && x != null && y != null && x - y < lo - 0.05) out.push(`区分度 ${k} ${(x - y).toFixed(1)} < ${lo}`);
+    }
+    for (const [k, lo] of Object.entries(L.sep?.cross || {})) {
+      const [a, b] = k.split('|'), x = M(a), y = M(b);
+      if (lo != null && x != null && y != null && Math.abs(x - y) < lo - 0.05) out.push(`区分度 ${k} ${Math.abs(x - y).toFixed(1)} < ${lo}`);
+    }
+    for (const r of L.rules || []) {
+      const x = medOf(P.filter((p) => p.role === r.a).map((p) => p.rd)), y = medOf(P.filter((p) => p.role === r.b).map((p) => p.rd));
+      if (x != null && y && !(r.min - 0.005 <= x / y && x / y <= r.max + 0.005)) out.push(`相对约束 ${r.a}/${r.b} ${(x / y).toFixed(2)} 不在 [${r.min}, ${r.max}]`);
+    }
+    rel[t.file] = out;
+  }
   const vo = { 不及目标: 0, 偏淡: 1, 偏重: 2 };
   rows.sort((a, b) => vo[a.verdict] - vo[b.verdict] || rank(a.theme) - rank(b.theme) || a.theme.localeCompare(b.theme) || a.rd - b.rd);
   const at = stamp('+%Y-%m-%d %H:%M:%S');
-  fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify({ at, thresholdsAt: L.thresholdsAt, rows }, null, 1));
+  fs.writeFileSync(path.join(out, 'report.json'), JSON.stringify({ at, thresholdsAt: L.thresholdsAt, relations: rel, rows }, null, 1));
   const esc = (x) => String(x).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   const sw = (c) => `<i style="background:${c}"></i>`;
   const tally = {};
@@ -252,6 +278,8 @@ img{max-width:420px;max-height:120px}.v0{color:#c00;font-weight:600}.v1{color:#b
 </style></head><body><h2>看不清排查(按 assets/levels.json, 门槛 ${esc(L.thresholdsAt)}; 生成 ${at})</h2>
 <p>不及目标 = 低于修复下限或绝对下限(调色步骤与门禁的口径, 应为 0 或有原因); 偏淡 = 低于混档线, 像弱一档; 偏重 = 高于上限, 像强一档. 蓝底行是参考主题. 数值: rd = 相对正文明度差 %, 绝对指标 apca = Lc, de = ΔE x 100.</p>
 <table><tr><th>主题</th><th>不及目标</th><th>偏淡</th><th>偏重</th></tr>${themes.map((t) => `<tr class="${refs.has(t.file) ? 'ref' : ''}"><td>${esc(t.label)}</td>${['不及目标', '偏淡', '偏重'].map((v) => `<td>${tally[t.file]?.[v] || 0}</td>`).join('')}</tr>`).join('')}</table>
+<h3>区分度与相对约束(只报告)</h3><p>区分度: 同组相邻两档 / 跨组同档的 rd 中位数之差不低于 levels.json 的 sep(按参考主题差值的 P25 定, 参考主题约四分之一越界是预期); 相对约束: 两类角色 rd 中位数之比落在 rules 范围(按参考主题范围外放一成).</p>
+<table><tr><th>主题</th><th>越界</th></tr>${themes.map((t) => `<tr class="${refs.has(t.file) ? 'ref' : ''}"><td>${esc(t.label)}</td><td>${rel[t.file].map(esc).join('<br>') || '-'}</td></tr>`).join('')}</table>
 <p id="f">${['不及目标', '偏淡', '偏重'].map((v, i) => `<label><input type="checkbox" value="${v}" ${i === 0 ? 'checked' : ''}> ${v}</label>`).join('')}
 <label><input type="checkbox" id="onlyFix"> 只看 level_floor 本应管到的(有配对)</label></p>
 <table id="t"><tr><th>判定</th><th>主题</th><th>场景 / 角色</th><th>级</th><th>颜色键 / 底色键</th><th>色</th><th>rd(下限 / 混档 / 上限)</th><th>绝对(下限)</th><th>level_floor</th><th>局部图</th></tr>
