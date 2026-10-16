@@ -1,6 +1,6 @@
 # Change Log
 
-## v0.0.4 2026-10-15
+## v0.0.4 2026-10-16
 
 ### Breaking
 
@@ -13,6 +13,8 @@
 - Near-white text, icons, syntax colors and terminal white in dark themes are toned down to OKLCH lightness 0.88 with their hue kept; C Dracula Dark's body text goes from `#F6F6F4` to `#D7D7D6`.
 - The terminal selection is clearly visible in every theme: each theme now sets `terminal.selectionBackground` and `terminal.inactiveSelectionBackground` (and the Terminal.app profile's selection color) instead of falling back to the faint editor selection. Where body text is only just readable (C Sunlit), selections are made as visible as they can be while text on them stays at 3.5.
 - Shorter file names: `themes/one-dark.json` instead of `themes/comfort-one-dark-color-theme.json`, and the same for screenshots. Terminal.app profiles moved to `assets/terminal/` (for example `assets/terminal/one-dark.terminal`) and import as `C One Dark` and so on; delete the old `Comfort` profiles in Terminal.app ([import a profile](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/terminal-app.md#import-a-profile)).
+
+- Docs: the README is now a short overview; theme list, screenshots, Terminal.app profiles, customization and tuning rules each have their own page under [docs](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/README.md), and the Chinese pages now live under `zh/`.
 
 ### Fixed
 

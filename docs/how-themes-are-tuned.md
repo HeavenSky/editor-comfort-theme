@@ -34,6 +34,7 @@ Every theme starts as the original theme exactly as published. The three new lig
 - The terminal selection is recomputed from the theme's terminal blue when the original one is barely visible or the text on it is hard to read.
 - The current find match stands out more than the other matches.
 - UI colors such as sidebar text, line numbers, borders, badges, buttons and selected rows are sorted into four tiers: content, dimmed, line and background. Each tier's minimum is set relative to the theme's own body text and calibrated on eight reference themes. Translucent colors first gain opacity; after that, only their lightness changes.
+- Borders and background layers that the original makes indistinguishable from the surface they sit on (OKLab ΔE below 0.02) are left alone, because the original does not mean to draw them; focus outlines, selections and the current match are still made visible.
 
 ## Tone down near-white in dark themes
 
