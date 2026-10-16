@@ -251,6 +251,7 @@
   }
  ],
  "exemptSameColor": "(?<!un)focus|selection|findMatch|Cursor",
+ "sameColorDE": 2,
  "keyLevels": {
   "actionBar.toggledBackground": "底色弱",
   "activeSessionView.background": "底色弱",

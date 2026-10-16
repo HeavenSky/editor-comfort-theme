@@ -1,7 +1,7 @@
 # 分层门槛: 读 assets/levels.json(tools/lab/threshold-lab.mjs export 生成), 按 颜色键 -> 级 与 颜色键 -> 实测底色键 的配对,
 # 检查并修复低于修复下限 / 绝对下限的界面颜色; 调色步骤 level_floor(gen_vscode.py)与分层门禁(metrics.py)共用这一份口径.
 # 相对指标 rd = OKLab 明度差 / 本主题正文(editor.foreground 于 editor.background)明度差 x 100; 绝对指标: apca = APCA Lc, de = OKLab ΔE x 100.
-# 只处理主题自己定义了的键(没定义的由 VS Code 推导, 这里算不出推导值); 禁用状态不设下限; 与底色同色(ΔE < 1)的线条与层次底是原设计不画, 豁免.
+# 只处理主题自己定义了的键(没定义的由 VS Code 推导, 这里算不出推导值); 禁用状态不设下限; 与底色同色(ΔE < levels.json 的 sameColorDE, 即 OKLab 可辨差)的线条与层次底是原设计不画, 豁免.
 # 配对的底色键按普查出现次数排序, 第一个最可靠; 其余可能是按颜色值反查来的同色键: 修复先求全部达标, 做不到只保证第一个, 门禁只判第一个.
 # 前景键有同名底色键(xxx.activeForeground -> xxx.activeBackground)且主题定义了时, 它排第一: 普查按值反查可能认成同色的别的底色键(如 Ayu 的按钮底).
 # 底色弱(层次底)只报告不修不门禁: 原主题常故意做平再靠边框区分(如 One Light 白输入框), 它又是字与选区的底, 改它会连锁带动别的颜色.
@@ -210,13 +210,13 @@ def targets(colors: dict, t: dict) -> list[tuple[str, str, list[str]]]:
 
 
 def same_color(c: Rgb, a: float, bgs: list[Rgb], key: str, level: str) -> bool:
-    """原设计不画: 全透明(alpha 0)的一律算; 线条与层次底与第一个配对底色(它所在的那块底, 如 tab.activeBorder 于活动标签底)同色(ΔE < 1)也算,
+    """原设计不画: 全透明(alpha 0)的一律算; 线条与层次底与第一个配对底色(它所在的那块底, 如 tab.activeBorder 于活动标签底)同色(ΔE < sameColorDE)也算,
     焦点框 / 选区 / 当前匹配(exemptSameColor)除外."""
     if a <= 0.5 / 255:
         return True
     if not (level.startswith('线条') or level == '底色弱') or re.search(doc()['exemptSameColor'], key, re.I):
         return False
-    return de(blend(c, bgs[0], a) if a < 1 else c, bgs[0]) < 1
+    return de(blend(c, bgs[0], a) if a < 1 else c, bgs[0]) < doc().get('sameColorDE', 1)
 
 
 def check(colors: dict, t: dict, all_unders: bool = False) -> list[str]:

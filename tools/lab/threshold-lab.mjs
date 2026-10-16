@@ -28,6 +28,10 @@ import { classify, keysData, KEYS_PAGE } from './key-levels.mjs';
 import { calibrateByKeys, rulePairs } from './rule-pairs.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+// 同色豁免: 线条与底色弱的原值与所在底色 ΔE 低于 SAME_DE 时视为原设计不画; 2 即 OKLab 可辨差(CSS Color 4 色域映射的 JND 0.02 x 100), 低于它人眼分不出线与底.
+// 焦点框 / 选区 / 当前匹配(SAME_EXEMPT)不豁免; 不区分大小写, 用 (?<!un) 排除 unfocused.
+const SAME_DE = 2;
+const SAME_EXEMPT = '(?<!un)focus|selection|findMatch|Cursor';
 const [cmd, outArg, ...rest] = process.argv.slice(2);
 if (!['collect', 'serve', 'export', 'report'].includes(cmd) || !outArg) {
   console.error('用法: node tools/lab/threshold-lab.mjs collect <输出目录> [主题名...] | serve <输出目录> [--port 9340]');
@@ -242,7 +246,7 @@ if (cmd === 'export') {
     console.log(`${k} 按颜色键标定: 目标 ${lv.pct}, 修复下限 ${lv.lo}, 绝对下限 ${lv.abs}, 混档线 ${lv.mixLo}, 上限 ${lv.hi} (${lv.source})`);
   }
   const doc = { about: '分层门槛(tools/lab/threshold-lab.mjs export 生成, 勿手改): 相对指标 rd = OKLab 明度差 / 本主题正文明度差 x 100; 绝对指标 apca = APCA Lc, de = OKLab ΔE x 100',
-    thresholdsAt: th.at, ref: th.ref, levels, sep: th.sep, rules: th.rules, exemptSameColor: '(?<!un)focus|selection|findMatch|Cursor', keyLevels, pairs, pairsFrom };
+    thresholdsAt: th.at, ref: th.ref, levels, sep: th.sep, rules: th.rules, exemptSameColor: SAME_EXEMPT, sameColorDE: SAME_DE, keyLevels, pairs, pairsFrom };
   const dest = path.resolve(rest[0] || path.join(REPO, 'assets/levels.json'));
   fs.writeFileSync(dest, JSON.stringify(doc, null, 1) + '\n');
   console.log(`已导出 ${path.relative(REPO, dest)}: ${Object.keys(levels).length} 级, ${Object.keys(keyLevels).length} 个键, ${Object.keys(pairs).length} 个键有配对(普查 ${Object.keys(pairs).length - Object.keys(ruled).length}, 规则 ${Object.keys(ruled).length})`);
@@ -252,7 +256,7 @@ if (cmd === 'export') {
 // ======== 排查报告 ========
 // 按 assets/levels.json(调色步骤与门禁的同一份门槛)判定普查到的每组色对:
 //   不及目标 = 相对指标低于修复下限或绝对指标低于绝对下限(禁用不判, 底色弱只报告); 刺眼 = 高于 levels.json 的刺眼线 glare(明度差 rd, 底色与线条另看比底色多出的彩度; 只判来源键可靠的实例); 偏淡 = 低于混档线(像弱一档); 偏重 = 高于上限(像强一档).
-//   线条与底色弱同色(ΔE < 1)按原设计不画豁免, 焦点框 / 选区 / 当前匹配不豁免.
+//   线条与底色弱同色(ΔE < SAME_DE)按原设计不画豁免, 焦点框 / 选区 / 当前匹配不豁免.
 // 另给出 level_floor 为什么没管到它(终端键, 语法色, 主题未定义, 无实测配对, 实测底色与配对底色不同), 用来判断是补配对, 补步骤还是确实不用修.
 // 区分度与相对约束也在这里按普查实例报告(口径同标定台); 不放进 metrics.py: 按颜色键近似测不准, 会把参考主题大面积误报.
 if (cmd === 'report') {
@@ -275,7 +279,7 @@ if (cmd === 'report') {
     const body = bodyOf[it.theme];
     const ab = +(lv.abs_metric === 'apca' ? apca(rgb(it.fg), rgb(it.bg)) : dE(it.fg, it.bg)).toFixed(1);
     const disabled = it.role === '禁用' || /disabled/i.test(it.key);
-    if ((/^线条/.test(it.level) || it.level === '底色弱') && it.de < 1 && !new RegExp(L.exemptSameColor, 'i').test(it.key)) continue;
+    if ((/^线条/.test(it.level) || it.level === '底色弱') && it.de < (L.sameColorDE ?? 1) && !new RegExp(L.exemptSameColor, 'i').test(it.key)) continue;
     let verdict = null;
     if (!disabled && (it.rd < lv.lo - 0.05 || ab < lv.abs - 0.05)) verdict = '不及目标';
     else if (reliable(it) && ((lv.glare?.rd != null && it.rd > lv.glare.rd + 0.05) || (lv.glare?.chroma != null && fgChroma(it.fg) - fgChroma(it.bg) > lv.glare.chroma + 0.05))) verdict = '刺眼';
@@ -296,7 +300,7 @@ if (cmd === 'report') {
   const medOf = (v) => { if (!v.length) return null; const x = [...v].sort((a, b) => a - b), n = x.length; return n % 2 ? x[(n - 1) / 2] : (x[n / 2 - 1] + x[n / 2]) / 2; };
   const uniq = new Map();
   for (const it of items) {
-    if (it.de < 1 && (/^线条/.test(it.level) || it.level === '底色弱') && !new RegExp(L.exemptSameColor, 'i').test(it.key || '')) continue;
+    if (it.de < (L.sameColorDE ?? 1) && (/^线条/.test(it.level) || it.level === '底色弱') && !new RegExp(L.exemptSameColor, 'i').test(it.key || '')) continue;
     uniq.set(`${it.theme}|${it.role}|${it.fg}|${it.bg}`, it);
   }
   const rel = {};
@@ -530,7 +534,7 @@ svg text{fill:#9aa;font-size:10px}
 #zoom{position:fixed;inset:0;background:#000d;display:none;z-index:50;align-items:center;justify-content:center} #zoom img{max-width:96vw;max-height:94vh}
 </style></head><body>
 <header><b>门槛标定台</b><a href="/keys">颜色键分层复核</a><span class="dim" id="prog"></span>
-<label title="原主题取值与底色 ΔE < 1 的线条与层次底, 即原设计不画线 / 不分层; 焦点框, 选区, 当前匹配不排除"><input type="checkbox" id="exSame"> 排除同色线条与层次底</label>
+<label title="原主题取值与底色 ΔE < ${SAME_DE} 的线条与层次底, 即原设计不画线 / 不分层; 焦点框, 选区, 当前匹配不排除"><input type="checkbox" id="exSame"> 排除同色线条与层次底</label>
 <label>主题 <select id="fTheme"><option value="">全部</option><option value="dark">只看深色</option><option value="light">只看浅色</option><option value="ref">只看参考主题</option><option value="other">只看其他主题</option></select></label>
 <label title="参考主题: 用户认可的原主题; 按参考主题推荐时, 目标与下限只用参考主题的数据, 绝对下限保证参考主题被拦下不超过约 5%">推荐依据 <select id="recBase"><option value="ref">参考主题</option><option value="all">全部主题</option></select></label>
 <button id="reload">刷新数据</button><button class="pri" id="submit">提交门槛与标注</button><span id="msg" class="dim"></span></header>
@@ -580,7 +584,7 @@ function pairs() {
   const th = Object.fromEntries(D.themes.map((t) => [t.file, t]));
   const seen = new Map();
   for (const it of D.items) {
-    if (st.exSame !== false && it.de < 1 && (/^线条/.test(lvOf(it)) || lvOf(it) === '底色弱') && !/focus|selection|findMatch|Cursor/i.test(it.key || '')) continue;
+    if (st.exSame !== false && it.de < ${SAME_DE} && (/^线条/.test(lvOf(it)) || lvOf(it) === '底色弱') && !new RegExp('${SAME_EXEMPT}', 'i').test(it.key || '')) continue;
     if (f === 'dark' && !th[it.theme].dark) continue;
     if (f === 'light' && th[it.theme].dark) continue;
     if (f === 'ref' && !isRef(it.theme)) continue;

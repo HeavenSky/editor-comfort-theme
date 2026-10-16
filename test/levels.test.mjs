@@ -110,4 +110,20 @@ describe("assets/levels.json", () => {
 		}
 		for (const lv of Object.values(levels.levels)) if (lv.mixLo != null) expect(lv.lo).toBeLessThanOrEqual(lv.mixLo);
 	});
+
+	it("同色豁免: unfocused 不算焦点框, 可辨差以下的线保持原主题值", () => {
+		const exempt = new RegExp(levels.exemptSameColor, "i");
+		expect(exempt.test("focusBorder")).toBe(true);
+		expect(exempt.test("list.inactiveFocusOutline")).toBe(true);
+		expect(exempt.test("tab.unfocusedActiveBorder")).toBe(false);
+		expect(levels.sameColorDE).toBe(2);
+		const colorsOf = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8").replace(/^\s*\/\/.*$/gm, "")).colors;
+		for (const [theme, key] of [
+			["github-dark", "tab.unfocusedActiveBorder"],
+			["pale-dark", "tab.activeBorder"],
+			["pale-light", "editorGroupHeader.tabsBorder"],
+		]) {
+			expect(colorsOf(`themes/${theme}.json`)[key].toUpperCase()).toBe(colorsOf(`assets/source/${theme}.json`)[key].toUpperCase());
+		}
+	});
 });
