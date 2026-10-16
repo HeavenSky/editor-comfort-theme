@@ -19,6 +19,10 @@
 	"displayName": "Editor Comfort Theme",
 	"license": "MIT",
 	"publisher": "HeavenSky",
+	"author": {
+		"name": "calla",
+		"email": "aurora.calla@outlook.com"
+	},
 	"bugs": {
 		"url": "https://github.com/HeavenSky/editor-comfort-theme/issues"
 	},
@@ -136,7 +140,6 @@
 		"media/icon.png",
 		"package.nls.json",
 		"package.nls.zh-cn.json",
-		"README.zh-cn.md",
 		"LICENSE.txt",
 		"NOTICE.md",
 		"CHANGELOG.md"

@@ -2,17 +2,27 @@
 
 ## v0.0.4 2026-10-15
 
+### Breaking
+
+- Themes are renamed from `Comfort <Name> Dark` / `Comfort <Name> Light` to `C <Name> Dark` / `C <Name> Light` (for example `C One Dark`), both in the theme picker and as the settings ID. VS Code does not recognize the old names, so after updating, pick the theme again (or change `workbench.colorTheme`, `workbench.preferredDarkColorTheme` and `workbench.preferredLightColorTheme` in `settings.json` to the new names).
+
 ### Changed
 
-- **Back to the original colors.** v0.0.3 retuned every color (dimmed backgrounds, softer body text, compressed accents, neon and extreme black-and-white removal). Now each theme keeps its original background, body text, syntax, terminal and UI colors, and only colors that are hard to read change, and only as far as needed, keeping hue and saturation: body text, syntax and terminal colors to 4.5 contrast, comments and dim terminal gray to 3.4, line numbers to 2.2, inactive UI text and focus outlines to 3.0, text on badges, buttons and selected rows to 4.5 (the text keeps its light or dark side; the background is nudged slightly first). For example C GitHub Dark and C Dracula Dark are almost identical to their originals, while C Sunlit Light's comments go from 2.5 to 3.4 and its syntax colors from about 3.0 to 4.5.
-- Missing pieces are filled in without changing anything the original sets: UI colors VS Code would otherwise hard-code take the hue of the theme's terminal colors, with text at least as readable as VS Code's default (up to 4.5, so light themes' git modified markers are no longer pale yellow); syntax rules from a pool merged from all original themes are added only for scopes the original leaves uncolored, and rules that would recolor a token the original already colors through an outer scope (such as One Light's Less variables) are detected by tokenizing sample files and skipped. Bracket pair colors 1–3 use each theme's own colors; 4–6 stay unset as in VS Code.
+- **Back to the original colors.** v0.0.3 retuned every color; now each theme keeps its original background, body text, syntax, terminal and UI colors and changes only what is hard to read, only as far as needed ([what is adjusted](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/how-themes-are-tuned.md#fix-only-what-is-hard-to-read)).
+- Missing UI colors and syntax rules are filled in from each theme's own palette without changing any color the original sets, so light themes' git modified markers are no longer pale yellow ([how completion works](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/how-themes-are-tuned.md#fill-in-only-what-is-missing)).
+- Near-white text, icons, syntax colors and terminal white in dark themes are toned down to OKLCH lightness 0.88 with their hue kept; C Dracula Dark's body text goes from `#F6F6F4` to `#D7D7D6`.
 - The terminal selection is clearly visible in every theme: each theme now sets `terminal.selectionBackground` and `terminal.inactiveSelectionBackground` (and the Terminal.app profile's selection color) instead of falling back to the faint editor selection. Where body text is only just readable (C Sunlit), selections are made as visible as they can be while text on them stays at 3.5.
-- Shorter file names, matching `tools/sources/`: `themes/one-dark.json` instead of `themes/comfort-one-dark-color-theme.json`, `terminal/one-dark.terminal` instead of `terminal/comfort-one-dark.terminal`, and the same for screenshots. Importing a renamed `.terminal` profile creates a profile named `one-dark` and so on; delete the old `comfort-*` profiles in Terminal.app.
-- **Breaking:** themes are renamed from `Comfort <Name> Dark` / `Comfort <Name> Light` to `C <Name> Dark` / `C <Name> Light` (for example `C One Dark`), both in the theme picker and as the settings ID. VS Code does not recognize the old names, so after updating, pick the theme again (or change `workbench.colorTheme`, `workbench.preferredDarkColorTheme` and `workbench.preferredLightColorTheme` in `settings.json` to the new names).
+- Shorter file names: `themes/one-dark.json` instead of `themes/comfort-one-dark-color-theme.json`, and the same for screenshots. Terminal.app profiles moved to `assets/terminal/` (for example `assets/terminal/one-dark.terminal`) and import as `C One Dark` and so on; delete the old `Comfort` profiles in Terminal.app ([import a profile](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/terminal-app.md#import-a-profile)).
+
+### Fixed
+
 - Status colors that VS Code fills in (such as C Dracula's info color) no longer duplicate the warning color.
-- Build tools: every color adjustment is a named step in `tools/steps.py` that can be switched on or off (`COMFORT_STEPS`); only the readability steps are on by default. `npm run check` verifies that with every step off the output equals the original plus completion, and gates only on readability (`tools/metrics.py --check`); the full scope x dimension scores (clarity, vivid and soft, fatigue, eye care, blue light) remain as a report (`npm run metrics`).
 
 ## v0.0.3 2026-10-12
+
+### Breaking
+
+- Theme names simplified to `Comfort <Name> Dark` / `Comfort <Name> Light`: One Dark Fit → **Comfort One Dark**, One Light Fit → **Comfort One Light**. Theme files and Terminal.app profiles follow the same `comfort-<name>-dark|light` names, using short one-word names; Comfort Solarized Dark / Light are renamed **Comfort Sunlit Dark / Light**; reselect your theme and re-import the `.terminal` files.
 
 ### Added
 
@@ -39,13 +49,16 @@
 - Less, CSS and SCSS property names are kept clearly apart from property values (Comfort Moka Dark used the same cyan for both).
 - Property names in CSS, Less, SCSS, Sass, JSON and TOML get a calm color of their own in every theme: the hue of declaration keywords, dimmed to the quietest syntax level, never bold or italic (they used to share the keyword color, bold in Comfort Sunlit).
 - Syntax coverage unified across all themes: the same 33 common scopes (types, namespaces, variables, parameters, object keys, Markdown headings, bold, italic, quotes, links and more) are colored everywhere, borrowing each theme's own color for the nearest role where its original left them out.
-- Theme names simplified to `Comfort <Name> Dark` / `Comfort <Name> Light`: One Dark Fit → **Comfort One Dark**, One Light Fit → **Comfort One Light**. Theme files and Terminal.app profiles follow the same `comfort-<name>-dark|light` names, using short one-word names; Comfort Solarized Dark / Light are renamed **Comfort Sunlit Dark / Light**; reselect your theme and re-import the `.terminal` files.
 
 ### Removed
 
 - The previous **Comfort One Dark** and **Comfort One Light** were merged into the former Fit themes, which now carry those names.
 
 ## v0.0.2 2026-10-08
+
+### Breaking
+
+- **One Dark Pro Lite** is renamed **One Dark Fit**; if you used it, pick it again in Preferences: Color Theme after updating.
 
 ### Added
 
