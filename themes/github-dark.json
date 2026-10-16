@@ -367,7 +367,7 @@
 		"tab.hoverBackground": "#22272E",
 		"tab.inactiveBackground": "#1C2128",
 		"tab.inactiveForeground": "#768390",
-		"tab.unfocusedActiveBorder": "#2A2F36",
+		"tab.unfocusedActiveBorder": "#22272E",
 		"tab.unfocusedActiveBorderTop": "#444C56",
 		"tab.unfocusedHoverBackground": "#636E7B1A",
 		"terminal.ansiBlack": "#545D68",

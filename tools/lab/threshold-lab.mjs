@@ -242,7 +242,7 @@ if (cmd === 'export') {
     console.log(`${k} 按颜色键标定: 目标 ${lv.pct}, 修复下限 ${lv.lo}, 绝对下限 ${lv.abs}, 混档线 ${lv.mixLo}, 上限 ${lv.hi} (${lv.source})`);
   }
   const doc = { about: '分层门槛(tools/lab/threshold-lab.mjs export 生成, 勿手改): 相对指标 rd = OKLab 明度差 / 本主题正文明度差 x 100; 绝对指标 apca = APCA Lc, de = OKLab ΔE x 100',
-    thresholdsAt: th.at, ref: th.ref, levels, sep: th.sep, rules: th.rules, exemptSameColor: 'focus|selection|findMatch|Cursor', keyLevels, pairs, pairsFrom };
+    thresholdsAt: th.at, ref: th.ref, levels, sep: th.sep, rules: th.rules, exemptSameColor: '(?<!un)focus|selection|findMatch|Cursor', keyLevels, pairs, pairsFrom };
   const dest = path.resolve(rest[0] || path.join(REPO, 'assets/levels.json'));
   fs.writeFileSync(dest, JSON.stringify(doc, null, 1) + '\n');
   console.log(`已导出 ${path.relative(REPO, dest)}: ${Object.keys(levels).length} 级, ${Object.keys(keyLevels).length} 个键, ${Object.keys(pairs).length} 个键有配对(普查 ${Object.keys(pairs).length - Object.keys(ruled).length}, 规则 ${Object.keys(ruled).length})`);

@@ -250,7 +250,7 @@
    "why": "分得出当前视图(按参考主题实测比值范围外放一成校准)"
   }
  ],
- "exemptSameColor": "focus|selection|findMatch|Cursor",
+ "exemptSameColor": "(?<!un)focus|selection|findMatch|Cursor",
  "keyLevels": {
   "actionBar.toggledBackground": "底色弱",
   "activeSessionView.background": "底色弱",
