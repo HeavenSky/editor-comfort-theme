@@ -46,7 +46,7 @@ diff、git 标记、终端等界面色都和主题一致，不会退回 VS Code 
 ## 进一步阅读
 
 - [文档](docs/README.md)：在其他编辑器里安装、全部主题与截图、Terminal.app 配置和自定义。
-- [更新日志](../CHANGELOG.md)（英文）：每个版本改了什么。
+- [更新日志](./CHANGELOG.md)：每个版本改了什么。
 
 ## 许可证
 
