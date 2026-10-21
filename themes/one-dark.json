@@ -671,7 +671,7 @@
 				"entity.scope.name.cpp"
 			],
 			"settings": {
-				"foreground": "#E5C07B"
+				"foreground": "#DC7569"
 			}
 		},
 		{
@@ -711,7 +711,7 @@
 				"support.macro"
 			],
 			"settings": {
-				"foreground": "#56B6C2"
+				"foreground": "#61AFEF"
 			}
 		},
 		{
@@ -872,9 +872,11 @@
 		},
 		{
 			"name": "variable.parameter.function.language.special.cls.python",
-			"scope": "variable.parameter.function.language.special.cls.python",
+			"scope": [
+				"variable.parameter.function.language.special.cls.python"
+			],
 			"settings": {
-				"foreground": "#E5C07B"
+				"foreground": "#DC7569"
 			}
 		},
 		{
@@ -914,9 +916,11 @@
 		},
 		{
 			"name": "regexp constant character-class",
-			"scope": "constant.other.character-class.regexp",
+			"scope": [
+				"constant.other.character-class.regexp"
+			],
 			"settings": {
-				"foreground": "#E06F78"
+				"foreground": "#D19A66"
 			}
 		},
 		{
@@ -1380,9 +1384,11 @@
 		},
 		{
 			"name": "Language variables",
-			"scope": "variable.language",
+			"scope": [
+				"variable.language"
+			],
 			"settings": {
-				"foreground": "#E5C07B"
+				"foreground": "#DC7569"
 			}
 		},
 		{
@@ -1523,9 +1529,11 @@
 		},
 		{
 			"name": "Support",
-			"scope": "support.function",
+			"scope": [
+				"support.function"
+			],
 			"settings": {
-				"foreground": "#56B6C2"
+				"foreground": "#61AFEF"
 			}
 		},
 		{
@@ -1572,9 +1580,11 @@
 		},
 		{
 			"name": "Constant other symbol",
-			"scope": "constant.other.symbol",
+			"scope": [
+				"constant.other.symbol"
+			],
 			"settings": {
-				"foreground": "#56B6C2"
+				"foreground": "#61AFEF"
 			}
 		},
 		{
@@ -1650,9 +1660,11 @@
 		},
 		{
 			"name": "Units",
-			"scope": "keyword.other.unit",
+			"scope": [
+				"keyword.other.unit"
+			],
 			"settings": {
-				"foreground": "#E06F78"
+				"foreground": "#56B6C2"
 			}
 		},
 		{
@@ -2111,9 +2123,11 @@
 		},
 		{
 			"name": "rgb-value",
-			"scope": "rgb-value",
+			"scope": [
+				"rgb-value"
+			],
 			"settings": {
-				"foreground": "#56B6C2"
+				"foreground": "#61AFEF"
 			}
 		},
 		{
@@ -2407,7 +2421,7 @@
 				"constant.keyword.clojure"
 			],
 			"settings": {
-				"foreground": "#56B6C2"
+				"foreground": "#61AFEF"
 			}
 		},
 		{
@@ -2841,7 +2855,7 @@
 				"string.regexp"
 			],
 			"settings": {
-				"foreground": "#E06F78"
+				"foreground": "#56B6C2"
 			}
 		},
 		{
@@ -2875,9 +2889,11 @@
 			}
 		},
 		{
-			"scope": "entity.name.label",
+			"scope": [
+				"entity.name.label"
+			],
 			"settings": {
-				"foreground": "#E06F78"
+				"foreground": "#D19A66"
 			}
 		},
 		{

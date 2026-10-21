@@ -596,7 +596,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#4B4FCB"
+				"foreground": "#B24927"
 			}
 		},
 		{
@@ -632,7 +632,7 @@
 				"support.variable.object.process"
 			],
 			"settings": {
-				"foreground": "#5560C8"
+				"foreground": "#B54160"
 			}
 		},
 		{
@@ -875,7 +875,6 @@
 		{
 			"name": "Built-in constant",
 			"scope": [
-				"constant.language",
 				"punctuation.definition.constant",
 				"variable.other.constant"
 			],
@@ -884,13 +883,30 @@
 			}
 		},
 		{
+			"name": "Built-in constant",
+			"scope": [
+				"constant.language"
+			],
+			"settings": {
+				"foreground": "#B24927"
+			}
+		},
+		{
 			"name": "User-defined constant",
 			"scope": [
-				"constant.character",
-				"constant.other"
+				"constant.character"
 			],
 			"settings": {
 				"foreground": "#4B4FCB"
+			}
+		},
+		{
+			"name": "User-defined constant",
+			"scope": [
+				"constant.other"
+			],
+			"settings": {
+				"foreground": "#B24927"
 			}
 		},
 		{
@@ -975,9 +991,11 @@
 		},
 		{
 			"name": "Function Parameters",
-			"scope": "variable.parameter",
+			"scope": [
+				"variable.parameter"
+			],
 			"settings": {
-				"foreground": "#5560C8"
+				"foreground": "#B54160"
 			}
 		},
 		{
@@ -1025,11 +1043,19 @@
 		{
 			"name": "Library (function & constant)",
 			"scope": [
-				"support.function",
-				"support.constant"
+				"support.function"
 			],
 			"settings": {
 				"foreground": "#4B4FCB"
+			}
+		},
+		{
+			"name": "Library (function & constant)",
+			"scope": [
+				"support.constant"
+			],
+			"settings": {
+				"foreground": "#B24927"
 			}
 		},
 		{
@@ -1553,11 +1579,19 @@
 		{
 			"name": "Elixir Classes",
 			"scope": [
-				"source.elixir support.type.elixir",
-				"source.elixir meta.module.elixir entity.name.class.elixir"
+				"source.elixir support.type.elixir"
 			],
 			"settings": {
 				"foreground": "#4B4FCB"
+			}
+		},
+		{
+			"name": "Elixir Classes",
+			"scope": [
+				"source.elixir meta.module.elixir entity.name.class.elixir"
+			],
+			"settings": {
+				"foreground": "#B24927"
 			}
 		},
 		{
@@ -1574,7 +1608,7 @@
 				"source.elixir constant.other.keywords.elixir"
 			],
 			"settings": {
-				"foreground": "#4B4FCB"
+				"foreground": "#B24927"
 			}
 		},
 		{
@@ -1700,9 +1734,11 @@
 		},
 		{
 			"name": "JavaScript Variable Parameter Function",
-			"scope": "variable.parameter.function.js",
+			"scope": [
+				"variable.parameter.function.js"
+			],
 			"settings": {
-				"foreground": "#5560C8"
+				"foreground": "#B54160"
 			}
 		},
 		{
@@ -2003,11 +2039,19 @@
 		{
 			"name": "Python Function Parameter and Arguments",
 			"scope": [
-				"variable.parameter.function.python",
 				"meta.function-call.arguments.python"
 			],
 			"settings": {
 				"foreground": "#5560C8"
+			}
+		},
+		{
+			"name": "Python Function Parameter and Arguments",
+			"scope": [
+				"variable.parameter.function.python"
+			],
+			"settings": {
+				"foreground": "#B54160"
 			}
 		},
 		{
@@ -2202,9 +2246,11 @@
 		},
 		{
 			"name": "handlebars enitity attribute values",
-			"scope": "entity.other.attribute-value.handlebars variable.parameter.handlebars",
+			"scope": [
+				"entity.other.attribute-value.handlebars variable.parameter.handlebars"
+			],
 			"settings": {
-				"foreground": "#5560C8"
+				"foreground": "#B54160"
 			}
 		},
 		{

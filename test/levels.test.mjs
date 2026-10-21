@@ -12,9 +12,13 @@ import { calibrateByKeys, median, quantile, rulePairs, tmean } from "../tools/la
  */
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
-const registry = new Set(Object.keys(JSON.parse(readFileSync(join(ROOT, "assets/vscode/color-registry.json"), "utf8")).colors));
+const registry = new Set(
+	Object.keys(
+		JSON.parse(readFileSync(join(ROOT, "assets/vscode/color-registry.json"), "utf8")).colors
+	)
+);
 const levels = JSON.parse(readFileSync(join(ROOT, "assets/levels.json"), "utf8"));
-const levelOf = (k) => levels.keyLevels[k] || "";
+const levelOf = k => levels.keyLevels[k] || "";
 
 describe("rulePairs", () => {
 	const pairs = rulePairs(
@@ -34,26 +38,45 @@ describe("rulePairs", () => {
 			"editor.background",
 		],
 		registry,
-		levelOf,
+		levelOf
 	);
 
 	it("明确表: 占位字, 通知图标, peek 匹配高亮, diff 底色", () => {
 		expect(pairs["input.placeholderForeground"]).toEqual(["input.background"]);
 		expect(pairs["notificationsErrorIcon.foreground"]).toEqual(["notifications.background"]);
-		expect(pairs["peekViewEditor.matchHighlightBackground"]).toEqual(["peekViewEditor.background"]);
+		expect(pairs["peekViewEditor.matchHighlightBackground"]).toEqual([
+			"peekViewEditor.background",
+		]);
 		expect(pairs["diffEditor.insertedTextBackground"]).toEqual(["editor.background"]);
 	});
 
 	it("命名约定: 同状态的底色优先, 再退到同前缀底色与所在容器", () => {
 		expect(pairs["notifications.foreground"]).toEqual(["notifications.background"]);
-		expect(pairs["editorSuggestWidget.selectedForeground"]).toEqual(["editorSuggestWidget.selectedBackground", "editorSuggestWidget.background"]);
-		expect(pairs["editorHoverWidget.border"]).toEqual(["editorHoverWidget.background", "editor.background"]);
-		expect(pairs["statusBarItem.warningHoverForeground"]).toEqual(["statusBarItem.warningHoverBackground", "statusBar.background"]);
-		expect(pairs["editorOverviewRuler.errorForeground"][0]).toBe("editorOverviewRuler.background");
+		expect(pairs["editorSuggestWidget.selectedForeground"]).toEqual([
+			"editorSuggestWidget.selectedBackground",
+			"editorSuggestWidget.background",
+		]);
+		expect(pairs["editorHoverWidget.border"]).toEqual([
+			"editorHoverWidget.background",
+			"editor.background",
+		]);
+		expect(pairs["statusBarItem.warningHoverForeground"]).toEqual([
+			"statusBarItem.warningHoverBackground",
+			"statusBar.background",
+		]);
+		expect(pairs["editorOverviewRuler.errorForeground"][0]).toBe(
+			"editorOverviewRuler.background"
+		);
 	});
 
 	it("层次底不按命名约定配对(常与编辑区底故意同色), 终端色与基准不配", () => {
-		for (const k of ["tab.activeBackground", "titleBar.activeBackground", "terminal.ansiRed", "editor.background"]) expect(pairs[k]).toBeUndefined();
+		for (const k of [
+			"tab.activeBackground",
+			"titleBar.activeBackground",
+			"terminal.ansiRed",
+			"editor.background",
+		])
+			expect(pairs[k]).toBeUndefined();
 	});
 
 	it("只采用注册表里存在的底色键, 不配自己", () => {
@@ -96,7 +119,14 @@ describe("assets/levels.json", () => {
 	});
 
 	it("覆盖缺口已补: 截图之外的场景有配对, 线条中按颜色键标定", () => {
-		for (const k of ["input.placeholderForeground", "notifications.foreground", "editorSuggestWidget.foreground", "editorHoverWidget.foreground", "diffEditor.insertedTextBackground", "menu.foreground"]) {
+		for (const k of [
+			"input.placeholderForeground",
+			"notifications.foreground",
+			"editorSuggestWidget.foreground",
+			"editorHoverWidget.foreground",
+			"diffEditor.insertedTextBackground",
+			"menu.foreground",
+		]) {
 			expect(levels.pairs[k]).toBeDefined();
 		}
 		expect(levels.levels["线条中"].source).toMatch(/^keys/);
@@ -104,11 +134,12 @@ describe("assets/levels.json", () => {
 
 	it("各组梯子有序: 强 > 中 > 弱的目标, 修复下限不高于混档线", () => {
 		for (const g of ["线条", "底色"]) {
-			const [s, m, w] = ["强", "中", "弱"].map((l) => levels.levels[g + l]);
+			const [s, m, w] = ["强", "中", "弱"].map(l => levels.levels[g + l]);
 			expect(s.pct).toBeGreaterThan(m.pct);
 			expect(m.pct).toBeGreaterThan(w.pct);
 		}
-		for (const lv of Object.values(levels.levels)) if (lv.mixLo != null) expect(lv.lo).toBeLessThanOrEqual(lv.mixLo);
+		for (const lv of Object.values(levels.levels).filter(item => item.mixLo != null))
+			expect(lv.lo).toBeLessThanOrEqual(lv.mixLo);
 	});
 
 	it("同色豁免: unfocused 不算焦点框, 可辨差以下的线保持原主题值", () => {
@@ -117,13 +148,16 @@ describe("assets/levels.json", () => {
 		expect(exempt.test("list.inactiveFocusOutline")).toBe(true);
 		expect(exempt.test("tab.unfocusedActiveBorder")).toBe(false);
 		expect(levels.sameColorDE).toBe(2);
-		const colorsOf = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8").replace(/^\s*\/\/.*$/gm, "")).colors;
+		const colorsOf = p =>
+			JSON.parse(readFileSync(join(ROOT, p), "utf8").replace(/^\s*\/\/.*$/gm, "")).colors;
 		for (const [theme, key] of [
 			["github-dark", "tab.unfocusedActiveBorder"],
 			["pale-dark", "tab.activeBorder"],
 			["pale-light", "editorGroupHeader.tabsBorder"],
 		]) {
-			expect(colorsOf(`themes/${theme}.json`)[key].toUpperCase()).toBe(colorsOf(`assets/source/${theme}.json`)[key].toUpperCase());
+			expect(colorsOf(`themes/${theme}.json`)[key].toUpperCase()).toBe(
+				colorsOf(`assets/source/${theme}.json`)[key].toUpperCase()
+			);
 		}
 	});
 });

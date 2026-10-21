@@ -595,7 +595,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#82AAFF"
+				"foreground": "#FFEB95"
 			}
 		},
 		{
@@ -874,7 +874,6 @@
 		{
 			"name": "Built-in constant",
 			"scope": [
-				"constant.language",
 				"punctuation.definition.constant",
 				"variable.other.constant"
 			],
@@ -883,13 +882,30 @@
 			}
 		},
 		{
+			"name": "Built-in constant",
+			"scope": [
+				"constant.language"
+			],
+			"settings": {
+				"foreground": "#FFEB95"
+			}
+		},
+		{
 			"name": "User-defined constant",
 			"scope": [
-				"constant.character",
-				"constant.other"
+				"constant.character"
 			],
 			"settings": {
 				"foreground": "#82AAFF"
+			}
+		},
+		{
+			"name": "User-defined constant",
+			"scope": [
+				"constant.other"
+			],
+			"settings": {
+				"foreground": "#FFEB95"
 			}
 		},
 		{
@@ -1024,11 +1040,19 @@
 		{
 			"name": "Library (function & constant)",
 			"scope": [
-				"support.function",
-				"support.constant"
+				"support.function"
 			],
 			"settings": {
 				"foreground": "#82AAFF"
+			}
+		},
+		{
+			"name": "Library (function & constant)",
+			"scope": [
+				"support.constant"
+			],
+			"settings": {
+				"foreground": "#FFEB95"
 			}
 		},
 		{
@@ -1552,11 +1576,19 @@
 		{
 			"name": "Elixir Classes",
 			"scope": [
-				"source.elixir support.type.elixir",
-				"source.elixir meta.module.elixir entity.name.class.elixir"
+				"source.elixir support.type.elixir"
 			],
 			"settings": {
 				"foreground": "#82AAFF"
+			}
+		},
+		{
+			"name": "Elixir Classes",
+			"scope": [
+				"source.elixir meta.module.elixir entity.name.class.elixir"
+			],
+			"settings": {
+				"foreground": "#FFEB95"
 			}
 		},
 		{
@@ -1573,7 +1605,7 @@
 				"source.elixir constant.other.keywords.elixir"
 			],
 			"settings": {
-				"foreground": "#82AAFF"
+				"foreground": "#FFEB95"
 			}
 		},
 		{

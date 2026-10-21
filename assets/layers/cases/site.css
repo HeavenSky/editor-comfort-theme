@@ -1,0 +1,8 @@
+:root { --accent: #3b82f6; --gap: 12px; }
+.card > .title, #main a:hover {
+  color: var(--accent);
+  margin: calc(var(--gap) * 2) auto;
+  font: 600 14px/1.4 "Inter", sans-serif;
+  transition: opacity 0.2s ease-in-out;
+}
+@media (max-width: 600px) { .card { display: none !important; } }

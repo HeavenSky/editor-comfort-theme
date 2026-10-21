@@ -8,76 +8,145 @@
 //   --html: 不生成不截图, 只用输出目录里已有的图重建 index.html(秒级)
 // 页面: 顶部勾选 1~3 个档按列对比(记在浏览器本地); 点图放大(Esc 或点击关闭); 鼠标停在图上按住 Option / Alt 临时显示下一个已选档,
 //   按住 Ctrl 显示上一个, 松开恢复; 放大视图里同样可用
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { spawn, spawnSync } from 'node:child_process';
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { spawn, spawnSync } from "node:child_process";
 
-const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const argv = process.argv.slice(2);
 const opt = (name, def) => (argv.includes(name) ? argv[argv.indexOf(name) + 1] : def);
-const htmlOnly = argv.includes('--html');
-const all = argv.includes('--all');
-const tag = opt('--tag', 'new');
-const SETS = { close: { title: '全关', steps: 'none' }, part: { title: '部分开', steps: '' }, open: { title: '全开', steps: 'all' } };
-const sets = opt('--sets', 'close,part').split(',').filter((s) => SETS[s]);
-const valued = new Set(['--tag', '--sets'].map((n) => argv.indexOf(n) + 1).filter((i) => i > 0));
-const [outArg, ...filters] = argv.filter((a, i) => !a.startsWith('--') && !valued.has(i));
+const htmlOnly = argv.includes("--html");
+const all = argv.includes("--all");
+const tag = opt("--tag", "new");
+const SETS = {
+	close: { title: "全关", steps: "none" },
+	part: { title: "部分开", steps: "" },
+	open: { title: "全开", steps: "all" },
+};
+const sets = opt("--sets", "close,part")
+	.split(",")
+	.filter(s => SETS[s]);
+const valued = new Set(["--tag", "--sets"].map(n => argv.indexOf(n) + 1).filter(i => i > 0));
+const [outArg, ...filters] = argv.filter((a, i) => !a.startsWith("--") && !valued.has(i));
 if (!outArg) {
-  console.error('用法: node tools/shoot/compare-steps.mjs <输出目录> [--all | 主题名过滤...] [--tag new] [--sets close,part] [--html]');
-  process.exit(2);
+	console.error(
+		"用法: node tools/shoot/compare-steps.mjs <输出目录> [--all | 主题名过滤...] [--tag new] [--sets close,part] [--html]"
+	);
+	process.exit(2);
 }
 const out = path.resolve(outArg);
-const only = all ? [] : filters.length ? filters : ['one-dark', 'one-light'];
-const TAGS = { old: '改造前', new: '改造后' };
+const only = all ? [] : filters.length ? filters : ["one-dark", "one-light"];
+const TAGS = { old: "改造前", new: "改造后" };
 
 const run = (cmd, args, env = {}) => {
-  const r = spawnSync(cmd, args, { cwd: REPO, env: { ...process.env, ...env }, encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
-  if (r.status !== 0) {
-    console.error(`${cmd} ${args.join(' ')} 失败`);
-    process.exit(1);
-  }
-  return r.stdout;
+	const r = spawnSync(cmd, args, {
+		cwd: REPO,
+		env: { ...process.env, ...env },
+		encoding: "utf8",
+		stdio: ["ignore", "pipe", "inherit"],
+	});
+	if (r.status !== 0) {
+		console.error(`${cmd} ${args.join(" ")} 失败`);
+		process.exit(1);
+	}
+	return r.stdout;
 };
-const runAsync = (cmd, args, env = {}) => new Promise((res, rej) => {
-  const p = spawn(cmd, args, { cwd: REPO, env: { ...process.env, ...env }, stdio: ['ignore', 'ignore', 'inherit'] });
-  p.on('exit', (code) => (code === 0 ? res() : rej(new Error(`${cmd} ${args.join(' ')} 失败`))));
-});
+const runAsync = (cmd, args, env = {}) =>
+	new Promise((res, rej) => {
+		const p = spawn(cmd, args, {
+			cwd: REPO,
+			env: { ...process.env, ...env },
+			stdio: ["ignore", "ignore", "inherit"],
+		});
+		p.on("exit", code =>
+			code === 0 ? res() : rej(new Error(`${cmd} ${args.join(" ")} 失败`))
+		);
+	});
 
 fs.mkdirSync(out, { recursive: true });
 if (!htmlOnly) {
-  const dirs = sets.map((s) => ({ s, key: `${tag}_${s}` }));
-  console.log('== 生成', dirs.map((d) => d.key).join(', '));
-  await Promise.all(dirs.map(({ s, key }) => runAsync('uv', ['run', '-q', 'tools/gen/gen_vscode.py', '--out', path.join(out, '_themes', key)], { COMFORT_STEPS: SETS[s].steps })));
-  // 每档的步骤开关清单留在该档目录, 页面上展示
-  for (const { s, key } of dirs) {
-    fs.mkdirSync(path.join(out, key), { recursive: true });
-    fs.writeFileSync(path.join(out, key, 'steps.txt'), run('uv', ['run', '-q', 'tools/gen/steps.py'], { COMFORT_STEPS: SETS[s].steps }));
-  }
-  const job = path.join(out, '_themes', `job-${tag}.json`);
-  fs.writeFileSync(job, JSON.stringify({ sets: dirs.map(({ key }) => ({ dir: path.join(out, key), src: path.join(out, '_themes', key) })), filter: only, jpg: true }));
-  console.log('== 截图');
-  const r = spawnSync('node', ['tools/shoot/shoot.mjs', '--job', job], { cwd: REPO, stdio: 'inherit' });
-  if (r.status !== 0) process.exit(1);
+	const dirs = sets.map(s => ({ s, key: `${tag}_${s}` }));
+	console.log("== 生成", dirs.map(d => d.key).join(", "));
+	await Promise.all(
+		dirs.map(({ s, key }) =>
+			runAsync(
+				"uv",
+				["run", "-q", "tools/gen/gen_vscode.py", "--out", path.join(out, "_themes", key)],
+				{ COMFORT_STEPS: SETS[s].steps }
+			)
+		)
+	);
+	// 每档的步骤开关清单留在该档目录, 页面上展示
+	for (const { s, key } of dirs) {
+		fs.mkdirSync(path.join(out, key), { recursive: true });
+		fs.writeFileSync(
+			path.join(out, key, "steps.txt"),
+			run("uv", ["run", "-q", "tools/gen/steps.py"], { COMFORT_STEPS: SETS[s].steps })
+		);
+	}
+	const job = path.join(out, "_themes", `job-${tag}.json`);
+	fs.writeFileSync(
+		job,
+		JSON.stringify({
+			sets: dirs.map(({ key }) => ({
+				dir: path.join(out, key),
+				src: path.join(out, "_themes", key),
+			})),
+			filter: only,
+			jpg: true,
+		})
+	);
+	console.log("== 截图");
+	const r = spawnSync("node", ["tools/shoot/shoot.mjs", "--job", job], {
+		cwd: REPO,
+		stdio: "inherit",
+	});
+	if (r.status !== 0) process.exit(1);
 }
 
 // ======== 页面 ========
-const order = ['one', 'ayu', 'sunlit', 'github', 'dracula', 'owl', 'moka', 'pale'];
-const rank = (f) => { const i = order.indexOf(f.split('-')[0]); return i < 0 ? order.length : i; };
-const setOrder = ['close', 'part', 'open'];
-const found = fs.readdirSync(out).filter((d) => /^[a-z0-9]+_(close|part|open)$/.test(d) && fs.statSync(path.join(out, d)).isDirectory())
-  .map((key) => {
-    const [t, s] = key.split('_');
-    const files = fs.readdirSync(path.join(out, key)).filter((f) => f.endsWith('.jpg') && (!only.length || only.some((o) => f.includes(o))));
-    const steps = fs.existsSync(path.join(out, key, 'steps.txt')) ? fs.readFileSync(path.join(out, key, 'steps.txt'), 'utf8') : '';
-    return { key, title: `${TAGS[t] || t} ${SETS[s].title}`, tag: t, files, steps };
-  })
-  .filter((x) => x.files.length)
-  .sort((a, b) => (a.tag === b.tag ? 0 : a.tag === 'old' ? -1 : b.tag === 'old' ? 1 : a.tag.localeCompare(b.tag))
-    || setOrder.indexOf(a.key.split('_')[1]) - setOrder.indexOf(b.key.split('_')[1]));
-const shots = [...new Set(found.flatMap((x) => x.files))].sort((a, b) => rank(a) - rank(b) || a.localeCompare(b));
-const stamp = run('date', ['+%Y-%m-%d %H:%M:%S']).trim();
-const data = { sets: found.map(({ key, title, files, steps }) => ({ key, title, files, steps })), shots };
+const order = ["one", "ayu", "sunlit", "github", "dracula", "owl", "moka", "pale"];
+const rank = f => {
+	const i = order.indexOf(f.split("-")[0]);
+	return i < 0 ? order.length : i;
+};
+const setOrder = ["close", "part", "open"];
+const found = fs
+	.readdirSync(out)
+	.filter(
+		d => /^[a-z0-9]+_(close|part|open)$/.test(d) && fs.statSync(path.join(out, d)).isDirectory()
+	)
+	.map(key => {
+		const [t, s] = key.split("_");
+		const files = fs
+			.readdirSync(path.join(out, key))
+			.filter(f => f.endsWith(".jpg") && (!only.length || only.some(o => f.includes(o))));
+		const steps = fs.existsSync(path.join(out, key, "steps.txt"))
+			? fs.readFileSync(path.join(out, key, "steps.txt"), "utf8")
+			: "";
+		return { key, title: `${TAGS[t] || t} ${SETS[s].title}`, tag: t, files, steps };
+	})
+	.filter(x => x.files.length)
+	.sort(
+		(a, b) =>
+			(a.tag === b.tag
+				? 0
+				: a.tag === "old"
+					? -1
+					: b.tag === "old"
+						? 1
+						: a.tag.localeCompare(b.tag)) ||
+			setOrder.indexOf(a.key.split("_")[1]) - setOrder.indexOf(b.key.split("_")[1])
+	);
+const shots = [...new Set(found.flatMap(x => x.files))].sort(
+	(a, b) => rank(a) - rank(b) || a.localeCompare(b)
+);
+const stamp = run("date", ["+%Y-%m-%d %H:%M:%S"]).trim();
+const data = {
+	sets: found.map(({ key, title, files, steps }) => ({ key, title, files, steps })),
+	shots,
+};
 const script = `
 const D = ${JSON.stringify(data)};
 const has = Object.fromEntries(D.sets.map((s) => [s.key, new Set(s.files)]));
@@ -139,7 +208,9 @@ document.addEventListener('keyup', (e) => {
 // 切走窗口时收不到 keyup, 一样恢复
 window.addEventListener('blur', () => held && document.dispatchEvent(new KeyboardEvent('keyup', { key: held.key })));
 `;
-fs.writeFileSync(path.join(out, 'index.html'), `<!doctype html><meta charset="utf-8"><title>调色开关对比</title>
+fs.writeFileSync(
+	path.join(out, "index.html"),
+	`<!doctype html><meta charset="utf-8"><title>调色开关对比</title>
 <style>body{margin:0;font:13px -apple-system,sans-serif;background:#888}
 header{position:sticky;top:0;background:#ddd;padding:6px 8px;z-index:1;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-start}
 .pick{background:#fff;border-radius:4px;padding:3px 8px}.pick small{color:#888}.hint{color:#555;align-self:center}
@@ -154,5 +225,6 @@ figcaption{position:absolute;left:0;top:0;background:#000a;color:#fff;padding:1p
 <main id="grid"></main>
 <figure id="box" hidden><img><figcaption></figcaption></figure>
 <script>${script}</script>
-`);
-console.log(`对比页: ${path.join(out, 'index.html')}(${found.map((x) => x.key).join(', ')})`);
+`
+);
+console.log(`对比页: ${path.join(out, "index.html")}(${found.map(x => x.key).join(", ")})`);

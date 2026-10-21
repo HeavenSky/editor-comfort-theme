@@ -460,7 +460,7 @@
 				"source.elixir quoted"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#907001"
 			}
 		},
 		{
@@ -516,7 +516,7 @@
 				"unit.scss"
 			],
 			"settings": {
-				"foreground": "#AA0982"
+				"foreground": "#C93E81"
 			}
 		},
 		{
@@ -571,7 +571,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#BA5353"
 			}
 		},
 		{
@@ -683,7 +683,7 @@
 				"variable.other.global.php punctuation.definition.variable"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -723,7 +723,7 @@
 				"support.macro"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#AA0982"
 			}
 		},
 		{
@@ -783,7 +783,7 @@
 				"source.css property-name"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -853,19 +853,29 @@
 		},
 		{
 			"name": "String",
-			"scope": "string",
+			"scope": [
+				"string"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#907001"
 			}
 		},
 		{
 			"name": "String Quoted",
 			"scope": [
-				"string.quoted",
 				"variable.other.readwrite.js"
 			],
 			"settings": {
 				"foreground": "#B25B59"
+			}
+		},
+		{
+			"name": "String Quoted",
+			"scope": [
+				"string.quoted"
+			],
+			"settings": {
+				"foreground": "#907001"
 			}
 		},
 		{
@@ -878,7 +888,6 @@
 		{
 			"name": "Number",
 			"scope": [
-				"constant.numeric",
 				"constant.character.numeric"
 			],
 			"settings": {
@@ -887,9 +896,18 @@
 			}
 		},
 		{
+			"name": "Number",
+			"scope": [
+				"constant.numeric"
+			],
+			"settings": {
+				"foreground": "#C93E81",
+				"fontStyle": ""
+			}
+		},
+		{
 			"name": "Built-in constant",
 			"scope": [
-				"constant.language",
 				"punctuation.definition.constant",
 				"variable.other.constant"
 			],
@@ -898,13 +916,30 @@
 			}
 		},
 		{
+			"name": "Built-in constant",
+			"scope": [
+				"constant.language"
+			],
+			"settings": {
+				"foreground": "#BA5353"
+			}
+		},
+		{
 			"name": "User-defined constant",
 			"scope": [
-				"constant.character",
-				"constant.other"
+				"constant.character"
 			],
 			"settings": {
 				"foreground": "#4170D4"
+			}
+		},
+		{
+			"name": "User-defined constant",
+			"scope": [
+				"constant.other"
+			],
+			"settings": {
+				"foreground": "#BA5353"
 			}
 		},
 		{
@@ -933,9 +968,11 @@
 		},
 		{
 			"name": "Variable",
-			"scope": "variable",
+			"scope": [
+				"variable"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -1042,19 +1079,29 @@
 		},
 		{
 			"name": "Entity Name Tag Custom",
-			"scope": "entity.name.tag.custom",
+			"scope": [
+				"entity.name.tag.custom"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
 			"name": "Library (function & constant)",
 			"scope": [
-				"support.function",
+				"support.function"
+			],
+			"settings": {
+				"foreground": "#AA0982"
+			}
+		},
+		{
+			"name": "Library (function & constant)",
+			"scope": [
 				"support.constant"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#BA5353"
 			}
 		},
 		{
@@ -1071,14 +1118,16 @@
 				"support.class"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
 			"name": "Support Variable DOM",
-			"scope": "support.variable.dom",
+			"scope": [
+				"support.variable.dom"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -1254,9 +1303,11 @@
 		},
 		{
 			"name": "Keyword Other Unit",
-			"scope": "keyword.other.unit",
+			"scope": [
+				"keyword.other.unit"
+			],
 			"settings": {
-				"foreground": "#AA0982"
+				"foreground": "#C93E81"
 			}
 		},
 		{
@@ -1269,9 +1320,11 @@
 		},
 		{
 			"name": "Entity Other Attribute Name Id",
-			"scope": "entity.other.attribute-name.id",
+			"scope": [
+				"entity.other.attribute-name.id"
+			],
 			"settings": {
-				"foreground": "#AA0982"
+				"foreground": "#907001"
 			}
 		},
 		{
@@ -1412,9 +1465,11 @@
 		},
 		{
 			"name": "Support Function",
-			"scope": "support.function",
+			"scope": [
+				"support.function"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#AA0982"
 			}
 		},
 		{
@@ -1529,9 +1584,11 @@
 		},
 		{
 			"name": "Bold",
-			"scope": "bold",
+			"scope": [
+				"bold"
+			],
 			"settings": {
-				"foreground": "#4170D4",
+				"foreground": "#E5025B",
 				"fontStyle": "bold"
 			}
 		},
@@ -1630,7 +1687,6 @@
 		{
 			"name": "Attribute Name for CSS",
 			"scope": [
-				"meta.attribute-selector.css entity.other.attribute-name.attribute",
 				"variable.other.readwrite.js"
 			],
 			"settings": {
@@ -1638,13 +1694,30 @@
 			}
 		},
 		{
+			"name": "Attribute Name for CSS",
+			"scope": [
+				"meta.attribute-selector.css entity.other.attribute-name.attribute"
+			],
+			"settings": {
+				"foreground": "#907001"
+			}
+		},
+		{
 			"name": "Elixir Classes",
 			"scope": [
-				"source.elixir support.type.elixir",
+				"source.elixir support.type.elixir"
+			],
+			"settings": {
+				"foreground": "#E5025B"
+			}
+		},
+		{
+			"name": "Elixir Classes",
+			"scope": [
 				"source.elixir meta.module.elixir entity.name.class.elixir"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#BA5353"
 			}
 		},
 		{
@@ -1661,14 +1734,16 @@
 				"source.elixir constant.other.keywords.elixir"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#BA5353"
 			}
 		},
 		{
 			"name": "Elixir String Punctuations",
-			"scope": "source.elixir punctuation.definition.string",
+			"scope": [
+				"source.elixir punctuation.definition.string"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#907001"
 			}
 		},
 		{
@@ -1678,7 +1753,7 @@
 				"source.elixir variable.other.readwrite.module.elixir punctuation.definition.variable.elixir"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -1785,7 +1860,7 @@
 				"variable.other.readwrite.powershell"
 			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -1828,9 +1903,11 @@
 		},
 		{
 			"name": "JavaScript Method Declaration e.g. `constructor`",
-			"scope": "meta.method.declaration storage.type.js",
+			"scope": [
+				"meta.method.declaration storage.type.js"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -1935,9 +2012,11 @@
 		},
 		{
 			"name": "JSON Support Constants",
-			"scope": "support.constant.json",
+			"scope": [
+				"support.constant.json"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#BA5353"
 			}
 		},
 		{
@@ -2017,9 +2096,11 @@
 		},
 		{
 			"name": "Attribute Name for LESS",
-			"scope": "meta.attribute-selector.less entity.other.attribute-name.attribute",
+			"scope": [
+				"meta.attribute-selector.less entity.other.attribute-name.attribute"
+			],
 			"settings": {
-				"foreground": "#AA0982"
+				"foreground": "#907001"
 			}
 		},
 		{
@@ -2087,13 +2168,21 @@
 		{
 			"name": "Markdown Punctuation",
 			"scope": [
-				"punctuation.definition.string.markdown",
 				"punctuation.definition.string.begin.markdown",
-				"punctuation.definition.string.end.markdown",
-				"meta.link.inline.markdown punctuation.definition.string"
+				"punctuation.definition.string.end.markdown"
 			],
 			"settings": {
 				"foreground": "#4170D4"
+			}
+		},
+		{
+			"name": "Markdown Punctuation",
+			"scope": [
+				"punctuation.definition.string.markdown",
+				"meta.link.inline.markdown punctuation.definition.string"
+			],
+			"settings": {
+				"foreground": "#907001"
 			}
 		},
 		{
@@ -2147,16 +2236,20 @@
 		},
 		{
 			"name": "PHP Global Variables",
-			"scope": "variable.other.global.php",
+			"scope": [
+				"variable.other.global.php"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
 			"name": "Declaration Punctuation in PHP Global Variables",
-			"scope": "variable.other.global.php punctuation.definition.variable",
+			"scope": [
+				"variable.other.global.php punctuation.definition.variable"
+			],
 			"settings": {
-				"foreground": "#4170D4"
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -2218,13 +2311,21 @@
 		{
 			"name": "SCSS Variable",
 			"scope": [
-				"variable.scss",
-				"variable.sass",
 				"variable.parameter.url.scss",
 				"variable.parameter.url.sass"
 			],
 			"settings": {
 				"foreground": "#4170D4"
+			}
+		},
+		{
+			"name": "SCSS Variable",
+			"scope": [
+				"variable.scss",
+				"variable.sass"
+			],
+			"settings": {
+				"foreground": "#E5025B"
 			}
 		},
 		{
@@ -2254,7 +2355,7 @@
 				"meta.attribute-selector.sass entity.other.attribute-name.attribute"
 			],
 			"settings": {
-				"foreground": "#AA0982"
+				"foreground": "#907001"
 			}
 		},
 		{

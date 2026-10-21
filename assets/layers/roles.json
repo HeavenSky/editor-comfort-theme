@@ -1,0 +1,4535 @@
+{
+ "about": "语法角色差异化标准(tools/gen/roles.py 生成, 勿手改)",
+ "rules": {
+  "apartDE": 10.0,
+  "sameDE": 5.0,
+  "must": 0.9,
+  "should": 0.75,
+  "same": 0.5,
+  "collide": 0.25,
+  "top": [
+   "SynthWave",
+   "Ayu",
+   "Atom",
+   "Noctis",
+   "VSCodeTomorrownightblue"
+  ],
+  "topMajority": 3,
+  "families": 25,
+  "gate": 63
+ },
+ "roles": [
+  {
+   "id": "keyword",
+   "name": "关键字"
+  },
+  {
+   "id": "operator",
+   "name": "运算符"
+  },
+  {
+   "id": "storage",
+   "name": "声明类型"
+  },
+  {
+   "id": "function",
+   "name": "函数"
+  },
+  {
+   "id": "builtin_fn",
+   "name": "内置函数"
+  },
+  {
+   "id": "type",
+   "name": "类型"
+  },
+  {
+   "id": "builtin_type",
+   "name": "内置类型"
+  },
+  {
+   "id": "namespace",
+   "name": "命名空间"
+  },
+  {
+   "id": "string",
+   "name": "字符串"
+  },
+  {
+   "id": "regexp",
+   "name": "正则"
+  },
+  {
+   "id": "escape",
+   "name": "转义"
+  },
+  {
+   "id": "number",
+   "name": "数字"
+  },
+  {
+   "id": "constant",
+   "name": "常量字面量"
+  },
+  {
+   "id": "constant_var",
+   "name": "常量变量"
+  },
+  {
+   "id": "variable",
+   "name": "变量"
+  },
+  {
+   "id": "parameter",
+   "name": "参数"
+  },
+  {
+   "id": "property",
+   "name": "属性"
+  },
+  {
+   "id": "key",
+   "name": "对象键"
+  },
+  {
+   "id": "tag",
+   "name": "标签"
+  },
+  {
+   "id": "attribute",
+   "name": "属性名(标签)"
+  },
+  {
+   "id": "this",
+   "name": "this/self"
+  },
+  {
+   "id": "comment",
+   "name": "注释"
+  },
+  {
+   "id": "text",
+   "name": "正文"
+  },
+  {
+   "id": "heading",
+   "name": "标题"
+  },
+  {
+   "id": "link",
+   "name": "链接"
+  },
+  {
+   "id": "raw",
+   "name": "行内代码"
+  }
+ ],
+ "exempt": [
+  "assets/layers/cases/app.js@property|key",
+  "assets/layers/cases/app.js@variable|parameter",
+  "assets/layers/cases/lib.rs@type|this",
+  "assets/layers/cases/model.py@builtin_type|this",
+  "assets/layers/cases/model.py@escape|constant",
+  "assets/layers/cases/model.py@escape|number",
+  "assets/layers/cases/model.py@function|text",
+  "assets/layers/cases/model.py@number|parameter",
+  "assets/layers/cases/model.py@parameter|text",
+  "assets/layers/cases/notes.md@function|builtin_fn",
+  "assets/layers/cases/notes.md@function|builtin_type",
+  "assets/layers/cases/notes.md@function|link",
+  "assets/layers/cases/page.html@constant_var|attribute",
+  "assets/layers/cases/page.html@escape|constant",
+  "assets/layers/cases/page.html@escape|number",
+  "assets/layers/cases/task.rb@string|text",
+  "assets/layers/cases/util.cpp@namespace|text",
+  "assets/layers/cases/util.cpp@type|text",
+  "tools/samples/sample.py@constant|parameter",
+  "tools/samples/sample.py@number|parameter",
+  "tools/samples/sample.ts@variable|parameter"
+ ],
+ "pairs": {
+  "keyword|operator": {
+   "apart": 0.44,
+   "same": 0.52,
+   "auto": "惯例同色",
+   "topApart": 1,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 1 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|storage": {
+   "apart": 0.4,
+   "same": 0.6,
+   "auto": "惯例同色",
+   "topApart": 1,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 1 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|function": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|builtin_fn": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "keyword|type": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|builtin_type": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|namespace": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "keyword|string": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|regexp": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|escape": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.py"
+   ]
+  },
+  "keyword|number": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|constant": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|constant_var": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|variable": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|parameter": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|property": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|key": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "keyword|tag": {
+   "apart": 0.76,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "keyword|attribute": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "keyword|this": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "keyword|comment": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "keyword|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "keyword|heading": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "keyword|link": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "keyword|raw": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "operator|storage": {
+   "apart": 0.68,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 2,
+   "grade": "可同色",
+   "why": "原为设计自由, 前 5 名里只有 2 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|function": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|builtin_fn": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "operator|type": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|builtin_type": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|namespace": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "operator|string": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|regexp": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|escape": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "operator|number": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|constant": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|constant_var": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|variable": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|parameter": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|property": {
+   "apart": 0.88,
+   "same": 0.04,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|key": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js"
+   ]
+  },
+  "operator|tag": {
+   "apart": 0.72,
+   "same": 0.24,
+   "auto": "设计自由",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 5 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "operator|attribute": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "operator|this": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "operator|comment": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "operator|text": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "operator|heading": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "operator|link": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "operator|raw": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "storage|function": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|builtin_fn": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "storage|type": {
+   "apart": 0.76,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|builtin_type": {
+   "apart": 0.8,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|namespace": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "storage|string": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|regexp": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|escape": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.py"
+   ]
+  },
+  "storage|number": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|constant": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|constant_var": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|variable": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|parameter": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|property": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|key": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "storage|tag": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "storage|attribute": {
+   "apart": 0.76,
+   "same": 0.24,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "storage|this": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "storage|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "storage|text": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "storage|heading": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "storage|link": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "storage|raw": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "function|builtin_fn": {
+   "apart": 0.56,
+   "same": 0.4,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "function|type": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|builtin_type": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|namespace": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "function|string": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|regexp": {
+   "apart": 0.92,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|escape": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.py"
+   ]
+  },
+  "function|number": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|constant": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|constant_var": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|variable": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|parameter": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|property": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|key": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "function|tag": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "function|attribute": {
+   "apart": 0.68,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "function|this": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "function|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "function|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "function|heading": {
+   "apart": 0.68,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 5 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "function|link": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "function|raw": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "builtin_fn|type": {
+   "apart": 0.84,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|builtin_type": {
+   "apart": 0.64,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "builtin_fn|namespace": {
+   "apart": 0.76,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|string": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|regexp": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "builtin_fn|escape": {
+   "apart": 0.76,
+   "same": 0.24,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "builtin_fn|number": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|constant": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|constant_var": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|variable": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|parameter": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|property": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "builtin_fn|key": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "builtin_fn|tag": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "builtin_fn|attribute": {
+   "apart": 0.76,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "builtin_fn|this": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "builtin_fn|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql"
+   ]
+  },
+  "builtin_fn|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "builtin_fn|heading": {
+   "apart": 0.76,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "builtin_fn|link": {
+   "apart": 0.8,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "builtin_fn|raw": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "type|builtin_type": {
+   "apart": 0.4,
+   "same": 0.56,
+   "auto": "惯例同色",
+   "topApart": 2,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 2 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|namespace": {
+   "apart": 0.2,
+   "same": 0.8,
+   "auto": "惯例同色",
+   "topApart": 1,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 1 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "type|string": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|regexp": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|escape": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.py"
+   ]
+  },
+  "type|number": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|constant": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|constant_var": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|variable": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|parameter": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|property": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|key": {
+   "apart": 0.72,
+   "same": 0.24,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": []
+  },
+  "type|tag": {
+   "apart": 0.84,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "type|attribute": {
+   "apart": 0.68,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 5 家明显不同(规则 2)",
+   "cases": []
+  },
+  "type|this": {
+   "apart": 0.84,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 2,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "type|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "type|text": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "type|heading": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "type|link": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "type|raw": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "builtin_type|namespace": {
+   "apart": 0.4,
+   "same": 0.56,
+   "auto": "惯例同色",
+   "topApart": 1,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 1 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/index.php"
+   ]
+  },
+  "builtin_type|string": {
+   "apart": 0.92,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|regexp": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|escape": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.py"
+   ]
+  },
+  "builtin_type|number": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|constant": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|constant_var": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|variable": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|parameter": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|property": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|key": {
+   "apart": 0.44,
+   "same": 0.56,
+   "auto": "惯例同色",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为惯例同色, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": []
+  },
+  "builtin_type|tag": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "builtin_type|attribute": {
+   "apart": 0.72,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": []
+  },
+  "builtin_type|this": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "builtin_type|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "builtin_type|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.py"
+   ]
+  },
+  "builtin_type|heading": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "builtin_type|link": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "builtin_type|raw": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "namespace|string": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "namespace|regexp": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "namespace|escape": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "namespace|number": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "namespace|constant": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "namespace|constant_var": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "namespace|variable": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "namespace|parameter": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "namespace|property": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php"
+   ]
+  },
+  "namespace|key": {
+   "apart": 0.76,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "namespace|tag": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "namespace|attribute": {
+   "apart": 0.68,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": []
+  },
+  "namespace|this": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/lib.rs"
+   ]
+  },
+  "namespace|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "namespace|text": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "namespace|heading": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "namespace|link": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "namespace|raw": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "string|regexp": {
+   "apart": 0.56,
+   "same": 0.44,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "string|escape": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.py"
+   ]
+  },
+  "string|number": {
+   "apart": 0.92,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.json",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "string|constant": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.json",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "string|constant_var": {
+   "apart": 0.88,
+   "same": 0.0,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "string|variable": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "string|parameter": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "string|property": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "string|key": {
+   "apart": 0.88,
+   "same": 0.04,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/sample.json",
+    "tools/samples/style.less"
+   ]
+  },
+  "string|tag": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "string|attribute": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "string|this": {
+   "apart": 0.88,
+   "same": 0.0,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "string|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "string|text": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "string|heading": {
+   "apart": 0.8,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "string|link": {
+   "apart": 0.6,
+   "same": 0.4,
+   "auto": "设计自由",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 5 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "string|raw": {
+   "apart": 0.32,
+   "same": 0.6,
+   "auto": "惯例同色",
+   "topApart": 2,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 2 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "regexp|escape": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "regexp|number": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "regexp|constant": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "regexp|constant_var": {
+   "apart": 0.8,
+   "same": 0.04,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "regexp|variable": {
+   "apart": 0.84,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "regexp|parameter": {
+   "apart": 0.88,
+   "same": 0.04,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "regexp|property": {
+   "apart": 0.8,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "regexp|key": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js"
+   ]
+  },
+  "regexp|tag": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "regexp|attribute": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "regexp|this": {
+   "apart": 0.84,
+   "same": 0.04,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "regexp|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "regexp|text": {
+   "apart": 0.92,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "regexp|heading": {
+   "apart": 0.76,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "regexp|link": {
+   "apart": 0.72,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": []
+  },
+  "regexp|raw": {
+   "apart": 0.64,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": []
+  },
+  "escape|number": {
+   "apart": 0.72,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.py"
+   ]
+  },
+  "escape|constant": {
+   "apart": 0.68,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.py"
+   ]
+  },
+  "escape|constant_var": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "escape|variable": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "escape|parameter": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "tools/samples/sample.py"
+   ]
+  },
+  "escape|property": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "escape|key": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "escape|tag": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "escape|attribute": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "escape|this": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "escape|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.py"
+   ]
+  },
+  "escape|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.py"
+   ]
+  },
+  "escape|heading": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "escape|link": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "escape|raw": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "number|constant": {
+   "apart": 0.28,
+   "same": 0.72,
+   "auto": "惯例同色",
+   "topApart": 0,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 0 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.json",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "number|constant_var": {
+   "apart": 0.76,
+   "same": 0.24,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "number|variable": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "number|parameter": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "number|property": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "number|key": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/sample.json",
+    "tools/samples/style.less"
+   ]
+  },
+  "number|tag": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "number|attribute": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "number|this": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "number|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "number|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "number|heading": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "number|link": {
+   "apart": 0.96,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "number|raw": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "constant|constant_var": {
+   "apart": 0.72,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 5 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "constant|variable": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "constant|parameter": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "constant|property": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "constant|key": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/sample.json",
+    "tools/samples/style.less"
+   ]
+  },
+  "constant|tag": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "constant|attribute": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "constant|this": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "constant|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "constant|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "constant|heading": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "constant|link": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "constant|raw": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "constant_var|variable": {
+   "apart": 0.44,
+   "same": 0.52,
+   "auto": "惯例同色",
+   "topApart": 1,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 1 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "constant_var|parameter": {
+   "apart": 0.68,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/task.rb",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "constant_var|property": {
+   "apart": 0.44,
+   "same": 0.56,
+   "auto": "惯例同色",
+   "topApart": 1,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 1 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "constant_var|key": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "constant_var|tag": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "constant_var|attribute": {
+   "apart": 0.84,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "constant_var|this": {
+   "apart": 0.44,
+   "same": 0.52,
+   "auto": "惯例同色",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为惯例同色, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": []
+  },
+  "constant_var|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "constant_var|text": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/task.rb"
+   ]
+  },
+  "constant_var|heading": {
+   "apart": 0.72,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": []
+  },
+  "constant_var|link": {
+   "apart": 0.76,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "constant_var|raw": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "variable|parameter": {
+   "apart": 0.48,
+   "same": 0.48,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "variable|property": {
+   "apart": 0.32,
+   "same": 0.68,
+   "auto": "惯例同色",
+   "topApart": 0,
+   "grade": "可同色",
+   "why": "原为惯例同色, 前 5 名里只有 0 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/main.go",
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "variable|key": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "variable|tag": {
+   "apart": 0.76,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "variable|attribute": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "variable|this": {
+   "apart": 0.64,
+   "same": 0.36,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs"
+   ]
+  },
+  "variable|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.ts",
+    "tools/samples/style.less"
+   ]
+  },
+  "variable|text": {
+   "apart": 0.6,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp"
+   ]
+  },
+  "variable|heading": {
+   "apart": 0.76,
+   "same": 0.24,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "variable|link": {
+   "apart": 0.8,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "variable|raw": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "parameter|property": {
+   "apart": 0.6,
+   "same": 0.4,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/main.go",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "parameter|key": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/app.js"
+   ]
+  },
+  "parameter|tag": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "parameter|attribute": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "parameter|this": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "parameter|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/build.sh",
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "parameter|text": {
+   "apart": 0.72,
+   "same": 0.2,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/model.py",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/task.rb",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.py"
+   ]
+  },
+  "parameter|heading": {
+   "apart": 0.88,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "parameter|link": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "parameter|raw": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "property|key": {
+   "apart": 0.72,
+   "same": 0.24,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/app.js",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "property|tag": {
+   "apart": 0.76,
+   "same": 0.24,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "property|attribute": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "property|this": {
+   "apart": 0.6,
+   "same": 0.36,
+   "auto": "设计自由",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 3 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/Main.java"
+   ]
+  },
+  "property|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "tools/samples/sample.ts"
+   ]
+  },
+  "property|text": {
+   "apart": 0.64,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/index.php",
+    "assets/layers/cases/page.html"
+   ]
+  },
+  "property|heading": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "property|link": {
+   "apart": 0.8,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "property|raw": {
+   "apart": 0.84,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "key|tag": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "key|attribute": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "key|this": {
+   "apart": 0.76,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "key|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "tools/samples/style.less"
+   ]
+  },
+  "key|text": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "key|heading": {
+   "apart": 0.76,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "key|link": {
+   "apart": 0.8,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "key|raw": {
+   "apart": 0.76,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "tag|attribute": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css",
+    "tools/samples/style.less"
+   ]
+  },
+  "tag|this": {
+   "apart": 0.6,
+   "same": 0.36,
+   "auto": "设计自由",
+   "topApart": 1,
+   "grade": "可同色",
+   "why": "原为设计自由, 前 5 名里只有 1 家明显不同(规则 2)",
+   "cases": []
+  },
+  "tag|comment": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/config.yaml",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "tools/samples/style.less"
+   ]
+  },
+  "tag|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "tag|heading": {
+   "apart": 0.68,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "tag|link": {
+   "apart": 0.72,
+   "same": 0.28,
+   "auto": "设计自由",
+   "topApart": 2,
+   "grade": "可同色",
+   "why": "原为设计自由, 前 5 名里只有 2 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "tag|raw": {
+   "apart": 0.92,
+   "same": 0.08,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md"
+   ]
+  },
+  "attribute|this": {
+   "apart": 0.88,
+   "same": 0.04,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "attribute|comment": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "tools/samples/style.less"
+   ]
+  },
+  "attribute|text": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/site.css"
+   ]
+  },
+  "attribute|heading": {
+   "apart": 0.8,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "attribute|link": {
+   "apart": 0.84,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 3,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "attribute|raw": {
+   "apart": 0.84,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "this|comment": {
+   "apart": 0.96,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "96% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "this|text": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/Main.java",
+    "assets/layers/cases/lib.rs",
+    "assets/layers/cases/model.py"
+   ]
+  },
+  "this|heading": {
+   "apart": 0.8,
+   "same": 0.2,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "80% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "this|link": {
+   "apart": 0.72,
+   "same": 0.16,
+   "auto": "设计自由",
+   "topApart": 2,
+   "grade": "可同色",
+   "why": "原为设计自由, 前 5 名里只有 2 家明显不同(规则 2)",
+   "cases": []
+  },
+  "this|raw": {
+   "apart": 0.76,
+   "same": 0.16,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "76% 的参照家族明显不同(规则 1)",
+   "cases": []
+  },
+  "comment|text": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/deploy.sh",
+    "assets/layers/cases/notes.md",
+    "assets/layers/cases/page.html",
+    "assets/layers/cases/query.sql",
+    "assets/layers/cases/util.cpp",
+    "tools/samples/sample.md",
+    "tools/samples/sample.py"
+   ]
+  },
+  "comment|heading": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "comment|link": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "comment|raw": {
+   "apart": 1.0,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "100% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "text|heading": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "text|link": {
+   "apart": 0.92,
+   "same": 0.0,
+   "auto": "必须分开",
+   "topApart": 5,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "text|raw": {
+   "apart": 0.92,
+   "same": 0.04,
+   "auto": "必须分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "92% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "heading|link": {
+   "apart": 0.84,
+   "same": 0.08,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "84% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "heading|raw": {
+   "apart": 0.88,
+   "same": 0.12,
+   "auto": "应该分开",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "88% 的参照家族明显不同(规则 1)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  },
+  "link|raw": {
+   "apart": 0.64,
+   "same": 0.32,
+   "auto": "设计自由",
+   "topApart": 4,
+   "grade": "分开",
+   "why": "原为设计自由, 前 5 名里 4 家明显不同(规则 2)",
+   "cases": [
+    "assets/layers/cases/notes.md",
+    "tools/samples/sample.md"
+   ]
+  }
+ }
+}

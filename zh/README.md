@@ -21,7 +21,7 @@
 
 ## 还是你熟悉的那套主题
 
-**底色、正文和语法色都和原主题一致。** 只有看不清的颜色才调整，且只调到够用，色相与饱和度不变。C GitHub Dark 和 GitHub Dark Dimmed 几乎一样；C Sunlit Light 则把 Solarized Light 注释的对比度从 2.5 提到 3.4。各套主题具体改了什么见[主题一览](docs/themes.md#找到你的原主题)。
+**底色、正文和语法色都和原主题一致。** 只有两种情况才调整：颜色看不清时，只调到够用，色相与饱和度不变；两类本该区分的代码撞成同一种颜色时，其中一类改用本主题里的另一种颜色。C GitHub Dark 和 GitHub Dark Dimmed 几乎一样；C Sunlit Light 则把 Solarized Light 注释的对比度从 2.5 提到 3.4。各套主题具体改了什么见[主题一览](docs/themes.md#找到你的原主题)。
 
 ## 每一行都不用眯眼看
 

@@ -1,0 +1,17 @@
+{
+	"$schema": "https://unpkg.com/oxfmt/configuration_schema.json",
+	"arrowParens": "avoid",
+	"ignorePatterns": [
+		"*.min.*",
+		"themes/**",
+		"assets/**",
+		"tools/samples/**",
+		"tools/textmate/pool-annotate.html"
+	],
+	"jsxSingleQuote": false,
+	"objectWrap": "collapse",
+	"singleQuote": false,
+	"tabWidth": 4,
+	"trailingComma": "es5",
+	"useTabs": true
+}

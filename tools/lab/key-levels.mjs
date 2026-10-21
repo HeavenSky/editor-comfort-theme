@@ -3,91 +3,237 @@
 //   每组分 强 / 中 / 弱. 另有 基准(editor.background, 一切比较的参照)与 不适用(阴影等).
 // 状态标记: 禁用(归本组的弱, 不跨组), 非活动(失焦 / 未选中), 悬停, 选中 / 激活; 语义: 靠色相表达含义(错误 / 警告, git, diff, 终端色等).
 // 规则按顺序取第一条命中的; 依据只看键名, 复核时以键在界面上的实际用途为准.
-export const GROUPS = ['内容', '暗化', '线条', '底色'];
-export const LEVELS = ['强', '中', '弱'];
+export const GROUPS = ["内容", "暗化", "线条", "底色"];
+export const LEVELS = ["强", "中", "弱"];
 
-const SEM = /(error|warning|info|hint|success|added|deleted|modified|removed|inserted|conflict|untracked|ignored|renamed|stage|submodule|ansi|charts\.|symbolIcon|bracketHighlight|debugToken|debugIcon|testing\.|gitDecoration|merge|diff|minimapGutter|scmGraph)/i;
+const SEM =
+	/(error|warning|info|hint|success|added|deleted|modified|removed|inserted|conflict|untracked|ignored|renamed|stage|submodule|ansi|charts\.|symbolIcon|bracketHighlight|debugToken|debugIcon|testing\.|gitDecoration|merge|diff|minimapGutter|scmGraph)/i;
 
 // [组, 级, 正则, 说明]; 正则对完整键名
 const RULES = [
-  // ---- 特殊 ----
-  ['基准', '', /^editor\.background$/, '编辑区底色, 一切比较的参照'],
-  ['不适用', '', /shadow|opacity$|Opacity$|Glow$|Shimmer$|\.retired$/i, '阴影, 透明度系数, 动效光晕, 已退役键: 不参与对比分级'],
-  ['不适用', '', /^inlineChat\.regionHighlight$/, '无效键: VS Code 1.91 起已移除的旧键'],
-  ['不适用', '', /^(meta|source|string|punctuation|keyword|entity|variable|support|constant|storage|comment|markup)\./, '无效键: 原主题误写进 colors 的 TextMate 语法作用域'],
-  ['不适用', '', /^list\.dropBetweenBackground$/, '只在拖拽列表项时出现的插入线, 普查测不到真实状态, 不参与分级'],
-  // ---- 按普查实测与语义复核的逐键规则(优先于下面的通用规则) ----
-  ['底色', '强', /^(editor|terminal)\.findMatchBackground$/, '复核: 当前匹配项要比其他匹配更醒目'],
-  ['底色', '中', /^(editor|terminal)\.findMatchHighlightBackground$/, '复核: 其他匹配项要被看出来, 与选区同档(GitHub Dark 实测 61%)'],
-  ['线条', '强', /^editorGutter\.(added|modified|deleted)\w*Background$/, '复核: 行号槽 git 标记是语义标记, 与诊断波浪线同样要醒目'],
-  ['内容', '中', /^(titleBar|commandCenter|panelTitle)\.activeForeground$/, '复核: 这里的 active 是窗口 / 面板聚焦状态, 不是选中项'],
-  ['内容', '中', /^list\.focusForeground$/, '复核: 键盘焦点行, 不是选中行(选中行文字仍归内容强)'],
-  ['内容', '中', /^statusBar\.foreground$/, '复核: 状态栏是常驻的主要信息, 参考主题实测 96%'],
-  // ---- 禁用: 归本组的弱 ----
-  ['?', '弱', /disabled/i, '禁用: 归本组的弱'],
-  // ---- 暗化 ----
-  ['暗化', '强', /placeholderForeground$|editorGhostText\.foreground$|editorInlayHint\.(foreground|typeForeground|parameterForeground)$|editorCodeLens\.foreground$/, '占位字, 幽灵文字, 内联提示, CodeLens'],
-  ['暗化', '弱', /editorWhitespace\.foreground$|editorLineNumber\.dimmedForeground$/, '空白符, 末行之后变淡的行号等最淡的标记'],
-  ['暗化', '中', /^editorLineNumber\.foreground$|^activityBar\.inactiveForeground$|gitDecoration\.ignoredResourceForeground$|\.deemphasizedForeground$|foldPlaceholderForeground$/, '行号, 未选中活动栏图标, 被忽略文件, 折叠占位'],
-  // ---- 线条 ----
-  ['线条', '强', /^editor(Error|Warning|Info|Hint)\.(foreground|border)$/, '诊断波浪线(语义)'],
-  ['线条', '强', /focusBorder$|focusOutline$|focusAndSelectionOutline$|activeBorder(Top|Bottom)?$|activeOutline$|contrastActiveBorder$|selectedBorder(Top)?$|\.activeFocusBorder$|findMatchBorder$|editorCursor\.foreground$|selectionHighlightBorder$|cellInsertionIndicator$/, '焦点框, 活动指示线, 光标, 当前匹配描边'],
-  ['线条', '中', /^(input|dropdown|checkbox|button|radio|inputOption|settings\.\w+Input|settings\.checkbox|settings\.dropdown|editorWidget|quickInput|menu|notifications|keybindingLabel)\.?\w*Border$|editorIndentGuide\.activeBackground|editorBracketPairGuide\.activeBackground|editorGutter\.(added|modified|deleted)\w*Background$|[oO]utline$|modifiedItemIndicator$|BorderColor\d$/, '控件与浮层边框, 悬停描边, 当前缩进线, 行号槽 git 标记'],
-  ['线条', '弱', /border$|Border\d?$|separator$|Separator$|sash|editorIndentGuide\.background|editorBracketPairGuide\.background|editorRuler\.foreground|tree\.indentGuidesStroke|Underline$|\.stroke$|Stroke$|editorOverviewRuler\.border|^tab\.divider$|Border(Top|Bottom)$/, '分隔线, 面板边框, 缩进线, 标尺'],
-  ['线条', '中', /^(editorOverviewRuler\.(?!background)\w+|minimap\.\w*Highlight|editorMinimap\.\w+|minimapGutter\.\w+|mergeEditor\.conflict\.\w+\.minimapOverViewRuler|minimap\.chatEditHighlight)$/, '概览标尺与小地图上的标记'],
-  // ---- 底色 ----
-  ['底色', '强', /[bB]adge\w*\.background$|^button\.\w*[bB]ackground$|^extensionButton\.\w*[bB]ackground$|^progressBar\.background$|^statusBar\.(debugging|noFolder)Background$|^statusBarItem\.(remote|offline|prominent|error|warning)\w*Background$|^inputOption\.activeBackground$|^checkbox\.selectedBackground$/, '强调底: 徽标, 按钮, 进度条, 调试 / 远程状态栏'],
-  ['底色', '中', /activeSelectionBackground$|(?<!inactive)selectionBackground$|(?<!inactive)SelectionBackground$|focusBackground$|selectedBackground$|activeBackground$|findMatchBackground$|(?<!Highlight)wordHighlightStrongBackground$|activeSelection\w*Background$|scrollbarSlider\.activeBackground$|\.(inserted|removed)TextBackground$|^inlineChatDiff\.(inserted|removed)$|valueChangedHighlight$/, '状态底: 选中, 聚焦, 当前匹配, diff 改动文字'],
-  ['底色', '弱', /background$|Background\d?$|\.fill$|Fill$/i, '层次底: 区块底色, 悬停, 失焦选中, 高亮, 其他匹配'],
-  ['内容', '中', /^(editorBracketHighlight|scmGraph|debugTokenExpression|testing\.(icon|runAction)|commentsView\.\w+Icon|terminalSymbolIcon|chart\.)|^success$/, '语义前景: 括号配色, 提交图, 调试值, 测试图标'],
-  // ---- 内容 ----
-  ['内容', '强', /^editorLineNumber\.activeForeground$|^activityBar\.(foreground|activeForeground)$|activeSelectionForeground$|(?<!inactive)selectionForeground$|focusForeground$|highlightForeground$|focusHighlightForeground$|activeForeground$|selectedForeground$|^tab\.activeForeground$|^list\.highlightForeground$/, '当前 / 选中 / 激活态的字与图标, 匹配高亮字'],
-  ['内容', '弱', /descriptionForeground$|inactiveForeground$|unfocused\w*Foreground$|inactiveSelectionForeground$|^(statusBar|titleBar|sideBarTitle|panelTitle|sideBarSectionHeader|editorGroupHeader|tab|breadcrumb)\.foreground$|^tab\.unfocused\w*Foreground$/, '界面辅助文字: 描述, 非活动, 失焦, 标题栏, 状态栏'],
-  ['内容', '中', /foreground$|Foreground\d?$|^foreground$|^icon\.foreground$|Color$|^terminal\.ansi|^charts\.|\.(red|green|blue|yellow|orange|purple|lines|foreground)$/, '正文与代码, 图标, 一般前景'],
+	// ---- 特殊 ----
+	["基准", "", /^editor\.background$/, "编辑区底色, 一切比较的参照"],
+	[
+		"不适用",
+		"",
+		/shadow|opacity$|Opacity$|Glow$|Shimmer$|\.retired$/i,
+		"阴影, 透明度系数, 动效光晕, 已退役键: 不参与对比分级",
+	],
+	["不适用", "", /^inlineChat\.regionHighlight$/, "无效键: VS Code 1.91 起已移除的旧键"],
+	[
+		"不适用",
+		"",
+		/^(meta|source|string|punctuation|keyword|entity|variable|support|constant|storage|comment|markup)\./,
+		"无效键: 原主题误写进 colors 的 TextMate 语法作用域",
+	],
+	[
+		"不适用",
+		"",
+		/^list\.dropBetweenBackground$/,
+		"只在拖拽列表项时出现的插入线, 普查测不到真实状态, 不参与分级",
+	],
+	// ---- 按普查实测与语义复核的逐键规则(优先于下面的通用规则) ----
+	[
+		"底色",
+		"强",
+		/^(editor|terminal)\.findMatchBackground$/,
+		"复核: 当前匹配项要比其他匹配更醒目",
+	],
+	[
+		"底色",
+		"中",
+		/^(editor|terminal)\.findMatchHighlightBackground$/,
+		"复核: 其他匹配项要被看出来, 与选区同档(GitHub Dark 实测 61%)",
+	],
+	[
+		"线条",
+		"强",
+		/^editorGutter\.(added|modified|deleted)\w*Background$/,
+		"复核: 行号槽 git 标记是语义标记, 与诊断波浪线同样要醒目",
+	],
+	[
+		"内容",
+		"中",
+		/^(titleBar|commandCenter|panelTitle)\.activeForeground$/,
+		"复核: 这里的 active 是窗口 / 面板聚焦状态, 不是选中项",
+	],
+	["内容", "中", /^list\.focusForeground$/, "复核: 键盘焦点行, 不是选中行(选中行文字仍归内容强)"],
+	["内容", "中", /^statusBar\.foreground$/, "复核: 状态栏是常驻的主要信息, 参考主题实测 96%"],
+	// ---- 禁用: 归本组的弱 ----
+	["?", "弱", /disabled/i, "禁用: 归本组的弱"],
+	// ---- 暗化 ----
+	[
+		"暗化",
+		"强",
+		/placeholderForeground$|editorGhostText\.foreground$|editorInlayHint\.(foreground|typeForeground|parameterForeground)$|editorCodeLens\.foreground$/,
+		"占位字, 幽灵文字, 内联提示, CodeLens",
+	],
+	[
+		"暗化",
+		"弱",
+		/editorWhitespace\.foreground$|editorLineNumber\.dimmedForeground$/,
+		"空白符, 末行之后变淡的行号等最淡的标记",
+	],
+	[
+		"暗化",
+		"中",
+		/^editorLineNumber\.foreground$|^activityBar\.inactiveForeground$|gitDecoration\.ignoredResourceForeground$|\.deemphasizedForeground$|foldPlaceholderForeground$/,
+		"行号, 未选中活动栏图标, 被忽略文件, 折叠占位",
+	],
+	// ---- 线条 ----
+	["线条", "强", /^editor(Error|Warning|Info|Hint)\.(foreground|border)$/, "诊断波浪线(语义)"],
+	[
+		"线条",
+		"强",
+		/focusBorder$|focusOutline$|focusAndSelectionOutline$|activeBorder(Top|Bottom)?$|activeOutline$|contrastActiveBorder$|selectedBorder(Top)?$|\.activeFocusBorder$|findMatchBorder$|editorCursor\.foreground$|selectionHighlightBorder$|cellInsertionIndicator$/,
+		"焦点框, 活动指示线, 光标, 当前匹配描边",
+	],
+	[
+		"线条",
+		"中",
+		/^(input|dropdown|checkbox|button|radio|inputOption|settings\.\w+Input|settings\.checkbox|settings\.dropdown|editorWidget|quickInput|menu|notifications|keybindingLabel)\.?\w*Border$|editorIndentGuide\.activeBackground|editorBracketPairGuide\.activeBackground|editorGutter\.(added|modified|deleted)\w*Background$|[oO]utline$|modifiedItemIndicator$|BorderColor\d$/,
+		"控件与浮层边框, 悬停描边, 当前缩进线, 行号槽 git 标记",
+	],
+	[
+		"线条",
+		"弱",
+		/border$|Border\d?$|separator$|Separator$|sash|editorIndentGuide\.background|editorBracketPairGuide\.background|editorRuler\.foreground|tree\.indentGuidesStroke|Underline$|\.stroke$|Stroke$|editorOverviewRuler\.border|^tab\.divider$|Border(Top|Bottom)$/,
+		"分隔线, 面板边框, 缩进线, 标尺",
+	],
+	[
+		"线条",
+		"中",
+		/^(editorOverviewRuler\.(?!background)\w+|minimap\.\w*Highlight|editorMinimap\.\w+|minimapGutter\.\w+|mergeEditor\.conflict\.\w+\.minimapOverViewRuler|minimap\.chatEditHighlight)$/,
+		"概览标尺与小地图上的标记",
+	],
+	// ---- 底色 ----
+	[
+		"底色",
+		"强",
+		/[bB]adge\w*\.background$|^button\.\w*[bB]ackground$|^extensionButton\.\w*[bB]ackground$|^progressBar\.background$|^statusBar\.(debugging|noFolder)Background$|^statusBarItem\.(remote|offline|prominent|error|warning)\w*Background$|^inputOption\.activeBackground$|^checkbox\.selectedBackground$/,
+		"强调底: 徽标, 按钮, 进度条, 调试 / 远程状态栏",
+	],
+	[
+		"底色",
+		"中",
+		/activeSelectionBackground$|(?<!inactive)selectionBackground$|(?<!inactive)SelectionBackground$|focusBackground$|selectedBackground$|activeBackground$|findMatchBackground$|(?<!Highlight)wordHighlightStrongBackground$|activeSelection\w*Background$|scrollbarSlider\.activeBackground$|\.(inserted|removed)TextBackground$|^inlineChatDiff\.(inserted|removed)$|valueChangedHighlight$/,
+		"状态底: 选中, 聚焦, 当前匹配, diff 改动文字",
+	],
+	[
+		"底色",
+		"弱",
+		/background$|Background\d?$|\.fill$|Fill$/i,
+		"层次底: 区块底色, 悬停, 失焦选中, 高亮, 其他匹配",
+	],
+	[
+		"内容",
+		"中",
+		/^(editorBracketHighlight|scmGraph|debugTokenExpression|testing\.(icon|runAction)|commentsView\.\w+Icon|terminalSymbolIcon|chart\.)|^success$/,
+		"语义前景: 括号配色, 提交图, 调试值, 测试图标",
+	],
+	// ---- 内容 ----
+	[
+		"内容",
+		"强",
+		/^editorLineNumber\.activeForeground$|^activityBar\.(foreground|activeForeground)$|activeSelectionForeground$|(?<!inactive)selectionForeground$|focusForeground$|highlightForeground$|focusHighlightForeground$|activeForeground$|selectedForeground$|^tab\.activeForeground$|^list\.highlightForeground$/,
+		"当前 / 选中 / 激活态的字与图标, 匹配高亮字",
+	],
+	[
+		"内容",
+		"弱",
+		/descriptionForeground$|inactiveForeground$|unfocused\w*Foreground$|inactiveSelectionForeground$|^(statusBar|titleBar|sideBarTitle|panelTitle|sideBarSectionHeader|editorGroupHeader|tab|breadcrumb)\.foreground$|^tab\.unfocused\w*Foreground$/,
+		"界面辅助文字: 描述, 非活动, 失焦, 标题栏, 状态栏",
+	],
+	[
+		"内容",
+		"中",
+		/foreground$|Foreground\d?$|^foreground$|^icon\.foreground$|Color$|^terminal\.ansi|^charts\.|\.(red|green|blue|yellow|orange|purple|lines|foreground)$/,
+		"正文与代码, 图标, 一般前景",
+	],
 ];
 
 // 复核建议: 自动规则不改, 复核页显示为可一键采用的建议; 依据普查实测
 export const SUGGEST = {};
 
-const typeGroup = (k) => (/border|separator|outline|stroke|sash/i.test(k) ? '线条' : /background|fill/i.test(k) ? '底色' : '内容');
+const typeGroup = k =>
+	/border|separator|outline|stroke|sash/i.test(k)
+		? "线条"
+		: /background|fill/i.test(k)
+			? "底色"
+			: "内容";
 
 export function classify(key) {
-  const states = [];
-  if (/disabled/i.test(key)) states.push('禁用');
-  if (/inactive|unfocused|deemphasized/i.test(key)) states.push('非活动');
-  if (/hover/i.test(key)) states.push('悬停');
-  if (/(active|selection|selected|focus|current)(?!.*inactive)/i.test(key) && !/inactive|unfocused/i.test(key)) states.push('选中 / 激活');
-  const sem = SEM.test(key);
-  for (const [g, l, re, why] of RULES) {
-    if (!re.test(key)) continue;
-    if (g === '?') return { group: typeGroup(key), level: l, states, sem, why };
-    // 悬停 / 失焦选中 的底色归 层次底(弱); 失焦的 线 / 字 降一级
-    if (g === '底色' && l === '中' && /hover|inactive/i.test(key)) return { group: g, level: '弱', states, sem, why: '悬停 / 失焦的状态底: 归层次底' };
-    // 失焦 / 非活动的 强(活动边框, 选中字)降到本组的弱
-    if (l === '强' && /inactive|unfocused/i.test(key)) return { group: g, level: '弱', states, sem, why: why + '; 失焦 / 非活动: 降到本组的弱' };
-    return { group: g, level: l, states, sem, why };
-  }
-  return { group: '未归类', level: '', states, sem, why: '没有命中规则' };
+	const states = [];
+	if (/disabled/i.test(key)) states.push("禁用");
+	if (/inactive|unfocused|deemphasized/i.test(key)) states.push("非活动");
+	if (/hover/i.test(key)) states.push("悬停");
+	if (
+		/(active|selection|selected|focus|current)(?!.*inactive)/i.test(key) &&
+		!/inactive|unfocused/i.test(key)
+	)
+		states.push("选中 / 激活");
+	const sem = SEM.test(key);
+	for (const [g, l, re, why] of RULES) {
+		if (!re.test(key)) continue;
+		if (g === "?") return { group: typeGroup(key), level: l, states, sem, why };
+		// 悬停 / 失焦选中 的底色归 层次底(弱); 失焦的 线 / 字 降一级
+		if (g === "底色" && l === "中" && /hover|inactive/i.test(key))
+			return { group: g, level: "弱", states, sem, why: "悬停 / 失焦的状态底: 归层次底" };
+		// 失焦 / 非活动的 强(活动边框, 选中字)降到本组的弱
+		if (l === "强" && /inactive|unfocused/i.test(key))
+			return {
+				group: g,
+				level: "弱",
+				states,
+				sem,
+				why: why + "; 失焦 / 非活动: 降到本组的弱",
+			};
+		return { group: g, level: l, states, sem, why };
+	}
+	return { group: "未归类", level: "", states, sem, why: "没有命中规则" };
 }
 
 // ======== 复核页数据: 注册表未废弃的键 + 原主题用到但不在注册表的键; 每个键带自动归类, 16 套原主题里定义它的个数, 各主题全关档的取值 ========
 // effective: 主题 -> { 键: 实际取值 }(普查记录, 含 VS Code 推导的默认值); defaults: 自带主题 -> { 键: 取值 }; docs: 键 -> { description, defaults }
-export function keysData({ registry, originals, fulls, saved, effective = {}, defaults = {}, docs = {} }) {
-  const used = new Map();
-  for (const t of Object.values(originals)) for (const k of Object.keys(t?.colors || {})) used.set(k, (used.get(k) || 0) + 1);
-  const keys = [...new Set([...Object.keys(registry).filter((k) => !registry[k].deprecated), ...used.keys()])].sort();
-  return {
-    themes: Object.keys(fulls),
-    saved: saved || null,
-    systemThemes: Object.keys(defaults),
-    keys: keys.map((k) => ({
-      key: k, ...classify(k), suggest: SUGGEST[k] || null, used: used.get(k) || 0, reg: !!registry[k], transparent: !!registry[k]?.transparent,
-      values: Object.fromEntries(Object.entries(fulls).map(([f, t]) => [f, t?.colors?.[k] || null])),
-      effective: Object.fromEntries(Object.entries(effective).map(([f, v]) => [f, v?.[k] || null])),
-      system: Object.fromEntries(Object.entries(defaults).map(([f, v]) => [f, v?.[k] || null])),
-      doc: docs[k]?.description || null, docDefaults: docs[k]?.defaults || null,
-    })),
-  };
+export function keysData({
+	registry,
+	originals,
+	fulls,
+	saved,
+	effective = {},
+	defaults = {},
+	docs = {},
+}) {
+	const used = new Map();
+	for (const t of Object.values(originals))
+		for (const k of Object.keys(t?.colors || {})) used.set(k, (used.get(k) || 0) + 1);
+	const keys = [
+		...new Set([...Object.keys(registry).filter(k => !registry[k].deprecated), ...used.keys()]),
+	].sort();
+	return {
+		themes: Object.keys(fulls),
+		saved: saved || null,
+		systemThemes: Object.keys(defaults),
+		keys: keys.map(k => ({
+			key: k,
+			...classify(k),
+			suggest: SUGGEST[k] || null,
+			used: used.get(k) || 0,
+			reg: !!registry[k],
+			transparent: !!registry[k]?.transparent,
+			values: Object.fromEntries(
+				Object.entries(fulls).map(([f, t]) => [f, t?.colors?.[k] || null])
+			),
+			effective: Object.fromEntries(
+				Object.entries(effective).map(([f, v]) => [f, v?.[k] || null])
+			),
+			system: Object.fromEntries(
+				Object.entries(defaults).map(([f, v]) => [f, v?.[k] || null])
+			),
+			doc: docs[k]?.description || null,
+			docDefaults: docs[k]?.defaults || null,
+		})),
+	};
 }
 
 export const KEYS_PAGE = `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>颜色键分层复核</title>

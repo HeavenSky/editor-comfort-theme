@@ -4,54 +4,73 @@
 // 已上色的字符落到池哨兵色上, 对应选择器剔除; 剔除后可能露出下一条池规则, 重复到没有为止. 只覆盖样例文件里出现的语法.
 // 用法: node tools/textmate/pool-guard.mjs < in.json > out.json
 //   输入 {files: [样例路径], themes: {<名>: {rules: 原主题 tokenColors, pool: [池选择器]}}}; 输出 {<名>: [剔除的选择器]}
-import fs from 'node:fs';
-import { grammarOf, registry, vsctm } from './textmate.mjs';
+import fs from "node:fs";
+import { grammarOf, registry, vsctm } from "./textmate.mjs";
 
-const DEF = '#FE01FE';
-const input = JSON.parse(fs.readFileSync(0, 'utf8'));
-const grammars = await Promise.all(input.files.map(async (f) => [await grammarOf(f), fs.readFileSync(f, 'utf8').split('\n')]));
+const DEF = "#FE01FE";
+const input = JSON.parse(fs.readFileSync(0, "utf8"));
+const grammars = await Promise.all(
+	input.files.map(async f => [await grammarOf(f), fs.readFileSync(f, "utf8").split("\n")])
+);
 
 /** 逐字符颜色: [文件][行] -> 每个非空白字符的颜色(空白记 null) */
 function paint(rules) {
-  registry.setTheme({ name: 'guard', settings: [{ settings: { foreground: DEF, background: '#000000' } }, ...rules] });
-  const cmap = registry.getColorMap();
-  return grammars.map(([grammar, lines]) => {
-    let stack = vsctm.INITIAL;
-    return lines.map((line) => {
-      const r = grammar.tokenizeLine2(line, stack);
-      stack = r.ruleStack;
-      const out = new Array(line.length).fill(null);
-      for (let i = 0; i < r.tokens.length; i += 2) {
-        const end = i + 2 < r.tokens.length ? r.tokens[i + 2] : line.length;
-        const color = cmap[(r.tokens[i + 1] & 0b00000000111111111000000000000000) >>> 15];
-        for (let j = r.tokens[i]; j < end; j++) if (line[j].trim()) out[j] = color;
-      }
-      return out;
-    });
-  });
+	registry.setTheme({
+		name: "guard",
+		settings: [{ settings: { foreground: DEF, background: "#000000" } }, ...rules],
+	});
+	const cmap = registry.getColorMap();
+	return grammars.map(([grammar, lines]) => {
+		let stack = vsctm.INITIAL;
+		return lines.map(line => {
+			const r = grammar.tokenizeLine2(line, stack);
+			stack = r.ruleStack;
+			const out = Array.from({ length: line.length }, () => null);
+			for (let i = 0; i < r.tokens.length; i += 2) {
+				const end = i + 2 < r.tokens.length ? r.tokens[i + 2] : line.length;
+				const color = cmap[(r.tokens[i + 1] & 0b00000000111111111000000000000000) >>> 15];
+				for (let j = r.tokens[i]; j < end; j++) if (line[j].trim()) out[j] = color;
+			}
+			return out;
+		});
+	});
 }
 
 // 原主题规则只留有前景色且有 scope 的(无 scope 的是全局默认色, 交给哨兵)
-const own = (rules) =>
-  rules.filter((r) => r.scope && r.settings && r.settings.foreground).map((r) => ({ scope: r.scope, settings: { foreground: r.settings.foreground } }));
+const own = rules =>
+	rules
+		.filter(r => r.scope && r.settings && r.settings.foreground)
+		.map(r => ({ scope: r.scope, settings: { foreground: r.settings.foreground } }));
 
 const result = {};
 for (const [name, { rules, pool }] of Object.entries(input.themes)) {
-  const base = own(rules);
-  const orig = paint(base);
-  const sentinel = (i) => '#0A' + i.toString(16).toUpperCase().padStart(4, '0');
-  const live = new Set(pool), dropped = [];
-  for (;;) {
-    const sels = pool.filter((s) => live.has(s));
-    const bySentinel = new Map(sels.map((s, i) => [sentinel(i), s]));
-    const full = paint([...sels.map((s, i) => ({ scope: s, settings: { foreground: sentinel(i) } })), ...base]);
-    const hit = new Set();
-    full.forEach((file, fi) => file.forEach((line, li) => line.forEach((c, j) => {
-      if (c && orig[fi][li][j] !== DEF && bySentinel.has(c)) hit.add(bySentinel.get(c));
-    })));
-    if (!hit.size) break;
-    for (const s of hit) live.delete(s), dropped.push(s);
-  }
-  result[name] = dropped.sort();
+	const base = own(rules);
+	const orig = paint(base);
+	const sentinel = i => "#0A" + i.toString(16).toUpperCase().padStart(4, "0");
+	const live = new Set(pool),
+		dropped = [];
+	for (;;) {
+		const sels = pool.filter(s => live.has(s));
+		const bySentinel = new Map(sels.map((s, i) => [sentinel(i), s]));
+		const full = paint([
+			...sels.map((s, i) => ({ scope: s, settings: { foreground: sentinel(i) } })),
+			...base,
+		]);
+		const hit = new Set();
+		full.forEach((file, fi) =>
+			file.forEach((line, li) =>
+				line.forEach((c, j) => {
+					if (c && orig[fi][li][j] !== DEF && bySentinel.has(c))
+						hit.add(bySentinel.get(c));
+				})
+			)
+		);
+		if (!hit.size) break;
+		for (const s of hit) {
+			live.delete(s);
+			dropped.push(s);
+		}
+	}
+	result[name] = dropped.sort();
 }
 process.stdout.write(JSON.stringify(result));

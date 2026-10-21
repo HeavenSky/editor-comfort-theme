@@ -585,7 +585,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#BF9EEE"
+				"foreground": "#EE6666"
 			}
 		},
 		{
@@ -1113,11 +1113,19 @@
 		{
 			"name": "Constants",
 			"scope": [
-				"constant",
 				"variable.other.constant"
 			],
 			"settings": {
 				"foreground": "#BF9EEE"
+			}
+		},
+		{
+			"name": "Constants",
+			"scope": [
+				"constant"
+			],
+			"settings": {
+				"foreground": "#EE6666"
 			}
 		},
 		{
@@ -1253,12 +1261,21 @@
 			"name": "Built-in magic functions and constants",
 			"scope": [
 				"support.function.magic",
-				"support.variable",
 				"variable.other.predefined"
 			],
 			"settings": {
 				"fontStyle": "",
 				"foreground": "#BF9EEE"
+			}
+		},
+		{
+			"name": "Built-in magic functions and constants",
+			"scope": [
+				"support.variable"
+			],
+			"settings": {
+				"fontStyle": "",
+				"foreground": "#EE6666"
 			}
 		},
 		{
@@ -1650,7 +1667,7 @@
 			],
 			"settings": {
 				"fontStyle": "",
-				"foreground": "#BF9EEE"
+				"foreground": "#EE6666"
 			}
 		},
 		{

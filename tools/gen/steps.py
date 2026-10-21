@@ -18,6 +18,7 @@ STEPS = {
     'level_floor': (True, 'clear', 'gen_vscode.transform / levels.fix', '界面颜色按分层门槛(assets/levels.json)提到修复下限: 半透明先加不透明度, 再只调明度; 取代下面标 (被 level_floor 取代) 的旧步骤'),
     'syntax_floor': (True, 'clear', 'gen_vscode.Mapper.token', '语法色低于 4.5 的提到 4.5, 本来够读的不动'),
     'comment_floor': (True, 'clear', 'gen_vscode.Mapper.token', '注释不低于 3.4, 色相与饱和度不变'),
+    'syntax_separate': (True, 'clear', 'gen_vscode.transform / separate.fix', '案例集里要分开(assets/layers/roles.json)却撞色的语法角色换成主题自有颜色(原语法彩色 + 终端 6 色), 先动次要角色, 目标色相取层次更好的姊妹主题; 降到前 5 名参照主题的中位撞色数即停'),
     'term_floor': (True, 'clear', 'themes.tone', '终端普通色与亮色低于 4.5 时提上来'),
     'term_badge_bw': (False, 'clear', 'themes.adapt', '终端黑 / 亮白比底与正文再深 / 亮一档, 彩色底上的字可读'),
     'term_white_light': (False, 'clear', 'themes.build', '浅色主题的 White 是近黑时改成浅色'),

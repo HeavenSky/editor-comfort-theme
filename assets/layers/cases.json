@@ -1,0 +1,25 @@
+{
+  "about": "语法角色差异化的案例集: 每个案例是一段同屏代码(一种场景), 案例里同时出现的两类角色若按 roles.json 必须分开, 渲染色就要分得开. 键为相对仓库根的路径, why 写这个场景分不开时读者会怎样",
+  "cases": {
+    "tools/samples/sample.json": {"scene": "JSON 配置", "why": "键与值分不开时整块读成一片, 找不到某个键"},
+    "tools/samples/sample.md": {"scene": "Markdown 文档", "why": "标题, 链接, 行内代码与正文分不开时扫不出文档结构"},
+    "tools/samples/sample.py": {"scene": "Python 函数与类", "why": "定义, 调用, 参数与字面量分不开时看不出数据从哪来"},
+    "tools/samples/sample.ts": {"scene": "TypeScript 业务代码", "why": "类型, 函数, 字符串与关键字分不开时难以分辨声明和调用"},
+    "tools/samples/style.less": {"scene": "Less 样式", "why": "选择器, 属性名与属性值分不开时找不到某条样式"},
+    "assets/layers/cases/app.js": {"scene": "Node 接口处理函数", "why": "模板字符串, 正则, 方法调用与对象属性挤在一起, 分不开时读不出控制流"},
+    "assets/layers/cases/build.sh": {"scene": "POSIX shell 构建脚本", "why": "命令, 参数, 变量展开与字符串分不开时看不出哪段会被替换"},
+    "assets/layers/cases/config.yaml": {"scene": "YAML 服务配置", "why": "一列键对一列值, 分不开时整块读成一片"},
+    "assets/layers/cases/deploy.sh": {"scene": "Bash 部署脚本", "why": "命令, 选项, 变量与字符串分不开时看不出哪段会被替换"},
+    "assets/layers/cases/index.php": {"scene": "PHP 控制器", "why": "变量, 方法, 类名与字符串分不开时难以分辨调用链"},
+    "assets/layers/cases/lib.rs": {"scene": "Rust 结构体与实现", "why": "类型, 生命周期, 宏与方法分不开时看不出所有权在哪"},
+    "assets/layers/cases/main.go": {"scene": "Go 服务入口", "why": "包名, 类型, 函数与字面量分不开时难以分辨定义和调用"},
+    "assets/layers/cases/Main.java": {"scene": "Java 类", "why": "注解, 修饰符, 类型与方法分不开时声明读成一片"},
+    "assets/layers/cases/model.py": {"scene": "Python 数据类", "why": "装饰器, 类型注解, 默认值与正则分不开时看不出字段定义"},
+    "assets/layers/cases/notes.md": {"scene": "Markdown 速记(含 sh / yml / python 代码块)", "why": "代码块里的命令, 键值与字符串分不开时就是全篇一个颜色"},
+    "assets/layers/cases/page.html": {"scene": "HTML 页面(含内联样式与脚本)", "why": "标签, 属性名与属性值分不开时找不到某个元素"},
+    "assets/layers/cases/query.sql": {"scene": "SQL 汇总查询", "why": "关键字, 函数, 表名与字面量分不开时读不出过滤条件"},
+    "assets/layers/cases/site.css": {"scene": "CSS 样式", "why": "选择器, 属性名, 变量与值分不开时找不到某条样式"},
+    "assets/layers/cases/task.rb": {"scene": "Ruby 任务类", "why": "符号, 实例变量, 方法与字符串分不开时看不出数据流"},
+    "assets/layers/cases/util.cpp": {"scene": "C++ 模板类", "why": "宏, 命名空间, 类型与成员分不开时声明读成一片"}
+  }
+}

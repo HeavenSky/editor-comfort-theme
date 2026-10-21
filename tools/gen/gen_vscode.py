@@ -13,7 +13,7 @@ sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
 from colorlib import (WHITE_C, WHITE_L, Rgb, unwhite, amber, blend, cr, de2000, deneon, fit, from_oklch, h, hx, lum, neon, oklch, sat, soften, toward_bg, tune,
                       unextreme, with_sat)
-import levels, pool
+import levels, pool, separate
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
 from comfort import (BADGE_MAX_CR, BRIGHT_TINT_L, BRIGHT_TINT_SAT, BADGE_PAIRS, BADGE_TEXT_MIN, BORDER_KEYS, BORDER_MAX_CR, CONTROL_BORDER_KEYS, CONTROL_BORDER_MAX_CR,
                      CONTROL_TEXT_MIN, CONTROL_TEXT_PAIRS, FOCUS_KEYS, FOCUS_MAX, FOCUS_MIN_CR, GRAY_CHROMA, TINT_KEYS, TINTED_BG_CHROMA, PLACEHOLDER_CR, PLACEHOLDER_KEY, PLACEHOLDER_MAX_CHROMA,
@@ -1027,6 +1027,8 @@ def transform(t: dict, src: dict) -> dict:
                 r['settings']['foreground'] = cap(r['settings']['foreground'])
         for k, v in semantic.items():
             semantic[k] = cap(v) if isinstance(v, str) else dict(v, foreground=cap(v['foreground'])) if isinstance(v, dict) and v.get('foreground') else v
+    if on('syntax_separate'):
+        rules = separate.fix(rules, src, t, is_comment_rule)
     conform(colors, rules, semantic, t)
     return dict(colors=dict(sorted(colors.items())), tokenColors=rules, semanticTokenColors=semantic)
 

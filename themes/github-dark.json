@@ -610,7 +610,7 @@
 				"source.elixir section"
 			],
 			"settings": {
-				"foreground": "#6CB6FF"
+				"foreground": "#39C5CF"
 			}
 		},
 		{
@@ -746,7 +746,7 @@
 				"source.elixir regexp.string"
 			],
 			"settings": {
-				"foreground": "#6CB6FF"
+				"foreground": "#57AB5A"
 			}
 		},
 		{
@@ -758,7 +758,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#6CB6FF"
+				"foreground": "#B083F0"
 			}
 		},
 		{
@@ -818,15 +818,36 @@
 		},
 		{
 			"scope": [
-				"constant",
-				"entity.name.constant",
-				"variable.other.constant",
-				"variable.other.enummember",
 				"variable.language",
 				"entity"
 			],
 			"settings": {
 				"foreground": "#6CB6FF"
+			}
+		},
+		{
+			"scope": [
+				"constant",
+				"entity.name.constant"
+			],
+			"settings": {
+				"foreground": "#B083F0"
+			}
+		},
+		{
+			"scope": [
+				"variable.other.constant"
+			],
+			"settings": {
+				"foreground": "#57AB5A"
+			}
+		},
+		{
+			"scope": [
+				"variable.other.enummember"
+			],
+			"settings": {
+				"foreground": "#39C5CF"
 			}
 		},
 		{
@@ -903,9 +924,11 @@
 			}
 		},
 		{
-			"scope": "support",
+			"scope": [
+				"support"
+			],
 			"settings": {
-				"foreground": "#6CB6FF"
+				"foreground": "#39C5CF"
 			}
 		},
 		{
@@ -921,9 +944,11 @@
 			}
 		},
 		{
-			"scope": "variable.other",
+			"scope": [
+				"variable.other"
+			],
 			"settings": {
-				"foreground": "#ADBAC7"
+				"foreground": "#C69026"
 			}
 		},
 		{
@@ -1001,9 +1026,11 @@
 			}
 		},
 		{
-			"scope": "support.constant",
+			"scope": [
+				"support.constant"
+			],
 			"settings": {
-				"foreground": "#6CB6FF"
+				"foreground": "#B083F0"
 			}
 		},
 		{

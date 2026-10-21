@@ -21,20 +21,30 @@ Every theme starts as the original theme exactly as published. The three new lig
 
 **Only the side that is hard to read changes, and only as far as needed, keeping hue and saturation.**
 
-| What | Minimum |
-| --- | --- |
-| Body text | 4.5 |
-| Syntax colors | 4.5 |
-| Terminal normal and bright colors | 4.5 |
-| Comments | 3.4 |
-| Terminal dim gray (`90m`) | 3.4 |
-| Body text on selections, find matches and other highlights | 3.5 |
+| What                                                       | Minimum |
+| ---------------------------------------------------------- | ------- |
+| Body text                                                  | 4.5     |
+| Syntax colors                                              | 4.5     |
+| Terminal normal and bright colors                          | 4.5     |
+| Comments                                                   | 3.4     |
+| Terminal dim gray (`90m`)                                  | 3.4     |
+| Body text on selections, find matches and other highlights | 3.5     |
 
 - Editor and input selections are made visible, starting from the original selection color and changing only what is needed.
 - The terminal selection is recomputed from the theme's terminal blue when the original one is barely visible or the text on it is hard to read.
 - The current find match stands out more than the other matches.
 - UI colors such as sidebar text, line numbers, borders, badges, buttons and selected rows are sorted into four tiers: content, dimmed, line and background. Each tier's minimum is set relative to the theme's own body text and calibrated on eight reference themes. Translucent colors first gain opacity; after that, only their lightness changes.
 - Borders and background layers that the original makes indistinguishable from the surface they sit on (OKLab ΔE below 0.02) are left alone, because the original does not mean to draw them; focus outlines, selections and the current match are still made visible.
+
+## Tell different kinds of code apart
+
+**When two kinds of code that should look different share one color, one of them takes another color from the same theme, until the theme is as clear as the five best reference themes.**
+
+- Kinds are syntax roles such as keywords, functions, strings, types, numbers, constants, tags and comments. Whether a pair should look different comes from 25 popular theme families: pairs that at least 75% of them clearly separate must be separated; for the other pairs, they must be separated only if at least three of the five clearest themes (SynthWave '84, Ayu, Atom One Dark, Noctis and Tomorrow Night Blue) separate them.
+- Pairs are checked on 20 short code samples, such as a YAML config, a shell script and Markdown with code blocks, wherever both kinds appear in the same sample, not only on the same line.
+- The new color always comes from the theme itself: a color its syntax already uses, or one of its six terminal colors raised to the 4.5 syntax minimum, clearly different from the old one (CIEDE2000 ΔE of at least 10).
+- Minor roles such as constants, built-ins and parameters change first. Keywords, functions, strings, types and tags, which usually carry a theme's identity, change only when nothing else is enough. Where the theme's dark or light counterpart is clearer, the new color follows it: C Owl Light's strings turn gold because Night Owl gives strings a warm peach.
+- A theme stops changing once it has no more clashes than the median of the five clearest themes.
 
 ## Tone down near-white in dark themes
 

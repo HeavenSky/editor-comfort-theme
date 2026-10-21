@@ -426,7 +426,7 @@
 				"source.css property-name"
 			],
 			"settings": {
-				"foreground": "#177D93"
+				"foreground": "#2F72B5"
 			}
 		},
 		{
@@ -633,7 +633,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#177D93"
+				"foreground": "#C02725"
 			}
 		},
 		{
@@ -883,7 +883,18 @@
 		},
 		{
 			"name": "Built-in constant",
-			"scope": "constant.language",
+			"scope": [
+				"constant.language"
+			],
+			"settings": {
+				"foreground": "#C02725"
+			}
+		},
+		{
+			"name": "User-defined constant",
+			"scope": [
+				"constant.character"
+			],
 			"settings": {
 				"foreground": "#177D93"
 			}
@@ -891,11 +902,10 @@
 		{
 			"name": "User-defined constant",
 			"scope": [
-				"constant.character",
 				"constant.other"
 			],
 			"settings": {
-				"foreground": "#177D93"
+				"foreground": "#C02725"
 			}
 		},
 		{
@@ -1062,7 +1072,18 @@
 		},
 		{
 			"name": "Library constant",
-			"scope": "support.constant",
+			"scope": [
+				"support.constant"
+			],
+			"settings": {
+				"foreground": "#C02725"
+			}
+		},
+		{
+			"name": "Library class/type",
+			"scope": [
+				"support.variable"
+			],
 			"settings": {
 				"foreground": "#177D93"
 			}
@@ -1070,11 +1091,10 @@
 		{
 			"name": "Library class/type",
 			"scope": [
-				"support.type",
-				"support.variable"
+				"support.type"
 			],
 			"settings": {
-				"foreground": "#177D93"
+				"foreground": "#2F72B5"
 			}
 		},
 		{
@@ -1093,7 +1113,7 @@
 				"support.type.property-name.sass"
 			],
 			"settings": {
-				"foreground": "#272822"
+				"foreground": "#AF5C0A"
 			}
 		},
 		{

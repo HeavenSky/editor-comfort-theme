@@ -581,7 +581,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#82AAFF"
+				"foreground": "#7986E7"
 			}
 		},
 		{
@@ -661,7 +661,7 @@
 				"source.tsx support.variable"
 			],
 			"settings": {
-				"foreground": "#82AAFF"
+				"foreground": "#78CCF0"
 			}
 		},
 		{
@@ -693,7 +693,7 @@
 				"variable.other.global.php punctuation.definition.variable"
 			],
 			"settings": {
-				"foreground": "#C5E478"
+				"foreground": "#22DA6E"
 			}
 		},
 		{
@@ -890,9 +890,34 @@
 		{
 			"name": "Built-in constant",
 			"scope": [
-				"constant.language",
-				"punctuation.definition.constant",
+				"punctuation.definition.constant"
+			],
+			"settings": {
+				"foreground": "#82AAFF"
+			}
+		},
+		{
+			"name": "Built-in constant",
+			"scope": [
+				"constant.language"
+			],
+			"settings": {
+				"foreground": "#7986E7"
+			}
+		},
+		{
+			"name": "Built-in constant",
+			"scope": [
 				"variable.other.constant"
+			],
+			"settings": {
+				"foreground": "#78CCF0"
+			}
+		},
+		{
+			"name": "User-defined constant",
+			"scope": [
+				"constant.character"
 			],
 			"settings": {
 				"foreground": "#82AAFF"
@@ -901,11 +926,10 @@
 		{
 			"name": "User-defined constant",
 			"scope": [
-				"constant.character",
 				"constant.other"
 			],
 			"settings": {
-				"foreground": "#82AAFF"
+				"foreground": "#7986E7"
 			}
 		},
 		{
@@ -934,9 +958,11 @@
 		},
 		{
 			"name": "Variable",
-			"scope": "variable",
+			"scope": [
+				"variable"
+			],
 			"settings": {
-				"foreground": "#C5E478"
+				"foreground": "#22DA6E"
 			}
 		},
 		{
@@ -1051,11 +1077,19 @@
 		{
 			"name": "Library (function & constant)",
 			"scope": [
-				"support.function",
-				"support.constant"
+				"support.function"
 			],
 			"settings": {
 				"foreground": "#82AAFF"
+			}
+		},
+		{
+			"name": "Library (function & constant)",
+			"scope": [
+				"support.constant"
+			],
+			"settings": {
+				"foreground": "#7986E7"
 			}
 		},
 		{
@@ -1077,9 +1111,11 @@
 		},
 		{
 			"name": "Support Variable DOM",
-			"scope": "support.variable.dom",
+			"scope": [
+				"support.variable.dom"
+			],
 			"settings": {
-				"foreground": "#C5E478"
+				"foreground": "#22DA6E"
 			}
 		},
 		{
@@ -1701,11 +1737,19 @@
 		{
 			"name": "Elixir Classes",
 			"scope": [
-				"source.elixir support.type.elixir",
-				"source.elixir meta.module.elixir entity.name.class.elixir"
+				"source.elixir support.type.elixir"
 			],
 			"settings": {
 				"foreground": "#82AAFF"
+			}
+		},
+		{
+			"name": "Elixir Classes",
+			"scope": [
+				"source.elixir meta.module.elixir entity.name.class.elixir"
+			],
+			"settings": {
+				"foreground": "#7986E7"
 			}
 		},
 		{
@@ -1722,7 +1766,7 @@
 				"source.elixir constant.other.keywords.elixir"
 			],
 			"settings": {
-				"foreground": "#82AAFF"
+				"foreground": "#7986E7"
 			}
 		},
 		{
@@ -1739,7 +1783,7 @@
 				"source.elixir variable.other.readwrite.module.elixir punctuation.definition.variable.elixir"
 			],
 			"settings": {
-				"foreground": "#C5E478"
+				"foreground": "#22DA6E"
 			}
 		},
 		{
@@ -2208,16 +2252,20 @@
 		},
 		{
 			"name": "PHP Global Variables",
-			"scope": "variable.other.global.php",
+			"scope": [
+				"variable.other.global.php"
+			],
 			"settings": {
-				"foreground": "#C5E478"
+				"foreground": "#22DA6E"
 			}
 		},
 		{
 			"name": "Declaration Punctuation in PHP Global Variables",
-			"scope": "variable.other.global.php punctuation.definition.variable",
+			"scope": [
+				"variable.other.global.php punctuation.definition.variable"
+			],
 			"settings": {
-				"foreground": "#C5E478"
+				"foreground": "#22DA6E"
 			}
 		},
 		{
@@ -2279,13 +2327,21 @@
 		{
 			"name": "SCSS Variable",
 			"scope": [
-				"variable.scss",
-				"variable.sass",
 				"variable.parameter.url.scss",
 				"variable.parameter.url.sass"
 			],
 			"settings": {
 				"foreground": "#C5E478"
+			}
+		},
+		{
+			"name": "SCSS Variable",
+			"scope": [
+				"variable.scss",
+				"variable.sass"
+			],
+			"settings": {
+				"foreground": "#22DA6E"
 			}
 		},
 		{

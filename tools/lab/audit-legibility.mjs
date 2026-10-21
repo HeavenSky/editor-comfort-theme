@@ -5,91 +5,205 @@
 // 先开 node tools/shoot/shoot.mjs --serve 常驻, 省掉每个主题重启 VS Code 的时间.
 // 用法: node tools/lab/audit-legibility.mjs <输出目录> [--all | 主题名...] [--html]
 //   主题默认全部; --html: 不生成不截图, 只用已有结果重建页面
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { spawn, spawnSync } from 'node:child_process';
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { spawn, spawnSync } from "node:child_process";
 
-const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const argv = process.argv.slice(2);
-const htmlOnly = argv.includes('--html');
-const [outArg, ...filters] = argv.filter((a) => !a.startsWith('--'));
+const htmlOnly = argv.includes("--html");
+const [outArg, ...filters] = argv.filter(a => !a.startsWith("--"));
 if (!outArg) {
-  console.error('用法: node tools/lab/audit-legibility.mjs <输出目录> [--all | 主题名...] [--html]');
-  process.exit(2);
+	console.error(
+		"用法: node tools/lab/audit-legibility.mjs <输出目录> [--all | 主题名...] [--html]"
+	);
+	process.exit(2);
 }
 const out = path.resolve(outArg);
-const SETS = { new_close: { title: '全关', steps: 'none' }, new_part: { title: '部分开', steps: '' } };
-const order = ['one', 'ayu', 'sunlit', 'github', 'dracula', 'owl', 'moka', 'pale'];
-const rank = (f) => { const i = order.indexOf(f.split('-')[0]); return i < 0 ? order.length : i; };
-const allThemes = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8')).contributes.themes
-  .map((t) => ({ label: t.label, file: path.basename(t.path, '.json') }))
-  .sort((a, b) => rank(a.file) - rank(b.file) || a.file.localeCompare(b.file));
-const themes = allThemes.filter((t) => !filters.length || filters.some((f) => t.file.includes(f)));
+const SETS = {
+	new_close: { title: "全关", steps: "none" },
+	new_part: { title: "部分开", steps: "" },
+};
+const order = ["one", "ayu", "sunlit", "github", "dracula", "owl", "moka", "pale"];
+const rank = f => {
+	const i = order.indexOf(f.split("-")[0]);
+	return i < 0 ? order.length : i;
+};
+const allThemes = JSON.parse(fs.readFileSync(path.join(REPO, "package.json"), "utf8"))
+	.contributes.themes.map(t => ({ label: t.label, file: path.basename(t.path, ".json") }))
+	.sort((a, b) => rank(a.file) - rank(b.file) || a.file.localeCompare(b.file));
+const themes = allThemes.filter(t => !filters.length || filters.some(f => t.file.includes(f)));
 
-const runAsync = (cmd, args, env = {}) => new Promise((res, rej) => {
-  const p = spawn(cmd, args, { cwd: REPO, env: { ...process.env, ...env }, stdio: ['ignore', 'inherit', 'inherit'] });
-  p.on('exit', (code) => (code === 0 ? res() : rej(new Error(`${cmd} ${args.join(' ')} 失败`))));
-});
-const readJson = (f) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return null; } };
-const progressFile = path.join(out, 'progress.json');
+const runAsync = (cmd, args, env = {}) =>
+	new Promise((res, rej) => {
+		const p = spawn(cmd, args, {
+			cwd: REPO,
+			env: { ...process.env, ...env },
+			stdio: ["ignore", "inherit", "inherit"],
+		});
+		p.on("exit", code =>
+			code === 0 ? res() : rej(new Error(`${cmd} ${args.join(" ")} 失败`))
+		);
+	});
+const readJson = f => {
+	try {
+		return JSON.parse(fs.readFileSync(f, "utf8"));
+	} catch {
+		return null;
+	}
+};
+const progressFile = path.join(out, "progress.json");
 
 // ======== 页面 ========
 function build() {
-  const progress = readJson(progressFile) || { done: [], total: allThemes.length, running: false };
-  const fixes = readJson(path.join(out, 'fixes.json')) || {};
-  const issues = new Map();
-  const keyInfo = {};
-  for (const t of allThemes) {
-    const orig = readJson(path.join(REPO, 'assets/source', `${t.file}.json`));
-    if (!orig) continue;
-    const per = Object.fromEntries(Object.keys(SETS).map((s) => [s, readJson(path.join(out, '_themes', s, `${t.file}.json`))?.colors || {}]));
-    const info = (k) => {
-      const o = orig.colors?.[k], c = per.new_close[k], p = per.new_part[k];
-      const origin = o !== undefined ? '原主题' : c !== undefined ? '补全' : p !== undefined ? '调色步骤新增' : '未定义(VS Code 默认)';
-      const changed = c !== undefined && p !== undefined && c.toUpperCase() !== p.toUpperCase();
-      return { orig: o, close: c, part: p, origin: origin + (changed ? ', 部分开已改' : '') };
-    };
-    for (const s of Object.keys(SETS)) {
-      for (const scene of ['a', 'b', 'c']) {
-        const name = `${t.file}-${scene}`;
-        const r = readJson(path.join(out, s, 'audit', `${name}.json`));
-        if (!r) continue;
-        for (const it of r.items) {
-          // 两档按 种类 + 来源键 + 位置 对齐(颜色在两档间可能不同)
-          // 来源键与颜色在两档间可能不同, 只按位置与文字对齐; 同一档里撞号的加序号
-          const base = [t.file, scene, it.kind, it.path, it.line || (it.texts || [])[0] || ''].join('|');
-          let id = base, n = 1;
-          while (issues.get(id)?.sets[s]) id = `${base}#${++n}`;
-          if (!issues.has(id)) issues.set(id, { id, theme: t.file, label: t.label, scene, kind: it.kind, path: it.path, sets: {} });
-          const g = issues.get(id);
-          g.sets[s] = { ...it, crop: it.crop && `${s}/audit/${it.crop}`, shot: `${s}/${name}.jpg` };
-          for (const k of [...it.fgSrc.keys, ...it.bgSrc.keys]) keyInfo[`${t.file}|${k}`] ||= info(k);
-        }
-      }
-    }
-  }
-  const sev = { 看不清: 0, 刺眼: 1, 偏淡: 2, 偏刺眼: 3 };
-  const list = [...issues.values()].map((g) => {
-    const c = g.sets.new_close, p = g.sets.new_part;
-    g.status = c && p ? '两档都有' : c ? '仅全关(部分开已修好)' : '仅部分开(调色引入)';
-    g.level = (p || c).level;
-    g.fix = fixes[g.id] || null;
-    return g;
-  }).sort((a, b) => rank(a.theme) - rank(b.theme) || a.theme.localeCompare(b.theme) || sev[a.level] - sev[b.level] || a.scene.localeCompare(b.scene));
-  // 给修复研究用的精简清单(不含局部图以外的大字段)
-  fs.writeFileSync(path.join(out, 'issues.json'), JSON.stringify(list.map(({ id, theme, scene, kind, path: p, status, level, sets }) => ({
-    id, theme, scene, kind, path: p, status, level,
-    sets: Object.fromEntries(Object.entries(sets).map(([k, v]) => [k, { level: v.level, ratio: v.ratio, fg: v.fg, bg: v.bg, fgRaw: v.fgRaw, opacity: v.opacity,
-      fgKeys: v.fgSrc.keys, fgHow: v.fgSrc.how, bgKeys: v.bgSrc.keys, count: v.count, texts: v.texts, crop: v.crop }])),
-    keys: Object.fromEntries([...new Set(Object.values(sets).flatMap((v) => [...v.fgSrc.keys, ...v.bgSrc.keys]))].map((k) => [k, keyInfo[`${theme}|${k}`]])),
-  })), null, 1));
-  const stamp = spawnSync('date', ['+%Y-%m-%d %H:%M:%S'], { encoding: 'utf8' }).stdout.trim();
-  const data = { issues: list, keyInfo, progress, stamp, themes: allThemes.map((t) => t.file), fixCount: Object.keys(fixes).length };
-  fs.writeFileSync(path.join(out, 'index.html'), PAGE(data));
+	const progress = readJson(progressFile) || {
+		done: [],
+		total: allThemes.length,
+		running: false,
+	};
+	const fixes = readJson(path.join(out, "fixes.json")) || {};
+	const issues = new Map();
+	const keyInfo = {};
+	for (const t of allThemes) {
+		const orig = readJson(path.join(REPO, "assets/source", `${t.file}.json`));
+		if (!orig) continue;
+		const per = Object.fromEntries(
+			Object.keys(SETS).map(s => [
+				s,
+				readJson(path.join(out, "_themes", s, `${t.file}.json`))?.colors || {},
+			])
+		);
+		const info = k => {
+			const o = orig.colors?.[k],
+				c = per.new_close[k],
+				p = per.new_part[k];
+			const origin =
+				o !== undefined
+					? "原主题"
+					: c !== undefined
+						? "补全"
+						: p !== undefined
+							? "调色步骤新增"
+							: "未定义(VS Code 默认)";
+			const changed =
+				c !== undefined && p !== undefined && c.toUpperCase() !== p.toUpperCase();
+			return { orig: o, close: c, part: p, origin: origin + (changed ? ", 部分开已改" : "") };
+		};
+		for (const s of Object.keys(SETS)) {
+			for (const scene of ["a", "b", "c"]) {
+				const name = `${t.file}-${scene}`;
+				const r = readJson(path.join(out, s, "audit", `${name}.json`));
+				if (!r) continue;
+				for (const it of r.items) {
+					// 两档按 种类 + 来源键 + 位置 对齐(颜色在两档间可能不同)
+					// 来源键与颜色在两档间可能不同, 只按位置与文字对齐; 同一档里撞号的加序号
+					const base = [
+						t.file,
+						scene,
+						it.kind,
+						it.path,
+						it.line || (it.texts || [])[0] || "",
+					].join("|");
+					let id = base,
+						n = 1;
+					while (issues.get(id)?.sets[s]) id = `${base}#${++n}`;
+					if (!issues.has(id))
+						issues.set(id, {
+							id,
+							theme: t.file,
+							label: t.label,
+							scene,
+							kind: it.kind,
+							path: it.path,
+							sets: {},
+						});
+					const g = issues.get(id);
+					g.sets[s] = {
+						...it,
+						crop: it.crop && `${s}/audit/${it.crop}`,
+						shot: `${s}/${name}.jpg`,
+					};
+					for (const k of [...it.fgSrc.keys, ...it.bgSrc.keys])
+						keyInfo[`${t.file}|${k}`] ||= info(k);
+				}
+			}
+		}
+	}
+	const sev = { 看不清: 0, 刺眼: 1, 偏淡: 2, 偏刺眼: 3 };
+	const list = [...issues.values()]
+		.map(g => {
+			const c = g.sets.new_close,
+				p = g.sets.new_part;
+			g.status = c && p ? "两档都有" : c ? "仅全关(部分开已修好)" : "仅部分开(调色引入)";
+			g.level = (p || c).level;
+			g.fix = fixes[g.id] || null;
+			return g;
+		})
+		.sort(
+			(a, b) =>
+				rank(a.theme) - rank(b.theme) ||
+				a.theme.localeCompare(b.theme) ||
+				sev[a.level] - sev[b.level] ||
+				a.scene.localeCompare(b.scene)
+		);
+	// 给修复研究用的精简清单(不含局部图以外的大字段)
+	fs.writeFileSync(
+		path.join(out, "issues.json"),
+		JSON.stringify(
+			list.map(({ id, theme, scene, kind, path: p, status, level, sets }) => ({
+				id,
+				theme,
+				scene,
+				kind,
+				path: p,
+				status,
+				level,
+				sets: Object.fromEntries(
+					Object.entries(sets).map(([k, v]) => [
+						k,
+						{
+							level: v.level,
+							ratio: v.ratio,
+							fg: v.fg,
+							bg: v.bg,
+							fgRaw: v.fgRaw,
+							opacity: v.opacity,
+							fgKeys: v.fgSrc.keys,
+							fgHow: v.fgSrc.how,
+							bgKeys: v.bgSrc.keys,
+							count: v.count,
+							texts: v.texts,
+							crop: v.crop,
+						},
+					])
+				),
+				keys: Object.fromEntries(
+					[
+						...new Set(
+							Object.values(sets).flatMap(v => [...v.fgSrc.keys, ...v.bgSrc.keys])
+						),
+					].map(k => [k, keyInfo[`${theme}|${k}`]])
+				),
+			})),
+			null,
+			1
+		)
+	);
+	const stamp = spawnSync("date", ["+%Y-%m-%d %H:%M:%S"], { encoding: "utf8" }).stdout.trim();
+	const data = {
+		issues: list,
+		keyInfo,
+		progress,
+		stamp,
+		themes: allThemes.map(t => t.file),
+		fixCount: Object.keys(fixes).length,
+	};
+	fs.writeFileSync(path.join(out, "index.html"), PAGE(data));
 }
 
-const PAGE = (data) => `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>看不清 / 刺眼排查</title>
+const PAGE =
+	data => `<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>看不清 / 刺眼排查</title>
 <style>
 body{margin:0;font:13px/1.5 -apple-system,"PingFang SC",sans-serif;background:#1b1d22;color:#ddd}
 header{position:sticky;top:0;z-index:10;background:#24272e;padding:8px 14px;border-bottom:1px solid #3a3e48;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
@@ -131,7 +245,7 @@ h2{margin:22px 0 8px;color:#fff;font-size:16px;border-bottom:1px solid #3a3e48;p
 <main id="main"></main>
 <div id="zoom"><img></div>
 <script>
-const D = ${JSON.stringify(data).replace(/</g, '\\u003c')};
+const D = ${JSON.stringify(data).replace(/</g, "\\u003c")};
 const SC = { a: 'a 资源管理器 + Markdown | Less + 问题', b: 'b 源代码管理 + TS | Python + 终端', c: 'c 搜索 + 输出' };
 const LS = 'audit-legibility:' + location.pathname;
 const st = JSON.parse(localStorage.getItem(LS) || '{}');
@@ -217,34 +331,60 @@ if (p.running) setInterval(() => { if (document.activeElement?.tagName !== 'TEXT
 // ======== 流程 ========
 fs.mkdirSync(out, { recursive: true });
 if (htmlOnly) {
-  build();
-  console.log(`已重建 ${path.join(out, 'index.html')}`);
-  process.exit(0);
+	build();
+	console.log(`已重建 ${path.join(out, "index.html")}`);
+	process.exit(0);
 }
-console.log('== 补全段与两档主题');
-await runAsync('uv', ['run', '-q', 'tools/gen/complete.py']);
-await Promise.all(Object.entries(SETS).map(([s, v]) => runAsync('uv', ['run', '-q', 'tools/gen/gen_vscode.py', '--out', path.join(out, '_themes', s)], { COMFORT_STEPS: v.steps })));
+console.log("== 补全段与两档主题");
+await runAsync("uv", ["run", "-q", "tools/gen/complete.py"]);
+await Promise.all(
+	Object.entries(SETS).map(([s, v]) =>
+		runAsync(
+			"uv",
+			["run", "-q", "tools/gen/gen_vscode.py", "--out", path.join(out, "_themes", s)],
+			{ COMFORT_STEPS: v.steps }
+		)
+	)
+);
 // 进度按全部主题计: 之前查过而这次不重查的主题仍算已查
 const prev = readJson(progressFile)?.done || [];
-const progress = { done: prev.filter((f) => !themes.some((t) => t.file === f)), total: allThemes.length, running: true };
+const progress = {
+	done: prev.filter(f => !themes.some(t => t.file === f)),
+	total: allThemes.length,
+	running: true,
+};
 fs.writeFileSync(progressFile, JSON.stringify(progress));
 build();
-console.log(`页面: ${path.join(out, 'index.html')}`);
+console.log(`页面: ${path.join(out, "index.html")}`);
 for (const t of themes) {
-  const job = path.join(out, '_themes', `job-${t.file}.json`);
-  fs.writeFileSync(job, JSON.stringify({
-    sets: Object.keys(SETS).map((s) => ({ dir: path.join(out, s), src: path.join(out, '_themes', s) })),
-    filter: [t.file], jpg: true, audit: path.join(REPO, 'tools/lab/audit-dom.mjs'),
-  }));
-  console.log(`== ${t.label}`);
-  const r = spawnSync('node', ['tools/shoot/shoot.mjs', '--job', job], { cwd: REPO, stdio: 'inherit' });
-  if (r.status !== 0) { console.error(`${t.label} 截图或检查失败, 跳过`); continue; }
-  progress.done.push(t.file);
-  fs.writeFileSync(progressFile, JSON.stringify(progress));
-  build();
-  console.log(`已更新页面(${progress.done.length}/${allThemes.length})`);
+	const job = path.join(out, "_themes", `job-${t.file}.json`);
+	fs.writeFileSync(
+		job,
+		JSON.stringify({
+			sets: Object.keys(SETS).map(s => ({
+				dir: path.join(out, s),
+				src: path.join(out, "_themes", s),
+			})),
+			filter: [t.file],
+			jpg: true,
+			audit: path.join(REPO, "tools/lab/audit-dom.mjs"),
+		})
+	);
+	console.log(`== ${t.label}`);
+	const r = spawnSync("node", ["tools/shoot/shoot.mjs", "--job", job], {
+		cwd: REPO,
+		stdio: "inherit",
+	});
+	if (r.status !== 0) {
+		console.error(`${t.label} 截图或检查失败, 跳过`);
+		continue;
+	}
+	progress.done.push(t.file);
+	fs.writeFileSync(progressFile, JSON.stringify(progress));
+	build();
+	console.log(`已更新页面(${progress.done.length}/${allThemes.length})`);
 }
 progress.running = false;
 fs.writeFileSync(progressFile, JSON.stringify(progress));
 build();
-console.log(`完成: ${path.join(out, 'index.html')}`);
+console.log(`完成: ${path.join(out, "index.html")}`);

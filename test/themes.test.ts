@@ -25,10 +25,16 @@ describe.each(contributed)("$label", ({ uiTheme, path }) => {
 	it("界面色, 语法色与语义色都是合法的十六进制", () => {
 		const values = [
 			...Object.values(theme.colors ?? {}),
-			...(theme.tokenColors ?? []).map((rule: { settings: { foreground?: string } }) => rule.settings.foreground).filter(Boolean),
+			...(theme.tokenColors ?? [])
+				.map((rule: { settings: { foreground?: string } }) => rule.settings.foreground)
+				.filter(Boolean),
 			// 语义色有两种写法: "#RRGGBB" 或 { foreground, fontStyle }
 			...Object.values(theme.semanticTokenColors ?? {})
-				.map(value => (typeof value === "string" ? value : (value as { foreground?: string }).foreground))
+				.map(value =>
+					typeof value === "string"
+						? value
+						: (value as { foreground?: string }).foreground
+				)
 				.filter(Boolean),
 		];
 		expect(values.length).toBeGreaterThan(0);
@@ -37,10 +43,15 @@ describe.each(contributed)("$label", ({ uiTheme, path }) => {
 
 	it("覆盖编辑区与 16 色终端", () => {
 		const colors = theme.colors ?? {};
-		for (const key of ["editor.background", "editor.foreground", "terminal.background", "terminal.foreground"]) {
+		for (const key of [
+			"editor.background",
+			"editor.foreground",
+			"terminal.background",
+			"terminal.foreground",
+		]) {
 			expect(colors).toHaveProperty([key]);
 		}
-		const ansi = Object.keys(colors).filter(key => /^terminal\.ansi/.test(key));
+		const ansi = Object.keys(colors).filter(key => key.startsWith("terminal.ansi"));
 		expect(ansi).toHaveLength(16);
 	});
 });

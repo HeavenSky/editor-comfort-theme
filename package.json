@@ -1,40 +1,85 @@
 {
 	"name": "editor-comfort-theme",
+	"displayName": "Editor Comfort Theme",
 	"version": "0.0.4",
+	"description": "%extension.description%",
+	"categories": [
+		"Themes"
+	],
 	"keywords": [
-		"theme",
+		"ayu",
+		"dracula",
+		"eye care",
+		"github",
+		"monokai",
+		"night owl",
 		"one dark",
 		"one light",
-		"ayu",
-		"solarized",
-		"github",
-		"dracula",
-		"night owl",
-		"monokai",
 		"palenight",
-		"eye care",
-		"terminal"
+		"solarized",
+		"terminal",
+		"theme"
 	],
-	"description": "%extension.description%",
-	"displayName": "Editor Comfort Theme",
+	"homepage": "https://github.com/HeavenSky/editor-comfort-theme",
+	"bugs": {
+		"url": "https://github.com/HeavenSky/editor-comfort-theme/issues"
+	},
 	"license": "MIT",
-	"publisher": "HeavenSky",
 	"author": {
 		"name": "calla",
 		"email": "aurora.calla@outlook.com"
 	},
-	"bugs": {
-		"url": "https://github.com/HeavenSky/editor-comfort-theme/issues"
-	},
-	"homepage": "https://github.com/HeavenSky/editor-comfort-theme",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/HeavenSky/editor-comfort-theme.git"
 	},
-	"icon": "media/icon.png",
-	"categories": [
-		"Themes"
+	"publisher": "HeavenSky",
+	"files": [
+		"themes",
+		"media/icon.png",
+		"package.nls.json",
+		"package.nls.zh-cn.json",
+		"LICENSE.txt",
+		"NOTICE.md",
+		"CHANGELOG.md"
 	],
+	"scripts": {
+		"compile": "node build.mjs",
+		"build": "node build.mjs --production",
+		"watch": "node build.mjs --watch",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run",
+		"lint": "oxlint --fix",
+		"lint:check": "oxlint --deny-warnings",
+		"fmt": "oxfmt --write",
+		"fmt:check": "oxfmt --check",
+		"check": "node scripts/check.mjs",
+		"gen:icon": "node scripts/gen-icon.mjs",
+		"extract:registry": "uv run tools/gen/extract_registry.py",
+		"extract:docs": "uv run tools/gen/extract_key_docs.py",
+		"gen:themes": "uv run tools/gen/design.py && uv run tools/gen/complete.py && uv run tools/gen/gen_vscode.py && uv run tools/gen/gen_terminal.py",
+		"pool:update": "uv run tools/gen/pool.py --update && uv run tools/gen/complete.py --guard && uv run tools/gen/complete.py && uv run tools/gen/separate.py --update",
+		"layers": "uv run tools/gen/separate.py --real",
+		"layers:update": "uv run tools/gen/separate.py --update",
+		"metrics": "uv run tools/check/metrics.py themes/*.json assets/terminal/*.terminal",
+		"similar": "uv run tools/check/similar.py themes/*.json",
+		"clash": "uv run tools/check/clash.py && uv run tools/check/clash.py --markdown",
+		"shots": "node tools/shoot/shoot.mjs media/screenshots --jpg",
+		"package": "node scripts/package.mjs",
+		"vscode:prepublish": "npm run build"
+	},
+	"devDependencies": {
+		"@types/node": "^26.6.5",
+		"@vscode/vsce": "^4.0.0",
+		"oxfmt": "^0.74.0",
+		"oxlint": "^1.89.0",
+		"playwright-core": "^1.64.0",
+		"typescript": "^7.0.2",
+		"vitest": "^5.0.3",
+		"vscode-oniguruma": "^2.0.1",
+		"vscode-textmate": "^9.3.2",
+		"vscode-types": "npm:@types/vscode@^1.140.0"
+	},
 	"contributes": {
 		"themes": [
 			{
@@ -135,45 +180,7 @@
 			}
 		]
 	},
-	"files": [
-		"themes",
-		"media/icon.png",
-		"package.nls.json",
-		"package.nls.zh-cn.json",
-		"LICENSE.txt",
-		"NOTICE.md",
-		"CHANGELOG.md"
-	],
-	"scripts": {
-		"compile": "node build.mjs",
-		"build": "node build.mjs --production",
-		"watch": "node build.mjs --watch",
-		"typecheck": "tsc --noEmit",
-		"test": "vitest run",
-		"check": "node scripts/check.mjs",
-		"check:template": "node scripts/check-template.mjs",
-		"gen:icon": "node scripts/gen-icon.mjs",
-		"extract:registry": "uv run tools/gen/extract_registry.py",
-		"extract:docs": "uv run tools/gen/extract_key_docs.py",
-		"gen:themes": "uv run tools/gen/design.py && uv run tools/gen/complete.py && uv run tools/gen/gen_vscode.py && uv run tools/gen/gen_terminal.py",
-		"pool:update": "uv run tools/gen/pool.py --update && uv run tools/gen/complete.py --guard",
-		"metrics": "uv run tools/check/metrics.py themes/*.json assets/terminal/*.terminal",
-		"similar": "uv run tools/check/similar.py themes/*.json",
-		"clash": "uv run tools/check/clash.py && uv run tools/check/clash.py --markdown",
-		"shots": "node tools/shoot/shoot.mjs media/screenshots --jpg",
-		"package": "node scripts/package.mjs",
-		"vscode:prepublish": "npm run build"
-	},
-	"devDependencies": {
-		"@types/node": "^26.6.5",
-		"@vscode/vsce": "^4.0.0",
-		"playwright-core": "^1.64.0",
-		"typescript": "^7.0.2",
-		"vitest": "^5.0.3",
-		"vscode-oniguruma": "^2.0.1",
-		"vscode-textmate": "^9.3.2",
-		"vscode-types": "npm:@types/vscode@^1.140.0"
-	},
+	"icon": "media/icon.png",
 	"engines": {
 		"vscode": "^1.101.0"
 	}

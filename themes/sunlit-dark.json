@@ -543,7 +543,7 @@
 				"variable.tsx"
 			],
 			"settings": {
-				"foreground": "#2993DD"
+				"foreground": "#8288CD"
 			}
 		},
 		{
@@ -738,7 +738,7 @@
 				"variable.parameter.url.scss"
 			],
 			"settings": {
-				"foreground": "#839496"
+				"foreground": "#F25A4F"
 			}
 		},
 		{
@@ -805,7 +805,7 @@
 				"raw"
 			],
 			"settings": {
-				"foreground": "#859900"
+				"foreground": "#F35B1D"
 			}
 		},
 		{
@@ -961,11 +961,19 @@
 		{
 			"name": "Variable",
 			"scope": [
-				"variable.language",
-				"variable.other"
+				"variable.language"
 			],
 			"settings": {
 				"foreground": "#2993DD"
+			}
+		},
+		{
+			"name": "Variable",
+			"scope": [
+				"variable.other"
+			],
+			"settings": {
+				"foreground": "#8288CD"
 			}
 		},
 		{
@@ -1043,11 +1051,19 @@
 		{
 			"name": "User-defined constant",
 			"scope": [
-				"constant.character",
-				"constant.other"
+				"constant.character"
 			],
 			"settings": {
 				"foreground": "#F25B1D"
+			}
+		},
+		{
+			"name": "User-defined constant",
+			"scope": [
+				"constant.other"
+			],
+			"settings": {
+				"foreground": "#F0519A"
 			}
 		},
 		{
@@ -1098,11 +1114,19 @@
 		{
 			"name": "Library class/type",
 			"scope": [
-				"support.type",
 				"support.class"
 			],
 			"settings": {
 				"foreground": "#859900"
+			}
+		},
+		{
+			"name": "Library class/type",
+			"scope": [
+				"support.type"
+			],
+			"settings": {
+				"foreground": "#F35B1D"
 			}
 		},
 		{

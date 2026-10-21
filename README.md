@@ -19,7 +19,7 @@ If you like a popular theme but squint at its comments, faint strings or an invi
 
 ## Keep the theme you know
 
-**Backgrounds, body text and syntax colors stay as in the original theme.** A color changes only when it is hard to read, and only as far as needed, keeping its hue and saturation. C GitHub Dark is almost identical to GitHub Dark Dimmed, while C Sunlit Light raises the contrast of Solarized Light's comments from 2.5 to 3.4. See [what changed in each theme](docs/themes.md#find-your-original-theme).
+**Backgrounds, body text and syntax colors stay as in the original theme.** A color changes only when it is hard to read, and only as far as needed, keeping its hue and saturation, or when two kinds of code that should look different share it, in which case one of them takes another of the theme's own colors. C GitHub Dark is almost identical to GitHub Dark Dimmed, while C Sunlit Light raises the contrast of Solarized Light's comments from 2.5 to 3.4. See [what changed in each theme](docs/themes.md#find-your-original-theme).
 
 ## Read every line without squinting
 

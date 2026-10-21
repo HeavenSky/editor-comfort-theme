@@ -1,5 +1,5 @@
 /**
- * 本插件专属的发布前门禁: 中间主题与主题生成物未漂移, 全关时没有未登记的改色, 配色清晰门禁达标(其余配色指标只作参考报告)。
+ * 本插件专属的发布前门禁: 中间主题与主题生成物未漂移, 全关时没有未登记的改色, 语法角色分得开, 配色清晰门禁达标(其余配色指标只作参考报告)。
  *
  * 各项都要调用 `tools/` 下的 Python 脚本(经 `uv run`); 环境里没有 uv 时打印提示并跳过,
  * 主题文件的结构校验仍由 `test/themes.test.ts` 在任何环境里覆盖。
@@ -22,10 +22,17 @@ function hasUv() {
 
 function runUv(root, args, env = {}) {
 	try {
-		execFileSync("uv", ["run", "-q", ...args], { cwd: root, stdio: "pipe", timeout: UV_TIMEOUT_MS, env: { ...process.env, ...env } });
+		execFileSync("uv", ["run", "-q", ...args], {
+			cwd: root,
+			stdio: "pipe",
+			timeout: UV_TIMEOUT_MS,
+			env: { ...process.env, ...env },
+		});
 		return [];
 	} catch (error) {
-		const output = [error.stdout, error.stderr].map(chunk => (chunk ? chunk.toString().trim() : "")).filter(Boolean);
+		const output = [error.stdout, error.stderr]
+			.map(chunk => (chunk ? chunk.toString().trim() : ""))
+			.filter(Boolean);
 		return [output.join("\n") || error.message];
 	}
 }
@@ -37,11 +44,17 @@ export default function checks(root) {
 	}
 	const files = dir => readdirSync(join(root, dir)).map(name => join(dir, name));
 	return {
-		"设计主题的原主题与 tools/gen/design.py 一致": () => runUv(root, ["tools/gen/design.py", "--check"]),
+		"设计主题的原主题与 tools/gen/design.py 一致": () =>
+			runUv(root, ["tools/gen/design.py", "--check"]),
 		// 补全段先写出中间主题(assets/full-theme/<name>-full.json, 不进版本库), 后面两项都读它; 补全的漂移由下一项核对 themes/ 时暴露
-		"补全段写出中间主题": () => runUv(root, ["tools/gen/complete.py"]),
-		"主题生成物与 tools/gen/themes.py 一致": () => runUv(root, ["tools/gen/gen_vscode.py", "--check"]),
-		"调色步骤全关时产物与中间主题逐键相等(没有未登记的改色)": () => runUv(root, ["tools/gen/gen_vscode.py", "--identity"], { COMFORT_STEPS: "none" }),
+		补全段写出中间主题: () => runUv(root, ["tools/gen/complete.py"]),
+		"主题生成物与 tools/gen/themes.py 一致": () =>
+			runUv(root, ["tools/gen/gen_vscode.py", "--check"]),
+		"调色步骤全关时产物与中间主题逐键相等(没有未登记的改色)": () =>
+			runUv(root, ["tools/gen/gen_vscode.py", "--identity"], { COMFORT_STEPS: "none" }),
+		// 按 assets/layers/hits.json 的命中表算(不需要 VS Code); 标准与门禁线见 assets/layers/roles.json
+		"语法角色分得开 (案例集里要分开的角色撞色数不超过前 5 名参照主题的中位数)": () =>
+			runUv(root, ["tools/gen/separate.py", "--check"]),
 		// 只门禁清晰维度里有对应看不清类步骤的子指标(口径见 tools/check/metrics.py 的 CLEAR_GATE); 其余维度只作参考报告(npm run metrics)
 		"配色清晰门禁达标 (终端 / 编辑区 / 界面的可读下限与选区可见)": () =>
 			runUv(root, [
@@ -49,7 +62,9 @@ export default function checks(root) {
 				"--check",
 				...files("themes").filter(name => name.endsWith(".json")),
 				// .terminal 要用 macOS 的 AppKit 解码, 其他平台(如 CI 的 Linux)只检 VS Code 主题
-				...(process.platform === "darwin" ? files("assets/terminal").filter(name => name.endsWith(".terminal")) : []),
+				...(process.platform === "darwin"
+					? files("assets/terminal").filter(name => name.endsWith(".terminal"))
+					: []),
 			]),
 	};
 }

@@ -571,7 +571,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -779,7 +779,7 @@
 				"unit.scss"
 			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -861,7 +861,7 @@
 				"keyword.other.unit"
 			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -899,7 +899,7 @@
 				"constant"
 			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -908,7 +908,7 @@
 				"constant.variable"
 			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -926,7 +926,7 @@
 				"constant.numeric"
 			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -1514,11 +1514,19 @@
 		{
 			"name": "Source Elixir Separator,source Elixir Keyword Operator",
 			"scope": [
-				"source.elixir separator",
 				"source.elixir keyword.operator"
 			],
 			"settings": {
 				"foreground": "#986801"
+			}
+		},
+		{
+			"name": "Source Elixir Separator,source Elixir Keyword Operator",
+			"scope": [
+				"source.elixir separator"
+			],
+			"settings": {
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -1739,7 +1747,7 @@
 				"ng.interpolation bool"
 			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -1848,9 +1856,11 @@
 		},
 		{
 			"name": "[VSCODE-CUSTOM] Support Constant",
-			"scope": "support.constant",
+			"scope": [
+				"support.constant"
+			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{
@@ -2383,9 +2393,11 @@
 		},
 		{
 			"name": "[VSCODE-CUSTOM] Python Constants",
-			"scope": "source.python constant",
+			"scope": [
+				"source.python constant"
+			],
 			"settings": {
-				"foreground": "#986801"
+				"foreground": "#CA1243"
 			}
 		},
 		{

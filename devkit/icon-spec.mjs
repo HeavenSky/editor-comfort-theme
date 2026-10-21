@@ -26,13 +26,29 @@ const SUN = { cx: MID + COL_DX, cy: TOP_Y, core: 17, rayFrom: 26, rayTo: 35, ray
 const DOTS = { y: 181.5, r: 10, step: 28 };
 
 const circle = (cx, cy, r, fill) => ({ kind: "circle", cx, cy, r, fill });
-const seg = (x1, y1, x2, y2, stroke, strokeWidth) => ({ kind: "polyline", points: [[x1, y1], [x2, y2]], stroke, strokeWidth });
+const seg = (x1, y1, x2, y2, stroke, strokeWidth) => ({
+	kind: "polyline",
+	points: [
+		[x1, y1],
+		[x2, y2],
+	],
+	stroke,
+	strokeWidth,
+});
 
 // 底座在 (x, y) 处的颜色: 对角渐变的取色只与 x + y 线性相关
 const backgroundAt = (x, y) => {
-	const [from, to] = [BACKGROUND_FROM, BACKGROUND_TO].map(hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16)));
+	const [from, to] = [BACKGROUND_FROM, BACKGROUND_TO].map(hex =>
+		[1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16))
+	);
 	const t = (x + y) / (2 * SIZE);
-	return `#${from.map((c, i) => Math.round(c + (to[i] - c) * t).toString(16).padStart(2, "0")).join("")}`;
+	return `#${from
+		.map((c, i) =>
+			Math.round(c + (to[i] - c) * t)
+				.toString(16)
+				.padStart(2, "0")
+		)
+		.join("")}`;
 };
 // 渲染器没有布尔运算, 月牙用"整圆 + 挖空圆"叠出; 底座是渐变, 挖空圆不能用纯色,
 // 改用同向对角渐变, 起止色取底座在挖空圆包围盒两角的颜色, 与底座逐点重合, 两圆边缘都是真圆
@@ -54,9 +70,18 @@ export default {
 		...Array.from({ length: 8 }, (_, i) => {
 			const a = (i * Math.PI) / 4;
 			const { cx, cy, rayFrom, rayTo, rayWidth } = SUN;
-			return seg(cx + Math.cos(a) * rayFrom, cy + Math.sin(a) * rayFrom, cx + Math.cos(a) * rayTo, cy + Math.sin(a) * rayTo, YELLOW, rayWidth);
+			return seg(
+				cx + Math.cos(a) * rayFrom,
+				cy + Math.sin(a) * rayFrom,
+				cx + Math.cos(a) * rayTo,
+				cy + Math.sin(a) * rayTo,
+				YELLOW,
+				rayWidth
+			);
 		}),
 		circle(SUN.cx, SUN.cy, SUN.core, YELLOW),
-		...DOT_COLORS.map((fill, i) => circle(MID + (i - (DOT_COLORS.length - 1) / 2) * DOTS.step, DOTS.y, DOTS.r, fill)),
+		...DOT_COLORS.map((fill, i) =>
+			circle(MID + (i - (DOT_COLORS.length - 1) / 2) * DOTS.step, DOTS.y, DOTS.r, fill)
+		),
 	],
 };

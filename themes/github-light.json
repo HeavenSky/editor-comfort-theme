@@ -611,7 +611,7 @@
 				"source.elixir section"
 			],
 			"settings": {
-				"foreground": "#0550AE"
+				"foreground": "#116329"
 			}
 		},
 		{
@@ -759,7 +759,7 @@
 				"wikiword.xi"
 			],
 			"settings": {
-				"foreground": "#0550AE"
+				"foreground": "#82071E"
 			}
 		},
 		{
@@ -819,15 +819,29 @@
 		},
 		{
 			"scope": [
-				"constant",
-				"entity.name.constant",
 				"variable.other.constant",
-				"variable.other.enummember",
 				"variable.language",
 				"entity"
 			],
 			"settings": {
 				"foreground": "#0550AE"
+			}
+		},
+		{
+			"scope": [
+				"constant",
+				"entity.name.constant"
+			],
+			"settings": {
+				"foreground": "#82071E"
+			}
+		},
+		{
+			"scope": [
+				"variable.other.enummember"
+			],
+			"settings": {
+				"foreground": "#116329"
 			}
 		},
 		{
@@ -904,9 +918,11 @@
 			}
 		},
 		{
-			"scope": "support",
+			"scope": [
+				"support"
+			],
 			"settings": {
-				"foreground": "#0550AE"
+				"foreground": "#116329"
 			}
 		},
 		{
@@ -1002,9 +1018,11 @@
 			}
 		},
 		{
-			"scope": "support.constant",
+			"scope": [
+				"support.constant"
+			],
 			"settings": {
-				"foreground": "#0550AE"
+				"foreground": "#82071E"
 			}
 		},
 		{

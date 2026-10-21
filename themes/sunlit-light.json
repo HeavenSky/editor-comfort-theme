@@ -543,7 +543,7 @@
 				"variable.tsx"
 			],
 			"settings": {
-				"foreground": "#1F77B4"
+				"foreground": "#6468C1"
 			}
 		},
 		{
@@ -689,15 +689,23 @@
 		{
 			"name": "Pool attribute",
 			"scope": [
+				"fenced_code.block.language"
+			],
+			"settings": {
+				"foreground": "#6A7474"
+			}
+		},
+		{
+			"name": "Pool attribute",
+			"scope": [
 				"control.elements",
-				"fenced_code.block.language",
 				"inline-color-decoration rgb-value",
 				"less rgb-value",
 				"source.elixir parameter.variable.function",
 				"source.python constant"
 			],
 			"settings": {
-				"foreground": "#6A7474"
+				"foreground": "#D5312E"
 			}
 		},
 		{
@@ -738,7 +746,7 @@
 				"variable.parameter.url.scss"
 			],
 			"settings": {
-				"foreground": "#5F747B"
+				"foreground": "#D5312E"
 			}
 		},
 		{
@@ -805,7 +813,7 @@
 				"raw"
 			],
 			"settings": {
-				"foreground": "#697900"
+				"foreground": "#C44915"
 			}
 		},
 		{
@@ -821,11 +829,19 @@
 			"name": "Pool this",
 			"scope": [
 				"entity.scope.name.cpp",
-				"variable.parameter.function.language.special.cls.python",
-				"variable.parameter.function.language.special.self.python"
+				"variable.parameter.function.language.special.cls.python"
 			],
 			"settings": {
 				"foreground": "#1F77B4"
+			}
+		},
+		{
+			"name": "Pool this",
+			"scope": [
+				"variable.parameter.function.language.special.self.python"
+			],
+			"settings": {
+				"foreground": "#CA347C"
 			}
 		},
 		{
@@ -961,11 +977,19 @@
 		{
 			"name": "Variable",
 			"scope": [
-				"variable.language",
-				"variable.other"
+				"variable.language"
 			],
 			"settings": {
 				"foreground": "#1F77B4"
+			}
+		},
+		{
+			"name": "Variable",
+			"scope": [
+				"variable.other"
+			],
+			"settings": {
+				"foreground": "#6468C1"
 			}
 		},
 		{
@@ -1076,9 +1100,11 @@
 		},
 		{
 			"name": "Tag attribute",
-			"scope": "entity.other.attribute-name",
+			"scope": [
+				"entity.other.attribute-name"
+			],
 			"settings": {
-				"foreground": "#6A7474"
+				"foreground": "#D5312E"
 			}
 		},
 		{
@@ -1098,11 +1124,19 @@
 		{
 			"name": "Library class/type",
 			"scope": [
-				"support.type",
 				"support.class"
 			],
 			"settings": {
 				"foreground": "#697900"
+			}
+		},
+		{
+			"name": "Library class/type",
+			"scope": [
+				"support.type"
+			],
+			"settings": {
+				"foreground": "#C44915"
 			}
 		},
 		{
