@@ -20,7 +20,7 @@ import hashlib, json, math, os, re, subprocess, sys
 from collections import Counter, defaultdict
 
 sys.dont_write_bytecode = True
-sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
+sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check')]
 import pool
 import roles as R
 from colorlib import cr, fit, h, hx, oklch
@@ -32,6 +32,8 @@ FULL = os.path.join(ROOT, 'assets', 'full-theme')
 NEUTRAL_CHROMA = 0.035
 # 换上的颜色与原色至少明显不同, 不靠刚越过阈值的近似色凑数
 APART_DE = R.APART_DE
+# 候选色去重: 与已收的候选 ΔE 小于它的算同一种颜色(比 R.SAME_DE 严, 只去掉几乎相同的)
+CAND_DEDUP_DE = 3
 # 候选色的最低彩度: 取 max(CAND_CHROMA, 主题语法彩色彩度中位数 x CAND_CHROMA_RATIO); 偏灰的颜色拆开了也不像主题的颜色
 CAND_CHROMA, CAND_CHROMA_RATIO = 0.06, 0.7
 # 贪心的偏好权重(与撞色同量纲: 一次撞色记 1): 色相离目标的距离, 动到已在目标色相上的组, 给灰色(正文色这类)的组上色, 动的 token 占比
@@ -39,12 +41,13 @@ W_HUE, W_HOME, W_GRAY, W_SIZE = 0.3, 5.0, 1.0, 0.05
 # 主题的标志色多落在这几类角色上(如 One Dark 的红色标签, GitHub 的浅蓝字符串): 拆开阶段先只动其余角色, 降不到门禁线才放开, 且另加罚分
 CORE, W_CORE = {'keyword', 'storage', 'function', 'string', 'type', 'tag', 'heading'}, 3.0
 # 两个角色都在 CORE 且参照家族里分开的占比达到"必须分开"(roles.json 的 auto)的对: 主要角色撞色最显眼(如 Night Owl 的字符串与类型),
-# 不受门禁线限制; 达线后再拆, 每步须减少这类撞色且总撞色不超过门禁线
+# 不受门禁线限制; 达线后再拆, 每步须减少这类撞色, 且总撞色不超过 max(当前撞色, 门禁线): 已达线时不越过门禁线, 未达线时不增加
 MUST_CORE = '必须分开'
 # 换上的颜色已被另一个主要(token 占比 >= OCCUPIED_SHARE)的异角色组占用时的罚分
 W_OCC, OCCUPIED_SHARE = 0.5, 0.02
 # 还原阶段: 姊妹主题里该组色相与现色相差 >= RESTORE_GAP(度)时, 换到与目标色相差 <= RESTORE_NEAR 的候选色
 RESTORE_GAP, RESTORE_NEAR = 30, 45
+# 只限制"拆开"阶段的贪心步数(不含还原阶段与 MUST_CORE 的达线后拆分)
 MAX_MOVES = 16
 
 
@@ -160,6 +163,9 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
     entry = H['themes'].get(name)
     if entry is None or entry['fingerprint'] != fingerprint(src.get('tokenColors', [])):
         raise SystemExit(f'{name}: 语法层次命中表与中间主题不符, 先运行 uv run tools/gen/separate.py --update')
+    # 命中表的 token 下标按案例集的顺序记; 案例集增删或调序后旧表会错位
+    if H['files'] != [os.path.relpath(f, ROOT) for f in corpus_files()]:
+        raise SystemExit(f'{name}: 语法层次命中表与案例集(assets/layers/cases.json)不符, 先运行 uv run tools/gen/separate.py --update')
     gate = standard()['rules']['gate']
     tokens = H['tokens']
     checks = checks_of(tokens)
@@ -202,13 +208,13 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
     marks = {'invalid', 'deleted', 'inserted'}
     raw = [color[x] for x in sels if x not in comments and _sel_role(x[1], roles_of) not in marks]
     raw += [hx(t.get('ui_ansi', t['ansi'])[n]) for n in ('Red', 'Green', 'Yellow', 'Blue', 'Magenta', 'Cyan')]
-    for c in raw:
+    for c in dict.fromkeys(raw):
         rgb = h(c)
         if oklch(rgb)[1] < min_chroma:
             continue
         if cr(rgb, bg) < t['token_min']:
             c = hx(fit(rgb, bg, lo=t['token_min'] + 0.02))
-        if R.de(c, fg) < R.SAME_DE or any(R.de(c, x) < R.SAME_DE for x in comment_colors) or any(R.de(c, x) < 3 for x in cands):
+        if R.de(c, fg) < R.SAME_DE or any(R.de(c, x) < R.SAME_DE for x in comment_colors) or any(R.de(c, x) < CAND_DEDUP_DE for x in cands):
             continue
         cands.append(c)
     # 目标色相: 同一批 token 在原色下撞色更少的姊妹主题(同名深 / 浅)里的颜色(多数票); 否则取主题自己的角色代表色; 灰色不作目标
@@ -218,14 +224,14 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
     def source_colors(rules_: list, entry_: dict, fg_: str) -> list[str]:
         return [fg_ if k < 0 else _hex(rules_[entry_['selectors'][k][0]]['settings']['foreground']) for k in entry_['hits']]
 
+    src_fg = _hex(src.get('colors', {}).get('editor.foreground')) or fg
     better = False
     if twin in H['themes'] and os.path.exists(twin_path):
         tw = pool._load(twin_path)
         tw_color = source_colors(tw.get('tokenColors', []), H['themes'][twin], _hex(tw['colors'].get('editor.foreground')) or '#808080')
-        own = source_colors(src.get('tokenColors', []), entry, _hex(src.get('colors', {}).get('editor.foreground')) or fg)
+        own = source_colors(src.get('tokenColors', []), entry, src_fg)
         # 只向层次更好的姊妹主题看齐: 两边互相当参照会把好的一边也拉坏(如 Night Owl 的桃色字符串)
         better = R.judge(tw_color, checks)['w'] < R.judge(own, checks)['w']
-    src_fg = src.get('colors', {}).get('editor.foreground') or fg
     target, from_twin = {}, set()
     for g in groups:
         v = None
@@ -292,7 +298,7 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
                 v = (m['w'], _hue_gap(c, tv))
                 if best is None or v < best[0]:
                     best = (v, c, m, over, ws)
-        if best and best[2]['w'] < cur['w'] - 1e-9:
+        if best and best[2]['w'] < cur['w'] - 1e-9 and best[2]['n'] <= cur['n']:
             apply(g, best[1], best[3], best[4], '还原')
 
     restored = len(moves)

@@ -7,18 +7,18 @@
 # 用法: uv run tools/check/metrics.py [--check] [--detail] <文件>...
 #   --check: 门禁只看清晰维度里有对应看不清类调色步骤(tools/gen/steps.py)的子指标, 口径取该步骤的目标(CLEAR_GATE), 任一受检主题越过时退出码 1;
 #            VS Code 主题另须符合 vscode://schemas/color-theme. 其余清晰子指标, 串色, 角色 / 终端色差, 硬编码默认色覆盖与常用 scope 着色只作报告
-#            (第一目标是还原原主题, 原主题本来如此的不判不达标). themes.py 中 gate=False 的主题只报告不判定. --strict 为旧参数, 与 --check 相同.
+#            (第一目标是还原原主题, 原主题本来如此的不判不达标). --strict 为旧参数, 与 --check 相同.
 #   --detail: 逐主题列出 3 格(清晰 x 范围)的子指标取值与得分, 以及诊断: 语法色同彩度 / 同对比度占比(压平),
 #             与原主题相比的色相偏移和饱和度损失(保真度, 仅本仓库主题).
 import json, os, plistlib, re, sys
 
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
-from colorlib import Rgb, blend, cr, h, lum, oklch, sat
+from colorlib import Rgb, blend, cr, h, oklch, sat
 from comfort import DIM_NAMES, DIMS, MAIN_ROLES, NAMES, SCOPE_NAMES, SCOPES, rate
 from schema import HEX, problems as schema_problems
 from coverage import missing as coverage_missing
-from gen_vscode import REGISTRY as REGISTRY_PATH, UI_PAIRS, is_comment_rule
+from gen_vscode import REGISTRY as REGISTRY_PATH, is_comment_rule
 from steps import on
 import levels
 
@@ -26,6 +26,22 @@ import levels
 REGISTRY = json.load(open(REGISTRY_PATH, encoding='utf-8'))['colors'] if os.path.exists(REGISTRY_PATH) else None
 
 ANSI = ['Black', 'Red', 'Green', 'Yellow', 'Blue', 'Magenta', 'Cyan', 'White']
+
+# 界面上的文字与其底色, 及对比度下限(非活动的图标 / 标签本就该淡一档, 下限 3.0): 清晰维度 界面文字 取其中下限 4.5 的配对评级
+UI_PAIRS = [
+    ('editorLineNumber.foreground', 'editor.background', 2.2),
+    ('sideBar.foreground', 'sideBar.background', 4.5),
+    ('tab.activeForeground', 'tab.activeBackground', 4.5),
+    ('tab.inactiveForeground', 'tab.inactiveBackground', 3.0),
+    ('statusBar.foreground', 'statusBar.background', 4.5),
+    ('activityBar.foreground', 'activityBar.background', 4.5),
+    ('activityBar.inactiveForeground', 'activityBar.background', 3.0),
+    ('sideBarTitle.foreground', 'sideBar.background', 4.5),
+    ('sideBarSectionHeader.foreground', 'sideBarSectionHeader.background', 4.5),
+    ('titleBar.activeForeground', 'titleBar.activeBackground', 4.5),
+    # 没有定义 sideBar.foreground 的主题(如 Ayu)文件树用通用前景色
+    ('foreground', 'sideBar.background', 4.5),
+]
 
 
 def _ansi_stats(pal: list[Rgb], bg: Rgb) -> dict:
@@ -129,14 +145,6 @@ def from_vscode(path: str) -> dict:
 
 
 
-def exempt_names() -> set[str]:
-    try:
-        from themes import build
-        return {t['name'] for t in build() if not t['gate']}
-    except Exception:
-        return set()
-
-
 # 诊断阈值: 语法色同彩度 / 同对比度的占比超过它即判"压平"; 主要角色相对原主题色相偏移 / 饱和度保留比例的警告线
 FLAT_SHARE, HUE_SHIFT_WARN, SAT_KEEP_WARN = 0.40, 15, 0.60
 
@@ -208,7 +216,7 @@ def main() -> int:
     if not files:
         print(__doc__ or '用法: uv run tools/check/metrics.py [--check] [--detail] <文件>...')
         return 2
-    exempt, failed, rows = exempt_names(), [], []
+    failed, rows = [], []
     for f in files:
         name = re.sub(r'(-color-theme)?\.(terminal|json)$', '', os.path.basename(f))
         m = from_terminal(f) if f.endswith('.terminal') else from_vscode(f)
@@ -221,10 +229,9 @@ def main() -> int:
         if m.get('scopes'):
             why.append(f"常用 scope 未着色 {len(m['scopes'])} 个: {', '.join(m['scopes'])}")
         gate = clear_gate(r) + level_gate(f) + ([f"不符合 vscode://schemas/color-theme {len(m['schema'])} 处, 例: {'; '.join(m['schema'][:3])}"] if m.get('schema') else [])
-        gated = name not in exempt
-        if check and gated and gate:
+        if check and gate:
             failed.append((f, gate))
-        rows.append((name, f, m, r, '' if gated else ' (参考, 不门禁)'))
+        rows.append((name, f, m, r))
     sc = lambda x: '  - ' if not x or x['score'] is None else f"{x['score']:>3}{' ' if x['ok'] else '×'}"
     dims = ' '.join(f'{DIM_NAMES[d][:2]:>4}' for d in DIMS)
     for kind, title in (('terminal', 'Terminal'), ('vscode', 'VS Code')):
@@ -233,13 +240,13 @@ def main() -> int:
             continue
         extra = '' if kind == 'terminal' else ' 未覆盖 规范 着色 |'
         print(f"{title:14} {'主题':18} 正文 |{extra} 终端 编辑区 界面 | {dims} | 综合")
-        for name, f, m, r, tag in sel:
+        for name, f, m, r in sel:
             hard = '' if kind == 'terminal' else f" {len(m['uncovered'] or []):>5} {len(m['schema']):>4} {len(m['scopes']):>4} |"
             print(f"  {name:28} {m['text']:4.1f} |{hard} {sc(r['scope'].get('term'))} {sc(r['scope'].get('editor'))}  {sc(r['scope'].get('ui'))} |"
-                  f" {' '.join(sc(r['dim'][d]) for d in DIMS)} | {sc(r['overall'])}{tag}")
+                  f" {' '.join(sc(r['dim'][d]) for d in DIMS)} | {sc(r['overall'])}")
     if detail:
         print('\n子指标(取值 得分; × 为越过限值):')
-        for name, f, m, r, _ in rows:
+        for name, f, m, r in rows:
             print(f'  {name}')
             for s in SCOPES:
                 for d in DIMS:

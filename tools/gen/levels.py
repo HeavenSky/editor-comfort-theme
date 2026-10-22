@@ -1,10 +1,10 @@
 # 分层门槛: 读 assets/levels.json(tools/lab/threshold-lab.mjs export 生成), 按 颜色键 -> 级 与 颜色键 -> 实测底色键 的配对,
 # 检查并修复低于修复下限 / 绝对下限的界面颜色; 调色步骤 level_floor(gen_vscode.py)与分层门禁(metrics.py)共用这一份口径.
 # 相对指标 rd = OKLab 明度差 / 本主题正文(editor.foreground 于 editor.background)明度差 x 100; 绝对指标: apca = APCA Lc, de = OKLab ΔE x 100.
-# 只处理主题自己定义了的键(没定义的由 VS Code 推导, 这里算不出推导值); 禁用状态不设下限; 与底色同色(ΔE < levels.json 的 sameColorDE, 即 OKLab 可辨差)的线条与层次底是原设计不画, 豁免.
+# 只处理主题自己定义了的键(没定义的由 VS Code 推导, 这里算不出推导值); 禁用状态不设下限; 与底色同色(ΔE < levels.json 的 sameColorDE, 即 OKLab 可辨差)的线条是原设计不画, 豁免.
 # 配对的底色键按普查出现次数排序, 第一个最可靠; 其余可能是按颜色值反查来的同色键: 修复先求全部达标, 做不到只保证第一个, 门禁只判第一个.
 # 前景键有同名底色键(xxx.activeForeground -> xxx.activeBackground)且主题定义了时, 它排第一: 普查按值反查可能认成同色的别的底色键(如 Ayu 的按钮底).
-# 底色弱(层次底)只报告不修不门禁: 原主题常故意做平再靠边框区分(如 One Light 白输入框), 它又是字与选区的底, 改它会连锁带动别的颜色.
+# 底色弱(层次底)这里整体跳过(不修不门禁), 报告在 tools/lab/threshold-lab.mjs: 原主题常故意做平再靠边框区分(如 One Light 白输入框), 它又是字与选区的底, 改它会连锁带动别的颜色.
 # 终端颜色(terminal.*)不在这里处理, 由 themes.py 的终端步骤与门禁负责.
 # 只有字可以调到底色的另一侧(深底浅字 <-> 浅底深字), 翻过去时优先取本主题的编辑区底 / 正文; 线条与底色只往底色有余地的一侧调(浅底往暗, 深底往亮), 不反转原设计.
 import json, math, os, re
@@ -139,8 +139,9 @@ def resolve(colors: dict, key: str, dark: bool, _depth: int = 0) -> tuple[Rgb, f
                     return rgb, a * num(2) * num(3)
                 l1, l2 = lum(rgb), lum(b[0])
                 if (l1 + 0.05) / (l2 + 0.05) < 1:
-                    return _q(_hsl_l(rgb, num(2) * (l2 - l1) / l2)), a * num(3)
-                return _q(_hsl_l(rgb, -num(2) * (l1 - l2) / l1)), a * num(3)
+                    return _q(_hsl_l(rgb, num(2) * (l2 - l1) / max(l2, 1e-9))), a * num(3)
+                # 两色都是纯黑时 l1 = l2 = 0, 分母兜底(分子同为 0, 结果不变色)
+                return _q(_hsl_l(rgb, -num(2) * (l1 - l2) / max(l1, 1e-9))), a * num(3)
             if fn in ('lighten', 'darken'):
                 return _q(_hsl_l(rgb, num(1) if fn == 'lighten' else -num(1))), a
             if fn == 'opaque':
@@ -170,12 +171,18 @@ def under(colors: dict, key: str, t: dict) -> Rgb:
     return blend(rgb, t['bg'], a) if a < 1 else rgb
 
 
-def exempt(key: str, level: str) -> str | None:
-    if re.search('disabled', key, re.I):
-        return '禁用'
-    if level == '底色弱':
-        return '层次底只报告'
-    return None
+def exempt(key: str, level: str) -> bool:
+    """不设下限的键: 禁用状态, 以及底色弱(层次底, 报告见 tools/lab/threshold-lab.mjs)."""
+    return bool(re.search('disabled', key, re.I)) or level == '底色弱'
+
+
+# 门禁(check)与线条 / 底色修复(short)的余量: 差不到它的不算越线
+SLACK = 0.05
+
+
+def below(rd: float, ab: float, lv: dict, slack: float) -> bool:
+    """相对指标低于修复下限或绝对指标低于绝对下限(各留 slack 余量); lv 为 levels.json 的一级."""
+    return rd < lv['lo'] - slack or ab < lv['abs'] - slack
 
 
 def measure(c: Rgb, bg: Rgb, level: str, base: float) -> tuple[float, float]:
@@ -187,11 +194,10 @@ def short(c: Rgb, a: float, bgs: list[Rgb], level: str, base: float) -> bool:
     """字(内容 / 暗化)按下限本身判, 不留 check 的 0.05 余量: 实际渲染还有取整与半透明叠色, 卡在余量里的字在排查报告里会差零点几.
     线条与底色仍留余量: 它们只往底色有余地的一侧调, 差零点几就修会把原本比底色暗的线翻成比底色亮."""
     lv = doc()['levels'][level]
-    slack = 0 if level[:2] in ('内容', '暗化') else 0.05
+    slack = 0 if level[:2] in ('内容', '暗化') else SLACK
     for bg in bgs:
         fg = blend(c, bg, a) if a < 1 else c
-        rd, ab = measure(fg, bg, level, base)
-        if rd < lv['lo'] - slack or ab < lv['abs'] - slack:
+        if below(*measure(fg, bg, level, base), lv, slack):
             return True
     return False
 
@@ -213,17 +219,17 @@ def targets(colors: dict, t: dict) -> list[tuple[str, str, list[str]]]:
 
 
 def same_color(c: Rgb, a: float, bgs: list[Rgb], key: str, level: str) -> bool:
-    """原设计不画: 全透明(alpha 0)的一律算; 线条与层次底与第一个配对底色(它所在的那块底, 如 tab.activeBorder 于活动标签底)同色(ΔE < sameColorDE)也算,
-    焦点框 / 选区 / 当前匹配(exemptSameColor)除外."""
+    """原设计不画: 全透明(alpha 0)的一律算; 线条与第一个配对底色(它所在的那块底, 如 tab.activeBorder 于活动标签底)同色(ΔE < sameColorDE)也算,
+    焦点框 / 选区 / 当前匹配(exemptSameColor)除外. 底色弱在调用方已由 exempt 跳过, 这里不再判."""
     if a <= 0.5 / 255:
         return True
-    if not (level.startswith('线条') or level == '底色弱') or re.search(doc()['exemptSameColor'], key, re.I):
+    if not level.startswith('线条') or re.search(doc()['exemptSameColor'], key, re.I):
         return False
     return de(blend(c, bgs[0], a) if a < 1 else c, bgs[0]) < doc().get('sameColorDE', 1)
 
 
-def check(colors: dict, t: dict, all_unders: bool = False) -> list[str]:
-    """越线项: '键(级) 于 底色键 rd x < 下限' 或 绝对指标不足; 豁免的不报. 默认只判第一个(最可靠的)底色键."""
+def check(colors: dict, t: dict) -> list[str]:
+    """越线项: '键(级) 于 底色键 rd x < 下限' 或 绝对指标不足(留 SLACK 余量); 豁免的不报. 只判第一个(最可靠的)底色键."""
     base, out = body_dl(colors, t), []
     for k, lv, unders in targets(colors, t):
         c, a = parse(colors[k])
@@ -231,16 +237,17 @@ def check(colors: dict, t: dict, all_unders: bool = False) -> list[str]:
         if exempt(k, lv) or same_color(c, a, bgs, k, lv):
             continue
         L = doc()['levels'][lv]
-        for u, bg in list(zip(unders, bgs))[:None if all_unders else 1]:
+        for u, bg in zip(unders[:1], bgs[:1]):
             fg = blend(c, bg, a) if a < 1 else c
             rd, ab = measure(fg, bg, lv, base)
-            if rd < L['lo'] - 0.05 or ab < L['abs'] - 0.05:
+            if below(rd, ab, L, SLACK):
                 out.append(f"{k}({lv}) 于 {u}: rd {rd:.1f} / {L['abs_metric']} {ab:.1f}, 下限 {L['lo']} / {L['abs']}")
     return out
 
 
 def fix(colors: dict, t: dict, white_cap: tuple[float, float] | None = None) -> list[str]:
     """把低于修复下限 / 绝对下限的键提到刚好达标: 半透明的先加不透明度; 不够再只调 OKLCH 明度(远离底色), 色相与彩度不变(出色域时降彩度).
+    字(内容 / 暗化)那一侧到头仍不够时可以翻到底色的另一侧; 翻侧时改取本主题在那一侧的编辑区底 / 正文(比按原色相刚好达标的颜色更清楚才用, 此时色相与彩度会变).
     white_cap = (明度上限, 彩度上限): 无彩色(彩度不超过上限)的颜色往亮调时最高到该明度, 不够换另一侧; 与调色步骤 white_cap 配合, 不把压下去的近纯白再推回去
     (gen_vscode 传近纯白门槛下方一点: 字仍可提到比 white_cap 的 0.88 更亮以保对比度, 但不回到近纯白)."""
     base, log = body_dl(colors, t), []

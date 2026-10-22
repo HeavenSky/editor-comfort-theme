@@ -603,8 +603,8 @@
 			"deprecated": false
 		},
 		"chat.requestBorder": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF1A",
+			"light": "#0000001A",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -741,8 +741,8 @@
 			"deprecated": false
 		},
 		"commandCenter.activeBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF14",
+			"light": "#00000014",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -759,8 +759,8 @@
 			"deprecated": false
 		},
 		"commandCenter.background": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF0D",
+			"light": "#0000000D",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -1053,8 +1053,8 @@
 			"deprecated": false
 		},
 		"diffEditor.insertedLineBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#9BB95533",
+			"light": "#9BB95533",
 			"transparent": true,
 			"deprecated": false
 		},
@@ -1083,8 +1083,8 @@
 			"deprecated": false
 		},
 		"diffEditor.removedLineBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FF000033",
+			"light": "#FF000033",
 			"transparent": true,
 			"deprecated": false
 		},
@@ -1311,8 +1311,8 @@
 			"deprecated": false
 		},
 		"editor.linkedEditingBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FF00004C",
+			"light": "#FF00004C",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -1366,13 +1366,13 @@
 		},
 		"editor.snippetFinalTabstopHighlightBorder": {
 			"dark": "#525252",
-			"light": null,
+			"light": "#0A326480",
 			"transparent": false,
 			"deprecated": false
 		},
 		"editor.snippetTabstopHighlightBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#7C7C7C4C",
+			"light": "#0A326433",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -1503,8 +1503,8 @@
 			"deprecated": false
 		},
 		"editorBracketHighlight.unexpectedBracket.foreground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FF1212CC",
+			"light": "#FF1212CC",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -1678,7 +1678,7 @@
 		},
 		"editorGhostText.foreground": {
 			"dark": "#FFFFFF56",
-			"light": null,
+			"light": "#00000077",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -2193,8 +2193,8 @@
 			"deprecated": false
 		},
 		"editorOverviewRuler.errorForeground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FF1212B2",
+			"light": "#FF1212B2",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -2235,8 +2235,8 @@
 			"deprecated": false
 		},
 		"editorOverviewRuler.rangeHighlightForeground": {
-			"dark": null,
-			"light": null,
+			"dark": "#007ACC99",
+			"light": "#007ACC99",
 			"transparent": true,
 			"deprecated": false
 		},
@@ -2937,20 +2937,20 @@
 			"deprecated": false
 		},
 		"keybindingLabel.background": {
-			"dark": null,
-			"light": null,
+			"dark": "#8080802B",
+			"light": "#DDDDDD66",
 			"transparent": false,
 			"deprecated": false
 		},
 		"keybindingLabel.border": {
-			"dark": null,
-			"light": null,
+			"dark": "#33333399",
+			"light": "#CCCCCC66",
 			"transparent": false,
 			"deprecated": false
 		},
 		"keybindingLabel.bottomBorder": {
-			"dark": null,
-			"light": null,
+			"dark": "#44444499",
+			"light": "#BBBBBB66",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -3129,8 +3129,8 @@
 			"deprecated": false
 		},
 		"listFilterWidget.outline": {
-			"dark": null,
-			"light": null,
+			"dark": "#00000000",
+			"light": "#00000000",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -3249,8 +3249,8 @@
 			"deprecated": false
 		},
 		"merge.commonHeaderBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#60606066",
+			"light": "#60606066",
 			"transparent": true,
 			"deprecated": false
 		},
@@ -3261,8 +3261,8 @@
 			"deprecated": false
 		},
 		"merge.currentHeaderBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#40C8AE80",
+			"light": "#40C8AE80",
 			"transparent": true,
 			"deprecated": false
 		},
@@ -3273,8 +3273,8 @@
 			"deprecated": false
 		},
 		"merge.incomingHeaderBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#40A6FF80",
+			"light": "#40A6FF80",
 			"transparent": true,
 			"deprecated": false
 		},
@@ -3369,8 +3369,8 @@
 			"deprecated": false
 		},
 		"minimap.errorHighlight": {
-			"dark": null,
-			"light": null,
+			"dark": "#FF1212B2",
+			"light": "#FF1212B2",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -3561,8 +3561,8 @@
 			"deprecated": false
 		},
 		"modernEditorTab.inactiveBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#00000000",
+			"light": "#00000000",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -3663,8 +3663,8 @@
 			"deprecated": false
 		},
 		"notebook.cellStatusBarItemHoverBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF26",
+			"light": "#00000014",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -3880,7 +3880,7 @@
 		},
 		"panelInput.border": {
 			"dark": null,
-			"light": null,
+			"light": "#DDDDDD",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -4167,8 +4167,8 @@
 			"deprecated": false
 		},
 		"quickInputTitle.background": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF1B",
+			"light": "#0000000F",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -4425,8 +4425,8 @@
 			"deprecated": false
 		},
 		"settings.modifiedItemIndicator": {
-			"dark": null,
-			"light": null,
+			"dark": "#0C7D9D",
+			"light": "#66AFE0",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -4653,14 +4653,14 @@
 			"deprecated": false
 		},
 		"statusBarItem.activeBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF2E",
+			"light": "#FFFFFF2E",
 			"transparent": false,
 			"deprecated": false
 		},
 		"statusBarItem.compactHoverBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF1F",
+			"light": "#0000001F",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -4695,8 +4695,8 @@
 			"deprecated": false
 		},
 		"statusBarItem.hoverBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#FFFFFF1F",
+			"light": "#0000001F",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -4731,8 +4731,8 @@
 			"deprecated": false
 		},
 		"statusBarItem.prominentBackground": {
-			"dark": null,
-			"light": null,
+			"dark": "#00000080",
+			"light": "#00000080",
 			"transparent": false,
 			"deprecated": false
 		},
@@ -5895,7 +5895,7 @@
 			"deprecated": false
 		},
 		"walkThrough.embeddedEditorBackground": {
-			"dark": null,
+			"dark": "#00000066",
 			"light": "#F4F4F4",
 			"transparent": false,
 			"deprecated": false

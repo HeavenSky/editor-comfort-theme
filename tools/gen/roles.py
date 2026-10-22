@@ -16,7 +16,7 @@ import itertools, json, os, re, statistics, subprocess, sys
 from collections import Counter, defaultdict
 
 sys.dont_write_bytecode = True
-sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
+sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen')]
 import pool
 from colorlib import de2000, h
 
@@ -154,8 +154,9 @@ def refresh_reference(theme_dir: str) -> None:
     cons = consensus(fams)
     tok = tokenize(theme_dir)
     base = {k for k, v in cons.items() if v['auto'] in ('必须分开', '应该分开')}
-    ranked = sorted(fams, key=lambda k: judge(tok[reps[k][:-5]][1], checks(tok[reps[k][:-5]][0], base, set()))['n'])
-    base_n = {k: judge(tok[reps[k][:-5]][1], checks(tok[reps[k][:-5]][0], base, set()))['n'] for k in ranked}
+    base_all = {k: judge(tok[reps[k][:-5]][1], checks(tok[reps[k][:-5]][0], base, set()))['n'] for k in fams}
+    ranked = sorted(fams, key=base_all.__getitem__)
+    base_n = {k: base_all[k] for k in ranked}
     top = ranked[:TOP]
     final = base | {k for k, v in cons.items() if k not in base and sum(de(fams[t]['roles'][k.split('|')[0]], fams[t]['roles'][k.split('|')[1]]) >= APART_DE
                                                                        for t in top) >= TOP_MAJORITY}

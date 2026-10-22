@@ -42,6 +42,17 @@ def oklch(c: Rgb) -> tuple[float, float, float]:
     return L, math.hypot(A, B), math.atan2(B, A)
 
 
+def hue_deg(c: Rgb) -> float:
+    """OKLCH 色相(度, 0~360)."""
+    return math.degrees(oklch(c)[2]) % 360
+
+
+def hue_in(deg: float, rng: tuple) -> bool:
+    """色相 deg 是否落在 (lo, hi) 范围内; lo > hi 表示跨 0 度."""
+    lo, hi = rng
+    return lo <= deg <= hi if lo <= hi else deg >= lo or deg <= hi
+
+
 def _rgb(L: float, C: float, H: float) -> Rgb:
     A, B = C * math.cos(H), C * math.sin(H)
     l = (L + 0.3963377774 * A + 0.2158037573 * B) ** 3

@@ -4,9 +4,7 @@
 # 每个子指标给出 理想区间 与 限值区间: 落在理想区间得 100, 到限值线性降到 60, 越过限值继续线性降到 0 并判失败.
 # 一格(维度 x 范围)的得分为其子指标得分的平均; 通过 = 没有子指标越过限值. 指标取不到(例如 .terminal 没有编辑区)时跳过.
 # 鲜艳柔和 / 防疲劳 / 护眼 / 防蓝光 四个维度是 v0.0.3 舒适度重调时期的口径, 与"保留原主题亮度与饱和度"相反, 已删除.
-import math
-
-from colorlib import Rgb, blend, cr, de2000, h, lum, oklch
+from colorlib import Rgb, blend, cr, de2000, h, hue_deg, hue_in, lum, oklch
 
 # 输入框 / 下拉框等控件里输入的字(计入 小块上的字)
 CONTROL_TEXT_PAIRS = [('input.foreground', 'input.background'), ('dropdown.foreground', 'dropdown.background'),
@@ -146,15 +144,6 @@ def _parse(v: str, under: Rgb) -> Rgb:
     return blend(c, under, int(v[6:8], 16) / 255) if len(v) == 8 else c
 
 
-def _in_hue(deg: float, rng: tuple) -> bool:
-    lo, hi = rng
-    return lo <= deg <= hi if lo <= hi else deg >= lo or deg <= hi
-
-
-def _deg(c: Rgb) -> float:
-    return math.degrees(oklch(c)[2]) % 360
-
-
 def _opaque(colors: dict, keys, bg: Rgb) -> list[Rgb]:
     return [_parse(colors[k], bg) for k in keys if k in colors]
 
@@ -176,7 +165,7 @@ def term_values(pal: list[Rgb], bg: Rgb, fg: Rgb, sel: Rgb | None = None, sel_in
         clear=dict(text=text, accent=min(crs), bright=min(cr(c, bg) for c in bright),
                    badge=min(max(cr(pal[0], c), cr(pal[15], c), cr(pal[7], c)) for c in colored),
                    gray=cr(pal[8], bg), distinct=_min_de(normal),
-                   hue_slot=sum(not _in_hue(_deg(c), TERM_HUES[n]) for n, c in zip(names, colored)),
+                   hue_slot=sum(not hue_in(hue_deg(c), TERM_HUES[n]) for n, c in zip(names, colored)),
                    selection=cr(sel, bg) if sel else None, inactive_selection=cr(sel_inactive, bg) if sel_inactive else None,
                    on_selection=cr(fg, sel) if sel else None),
     )

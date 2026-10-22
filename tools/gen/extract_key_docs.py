@@ -4,14 +4,14 @@
 # 从本机 VS Code 安装包静态提取全部颜色键的官方说明与四种主题类型的默认值(不执行安装包内任何代码).
 # 数据源: out/vs/workbench/workbench.desktop.main.js 里的 registerColor 包装函数调用 + out/nls.messages.json(说明按下标引用)
 #        + extensions/*/package.json 的 contributes.colors(说明经 package.nls.json 引用).
-# 产物 assets/vscode/color-docs.json 供 tools/lab/threshold-lab.mjs 的颜色键分层复核页(/keys)显示说明与默认值; VS Code 升级后与 extract_registry.py 一起重跑.
-# 用法: uv run tools/gen/extract_key_docs.py [VS Code.app 路径] [输出 json 路径]
+# 产物 assets/vscode/color-docs.json 属于生成链输入: tools/gen/levels.py 的 _defaults / resolve / under 按其中的默认值表达式推导主题未定义键的实际颜色与底色;
+#   另供 tools/lab/threshold-lab.mjs 的颜色键分层复核页(/keys)显示说明与默认值. 表达式解析器(P / Ctx / scan)也被 extract_registry.py 复用求硬编码默认值.
+#   VS Code 升级后与 extract_registry.py 一起重跑.
+# 用法: uv run tools/gen/extract_key_docs.py [VS Code.app 路径] [输出 json 路径]   (有解析失败项时仍写入, 退出码 1)
 import json, os, re, sys
 
-APP = sys.argv[1] if len(sys.argv) > 1 else '/Applications/Visual Studio Code.app'
-OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'color-docs.json'))
-RES = os.path.join(APP, 'Contents', 'Resources', 'app')
-BUNDLE = os.path.join(RES, 'out', 'vs', 'workbench', 'workbench.desktop.main.js')
+DEFAULT_APP = '/Applications/Visual Studio Code.app'
+DEFAULT_OUT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'color-docs.json'))
 MODES = ('dark', 'light', 'hcDark', 'hcLight')
 NAMED = {'white': '#FFFFFF', 'black': '#000000', 'red': '#FF0000', 'blue': '#0000FF', 'green': '#00FF00',
          'cyan': '#00FFFF', 'lightgrey': '#D3D3D3', 'transparent': '#00000000'}
@@ -47,13 +47,19 @@ class P:
         j, out = self.i + 1, []
         while self.s[j] != q:
             if self.s[j] == '\\':
-                out.append(json.loads('"' + self.s[j:j + 2] + '"') if self.s[j + 1] in 'nrt"\\/bfu' and self.s[j + 1] != 'u' else self.s[j + 1])
+                c = self.s[j + 1]
+                if m := re.compile(r'u\{([0-9A-Fa-f]+)\}|u([0-9A-Fa-f]{4})|x([0-9A-Fa-f]{2})').match(self.s, j + 1):
+                    out.append(chr(int(next(g for g in m.groups() if g), 16)))
+                    j = m.end()
+                    continue
+                out.append(json.loads('"\\' + c + '"') if c in 'nrtbf' else c)
                 j += 2
             else:
                 out.append(self.s[j])
                 j += 1
         self.i = j + 1
-        return ('str', ''.join(out))
+        # 转义出的 UTF-16 代理对(高低两个 \u 转义)合成一个字符
+        return ('str', ''.join(out).encode('utf-16', 'surrogatepass').decode('utf-16', 'surrogatepass'))
 
     def expr(self):
         e = self.unary()
@@ -175,11 +181,11 @@ class P:
 
 # ---------- 上下文: 变量 -> 颜色键, 工厂函数 -> op, 颜色类名, 本地化函数 ----------
 class Ctx:
-    def __init__(self, src, messages):
-        self.src, self.messages = src, messages
+    def __init__(self, src, messages, reg):
+        self.src, self.messages, self.reg = src, messages, reg  # reg: 压缩后的 registerColor 包装函数名
         self.var2key = {}
         self.factories = {}
-        for m in re.finditer(r'function ([\w$]+)\(([\w$,.]*)\)\{return\{op:(\d)', src):
+        for m in re.finditer(r'function ([\w$]+)\(([\w$,.]*)\)\{return\{op:(\d+)', src):
             self.factories[m.group(1)] = int(m.group(3))
         self.color_cls = re.search(r'([\w$]+)\.fromHex\("#', src).group(1)
         self.const_cache = {}
@@ -194,7 +200,7 @@ class Ctx:
             try:
                 p = P(self.src, m.end())
                 ast = p.expr()
-                if ast[0] == 'call' and ast[1] == ('id', REG) and ast[2] and ast[2][0][0] == 'str':
+                if ast[0] == 'call' and ast[1] == ('id', self.reg) and ast[2] and ast[2][0][0] == 'str':
                     res = ast[2][0][1]
                 else:
                     res = self.render(ast, depth + 1)
@@ -249,10 +255,7 @@ class Ctx:
         if t == 'call':
             callee, args = e[1], e[2]
             if callee[0] == 'id' and callee[1] in self.factories:
-                op = self.factories[callee[1]]
-                if op == 4:
-                    return 'oneOf(' + ', '.join(str(self.render(a, depth + 1)) for a in args) + ')'
-                return self.fmt_op(op, args, depth)
+                return self.fmt_op(self.factories[callee[1]], args, depth)
             if callee[0] == 'member' and callee[1] == ('id', self.color_cls) and callee[2] == 'fromHex':
                 return self.hexnorm(args[0][1])
             if callee[0] == 'member' and callee[2] in ('transparent', 'lighten', 'darken') and len(args) == 1:
@@ -265,6 +268,7 @@ class Ctx:
         raise ParseError(f'未知节点 {t}')
 
     def fmt_op(self, op, args, depth):
+        # oneOf: 对象形态 {op:4, values:[...]} 传入 [数组], 工厂调用形态 oneOf(a, b, ...) 传入参数列表
         if op == 4:
             vals = args[0][1] if args and args[0] and args[0][0] == 'arr' else args
             return 'oneOf(' + ', '.join(str(self.render(a, depth + 1)) for a in vals) + ')'
@@ -283,19 +287,13 @@ class Ctx:
         raise ParseError(f'说明不是本地化调用 {e[0]}')
 
 
-REG = 'ae'
-
-
-def main():
-    global REG
-    src = open(BUNDLE, encoding='utf-8').read()
-    messages = json.load(open(os.path.join(RES, 'out', 'nls.messages.json'), encoding='utf-8'))
-    version = json.load(open(os.path.join(RES, 'package.json')))['version']
-    REG = re.search(r'(?<![\w$])([\w$]+)\("editor\.background",\{', src).group(1)
-    ctx = Ctx(src, messages)
-    call_re = re.compile(r'(?<![\w$.])' + re.escape(REG) + r'\(')
+def scan(src, messages):
+    """第一遍: 定位 registerColor 包装函数, 解析全部调用并建立 变量名 -> 颜色键.
+    返回 (ctx, calls), calls 为 [(颜色键或 None, 参数 AST 或 None, 错误或 None, 调用位置)]."""
+    reg = re.search(r'(?<![\w$])([\w$]+)\("editor\.background",\{', src).group(1)
+    ctx = Ctx(src, messages, reg)
+    call_re = re.compile(r'(?<![\w$.])' + re.escape(reg) + r'\(')
     calls = []
-    # 第一遍: 解析全部调用, 建立 变量名 -> 颜色键
     for m in call_re.finditer(src):
         try:
             p = P(src, m.end() - 1)
@@ -310,6 +308,28 @@ def main():
         if lm := re.search(r'([\w$]+)=$', src[max(0, m.start() - 60):m.start()]):
             ctx.var2key.setdefault(lm.group(1), key)
         calls.append((key, args, None, m.start()))
+    return ctx, calls
+
+
+def render_default(ctx, d, mode):
+    """registerColor 的默认值参数 AST 在 mode 下的渲染结果: {dark, light, ...} 取对应项, 否则四种类型共用同一表达式."""
+    if d[0] == 'obj' and 'op' not in d[1]:
+        v = d[1].get(mode)
+        return ctx.render(v) if v is not None else None
+    return ctx.render(d)
+
+
+RENDER_ERRORS = (ParseError, IndexError, KeyError, ValueError, TypeError)
+
+
+def main():
+    app = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_APP
+    out_path = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_OUT
+    res = os.path.join(app, 'Contents', 'Resources', 'app')
+    src = open(os.path.join(res, 'out', 'vs', 'workbench', 'workbench.desktop.main.js'), encoding='utf-8').read()
+    messages = json.load(open(os.path.join(res, 'out', 'nls.messages.json'), encoding='utf-8'))
+    version = json.load(open(os.path.join(res, 'package.json')))['version']
+    ctx, calls = scan(src, messages)
     out, failed = {}, {}
     for key, args, err, pos in calls:
         if key is None:
@@ -323,15 +343,10 @@ def main():
             entry['description'] = ctx.text(args[2]) if len(args) > 2 else None
         except (ParseError, IndexError, KeyError) as ex:
             errs.append(f'说明: {ex}')
-        d = args[1]
         for mode in MODES:
             try:
-                if d[0] == 'obj' and 'op' not in d[1]:
-                    v = d[1].get(mode)
-                    entry['defaults'][mode] = ctx.render(v) if v is not None else None
-                else:
-                    entry['defaults'][mode] = ctx.render(d)
-            except (ParseError, IndexError, KeyError, ValueError, TypeError) as ex:
+                entry['defaults'][mode] = render_default(ctx, args[1], mode)
+            except RENDER_ERRORS as ex:
                 entry['defaults'][mode] = '?'
                 errs.append(f'{mode}: {ex}')
         if len(args) > 3:
@@ -347,9 +362,12 @@ def main():
         out[key] = entry
     # 终端 16 色: 映射表 {"terminal.ansiX": {index, defaults}} 循环注册, 说明模板 "'{0}' ANSI color in the terminal."
     tmpl = None
-    if tm := re.search(re.escape(REG) + r'\(s,o\.defaults,[\w$]+\((\d+),null,e\)\)', src):
+    if tm := re.search(re.escape(ctx.reg) + r'\([\w$]+,[\w$]+\.defaults,[\w$]+\((\d+),null,[\w$]+\)\)', src):
         tmpl = messages[int(tm.group(1))]
-    for m in re.finditer(r'"(terminal\.ansi\w+)":(\{index:\d+,defaults:\{[^{}]*\}\})', src):
+    ansi = list(re.finditer(r'"(terminal\.ansi\w+)":(\{index:\d+,defaults:\{[^{}]*\}\})', src))
+    if ansi and tmpl is None:
+        failed['terminal.ansi*'] = '终端色说明模板未匹配, 16 色说明为空'
+    for m in ansi:
         try:
             obj = P(m.group(2), 0).expr()
             dv = obj[1]['defaults'][1]
@@ -362,7 +380,7 @@ def main():
         for k in [k for k, v in failed.items() if k.startswith('@') and '循环注册' in v]:
             del failed[k]  # 循环注册已由终端映射表覆盖
     # 内置扩展 contributes.colors, 说明 "%x%" 走 package.nls.json; hc 缺省时回落到 dark / light(与 workbench 注册逻辑一致)
-    extdir = os.path.join(RES, 'extensions')
+    extdir = os.path.join(res, 'extensions')
     for ext in sorted(os.listdir(extdir)):
         pj = os.path.join(extdir, ext, 'package.json')
         if not os.path.isfile(pj):
@@ -387,11 +405,12 @@ def main():
                 failed[c['id']] = '扩展未提供说明'
     ok = sum(1 for k, v in out.items() if 'errors' not in v and v['description'])
     json.dump({'vscodeVersion': version, 'count': len(out), 'ok': ok, 'failed': failed, 'colors': dict(sorted(out.items()))},
-              open(OUT, 'w', encoding='utf-8'), indent='\t', ensure_ascii=False)
-    print(f'VS Code {version}: {len(out)} 键, 说明与默认值完整 {ok}, 失败 {len(failed)} -> {OUT}')
+              open(out_path, 'w', encoding='utf-8'), indent='\t', ensure_ascii=False)
+    print(f'VS Code {version}: {len(out)} 键, 说明与默认值完整 {ok}, 失败 {len(failed)} -> {out_path}')
     for k, v in list(failed.items())[:40]:
         print('  失败', k, v)
+    return 1 if failed else 0
 
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())

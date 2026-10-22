@@ -2,8 +2,8 @@
 # requires-python = ">=3.11"
 # ///
 # 语法规则池: 把全部原主题(assets/source/)的 tokenColors 选择器合并成一个池子, 每个选择器裁决出一个"角色", 存入
-# assets/pool/full-rule.json(只增不减): rules 为 选择器 -> 角色, colors 为 角色 -> 主题颜色键(default 为多数主题在用的键,
-# 各主题只记与默认不同的; 主题颜色键里找不到同色的记固定 hex). 补全段(complete.py)按它给原主题解析不出颜色的选择器补规则.
+# assets/pool/full-rule.json: rules 为 选择器 -> 角色(自动裁决只增不改, 人工标注覆盖). 补全段(complete.py)按它给原主题解析不出颜色的
+# 选择器补规则, 颜色取原主题该角色的颜色(role_value).
 #
 # 裁决分层(见 decide):
 #   0 跟随外层: 标点, meta.* 等包裹 scope 不出规则, 让外层(字符串, 注释等)决定颜色
@@ -14,8 +14,8 @@
 #
 # 用法:
 #   uv run tools/gen/pool.py                      各层数量与待标注数
-#   uv run tools/gen/pool.py --update             把裁决结果合并进 full-rule.json(已有选择器保留文件里的角色, 从不删除), 最后重算颜色映射
-#                                             (skip 原样保留, 由 npm run pool:update 随后的 complete.py --guard 重算)
+#   uv run tools/gen/pool.py --update             把裁决结果合并进 full-rule.json: 新选择器按裁决加入, 已有的保留文件里的角色,
+#                                             人工标注过的改用标注(标注为跟随外层的移除); skip 原样保留, 由 npm run pool:update 随后的 complete.py --guard 重算
 #   uv run tools/gen/pool.py --annotate <out.html>  生成标注页(键盘快捷, 浏览器本地保存, 导出 JSON 存为 pool-overrides.json)
 #   uv run tools/gen/pool.py --review <out.html>    复核页: 只差语言后缀的同类选择器标注不一致的组, 每组选一个角色统一
 import json, math, os, re, sys
@@ -23,7 +23,7 @@ from collections import Counter, defaultdict
 
 sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
-from colorlib import cr, oklch
+from colorlib import oklch
 
 SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source')
 OVERRIDES = os.path.join(SOURCES, '..', 'pool', 'pool-overrides.json')
@@ -72,12 +72,11 @@ ROLES = {
 }
 NAMES = dict(comment='注释', string='字符串', regexp='正则', escape='转义', number='数字', constant='常量字面量', constant_var='常量变量',
              keyword='关键字', control='流程控制', operator='运算符', storage='声明类型', modifier='修饰符', function='函数', builtin_fn='内置函数',
-             type='类型', class_='类', builtin_type='内置类型', inherited='父类', namespace='命名空间', variable='变量', parameter='参数',
+             type='类型', builtin_type='内置类型', inherited='父类', namespace='命名空间', variable='变量', parameter='参数',
              this='this/self', property='属性', key='对象键', tag='标签', attribute='属性名(标签)', heading='标题', bold='粗体',
              italic='斜体', quote='引用', raw='行内代码', link='链接', inserted='新增', deleted='删除', invalid='错误', text='正文',
-             inherit='跟随外层')
+             inherit='跟随外层', prop_name='属性名(样式表)')
 NAMES['class'] = '类'
-NAMES['prop_name'] = '属性名(样式表)'
 # 结构规则: TextMate 命名约定 -> 角色; 选择器(后代选择器取最右一段)按最长前缀命中
 STRUCT = [
     ('comment', 'comment'), ('punctuation.definition.comment', 'comment'),
@@ -99,8 +98,7 @@ STRUCT = [
     # 跟随外层: 标点套在字符串 / 注释等里面, 包裹类 scope 覆盖整段代码, 都不应整体着色
     ('punctuation', INHERIT), ('punctuation.definition.string', 'string'), ('punctuation.definition.variable', 'variable'),
     ('punctuation.definition.tag', 'tag'), ('punctuation.definition.heading', 'heading'), ('punctuation.definition.template-expression', 'keyword'),
-    ('punctuation.section.embedded', 'keyword'), ('meta', INHERIT), ('source', INHERIT), ('text', INHERIT),
-    ('meta.function-call', 'function'), ('meta.object-literal.key', 'key'), ('meta.decorator', 'function'),
+    ('punctuation.section.embedded', 'keyword'), ('meta', INHERIT), ('source', INHERIT), ('text', INHERIT), ('meta.decorator', 'function'),
 ]
 # 平票时的角色优先级: 一个原主题常把同一种颜色分给多个角色(如 One Dark 的变量, 标签, 删除同为红),
 # 按颜色反推只能得到并列候选; 并列时取常见的语法角色, 少见的 markup / diff 角色排最后
@@ -140,11 +138,11 @@ def scopes_of(rule: dict) -> list[str]:
     return [x.strip() for x in (sc.split(',') if isinstance(sc, str) else sc) if x.strip()]
 
 
-def lookup(rules: list, scope: str, field: str = 'foreground'):
-    """与 VS Code 一致: 选择器是 scope 的点分前缀即命中, 最长者胜, 同样长取后出现的(不计后代选择器)."""
+def lookup(rules: list, scope: str):
+    """前景色, 与 VS Code 一致: 选择器是 scope 的点分前缀即命中, 最长者胜, 同样长取后出现的(不计后代选择器)."""
     best, value = -1, None
     for r in rules:
-        v = r.get('settings', {}).get(field)
+        v = r.get('settings', {}).get('foreground')
         if v is None:
             continue
         for sel in scopes_of(r):
@@ -163,11 +161,9 @@ def struct_role(sel: str) -> str | None:
 
 
 def _rgb(v):
-    if not isinstance(v, str) or not re.fullmatch(r'#[0-9A-Fa-f]{3,8}', v):
+    if (n := norm_hex(v)) is None:
         return None
-    s = v[1:]
-    s = ''.join(c * 2 for c in s) if len(s) in (3, 4) else s
-    return tuple(int(s[i:i + 2], 16) / 255 for i in (0, 2, 4))
+    return tuple(int(n[i:i + 2], 16) / 255 for i in (1, 3, 5))
 
 
 def _dist(a, b) -> float:
@@ -175,15 +171,15 @@ def _dist(a, b) -> float:
     return math.dist((L1, C1 * math.cos(H1), C1 * math.sin(H1)), (L2, C2 * math.cos(H2), C2 * math.sin(H2)))
 
 
-def role_value(rules: list, role: str, fg, field: str = 'foreground'):
-    chain, style = ROLES[role]
-    for sc in chain:
+def role_value(rules: list, role: str, fg):
+    """角色在主题里的前景色: 按 ROLES 的 scope 链依次查, 都没有时为正文色 fg."""
+    for sc in ROLES[role][0]:
         if sc == FG:
-            return fg if field == 'foreground' else None
-        v = lookup(rules, sc, field)
+            return fg
+        v = lookup(rules, sc)
         if v is not None:
             return v
-    return style if field == 'fontStyle' else (fg if field == 'foreground' else None)
+    return fg
 
 
 def build(themes: list[dict]) -> dict:
@@ -192,8 +188,10 @@ def build(themes: list[dict]) -> dict:
     cands = defaultdict(list)
     order = []
     seen = set()
-    for t in sorted(themes, key=lambda t: -len(_load(os.path.join(SOURCES, t['source'])).get('tokenColors', []))):
-        src = _load(os.path.join(SOURCES, t['source']))
+    # 规则多的先投票; 同样多时深色在前(浅色设计由深色模板生成, 结构相同, 靠下面的去重只让深色版投票)
+    srcs = {t['name']: _load(os.path.join(SOURCES, t['source'])) for t in themes}
+    for t in sorted(themes, key=lambda t: (-len(srcs[t['name']].get('tokenColors', [])), not t['dark'])):
+        src = srcs[t['name']]
         rules = src.get('tokenColors', [])
         # 同一主题的多个变体(如 Monokai 各 filter)规则结构相同, 只投一票, 免得一个家族靠变体数量压过其他原主题
         shape = tuple(tuple(scopes_of(r)) for r in rules)
@@ -280,9 +278,9 @@ def families(pool: dict) -> list[dict]:
 def annotate(pool: dict, out: str, items: list | None = None, storage_key: str | None = None) -> None:
     from themes import build as build_themes
     from gen_vscode import render
-    previews = []
+    previews, themes = [], {t['name']: t for t in build_themes()}
     for name in ('one-dark', 'dracula-dark', 'one-light', 'github-light'):
-        t = next(x for x in build_themes() if x['name'] == name)
+        t = themes[name]
         g = render(t)
         roles = {r: role_value(g['tokenColors'], r, g['colors']['editor.foreground']) for r in ROLES}
         roles[INHERIT] = g['colors']['editor.foreground']
@@ -308,46 +306,23 @@ def norm_hex(v) -> str | None:
     return '#' + (''.join(c * 2 for c in v) if len(v) in (3, 4) else v).upper()
 
 
-def color_map(themes: list[dict]) -> dict:
-    """角色 -> 主题颜色键: default 取多数主题在用的键(并列时 terminal.ansi* 优先, 再键名短), 各主题只记与默认不同的;
-    主题颜色键里找不到同色的记固定 hex."""
-    from gen_vscode import source_fg
-    cand = {}
-    for t in themes:
-        src = _load(os.path.join(SOURCES, t['source']))
-        index = defaultdict(list)
-        for k, v in src.get('colors', {}).items():
-            if (h := norm_hex(v)) is not None:
-                index[h].append(k)
-        fg = source_fg(src, t['dark'])
-        cand[t['name']] = {r: (h, index.get(h, [])) for r in ROLES if (h := norm_hex(role_value(src.get('tokenColors', []), r, fg)))}
-    rank = lambda cnt: (lambda k: (cnt[k], k.startswith('terminal.ansi'), -len(k), k))
-    default = {}
-    for r in ROLES:
-        cnt = Counter(k for c in cand.values() if r in c for k in c[r][1])
-        if cnt:
-            default[r] = max(cnt, key=rank(cnt))
-    out = {'default': default}
-    for name, c in cand.items():
-        cnt = Counter(k for v in c.values() for k in v[1])
-        out[name] = {r: (max(keys, key=rank(cnt)) if keys else h) for r, (h, keys) in c.items() if default.get(r) not in keys}
-    return out
-
-
 def update(themes: list[dict]) -> None:
     pool = build(themes)
-    data = json.load(open(FULL_RULE, encoding='utf-8')) if os.path.exists(FULL_RULE) else {'rules': {}, 'colors': {}}
+    data = json.load(open(FULL_RULE, encoding='utf-8')) if os.path.exists(FULL_RULE) else {'rules': {}}
     rules = data['rules']
     added = [sel for sel, p in pool.items() if p['role'] != INHERIT and sel not in rules]
     for sel in added:
         rules[sel] = pool[sel]['role']
-    # 颜色映射按现有原主题重算(规则更新的最后一步); 已不在 sources 里的主题保留原记录
-    colors = color_map(themes)
-    data = {**data, 'rules': dict(sorted(rules.items())), 'colors': {**data.get('colors', {}), **colors}}
+    # 人工标注改过的已有选择器以标注为准(标注为跟随外层的不出规则, 移除)
+    changed = [sel for sel, p in pool.items() if p['annotated'] and sel in rules and sel not in added and rules[sel] != p['role']]
+    for sel in changed:
+        if pool[sel]['role'] == INHERIT:
+            del rules[sel]
+        else:
+            rules[sel] = pool[sel]['role']
+    data = {k: v for k, v in data.items() if k != 'colors'} | {'rules': dict(sorted(rules.items()))}
     open(FULL_RULE, 'w', encoding='utf-8').write(json.dumps(data, indent=2, ensure_ascii=False) + '\n')
-    fixed = {n: sum(v.startswith('#') for v in m.values()) for n, m in colors.items() if n != 'default'}
-    print(f"full-rule.json: 规则 {len(rules)} 条(新增 {len(added)}); 默认颜色键 {len(colors['default'])} 个角色; "
-          f"各主题另记 {sum(len(m) for n, m in colors.items() if n != 'default')} 个, 其中固定色 {sum(fixed.values())} 个")
+    print(f"full-rule.json: 规则 {len(rules)} 条(新增 {len(added)}, 按标注改 {len(changed)})")
 
 
 def main() -> int:

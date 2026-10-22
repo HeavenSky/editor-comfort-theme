@@ -7,7 +7,7 @@
 import argparse, os, plistlib, sys
 
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
-sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
+sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check')]
 from AppKit import NSColor, NSFont, NSKeyedArchiver
 from themes import ANSI, build
 
@@ -50,8 +50,6 @@ def main() -> int:
         font = NSFont.fontWithName_size_('Menlo-Regular', args.size)
     os.makedirs(OUT, exist_ok=True)
     for t in build():
-        if not t['terminal']:
-            continue
         p = dict(BASE, name=t['label'], Font=archive(font))
         p.update(BackgroundColor=color(t['bg']), TextColor=color(t['fg']), TextBoldColor=color(t['bold']),
                  CursorColor=color(t['cursor']), SelectionColor=color(t['sel']))

@@ -41,12 +41,15 @@
 		"chat.linesAddedForeground": "#68FD8DE6",
 		"chat.linesRemovedForeground": "#FD6B6AED",
 		"chat.mcpCompatibilityWarningForeground": "#E7EE98",
+		"chat.requestBorder": "#D7D7D71A",
 		"chat.requestCodeBorder": "#97E1F1B8",
 		"chat.slashCommandBackground": "#60488066",
 		"chat.slashCommandForeground": "#BF9EEE",
 		"chat.thinkingShimmer": "#D7D7D7",
 		"chat.workingProgressInsidersIconForeground": "#62E884",
 		"chat.workingProgressStableIconForeground": "#97E1F1",
+		"commandCenter.activeBackground": "#FFFFFF14",
+		"commandCenter.background": "#FFFFFF0D",
 		"debugExceptionWidget.background": "#521A1B",
 		"debugExceptionWidget.border": "#EE6666",
 		"debugIcon.breakpointCurrentStackframeForeground": "#E7EE98",
@@ -76,9 +79,11 @@
 		"debugView.stateLabelBackground": "#98989844",
 		"debugView.valueChangedHighlight": "#97E1F1",
 		"diffEditor.diagonalFill": "#DDDDDD33",
+		"diffEditor.insertedLineBackground": "#BEC55933",
 		"diffEditor.insertedTextBackground": "#50FA7B20",
 		"diffEditor.move.border": "#9B9B9B9C",
 		"diffEditor.moveActive.border": "#E7EE98",
+		"diffEditor.removedLineBackground": "#FF535933",
 		"diffEditor.removedTextBackground": "#FF555550",
 		"diffEditor.unchangedCodeBackground": "#84848429",
 		"diffEditor.unchangedRegionShadow": "#000000",
@@ -99,6 +104,7 @@
 		"editor.inlineValuesBackground": "#E4ED4E33",
 		"editor.inlineValuesForeground": "#D7D7D7A4",
 		"editor.lineHighlightBorder": "#44475A",
+		"editor.linkedEditingBackground": "#FF53594C",
 		"editor.rangeHighlightBackground": "#BD93F915",
 		"editor.selectionBackground": "#44475A",
 		"editor.selectionHighlightBackground": "#90929E40",
@@ -172,6 +178,7 @@
 		"editorOverviewRuler.incomingContentForeground": "#BF9EEE",
 		"editorOverviewRuler.infoForeground": "#8BE9FD80",
 		"editorOverviewRuler.modifiedForeground": "#8BE9FD80",
+		"editorOverviewRuler.rangeHighlightForeground": "#97E1F199",
 		"editorOverviewRuler.selectionHighlightForeground": "#FFB86CF2",
 		"editorOverviewRuler.warningForeground": "#FFB86C80",
 		"editorOverviewRuler.wordHighlightForeground": "#9EEDFDF0",
@@ -218,6 +225,9 @@
 		"inputValidation.infoBorder": "#F286C4",
 		"inputValidation.warningBackground": "#393B18",
 		"inputValidation.warningBorder": "#FFB86C",
+		"keybindingLabel.background": "#9090902B",
+		"keybindingLabel.border": "#41414199",
+		"keybindingLabel.bottomBorder": "#525252CC",
 		"keybindingLabel.foreground": "#DDDDDD",
 		"list.activeSelectionBackground": "#44475A",
 		"list.activeSelectionForeground": "#D7D7D6",
@@ -234,6 +244,7 @@
 		"listFilterWidget.noMatchesOutline": "#EE6666",
 		"listFilterWidget.outline": "#424450",
 		"mcpIcon.starForeground": "#EE6666",
+		"merge.commonHeaderBackground": "#6F6F6F66",
 		"merge.currentHeaderBackground": "#50FA7B90",
 		"merge.incomingHeaderBackground": "#BD93F990",
 		"mergeEditor.change.background": "#BEC55933",
@@ -247,7 +258,10 @@
 		"mergeEditor.conflict.unhandledFocused.border": "#E7EE98",
 		"mergeEditor.conflict.unhandledUnfocused.border": "#E7EE987A",
 		"mergeEditor.conflictingLines.background": "#F8FFB647",
+		"minimap.errorHighlight": "#EE6666B2",
+		"modernEditorTab.inactiveBackground": "#00000000",
 		"multiDiffEditor.headerBackground": "#333333",
+		"notebook.cellStatusBarItemHoverBackground": "#FFFFFF26",
 		"notebook.cellToolbarSeparator": "#90909059",
 		"notebook.symbolHighlightBackground": "#FFFFFF0B",
 		"panel.background": "#282A36",
@@ -273,6 +287,7 @@
 		"profileBadge.background": "#5C5C5C",
 		"profileBadge.foreground": "#D7D7D7",
 		"progressBar.background": "#F286C4",
+		"quickInputTitle.background": "#FFFFFF1B",
 		"scmGraph.foreground1": "#E7EE98",
 		"scmGraph.foreground2": "#F286C4",
 		"scmGraph.foreground3": "#EE6666",
@@ -311,7 +326,10 @@
 		"statusBar.foreground": "#D7D7D6",
 		"statusBar.noFolderBackground": "#191A21",
 		"statusBar.noFolderForeground": "#D7D7D6",
+		"statusBarItem.activeBackground": "#FFFFFF2E",
+		"statusBarItem.compactHoverBackground": "#FFFFFF1F",
 		"statusBarItem.errorForeground": "#D7D7D7",
+		"statusBarItem.hoverBackground": "#FFFFFF1F",
 		"statusBarItem.offlineBackground": "#7D272A",
 		"statusBarItem.prominentBackground": "#EE6666",
 		"statusBarItem.prominentHoverBackground": "#FFB86C",
@@ -809,7 +827,7 @@
 				"meta.diff.header"
 			],
 			"settings": {
-				"foreground": "#8D909B"
+				"foreground": "#8E919B"
 			}
 		},
 		{
@@ -969,7 +987,7 @@
 				"meta.separator.markdown"
 			],
 			"settings": {
-				"foreground": "#8D909B"
+				"foreground": "#8E919B"
 			}
 		},
 		{
@@ -1562,7 +1580,7 @@
 				"string.quoted.docstring.multi.python constant.character.escape"
 			],
 			"settings": {
-				"foreground": "#8D909B"
+				"foreground": "#8E919B"
 			}
 		},
 		{
@@ -1704,7 +1722,7 @@
 				"meta.preprocessor.haskell"
 			],
 			"settings": {
-				"foreground": "#8D909B"
+				"foreground": "#8E919B"
 			}
 		},
 		{

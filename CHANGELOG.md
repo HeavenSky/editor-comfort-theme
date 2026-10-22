@@ -13,6 +13,10 @@
 ### Fixed
 
 - C One Light's terminal yellow is no longer the same green as its terminal green: it now uses One Light's own gold `#986801`, and the git modified marker and class icons follow it.
+- Syntax colors raised to the 4.5 minimum now really reach it: many that stopped just below it, as low as 4.45, are a touch darker (light themes) or brighter (dark themes). In C Sunlit Light this also changes which Solarized colors keep clashing roles apart: parameters turn gold, object keys red and constants magenta.
+- Bright terminal colors in light themes also reach 4.5 (C GitHub Light's bright cyan and C Sunlit Light's bright magenta were just below), and terminal colors that were already readable keep their exact original values instead of shifting by one step (C Owl Dark's green is `#22DA6E` again).
+- About 30 UI colors that VS Code hard-codes now take the theme's own colors instead of VS Code's generic blue, red and green, for example the diff line backgrounds, the command center, the settings modified marker, merge conflict headers and the status bar hover background.
+- C GitHub Dark and C GitHub Light: the terminal in the panel uses the panel background, as it does with the original theme.
 
 ## v0.0.4 2026-10-16
 

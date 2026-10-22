@@ -2,11 +2,11 @@
 # requires-python = ">=3.11"
 # ///
 # 设计主题的原主题生成脚本: 以开源深色原主题为模板, 按每套手定的色板逐色换色, 写到 assets/source/<name>.json,
-# 之后与其他原主题一样经补全(complete.py)与调色链(themes.py / gen_vscode.py)生成. 原主题一律存成紧凑格式(同 jq -c). 多数是浅色版(明暗反转); dark=True 的设计只换色相与色板, 不反转.
+# 之后与其他原主题一样经补全(complete.py)与调色链(themes.py / gen_vscode.py)生成. 原主题一律存成紧凑格式(同 jq -c). 都是浅色版(明暗反转).
 #
 # 换色规则(recolor):
-#   1. 与色板里某个深色(PALETTE 的键)色差 < NEAR_DE: 换成对应的颜色, 原色比色板色亮多少, 浅色版就暗多少(明暗反转; 深色设计同向), 色相不变
-#   2. 彩色(彩度 > ACCENT_CHROMA): 色相不变, 浅色设计里明度落到浅色彩色带(ACCENT_L 附近, 原色越亮越深), 彩度不收(出色域时降彩度); 深色设计原样保留
+#   1. 与色板里某个深色(PALETTE 的键)色差 < NEAR_DE: 换成对应的颜色, 原色比色板色亮多少, 浅色版就暗多少(明暗反转), 色相不变
+#   2. 彩色(彩度 > ACCENT_CHROMA): 色相不变, 明度落到浅色彩色带(ACCENT_L 附近, 原色越亮越深), 彩度不收(出色域时降彩度)
 #   3. 中性色: 明度按"深色底 -> 浅色底, 深色正文 -> 浅色正文"线性映射, 色相与(收窄的)彩度跟随浅色底
 #   透明度原样保留. tokenColors 的结构与模板完全相同, 规则池(pool.py)按结构去重, 浅色版不额外投票, 其他主题不受影响.
 #   终端黑白四色按浅色口径单独给(黑 = 正文, 白 = 浅灰, 亮白 = 比底更亮), 不走反转.
@@ -14,7 +14,7 @@
 #
 # 用法: uv run tools/gen/design.py           生成全部
 #       uv run tools/gen/design.py --check   只比对, 与现有文件不一致时退出码 1
-import json, math, os, re, sys
+import json, os, re, sys
 
 sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
@@ -113,7 +113,6 @@ class Recolor:
         self.pal = [(h(k[1:]), h(v[1:])) for k, v in d['palette'].items()]
         self.dbg, self.dfg = oklch(h(src_bg.lstrip('#')[:6])), oklch(h(src_fg.lstrip('#')[:6]))
         self.lbg, self.lfg = oklch(h(d['bg'][1:])), oklch(h(d['fg'][1:]))
-        self.dark = d.get('dark', False)
 
     def rgb(self, c):
         L, C, H = oklch(c)
@@ -121,10 +120,8 @@ class Recolor:
         if de < NEAR_DE:
             Ld = L - oklch(near[0])[0]
             Ll, Cl, Hl = oklch(near[1])
-            return from_oklch(min(0.98, max(0.05, Ll + Ld if self.dark else Ll - Ld)), Cl, Hl)
+            return from_oklch(min(0.98, max(0.05, Ll - Ld)), Cl, Hl)
         if C > ACCENT_CHROMA:
-            if self.dark:
-                return c
             return from_oklch(min(0.62, max(0.40, ACCENT_L - (L - 0.75) * 0.5)), C, H)
         # 中性色: 深色底 -> 浅色底, 深色正文 -> 浅色正文 的线性映射(两端外推后夹住)
         span = self.dfg[0] - self.dbg[0]
@@ -160,7 +157,7 @@ def design(d: dict) -> dict:
             if k in st:
                 st[k] = rc(st[k])
         rules.append(r)
-    out = {'name': d['label'], 'type': 'dark' if d.get('dark') else 'light',
+    out = {'name': d['label'], 'type': 'light',
            '$comment': f"由 tools/gen/design.py 以 {d['template']} 为模板生成, 不要手改",
            'colors': colors, 'tokenColors': rules}
     if 'semanticHighlighting' in src:
