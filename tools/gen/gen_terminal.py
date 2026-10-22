@@ -14,19 +14,17 @@ from themes import ANSI, build
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OUT = os.path.join(ROOT, 'assets', 'terminal')
 
+# 除配色与字体外只覆盖以下几项, 按键, 铃声, 滚动与 shell 退出行为沿用 Terminal.app 默认值
 BASE = {
     'type': 'Window Settings', 'ProfileCurrentVersion': 2.09,
-    'columnCount': 200, 'rowCount': 50,
-    'CursorBlink': True, 'CursorType': 2,
-    'EnableSmoothResizing': True, 'FontAntialias': True,
+    'columnCount': 120, 'rowCount': 30,
+    'CursorType': 2, 'CursorBlink': True,  # 2 = 竖线
+    # 标题栏不显示描述文件名与窗口尺寸
+    'ShowWindowSettingsNameInTitle': False, 'ShowDimensionsInTitle': False,
+    # 关闭窗口或退出时从不询问(0 = 从不)
+    'warnOnShellCloseAction': 0,
     # 粗体不借用亮色; 开启时 bold 文字会变色, Solarized 一类亮色为灰阶的配色尤其明显
     'UseBrightBold': False,
-    'useOptionAsMetaKey': True,
-    'shellExitAction': 1, 'warnOnShellCloseAction': 0,
-    'ShowActiveProcessArgumentsInTabTitle': False, 'ShowActiveProcessArgumentsInTitle': False,
-    'ShowActiveProcessInTabTitle': False, 'ShowActiveProcessInTitle': False,
-    'ShowActivityIndicatorInTab': False, 'ShowDimensionsInTitle': False,
-    'ShowRepresentedURLPathInTabTitle': False,
 }
 
 
@@ -54,7 +52,7 @@ def main() -> int:
     for t in build():
         if not t['terminal']:
             continue
-        p = dict(BASE, name=t['label'], WindowTitle=t['label'], Font=archive(font))
+        p = dict(BASE, name=t['label'], Font=archive(font))
         p.update(BackgroundColor=color(t['bg']), TextColor=color(t['fg']), TextBoldColor=color(t['bold']),
                  CursorColor=color(t['cursor']), SelectionColor=color(t['sel']))
         for n in ANSI:

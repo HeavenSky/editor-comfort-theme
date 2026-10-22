@@ -1356,8 +1356,6 @@
 	</data>
 	<key>CursorType</key>
 	<integer>2</integer>
-	<key>EnableSmoothResizing</key>
-	<true/>
 	<key>Font</key>
 	<data>
 	YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMS
@@ -1367,8 +1365,6 @@
 	bnSiGRtYTlNPYmplY3QIERokKTI3SUxRU1heZ253foWOkJKUrrO+x87RAAAAAAAAAQEA
 	AAAAAAAAHAAAAAAAAAAAAAAAAAAAANo=
 	</data>
-	<key>FontAntialias</key>
-	<true/>
 	<key>ProfileCurrentVersion</key>
 	<real>2.09</real>
 	<key>SelectionColor</key>
@@ -1446,19 +1442,9 @@
 	vAC+AOgBEgEUARYBGAEfASQBKgEsAS4BMA18DYENjA2VDaINpQ2yDbsNwA3IAAAAAAAA
 	AgEAAAAAAAAAKgAAAAAAAAAAAAAAAAAADcs=
 	</data>
-	<key>ShowActiveProcessArgumentsInTabTitle</key>
-	<false/>
-	<key>ShowActiveProcessArgumentsInTitle</key>
-	<false/>
-	<key>ShowActiveProcessInTabTitle</key>
-	<false/>
-	<key>ShowActiveProcessInTitle</key>
-	<false/>
-	<key>ShowActivityIndicatorInTab</key>
-	<false/>
 	<key>ShowDimensionsInTitle</key>
 	<false/>
-	<key>ShowRepresentedURLPathInTabTitle</key>
+	<key>ShowWindowSettingsNameInTitle</key>
 	<false/>
 	<key>TextBoldColor</key>
 	<data>
@@ -1612,20 +1598,14 @@
 	</data>
 	<key>UseBrightBold</key>
 	<false/>
-	<key>WindowTitle</key>
-	<string>C Owl Dark</string>
 	<key>columnCount</key>
-	<integer>200</integer>
+	<integer>120</integer>
 	<key>name</key>
 	<string>C Owl Dark</string>
 	<key>rowCount</key>
-	<integer>50</integer>
-	<key>shellExitAction</key>
-	<integer>1</integer>
+	<integer>30</integer>
 	<key>type</key>
 	<string>Window Settings</string>
-	<key>useOptionAsMetaKey</key>
-	<true/>
 	<key>warnOnShellCloseAction</key>
 	<integer>0</integer>
 </dict>
