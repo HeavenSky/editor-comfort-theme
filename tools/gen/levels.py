@@ -6,10 +6,10 @@
 # 前景键有同名底色键(xxx.activeForeground -> xxx.activeBackground)且主题定义了时, 它排第一: 普查按值反查可能认成同色的别的底色键(如 Ayu 的按钮底).
 # 底色弱(层次底)只报告不修不门禁: 原主题常故意做平再靠边框区分(如 One Light 白输入框), 它又是字与选区的底, 改它会连锁带动别的颜色.
 # 终端颜色(terminal.*)不在这里处理, 由 themes.py 的终端步骤与门禁负责.
-# 只有字可以调到底色的另一侧(深底浅字 <-> 浅底深字); 线条与底色只往底色有余地的一侧调(浅底往暗, 深底往亮), 不反转原设计.
+# 只有字可以调到底色的另一侧(深底浅字 <-> 浅底深字), 翻过去时优先取本主题的编辑区底 / 正文; 线条与底色只往底色有余地的一侧调(浅底往暗, 深底往亮), 不反转原设计.
 import json, math, os, re
 
-from colorlib import Rgb, blend, from_oklch, h, hx, lum, oklch
+from colorlib import Rgb, blend, cr, from_oklch, h, hx, lum, oklch
 
 PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'levels.json')
 _DOC = None
@@ -184,11 +184,14 @@ def measure(c: Rgb, bg: Rgb, level: str, base: float) -> tuple[float, float]:
 
 
 def short(c: Rgb, a: float, bgs: list[Rgb], level: str, base: float) -> bool:
+    """字(内容 / 暗化)按下限本身判, 不留 check 的 0.05 余量: 实际渲染还有取整与半透明叠色, 卡在余量里的字在排查报告里会差零点几.
+    线条与底色仍留余量: 它们只往底色有余地的一侧调, 差零点几就修会把原本比底色暗的线翻成比底色亮."""
     lv = doc()['levels'][level]
+    slack = 0 if level[:2] in ('内容', '暗化') else 0.05
     for bg in bgs:
         fg = blend(c, bg, a) if a < 1 else c
         rd, ab = measure(fg, bg, level, base)
-        if rd < lv['lo'] - 0.05 or ab < lv['abs'] - 0.05:
+        if rd < lv['lo'] - slack or ab < lv['abs'] - slack:
             return True
     return False
 
@@ -261,7 +264,7 @@ def fix(colors: dict, t: dict, white_cap: tuple[float, float] | None = None) -> 
             # 字: 先往远离底色的一侧, 到头不够再换另一侧; 线条与底色: 只往底色有余地的一侧(浅底往暗, 深底往亮), 与原值稍亮稍暗无关
             top = white_cap[0] if white_cap and C0 <= white_cap[1] else 1.0
             ends = ([top, 0.0] if L0 >= main else [0.0, top]) if lv[:2] in ('内容', '暗化') else [0.0 if main >= 0.5 else top]
-            for end in ends:
+            for i, end in enumerate(ends):
                 if short(from_oklch(end, C0, H0), 1.0, group, lv, base):
                     continue
                 lo_, hi_ = L0, end
@@ -275,6 +278,14 @@ def fix(colors: dict, t: dict, white_cap: tuple[float, float] | None = None) -> 
                         break
                     hi_ = min(1.0, max(0.0, hi_ + step))
                 colors[k] = hx(from_oklch(hi_, C0, H0))
+                # 字翻到另一侧时原色已留不住, 刚好达标的颜色既不是主题的颜色也偏淡: 改取本主题在那一侧的编辑区底 / 正文(更靠那一侧的),
+                # 比它更清楚才用(如 Dracula Dark 粉色徽标上的字取 #282A36)
+                own = [p[0] for p in (parse(colors.get('editor.background')), parse(colors.get('editor.foreground'))) if p]
+                own = [x for x in own if (oklch(x)[0] - main) * (end - main) > 0]
+                if i and own:
+                    pick = max(own, key=lambda x: abs(oklch(x)[0] - main))
+                    if not short(pick, 1.0, group, lv, base) and cr(pick, bgs[0]) > cr(h(colors[k]), bgs[0]):
+                        colors[k] = hx(pick)
                 log.append(f'{k}({lv}) {before} -> {colors[k]}' + ('' if group is bgs else ' (只保证主要底色)'))
                 done = True
                 break

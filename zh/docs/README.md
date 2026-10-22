@@ -7,7 +7,7 @@
 | 我想要…                                          | 页面                                          |
 | ------------------------------------------------ | --------------------------------------------- |
 | 在 VS Code、VSCodium 或其他兼容编辑器里安装      | [在 VS Code 或兼容编辑器中安装](install.md)   |
-| 挑一套主题，看它修了什么，并写进 `settings.json` | [主题一览](themes.md)                         |
+| 挑一套主题，看它修了什么，并写进 `settings.json` | [挑选主题](themes.md)                         |
 | 在 macOS Terminal.app 里用同一套颜色             | [在 Terminal.app 中使用主题](terminal-app.md) |
 | 关掉斜体或粗体，或只改某个颜色                   | [自定义主题](customize.md)                    |
 | 了解哪些颜色和原主题不同、为什么                 | [配色怎么调整](how-themes-are-tuned.md)       |

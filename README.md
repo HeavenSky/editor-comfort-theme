@@ -19,15 +19,21 @@ If you like a popular theme but squint at its comments, faint strings or an invi
 
 ## Keep the theme you know
 
-**Backgrounds, body text and syntax colors stay as in the original theme.** A color changes only when it is hard to read, and only as far as needed, keeping its hue and saturation, or when two kinds of code that should look different share it, in which case one of them takes another of the theme's own colors. C GitHub Dark is almost identical to GitHub Dark Dimmed, while C Sunlit Light raises the contrast of Solarized Light's comments from 2.5 to 3.4. See [what changed in each theme](docs/themes.md#find-your-original-theme).
+**Backgrounds, body text and syntax colors stay as in the original theme.** A color changes in only three cases:
+
+- It is hard to read. It changes only as far as needed and keeps its hue and saturation.
+- Two kinds of code that should look different share it. One of them takes another of the theme's own colors.
+- It is near-white in a dark theme. It is toned down slightly.
+
+C GitHub Dark is almost identical to GitHub Dark Dimmed, while C Sunlit Light raises the contrast of Solarized Light's comments from 2.5 to 3.4. See [what changed in each theme](docs/themes.md#find-your-original-theme).
 
 ## Read every line without squinting
 
-Body text, syntax colors and the terminal's normal and bright colors have a contrast ratio of at least 4.5, and comments at least 3.4. Editor, input and terminal selections stay visible, and the text on them stays readable. Sidebar, badge and button text is raised until it reads well next to the theme's body text. The rules are listed in [How the colors are adjusted](docs/how-themes-are-tuned.md).
+Body text, syntax colors and the terminal's normal and bright colors have a contrast ratio of at least 4.5 against their background (WCAG), and comments at least 3.4. Editor, input and terminal selections are made visible, and the text on them stays readable. Where the theme sets sidebar, badge and button text colors, they are raised until they read well next to the theme's body text; colors VS Code works out on its own are left as they are. The rules are listed in [How the colors are adjusted](docs/how-themes-are-tuned.md).
 
 ## Get a fully themed workbench
 
-Diff, git decoration, terminal and other UI colors match the theme instead of VS Code's generic defaults: where the original leaves them unset, they take the theme's own hues. Syntax rules the original leaves out are added only for scopes it leaves uncolored, so no color the original sets is overwritten.
+Diff, git decoration, terminal and other UI colors match the theme instead of VS Code's generic defaults: where the original leaves them unset, they take the theme's own hues. Syntax rules the original leaves out are added only for scopes (kinds of tokens) it leaves uncolored, so no color the original sets is overwritten.
 
 ## Use the same colors in Terminal.app
 
@@ -39,7 +45,7 @@ The extension is static theme files only: no settings, no activation and no runt
 
 ## When not to use it
 
-If you want a softer, dimmer or redesigned look, these themes are the wrong fit: they deliberately keep the original's brightness and saturation. If the original theme already reads well for you, keep using it.
+If you want a softer, dimmer or redesigned look, these themes are the wrong fit: apart from near-white in dark themes, they deliberately keep the original's brightness and saturation. If the original theme already reads well for you, keep using it.
 
 ## Learn more
 

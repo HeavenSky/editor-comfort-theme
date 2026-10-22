@@ -226,7 +226,7 @@
 		"list.hoverForeground": "#D7D7D7",
 		"list.inactiveSelectionBackground": "#0E293F",
 		"list.inactiveSelectionForeground": "#5F7E97",
-		"list.invalidItemForeground": "#9D659A",
+		"list.invalidItemForeground": "#9D6499",
 		"list.warningForeground": "#C5E478",
 		"listFilterWidget.noMatchesOutline": "#EF5350",
 		"mcpIcon.starForeground": "#EF5350",
@@ -477,6 +477,15 @@
 		{
 			"name": "Pool type",
 			"scope": [
+				"entity.name.scope-resolution"
+			],
+			"settings": {
+				"foreground": "#FFCB8B"
+			}
+		},
+		{
+			"name": "Pool type",
+			"scope": [
 				"comment.block.documentation entity.name.type",
 				"constant.length.units.css",
 				"constant.length.units.less",
@@ -484,7 +493,6 @@
 				"constant.length.units.scss",
 				"entity.name.lifetime.rust",
 				"entity.name.package.go",
-				"entity.name.scope-resolution",
 				"entity.name.scope-resolution.function.call",
 				"entity.name.scope-resolution.function.definition",
 				"entity.name.type",
@@ -513,7 +521,7 @@
 				"token.storage.type.java"
 			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -1012,7 +1020,7 @@
 				"meta.class entity.name.type.class"
 			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -1632,7 +1640,7 @@
 				"storage.type.cs"
 			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -1687,9 +1695,11 @@
 		},
 		{
 			"name": "Dart Class",
-			"scope": "support.class.dart",
+			"scope": [
+				"support.class.dart"
+			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -1926,9 +1936,11 @@
 		},
 		{
 			"name": "JavaScript Classes",
-			"scope": "meta.class entity.name.type.class.js",
+			"scope": [
+				"meta.class entity.name.type.class.js"
+			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -2020,7 +2032,7 @@
 				"entity.name.type.module.js"
 			],
 			"settings": {
-				"foreground": "#FFCB8B",
+				"foreground": "#FAD430",
 				"fontStyle": ""
 			}
 		},
@@ -2089,7 +2101,7 @@
 				"entity.name.type.class.ruby"
 			],
 			"settings": {
-				"foreground": "#ECC48D"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -2421,7 +2433,7 @@
 				"entity.name.type.tsx"
 			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -2514,9 +2526,11 @@
 		},
 		{
 			"name": "TypeScript Classes",
-			"scope": "meta.class entity.name.type.class.tsx",
+			"scope": [
+				"meta.class entity.name.type.class.tsx"
+			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{
@@ -2526,7 +2540,7 @@
 				"entity.name.type.module.tsx"
 			],
 			"settings": {
-				"foreground": "#FFCB8B"
+				"foreground": "#FAD430"
 			}
 		},
 		{

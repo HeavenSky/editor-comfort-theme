@@ -8,7 +8,7 @@
 		"activityBar.border": "#F0EAFA",
 		"activityBar.foreground": "#262A44",
 		"activityBarBadge.background": "#6C48B0",
-		"activityBarBadge.foreground": "#B5BCDD",
+		"activityBarBadge.foreground": "#EFE9F9",
 		"activityBarTop.foreground": "#333333",
 		"activityErrorBadge.background": "#C70042",
 		"activityErrorBadge.foreground": "#EFE9F9",
@@ -18,13 +18,13 @@
 		"agentsVoice.speakingBackground": "#4C4DD714",
 		"agentsVoice.speakingForeground": "#4B4FCB",
 		"badge.background": "#6C48B0",
-		"badge.foreground": "#B5BCDD",
+		"badge.foreground": "#EFE9F9",
 		"breadcrumb.activeSelectionForeground": "#262A44",
 		"breadcrumb.focusForeground": "#342F5C",
 		"breadcrumb.foreground": "#878BAB",
 		"breadcrumbPicker.background": "#EFE9F9",
 		"button.background": "#6C48B0CC",
-		"button.foreground": "#1F223C",
+		"button.foreground": "#1E223B",
 		"button.hoverBackground": "#6C48B0",
 		"chart.axis": "#00000099",
 		"chart.guide": "#00000033",
@@ -175,7 +175,7 @@
 		"editorWidget.background": "#E3DDED",
 		"errorForeground": "#C93652",
 		"extensionButton.prominentBackground": "#6C48B0CC",
-		"extensionButton.prominentForeground": "#1F223C",
+		"extensionButton.prominentForeground": "#1E223B",
 		"extensionButton.prominentHoverBackground": "#6C48B0",
 		"extensionIcon.preReleaseForeground": "#54811A",
 		"extensionIcon.privateForeground": "#00000060",
@@ -197,7 +197,7 @@
 		"inlineEdit.gutterIndicator.background": "#4F4F4F18",
 		"input.background": "#E0DAEA",
 		"input.border": "#6C48B0",
-		"input.foreground": "#1F223C",
+		"input.foreground": "#1E223B",
 		"input.placeholderForeground": "#36315E",
 		"inputOption.activeBorder": "#262A44CC",
 		"inputOption.activeForeground": "#000000",
@@ -210,7 +210,7 @@
 		"inputValidation.warningBorder": "#A06C00",
 		"keybindingLabel.foreground": "#464646",
 		"list.activeSelectionBackground": "#6C48B0",
-		"list.activeSelectionForeground": "#BBC2E3",
+		"list.activeSelectionForeground": "#EFE9F9",
 		"list.deemphasizedForeground": "#7D7D7F",
 		"list.dropBackground": "#E8E2F2",
 		"list.errorForeground": "#C1344F",
@@ -263,7 +263,7 @@
 		"peekViewResult.selectionBackground": "#E0DAEA",
 		"peekViewResult.selectionForeground": "#262A44",
 		"peekViewTitle.background": "#EFE9F9",
-		"peekViewTitleDescription.foreground": "#8689A9",
+		"peekViewTitleDescription.foreground": "#8589A9",
 		"peekViewTitleLabel.foreground": "#262A44",
 		"pickerGroup.border": "#E4DEEE",
 		"pickerGroup.foreground": "#8E2A8B",
@@ -977,9 +977,11 @@
 		},
 		{
 			"name": "Inherited class",
-			"scope": "entity.other.inherited-class",
+			"scope": [
+				"entity.other.inherited-class"
+			],
 			"settings": {
-				"foreground": "#4D7717"
+				"foreground": "#20766F"
 			}
 		},
 		{
@@ -1920,7 +1922,7 @@
 				"markup.meta.attribute-list"
 			],
 			"settings": {
-				"foreground": "#4D7717"
+				"foreground": "#20766F"
 			}
 		},
 		{

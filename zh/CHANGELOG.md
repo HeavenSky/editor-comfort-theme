@@ -2,6 +2,14 @@
 
 [English](../CHANGELOG.md) · **简体中文**
 
+## v0.0.5 2026-10-22
+
+### 变更
+
+- **本该区分的两类代码不再共用一种颜色。** 两类语法角色撞色时，其中一类改用本主题里的另一种颜色，先改常量、内置函数、参数这类次要角色。C Owl Light 的字符串改为金色；C Owl Dark 的类型改为黄色，暖桃色的字符串不变（[怎样区分](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/zh/docs/how-themes-are-tuned.md#让不同类的代码分得开)）。
+- 彩色徽标、按钮和状态栏上的字必须由浅转深（或反过来）时，改用本主题的编辑区底色或正文色，不再用中性灰，读起来更清楚：C Dracula Dark 粉色徽标上的字变为 `#282A36`（对比度 6.1，原为 3.1）（[详见](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/zh/docs/how-themes-are-tuned.md#只修看不清的地方)）。
+- Terminal.app 配置只设颜色、字体、光标和 120 × 30 的窗口，标题栏不再显示配置名和窗口尺寸。按键和 shell 退出后的行为沿用 Terminal.app 的默认值，Option 键不再当作 Meta 键；想保留的话，在“终端 → 设置 → 描述文件 → 键盘”里勾选“将 Option 键用作 Meta 键”。重新导入配置后生效（[导入配置](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/zh/docs/terminal-app.md#导入配置)）。
+
 ## v0.0.4 2026-10-16
 
 ### 破坏性变更

@@ -19,13 +19,13 @@ Each theme keeps the colors of one original and fixes only what is hard to read.
 | C GitHub Dark   | GitHub Dark Dimmed 6.3.5                 | Almost unchanged: badge text and find highlight                                                                                                   |
 | C GitHub Light  | GitHub Light Default 6.3.5               | Almost unchanged: three faint terminal colors                                                                                                     |
 | C Dracula Dark  | Dracula Soft 2.25.1                      | Near-white body text `#F6F6F4` toned down to `#D7D7D6`; badge text and input selection                                                            |
-| C Dracula Light | Dracula's official Alucard light palette | New light design: Dracula Soft's structure recolored with Alucard on its cream background                                                         |
+| C Dracula Light | Dracula's official Alucard light palette | New light design: Dracula Soft's structure recolored with Alucard's palette on a cream background                                                 |
 | C Owl Dark      | Night Owl 2.1.1                          | Diff inserted color and find highlight readable                                                                                                   |
 | C Owl Light     | Night Owl Light 2.1.1                    | Comments 2.6 → 3.4, faint regex, operators and properties raised to 4.5, terminal colors readable                                                 |
 | C Moka Dark     | One Monokai 0.5.2                        | Comments 2.8 → 3.4                                                                                                                                |
 | C Moka Light    | Classic Monokai palette                  | New light design: Monokai's text color `#F8F8F2` as the background, its background `#272822` as the text, accents deepened for a light background |
 | C Pale Dark     | Palenight 2.0.5                          | Comments 2.8 → 3.4, sidebar and status bar text readable                                                                                          |
-| C Pale Light    | Palenight 2.0.5 hues                     | New light design: lavender background, deep violet-indigo text, Palenight's accents deepened so it stays clearly apart from C Owl Light           |
+| C Pale Light    | Palenight 2.0.5 hues                     | New light design: lavender background, deep violet-indigo text, Palenight's accents deepened so the theme stays clearly apart from C Owl Light    |
 
 Colors that already read well are left as they are, with two deliberate exceptions. Near-white in dark themes is toned down slightly ([details](how-themes-are-tuned.md#tone-down-near-white-in-dark-themes)). Where two kinds of code that should look different share a color, one of them takes another of the theme's own colors, mostly constants, built-ins and parameters; C Owl Light changes the most, with gold strings instead of the blue its functions use ([details](how-themes-are-tuned.md#tell-different-kinds-of-code-apart)).
 
@@ -47,7 +47,7 @@ To follow your operating system's light or dark mode, set one theme for each:
 
 ## Compare the themes in screenshots
 
-Every shot is a real VS Code window showing Source Control, TypeScript, Python and the terminal color matrix. The links under each shot open two more scenes: Explorer with Markdown, Less and the Problems panel, and the Search view with the Output panel.
+Every shot is a real VS Code window showing Source Control, TypeScript, Python and the terminal color matrix. The links under each shot open two more scenes: Explorer with Markdown, a Less stylesheet and the Problems panel, and the Search view with the Output panel.
 
 | Dark                                                                                                                                                                                                        | Light                                                                                                                                                                                                            |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

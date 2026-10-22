@@ -12,7 +12,7 @@
 		"activityBarTop.foreground": "#D7D7D7",
 		"activityErrorBadge.background": "#FF6A7F",
 		"activityWarningBadge.background": "#C49228",
-		"activityWarningBadge.foreground": "#4F4F4F",
+		"activityWarningBadge.foreground": "#292D3E",
 		"agentsNewSessionButton.background": "#00000000",
 		"agentsVoice.speakingBackground": "#CD7DFE14",
 		"agentsVoice.speakingForeground": "#C792EA",
@@ -262,7 +262,7 @@
 		"peekViewResult.selectionBackground": "#323654",
 		"peekViewResult.selectionForeground": "#CBDBDB",
 		"peekViewTitle.background": "#292D3E",
-		"peekViewTitleDescription.foreground": "#777EA7",
+		"peekViewTitleDescription.foreground": "#767EA6",
 		"peekViewTitleLabel.foreground": "#CBDBDB",
 		"pickerGroup.border": "#313548",
 		"pickerGroup.foreground": "#D1AAFF",
@@ -976,9 +976,11 @@
 		},
 		{
 			"name": "Inherited class",
-			"scope": "entity.other.inherited-class",
+			"scope": [
+				"entity.other.inherited-class"
+			],
 			"settings": {
-				"foreground": "#A9C77D"
+				"foreground": "#FFCB8B"
 			}
 		},
 		{
@@ -1915,7 +1917,7 @@
 				"markup.meta.attribute-list"
 			],
 			"settings": {
-				"foreground": "#A9C77D"
+				"foreground": "#FFCB8B"
 			}
 		},
 		{

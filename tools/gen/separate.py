@@ -7,7 +7,7 @@
 #   还原 先把层次更好的姊妹主题(同名深 / 浅, 原色下撞色更少)里本是另一种色相的组换回那个色相
 #   拆开 再贪心挑代价最低的一步; 代价 = 撞色 + 偏好(偏离目标色相, 动已在目标色相上的组, 给灰色组上色, 占用别的主要角色的颜色);
 #        代价不再下降时, 在能减少撞色的步里挑代价最低的继续
-#   降到门禁线(前 5 名的中位数)即停, 只改到够用
+#   降到门禁线(前 5 名的中位数)即停, 只改到够用; 例外: 核心角色之间"必须分开"的对(MUST_CORE)达线后仍拆到不撞为止
 #   目标色相: 层次更好的姊妹主题里同一批 token 的颜色, 否则主题自己的角色代表色
 #   规则按选择器拆分, 换色的选择器紧跟原规则插入, 优先级不变.
 # 命中表由 tools/textmate/layers-probe.mjs 对中间主题(assets/full-theme)分词得到: 调色步骤只改颜色不改规则结构, 所以命中关系在调色链里不变;
@@ -38,6 +38,9 @@ CAND_CHROMA, CAND_CHROMA_RATIO = 0.06, 0.7
 W_HUE, W_HOME, W_GRAY, W_SIZE = 0.3, 5.0, 1.0, 0.05
 # 主题的标志色多落在这几类角色上(如 One Dark 的红色标签, GitHub 的浅蓝字符串): 拆开阶段先只动其余角色, 降不到门禁线才放开, 且另加罚分
 CORE, W_CORE = {'keyword', 'storage', 'function', 'string', 'type', 'tag', 'heading'}, 3.0
+# 两个角色都在 CORE 且参照家族里分开的占比达到"必须分开"(roles.json 的 auto)的对: 主要角色撞色最显眼(如 Night Owl 的字符串与类型),
+# 不受门禁线限制; 达线后再拆, 每步须减少这类撞色且总撞色不超过门禁线
+MUST_CORE = '必须分开'
 # 换上的颜色已被另一个主要(token 占比 >= OCCUPIED_SHARE)的异角色组占用时的罚分
 W_OCC, OCCUPIED_SHARE = 0.5, 0.02
 # 还原阶段: 姊妹主题里该组色相与现色相差 >= RESTORE_GAP(度)时, 换到与目标色相差 <= RESTORE_NEAR 的候选色
@@ -314,6 +317,33 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
                 break
             allow_core = True
             continue
+        g, c, m, p, over, ws = best
+        pen += p
+        apply(g, c, over, ws, '拆开')
+    must_core = {k for k, p in standard()['pairs'].items() if p['auto'] == MUST_CORE and set(k.split('|')) <= CORE}
+
+    def core_bad(ws: list[float]) -> list[str]:
+        return [k for (_, k, _, _), w in zip(checks, ws) if w >= R.COLLIDE and k in must_core]
+
+    # 每对只动全主题 token 少的那个角色: 两边都是主要角色, 换大的一方等于换掉主题的标志色(如 GitHub 的浅蓝字符串); 拆不开就保持原样
+    role_size = Counter()
+    for g in groups:
+        role_size[g['role']] += len(g['tokens'])
+    while bad_core := core_bad(st.ws):
+        roles_bad = {min(k.split('|'), key=lambda r: role_size[r]) for k in bad_core}
+        options = []
+        for g in groups:
+            if g.get('moved') or g['role'] not in roles_bad:
+                continue
+            for c in cands:
+                if R.de(c, g['color']) >= APART_DE:
+                    over, ws = st.trial(g['tokens'], c)
+                    m = st.score(ws)
+                    if len(core_bad(ws)) < len(bad_core) and m['n'] <= max(cur['n'], gate):
+                        options.append((g, c, m, penalty(g, c), over, ws))
+        best = min(options, key=lambda x: cost(x[2], pen + x[3]), default=None)
+        if best is None:
+            break
         g, c, m, p, over, ws = best
         pen += p
         apply(g, c, over, ws, '拆开')
