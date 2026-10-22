@@ -6,7 +6,7 @@
 #   默认: 读当前终端的底色, 正文色与 16 色(OSC 11 / 10 / 4), 写 comfort-light.json 或 comfort-dark.json
 #   传本项目主题名(如 moka-dark): 取 themes/<名字>.json 的 terminal.* 颜色, 写 comfort-<名字>.json; 不需要在终端里运行
 # 每个颜色取哪个终端色, 属于哪一类, 沿用 tools/terminal/claude-theme.sh 里的对应表(单一来源).
-# 与 shell 版按固定比例混色不同, 这里按 comfort.py 终端范围的口径(term_spec)在 OKLCH 里逐个求色:
+# 与 shell 版按固定比例混色不同, 这里按口径在 OKLCH 里逐个求色(彩字下限取 comfort.term_spec, 其余口径见下方常量):
 #   text 正文: 终端正文色, 收回极端黑白; bg: 终端底色
 #   gray 次要文字与边框: 按对比度目标取色(次要文字落在终端 90m 的区间, 其余自定), 带正文色的色相
 #   accent 强调色: 终端色, 对比度不低于 4.5, 深色主题不比正文亮 1.2 倍以上, 去荧光感, 调明度时保持饱和度
@@ -21,17 +21,16 @@ import json, os, re, sys
 sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
 from colorlib import cr, deneon, fit, from_oklch, h, hx, lum, neon, oklch, sat, unextreme
-from comfort import BRIGHT_TINT_L, BRIGHT_TINT_SAT, EXTREME_DARK, EXTREME_LIGHT, term_spec
+from comfort import term_spec
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 SHELL = os.path.join(ROOT, 'tools', 'terminal', 'claude-theme.sh')
 THEMES = os.path.expanduser('~/.claude/themes')
 PROJECT_THEMES = os.path.join(ROOT, 'themes')
 NAMES = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
-# 强调色与荧光度取门禁终端范围(comfort.term_spec)的理想值, 不借用编辑区 / 界面的口径; 荧光度与亮度上限深浅相同, 彩字下限浅色更高
-_TS = term_spec(True)
-NEON_LIMIT = _TS['neon'][1]
-NEON_MAX, ACCENT_GLARE = NEON_LIMIT - 0.005, _TS['glare'][1]
+# 彩字下限取门禁终端范围(comfort.term_spec)的理想值, 浅色更高; 荧光度上限与最亮彩字 / 正文上限是本主题自定的口径(深浅相同)
+NEON_LIMIT = 0.05
+NEON_MAX, ACCENT_GLARE = NEON_LIMIT - 0.005, 1.2
 
 
 def accent_min(light: bool) -> float:
@@ -40,8 +39,10 @@ def accent_min(light: bool) -> float:
 
 # 背景块(diff, 消息底, 选区)门禁终端范围没有对应指标, 在这里自定: 与底色对比度上限, 压在上面的正文对比度下限
 TINT_MAX_CR, TEXT_ON_MIN = 2.2, 4.5
-# 亮的背景块饱和度: 与编辑区高亮底同一口径(comfort.BRIGHT_TINT_L / BRIGHT_TINT_SAT, 理想 <= 0.40, 超过 0.55 判不通过)
-TINT_LIGHT_L, (TINT_SAT_MAX, TINT_SAT_LIMIT) = BRIGHT_TINT_L, BRIGHT_TINT_SAT
+# 亮的背景块(OKLCH 明度 > TINT_LIGHT_L)饱和度: 理想 <= 0.40, 超过 0.55 判不通过; 近白处同样的彩度已是糖果色
+TINT_LIGHT_L, (TINT_SAT_MAX, TINT_SAT_LIMIT) = 0.6, (0.40, 0.55)
+# 极端黑白: 亮度低于 / 高于它即为纯黑 / 乌黑, 纯白 / 亮白
+EXTREME_DARK, EXTREME_LIGHT = 0.008, 0.88
 # 次要文字与边框的对比度目标: inactive 落在门禁终端 90m 的理想区间(3.4~4.2), 其余为本主题自定(终端范围无对应指标)
 GRAY_CR = dict(inactive=3.8, inactiveShimmer=5.0, subtle=2.4, promptBorder=1.6, promptBorderShimmer=2.6, rate_limit_empty=1.8)
 # 背景块: (相对底色的明度差, 彩度); 浅色主题往深, 深色主题往亮 x 1.8; 色相取对应终端色(fg 为正文色)

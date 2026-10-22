@@ -2,13 +2,13 @@
 # requires-python = ">=3.11"
 # dependencies = ["pyobjc-framework-Cocoa; sys_platform == 'darwin'"]
 # ///
-# 主题门禁打分: 范围(终端 / 编辑区 / 界面) x 维度(清晰 / 鲜艳柔和 / 防疲劳 / 护眼 / 防蓝光), 综合分按 终端 2 : 编辑区 2 : 界面 1 加权(规则见 comfort.py);
+# 主题门禁打分: 范围(终端 / 编辑区 / 界面) x 清晰维度, 综合分按 终端 2 : 编辑区 2 : 界面 1 加权(规则见 comfort.py);
 # 支持 Terminal.app 的 .terminal(只有终端范围)与 VS Code 颜色主题 .json.
 # 用法: uv run tools/check/metrics.py [--check] [--detail] <文件>...
 #   --check: 门禁只看清晰维度里有对应看不清类调色步骤(tools/gen/steps.py)的子指标, 口径取该步骤的目标(CLEAR_GATE), 任一受检主题越过时退出码 1;
-#            VS Code 主题另须符合 vscode://schemas/color-theme. 其余维度, 串色, 角色 / 终端色差, 硬编码默认色覆盖与常用 scope 着色只作报告
+#            VS Code 主题另须符合 vscode://schemas/color-theme. 其余清晰子指标, 串色, 角色 / 终端色差, 硬编码默认色覆盖与常用 scope 着色只作报告
 #            (第一目标是还原原主题, 原主题本来如此的不判不达标). themes.py 中 gate=False 的主题只报告不判定. --strict 为旧参数, 与 --check 相同.
-#   --detail: 逐主题列出 15 格(维度 x 范围)的子指标取值与得分, 以及诊断: 语法色同彩度 / 同对比度占比(压平),
+#   --detail: 逐主题列出 3 格(清晰 x 范围)的子指标取值与得分, 以及诊断: 语法色同彩度 / 同对比度占比(压平),
 #             与原主题相比的色相偏移和饱和度损失(保真度, 仅本仓库主题).
 import json, os, plistlib, re, sys
 
@@ -214,12 +214,6 @@ def main() -> int:
         m = from_terminal(f) if f.endswith('.terminal') else from_vscode(f)
         r = rate(m)
         why = [f"{DIM_NAMES[d]}/{SCOPE_NAMES[s]}: {w}" for (d, s), c in r['cells'].items() for w in c['why']]
-        for (scope, kind), label in ((('ui', 'panel_glare'), '面板亮块'), (('ui', 'border'), '边框抢眼'), (('ui', 'control'), '控件抢眼'),
-                                     (('ui', 'ui_glare'), '界面文字刺眼'), (('ui', 'gray_patch'), '灰块'), (('ui', 'bright_panel'), '浅色亮底'),
-                                     (('ui', 'blue_panel'), '饱和蓝底'), (('ui', 'extreme'), '界面极端黑白'), (('editor', 'extreme'), '编辑区极端黑白')):
-            keys = r['issues'].get(scope, {}).get(kind)
-            if keys:
-                why.append(f"{label}: {', '.join(keys[:6])}{' 等' if len(keys) > 6 else ''}")
         if m.get('uncovered'):
             why.append(f"未覆盖 VS Code 硬编码默认色的键 {len(m['uncovered'])} 个, 例: {', '.join(m['uncovered'][:4])}")
         if m.get('schema'):

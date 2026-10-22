@@ -55,7 +55,7 @@ export default function checks(root) {
 		// 按 assets/layers/hits.json 的命中表算(不需要 VS Code); 标准与门禁线见 assets/layers/roles.json
 		"语法角色分得开 (案例集里要分开的角色撞色数不超过前 5 名参照主题的中位数)": () =>
 			runUv(root, ["tools/gen/separate.py", "--check"]),
-		// 只门禁清晰维度里有对应看不清类步骤的子指标(口径见 tools/check/metrics.py 的 CLEAR_GATE); 其余维度只作参考报告(npm run metrics)
+		// 只门禁清晰维度里有对应看不清类步骤的子指标(口径见 tools/check/metrics.py 的 CLEAR_GATE); 其余子指标只作参考报告(npm run metrics)
 		"配色清晰门禁达标 (终端 / 编辑区 / 界面的可读下限与选区可见)": () =>
 			runUv(root, [
 				"tools/check/metrics.py",
