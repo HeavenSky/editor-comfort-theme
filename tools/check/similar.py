@@ -17,6 +17,7 @@ from collections import defaultdict
 sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
 from colorlib import blend, de2000, h
+from themefile import load
 from schema import registry
 
 REGISTRY = registry()['colors']
@@ -34,10 +35,6 @@ CLUSTER_DE = 8.0
 # 编辑区主体: 这些项任何一个明显不同, 两主题写代码时的观感就不同, 不建议合并
 CORE = ['editor.background', 'editor.foreground', 'token:comment', 'token:keyword', 'token:string', 'token:entity.name.function',
         'token:variable', 'token:entity.name.type', 'token:constant.numeric', 'editor.selectionBackground']
-
-
-def load(path: str) -> dict:
-    return json.loads(re.sub(r'^\s*//.*$', '', open(path, encoding='utf-8').read(), flags=re.M))
 
 
 def parse(v, under):

@@ -13,13 +13,13 @@ sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check')]
 from colorlib import WHITE_C, WHITE_L, Rgb, unwhite, blend, cr, de2000, fit, from_oklch, h, hx, lum, oklch, sat, with_sat
 import levels, separate
+from themefile import SOURCES, load, parse
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
 from comfort import HIGHLIGHT_KEYS, HIGHLIGHT_TEXT_MIN, INPUT_SELECTION_TEXT, SELECTION_VISIBLE, input_selection
 from themes import ANSI, LEGIBLE, TERM_MARGIN, build
 from steps import on
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source')
 # 补全段的中间主题 <name>-full.json(complete.py 生成, 不进版本库)
 FULL = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'full-theme')
 REGISTRY = os.path.join(SOURCES, '..', 'vscode', 'color-registry.json')
@@ -31,26 +31,6 @@ NEUTRAL_CHROMA = 0.035
 SAME_COLOR = 0.012
 # 注释对比度下限
 COMMENT_MIN = 3.4
-
-
-def load(path: str) -> dict:
-    s = open(path, encoding='utf-8').read()
-    s = re.sub(r'^\s*//.*$', '', s, flags=re.M)
-    s = re.sub(r',(\s*[}\]])', r'\1', s)
-    return json.loads(s)
-
-
-def parse(v) -> tuple[Rgb, str] | None:
-    if not isinstance(v, str):
-        return None
-    v = {'white': '#FFFFFF', 'black': '#000000'}.get(v.lower(), v)
-    m = re.fullmatch(r'#([0-9A-Fa-f]{3,8})', v)
-    if not m:
-        return None
-    s = m.group(1)
-    if len(s) in (3, 4):
-        s = ''.join(c * 2 for c in s)
-    return h(s[:6]), s[6:8].upper()
 
 
 def dist(a: Rgb, b: Rgb) -> float:

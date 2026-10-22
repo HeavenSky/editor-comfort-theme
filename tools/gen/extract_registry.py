@@ -7,17 +7,11 @@
 #   透明度系数键(*.opacity / *Opacity, 只用 alpha 通道, 不是颜色)一律记 null, 不当硬编码默认色补进主题.
 # transparent: 注册时要求半透明(needsTransparency, 不透明会遮住下面的内容); deprecated: 已废弃(带 deprecationMessage).
 # 另记 semanticSelector: semanticTokenColors 键必须匹配的正则; 这三项供 schema.py 按 vscode://schemas/color-theme 校验主题.
-# 用法: uv run tools/gen/extract_registry.py [VS Code.app 路径] [输出 json 路径]   (VS Code 升级后重跑, 再运行 gen_vscode.py)
-import json, os, re, sys
+# 本文件只提供 build(); 入口是 tools/gen/extract_vscode.py(npm run extract:vscode).
+import json, os, re
 
-sys.dont_write_bytecode = True
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import extract_key_docs as kd
 
-APP = sys.argv[1] if len(sys.argv) > 1 else kd.DEFAULT_APP
-RES = os.path.join(APP, 'Contents', 'Resources', 'app')
-BUNDLE = os.path.join(RES, 'out', 'vs', 'workbench', 'workbench.desktop.main.js')
-OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'color-registry.json')
 LITERAL = re.compile(r'#[0-9A-F]{6}(?:[0-9A-F]{2})?')
 OPACITY = re.compile(r'(?:\.o|O)pacity$')
 
@@ -46,9 +40,8 @@ def hardcoded(src: str) -> dict:
     return out
 
 
-def main() -> int:
-    src = open(BUNDLE, encoding='utf-8', errors='replace').read()
-    version = json.load(open(os.path.join(RES, 'package.json')))['version']
+def build(res: str, src: str, version: str) -> dict | str:
+    """res / src 同 extract_key_docs.build. 返回 color-registry.json 的内容; 安装包形态不认识时返回原因, 不写文件."""
     # 前面要有标识符边界: 压缩后注册函数名很短(如 ae), 不加边界会把 Qae( / Iae( 这类同尾的其他调用当成颜色注册
     register = re.search(r'(?<![\w$.])([\w$]+)\("editor\.background",\{', src).group(1)
     hard = hardcoded(src)
@@ -72,8 +65,8 @@ def main() -> int:
         colors.setdefault(m.group(1), {mode: literal(modes.get(mode)) for mode in ('dark', 'light')}
                           | {'transparent': False, 'deprecated': False})
     # 内置扩展在 package.json 的 contributes.colors 里声明的颜色(如 git 的 gitDecoration.*)同样进入 schema
-    for ext in sorted(os.listdir(os.path.join(RES, 'extensions'))):
-        pj = os.path.join(RES, 'extensions', ext, 'package.json')
+    for ext in sorted(os.listdir(os.path.join(res, 'extensions'))):
+        pj = os.path.join(res, 'extensions', ext, 'package.json')
         if not os.path.isfile(pj):
             continue
         for c in json.load(open(pj, encoding='utf-8')).get('contributes', {}).get('colors', []):
@@ -81,22 +74,11 @@ def main() -> int:
             colors.setdefault(c['id'], {mode: literal(d.get(mode)) for mode in ('dark', 'light')}
                               | {'transparent': False, 'deprecated': False})
     if len(colors) < 500:
-        print(f'只解析到 {len(colors)} 个颜色键, VS Code 打包形态可能变了, 未写入', file=sys.stderr)
-        return 1
+        return f'只解析到 {len(colors)} 个颜色键, VS Code 打包形态可能变了'
     # 语义 token 选择器: Hrr = ^(id|\*)(\.id)*(:id)?$, id = \w+[-_\w+]*; 打包后变量名会变, 只按形态核对
     ident = r'\w+[-_\w+]*'
     if f'"{ident}"'.replace('\\', '\\\\') not in src:
-        print('未找到语义 token id 的正则定义, VS Code 打包形态可能变了, 未写入', file=sys.stderr)
-        return 1
+        return '未找到语义 token id 的正则定义, VS Code 打包形态可能变了'
     selector = rf'^({ident}|\*)(\.{ident})*(:{ident})?$'
-    json.dump({'vscodeVersion': version, 'semanticSelector': selector, 'colors': dict(sorted(colors.items()))},
-              open(OUT, 'w', encoding='utf-8'), indent='\t')
-    hard = sum(1 for v in colors.values() if v['dark'])
-    trans = sum(1 for v in colors.values() if v['transparent'])
-    dep = sum(1 for v in colors.values() if v['deprecated'])
-    print(f'VS Code {version}: {len(colors)} 个颜色键, dark 下硬编码默认值 {hard} 个, 须半透明 {trans} 个, 已废弃 {dep} 个 -> {os.path.relpath(OUT)}')
-    return 0
+    return {'vscodeVersion': version, 'semanticSelector': selector, 'colors': dict(sorted(colors.items()))}
 
-
-if __name__ == '__main__':
-    sys.exit(main())

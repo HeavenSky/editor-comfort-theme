@@ -2,11 +2,14 @@
 # requires-python = ">=3.11"
 # ///
 # 按 vscode://schemas/color-theme 校验 VS Code 颜色主题; 规则取自 VS Code 源码(颜色注册表 / textmate-colors / token-styling),
-# 颜色键的注册, 半透明要求与废弃标记来自 assets/vscode/color-registry.json(extract_registry.py 提取).
+# 颜色键的注册, 半透明要求与废弃标记来自 assets/vscode/color-registry.json(npm run extract:vscode 提取).
 # 用法: uv run tools/check/schema.py <主题.json>...   (有问题时逐条列出并退出码 1)
 import json, os, re, sys
 
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'lib'))
+from themefile import load
+
 REGISTRY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'color-registry.json')
 
 # format: color-hex 接受的写法; 另有 "default" 表示用默认色
@@ -82,12 +85,6 @@ def problems(theme: dict, reg: dict | None = None) -> list[str]:
     if 'semanticHighlighting' in theme and not isinstance(theme['semanticHighlighting'], bool):
         out.append('semanticHighlighting 必须是布尔值')
     return out
-
-
-def load(path: str) -> dict:
-    s = open(path, encoding='utf-8').read()
-    s = re.sub(r'^\s*//.*$', '', s, flags=re.M)
-    return json.loads(re.sub(r',(\s*[}\]])', r'\1', s))
 
 
 def main() -> int:

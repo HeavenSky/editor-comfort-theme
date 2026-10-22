@@ -6,11 +6,11 @@
 # 命名: <name>-dark / <name>-light(与 assets/source/ 的原主题同名), 显示名 C <Name> Dark / Light.
 import json, os
 
-from colorlib import unwhite, blend, cr, fit, h, hx, oklch, sat, with_sat
+from colorlib import unwhite, blend, cr, fit, hx, oklch, sat, with_sat
 from comfort import term_spec
 from steps import on
+from themefile import SOURCES, parse
 
-SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source')
 
 ANSI = ['Black', 'Red', 'Green', 'Yellow', 'Blue', 'Magenta', 'Cyan', 'White']
 
@@ -50,13 +50,9 @@ def term_selection(bg, fg, blue, target: float, dark: bool):
     return best
 
 
-def _rgb(v: str):
-    return h(v.lstrip('#')[:6])
-
-
 def tone(v, bg, min_cr: float):
     """终端彩色: 低于对比度下限时沿明度推到下限, 色相与饱和度不变; 够读的原样返回."""
-    c = _rgb(v) if isinstance(v, str) else v
+    c = parse(v)[0] if isinstance(v, str) else v
     min_cr = min_cr if on('term_floor') else None
     if min_cr is None or cr(c, bg) >= min_cr:
         return c
@@ -70,16 +66,16 @@ def adapt(name: str, label: str, source: str, dark: bool) -> dict:
     token_min: 语法色相对编辑区底的对比度下限; comment_cr: 是否调注释(补全段内部用 False)."""
     # 原主题文件名 source 只给规则池投票与保真度诊断用
     c = json.load(open(os.path.join(SOURCES, '..', 'full-theme', f'{name}-full.json'), encoding='utf-8'))['colors']
-    bg, fg = _rgb(c['editor.background']), _rgb(c['editor.foreground'])
+    bg, fg = parse(c['editor.background'])[0], parse(c['editor.foreground'])[0]
     if on('text_floor') and cr(fg, bg) < LEGIBLE:
         # 只在读不清时提到可读下限, 色相与饱和度不变
         fg = fit(fg, bg, lo=LEGIBLE + TERM_MARGIN)
-    ansi = lambda n: _rgb(c[f'terminal.ansi{n}'])
+    ansi = lambda n: parse(c[f'terminal.ansi{n}'])[0]
     sel = c['editor.selectionBackground']
-    sel = blend(_rgb(sel), bg, int(sel[7:9], 16) / 255 if len(sel) == 9 else 1)
+    sel = blend(parse(sel)[0], bg, int(sel[7:9], 16) / 255 if len(sel) == 9 else 1)
     return dict(
         name=name, label=label, dark=dark, source=source, token_min=LEGIBLE, comment_cr=True,
-        full=f'{name}-full.json', bg=bg, fg=fg, bold=fg, cursor=_rgb(c['editorCursor.foreground']), sel=sel,
+        full=f'{name}-full.json', bg=bg, fg=fg, bold=fg, cursor=parse(c['editorCursor.foreground'])[0], sel=sel,
         ui_src={n: tone(hx(ansi(n)), bg, LEGIBLE) for n in ANSI[1:7]},
         ansi=_ansi({n: tone(hx(ansi(n)), bg, TERM_ACCENT_MIN) for n in ANSI[1:7]},
                    {n: tone(hx(ansi('Bright' + n)), bg, TERM_ACCENT_MIN) for n in ANSI[1:7]},

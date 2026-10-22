@@ -18,14 +18,14 @@
 #                                             人工标注过的改用标注(标注为跟随外层的移除); skip 原样保留, 由 npm run pool:update 随后的 complete.py --guard 重算
 #   uv run tools/gen/pool.py --annotate <out.html>  生成标注页(键盘快捷, 浏览器本地保存, 导出 JSON 存为 pool-overrides.json)
 #   uv run tools/gen/pool.py --review <out.html>    复核页: 只差语言后缀的同类选择器标注不一致的组, 每组选一个角色统一
-import json, math, os, re, sys
+import json, math, os, sys
 from collections import Counter, defaultdict
 
 sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
 from colorlib import oklch
+from themefile import SOURCES, load, norm_hex
 
-SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source')
 OVERRIDES = os.path.join(SOURCES, '..', 'pool', 'pool-overrides.json')
 FG, INHERIT = 'fg', 'inherit'
 
@@ -127,12 +127,6 @@ LANG_ORDER = ['js', 'ts', 'tsx', 'jsx', 'json', 'python', 'html', 'css', 'scss',
               'php', 'ruby', 'shell', 'yaml', 'sql', 'xml', 'vue', 'less', 'lua', 'swift', 'kotlin', 'dart']
 
 
-def _load(path: str) -> dict:
-    s = open(path, encoding='utf-8').read()
-    s = re.sub(r'^\s*//.*$', '', s, flags=re.M)
-    return json.loads(re.sub(r',(\s*[}\]])', r'\1', s))
-
-
 def scopes_of(rule: dict) -> list[str]:
     sc = rule.get('scope') or []
     return [x.strip() for x in (sc.split(',') if isinstance(sc, str) else sc) if x.strip()]
@@ -189,7 +183,7 @@ def build(themes: list[dict]) -> dict:
     order = []
     seen = set()
     # 规则多的先投票; 同样多时深色在前(浅色设计由深色模板生成, 结构相同, 靠下面的去重只让深色版投票)
-    srcs = {t['name']: _load(os.path.join(SOURCES, t['source'])) for t in themes}
+    srcs = {t['name']: load(os.path.join(SOURCES, t['source'])) for t in themes}
     for t in sorted(themes, key=lambda t: (-len(srcs[t['name']].get('tokenColors', [])), not t['dark'])):
         src = srcs[t['name']]
         rules = src.get('tokenColors', [])
@@ -296,14 +290,6 @@ def annotate(pool: dict, out: str, items: list | None = None, storage_key: str |
 
 
 FULL_RULE = os.path.join(SOURCES, '..', 'pool', 'full-rule.json')
-
-
-def norm_hex(v) -> str | None:
-    """颜色写法统一成大写 #RRGGBB / #RRGGBBAA; 不是 hex 时返回 None."""
-    if not isinstance(v, str) or not re.fullmatch(r'#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})', v):
-        return None
-    v = v[1:]
-    return '#' + (''.join(c * 2 for c in v) if len(v) in (3, 4) else v).upper()
 
 
 def update(themes: list[dict]) -> None:

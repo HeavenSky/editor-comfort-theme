@@ -14,13 +14,13 @@
 #
 # 用法: uv run tools/gen/design.py           生成全部
 #       uv run tools/gen/design.py --check   只比对, 与现有文件不一致时退出码 1
-import json, os, re, sys
+import json, os, sys
 
 sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
 from colorlib import de2000, from_oklch, h, hx, oklch
+from themefile import SOURCES, load
 
-SOURCES = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'source')
 NEAR_DE, ACCENT_CHROMA, ACCENT_L = 8.0, 0.07, 0.52
 
 DESIGNS = [
@@ -93,11 +93,6 @@ DESIGNS = [
 ]
 
 ANSI_GRAYS = ['Black', 'BrightBlack', 'White', 'BrightWhite']
-
-
-def load(path: str) -> dict:
-    s = open(path, encoding='utf-8').read()
-    return json.loads(re.sub(r',(\s*[}\]])', r'\1', re.sub(r'^\s*//.*$', '', s, flags=re.M)))
 
 
 def split(v: str):

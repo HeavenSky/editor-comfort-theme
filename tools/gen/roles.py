@@ -19,6 +19,7 @@ sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen')]
 import pool
 from colorlib import de2000, h
+from themefile import load, norm_hex
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 LAYERS = os.path.join(ROOT, 'assets', 'layers')
@@ -58,10 +59,10 @@ def role(scopes: list[str]) -> str:
 
 
 def role_colors(theme: dict) -> dict[str, str]:
-    fg = pool.norm_hex((theme.get('colors') or {}).get('editor.foreground')) or ('#D4D4D4' if theme.get('dark') else '#333333')
+    fg = norm_hex((theme.get('colors') or {}).get('editor.foreground')) or ('#D4D4D4' if theme.get('dark') else '#333333')
     out = {}
     for r in ROLES:
-        v = fg if r == 'text' else pool.norm_hex(pool.role_value(theme.get('tokenColors', []), r, fg))
+        v = fg if r == 'text' else norm_hex(pool.role_value(theme.get('tokenColors', []), r, fg))
         out[r] = (v or fg)[:7]
     return out
 
@@ -125,7 +126,7 @@ def tokenize(theme_dir: str) -> dict[str, tuple[list, list]]:
             for k in t['files'][os.path.basename(f)]:
                 if re.search(r'\w', k['text']):
                     tokens.append([fi, k['ln'], role(k['scopes'])])
-                    colors.append(pool.norm_hex(k['color'])[:7])
+                    colors.append(norm_hex(k['color'])[:7])
         out[name] = (tokens, colors)
     return out
 
@@ -149,8 +150,8 @@ def refresh_reference(theme_dir: str) -> None:
             reps.setdefault(f[:-5].split('_')[0], f)
     fams = {}
     for key, f in reps.items():
-        t = pool._load(os.path.join(theme_dir, f))
-        fams[key] = dict(file=f, name=t.get('name'), bg=(pool.norm_hex(t['colors'].get('editor.background')) or '#808080')[:7], roles=role_colors(t))
+        t = load(os.path.join(theme_dir, f))
+        fams[key] = dict(file=f, name=t.get('name'), bg=(norm_hex(t['colors'].get('editor.background')) or '#808080')[:7], roles=role_colors(t))
     cons = consensus(fams)
     tok = tokenize(theme_dir)
     base = {k for k, v in cons.items() if v['auto'] in ('必须分开', '应该分开')}

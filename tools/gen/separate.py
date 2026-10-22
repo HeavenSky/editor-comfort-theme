@@ -24,6 +24,7 @@ sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d
 import pool
 import roles as R
 from colorlib import cr, fit, h, hx, oklch
+from themefile import load, norm_hex
 
 ROOT = R.ROOT
 LAYERS = R.LAYERS
@@ -56,7 +57,7 @@ def corpus_files() -> list[str]:
 
 
 def _hex(v) -> str | None:
-    n = pool.norm_hex(v)
+    n = norm_hex(v)
     return n[:7] if n else None
 
 
@@ -227,7 +228,7 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
     src_fg = _hex(src.get('colors', {}).get('editor.foreground')) or fg
     better = False
     if twin in H['themes'] and os.path.exists(twin_path):
-        tw = pool._load(twin_path)
+        tw = load(twin_path)
         tw_color = source_colors(tw.get('tokenColors', []), H['themes'][twin], _hex(tw['colors'].get('editor.foreground')) or '#808080')
         own = source_colors(src.get('tokenColors', []), entry, src_fg)
         # 只向层次更好的姊妹主题看齐: 两边互相当参照会把好的一边也拉坏(如 Night Owl 的桃色字符串)
@@ -373,7 +374,7 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
 
 def update() -> int:
     from themes import build
-    themes = {t['name']: pool._load(os.path.join(FULL, t['full'])).get('tokenColors', []) for t in build()}
+    themes = {t['name']: load(os.path.join(FULL, t['full'])).get('tokenColors', []) for t in build()}
     files = corpus_files()
     inp = dict(files=files, themes={n: [s for _, s in selectors(r)] for n, r in themes.items()})
     p = subprocess.run(['node', os.path.join(ROOT, 'tools', 'textmate', 'layers-probe.mjs')], input=json.dumps(inp), capture_output=True,

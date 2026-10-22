@@ -6,12 +6,9 @@
 #        + extensions/*/package.json 的 contributes.colors(说明经 package.nls.json 引用).
 # 产物 assets/vscode/color-docs.json 属于生成链输入: tools/gen/levels.py 的 _defaults / resolve / under 按其中的默认值表达式推导主题未定义键的实际颜色与底色;
 #   另供 tools/lab/threshold-lab.mjs 的颜色键分层复核页(/keys)显示说明与默认值. 表达式解析器(P / Ctx / scan)也被 extract_registry.py 复用求硬编码默认值.
-#   VS Code 升级后与 extract_registry.py 一起重跑.
-# 用法: uv run tools/gen/extract_key_docs.py [VS Code.app 路径] [输出 json 路径]   (有解析失败项时仍写入, 退出码 1)
-import json, os, re, sys
+# 本文件只提供 build(); 入口是 tools/gen/extract_vscode.py(npm run extract:vscode), 一次读取安装包写出 color-docs.json 与 color-registry.json.
+import json, os, re
 
-DEFAULT_APP = '/Applications/Visual Studio Code.app'
-DEFAULT_OUT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'assets', 'vscode', 'color-docs.json'))
 MODES = ('dark', 'light', 'hcDark', 'hcLight')
 NAMED = {'white': '#FFFFFF', 'black': '#000000', 'red': '#FF0000', 'blue': '#0000FF', 'green': '#00FF00',
          'cyan': '#00FFFF', 'lightgrey': '#D3D3D3', 'transparent': '#00000000'}
@@ -322,13 +319,9 @@ def render_default(ctx, d, mode):
 RENDER_ERRORS = (ParseError, IndexError, KeyError, ValueError, TypeError)
 
 
-def main():
-    app = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_APP
-    out_path = sys.argv[2] if len(sys.argv) > 2 else DEFAULT_OUT
-    res = os.path.join(app, 'Contents', 'Resources', 'app')
-    src = open(os.path.join(res, 'out', 'vs', 'workbench', 'workbench.desktop.main.js'), encoding='utf-8').read()
+def build(res: str, src: str, version: str) -> tuple[dict, dict]:
+    """res: 安装包的 Contents/Resources/app 目录; src: workbench.desktop.main.js 全文. 返回 (color-docs.json 的内容, 解析失败项)."""
     messages = json.load(open(os.path.join(res, 'out', 'nls.messages.json'), encoding='utf-8'))
-    version = json.load(open(os.path.join(res, 'package.json')))['version']
     ctx, calls = scan(src, messages)
     out, failed = {}, {}
     for key, args, err, pos in calls:
@@ -404,13 +397,4 @@ def main():
             if not desc:
                 failed[c['id']] = '扩展未提供说明'
     ok = sum(1 for k, v in out.items() if 'errors' not in v and v['description'])
-    json.dump({'vscodeVersion': version, 'count': len(out), 'ok': ok, 'failed': failed, 'colors': dict(sorted(out.items()))},
-              open(out_path, 'w', encoding='utf-8'), indent='\t', ensure_ascii=False)
-    print(f'VS Code {version}: {len(out)} 键, 说明与默认值完整 {ok}, 失败 {len(failed)} -> {out_path}')
-    for k, v in list(failed.items())[:40]:
-        print('  失败', k, v)
-    return 1 if failed else 0
-
-
-if __name__ == '__main__':
-    sys.exit(main())
+    return {'vscodeVersion': version, 'count': len(out), 'ok': ok, 'failed': failed, 'colors': dict(sorted(out.items()))}, failed

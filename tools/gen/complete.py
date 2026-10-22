@@ -180,7 +180,8 @@ def fill_terminal(colors: dict, rules: list, dark: bool) -> None:
     missing = [n for n in TERM_COLORS if key(n) not in colors]
     if missing:
         have = {hx(parse(colors[key(n)])[0]) for n in TERM_COLORS if key(n) in colors}
-        syn = {hx(parse(c)[0]) for r in pool.ROLES if (c := pool.role_value(rules, r, None)) and parse(c)}
+        # diff / 错误标记色(新增, 删除, 错误)不当终端色: 它们为整行底色设计, 常是很深或很浅的色(如 Night Owl 新增 #036A07)
+        syn = {hx(parse(c)[0]) for r in pool.ROLES if r not in ('inserted', 'deleted', 'invalid') and (c := pool.role_value(rules, r, None)) and parse(c)}
         syn = sorted(c for c in syn if oklch(h(c))[1] > NEUTRAL_CHROMA and c not in have)
 
         def gap(c: str, n: str) -> float:
