@@ -169,13 +169,12 @@ def fidelity(name: str, path: str) -> list[str]:
 CLEAR_GATE = dict(
     term=dict(text=4.5, accent=4.5, bright=4.5, gray=3.4,                                   # text_floor, term_floor, term_gray_floor
               selection=1.2, inactive_selection=1.08, on_selection=3.5),                    # term_selection
-    editor=dict(text=4.5, syntax=4.5, comment=3.4, line_no=2.2, on_highlight=3.5,           # text_floor, syntax_floor, comment_floor, ui_text_floor, highlight_text
+    editor=dict(text=4.5, syntax=4.5, comment=3.4, on_highlight=3.5,                        # text_floor, syntax_floor, comment_floor, highlight_text
                 selection_visible=1.15),                                                    # selections
-    ui=dict(ui_text=4.5, small_text=4.5, focus=3.0, input_selection=1.15, input_selection_text=3.5),  # ui_text_floor, badge / button / control_text, focus_floor, selections
+    ui=dict(input_selection=1.15, input_selection_text=3.5),                                # selections
 )
+# 界面文字, 行号, 小块上的字, 焦点描边由分层门禁(level_gate, 口径同 level_floor)判, 不在这里
 CLEAR_TOL = 0.06
-# 已由分层门槛(level_floor)取代的旧子指标: 对应步骤都关着时只报告不门禁, 改由 level_gate 判
-CLEAR_STEPS = dict(ui_text=('ui_text_floor',), line_no=('ui_text_floor',), small_text=('badge_text', 'button_text', 'control_text'), focus=('focus_floor',))
 
 
 def clear_gate(r: dict) -> list[str]:
@@ -185,8 +184,6 @@ def clear_gate(r: dict) -> list[str]:
         cell = r['cells'].get(('clear', scope))
         for k, lo in subs.items():
             v = cell['subs'].get(k, (None,))[0] if cell else None
-            if k in CLEAR_STEPS and not any(on(x) for x in CLEAR_STEPS[k]):
-                continue
             if v is not None and v < lo - CLEAR_TOL:
                 out.append(f'{SCOPE_NAMES[scope]}/{NAMES[k]} {v:.3g} < {lo}')
     return out

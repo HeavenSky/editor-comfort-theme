@@ -15,7 +15,7 @@ import os, sys
 STEPS = {
     # ---- 看不清 ----
     'text_floor': (True, 'clear', 'themes.adapt', '正文低于 4.5 时提到 4.5, 色相与饱和度不变'),
-    'level_floor': (True, 'clear', 'gen_vscode.transform / levels.fix', '界面颜色按分层门槛(assets/levels.json)提到修复下限: 半透明先加不透明度, 再只调明度; 取代下面标 (被 level_floor 取代) 的旧步骤'),
+    'level_floor': (True, 'clear', 'gen_vscode.transform / levels.fix', '界面颜色按分层门槛(assets/levels.json)提到修复下限: 半透明先加不透明度, 再只调明度; 界面文字, 徽标 / 按钮 / 列表选中行上的字, 焦点描边, 占位字等都归它'),
     'syntax_floor': (True, 'clear', 'gen_vscode.Mapper.token', '语法色低于 4.5 的提到 4.5, 本来够读的不动'),
     'comment_floor': (True, 'clear', 'gen_vscode.Mapper.token', '注释不低于 3.4, 色相与饱和度不变'),
     'syntax_separate': (True, 'clear', 'gen_vscode.transform / separate.fix', '案例集里要分开(assets/layers/roles.json)却撞色的语法角色换成主题自有颜色(原语法彩色 + 终端 6 色), 先动次要角色, 目标色相取层次更好的姊妹主题; 降到前 5 名参照主题的中位撞色数即停'),
@@ -25,18 +25,9 @@ STEPS = {
     'term_separate': (False, 'clear', 'themes.separate_ansi', '终端 6 个普通色两两色差不足时在色槽内转开'),
     'term_gray_floor': (True, 'clear', 'themes.build', '终端 90m 暗灰不低于 3.4'),
     'term_selection': (True, 'clear', 'themes.build', '原终端选区看不出(< 1.3)或上面的字读不清时, 取终端蓝混入底色重算'),
-    'ui_text_floor': (False, 'clear', 'gen_vscode.transform', '(被 level_floor 取代) 侧栏, 标签, 状态栏等界面文字不低于 4.5(非活动的 3.0), 行号不低于 2.2; 半透明的先加不透明度'),
     'highlight_text': (True, 'clear', 'gen_vscode.calm', '选区, 查找等高亮底上的正文不低于 3.5'),
     'find_order': (True, 'clear', 'gen_vscode.find_order', '查找当前比其他匹配醒目'),
     'selections': (True, 'clear', 'gen_vscode.selections', '编辑区选区 / 输入框选区看得出, 选中的字可读; 从原选区色出发只动必要的一侧'),
-    'list_selection_text': (False, 'clear', 'gen_vscode.list_selection_text', '(被 level_floor 取代) 列表选中 / 聚焦 / 悬停行上的字不低于 4.5(同徽标, 字不换边)'),
-    'badge_text': (False, 'clear', 'gen_vscode.quiet_badges', '(被 level_floor 取代) 徽标上的字不低于 4.5: 字不换边, 先推字再微调底色(ΔE <= 15), 不够才换字色'),
-    'button_text': (False, 'clear', 'gen_vscode.quiet_buttons', '(被 level_floor 取代) 按钮上的字不低于 4.5: 同徽标, 保留原按钮样式'),
-    'ignored_floor': (False, 'clear', 'gen_vscode.quiet_lists_and_borders', '(被 level_floor 取代) 被忽略文件的字低于 3.0 时提上来'),
-    'focus_floor': (False, 'clear', 'gen_vscode.quiet_controls', '(被 level_floor 取代) 焦点描边不低于 3.0; 半透明的先加不透明度, 不压彩度'),
-    'placeholder_floor': (False, 'clear', 'gen_vscode.quiet_controls', '(被 level_floor 取代) 输入框占位字不低于 2.8'),
-    'control_text': (False, 'clear', 'gen_vscode.quiet_controls', '(被 level_floor 取代) 输入框 / 下拉框里的字不低于 4.5'),
-    'graph_labels': (False, 'clear', 'gen_vscode.graph_labels', '(被 level_floor 取代) 源代码管理图的分支标签字可读'),
     # ---- 刺眼: 第一目标是还原原主题色彩, 除 white_cap 外默认关(逐项实测见 TODO.md) ----
     'white_cap': (True, 'glare', 'themes.adapt / gen_vscode.white_cap', '深色主题里近纯白(#FFF 这类, OKLCH 明度 >= 0.95 且彩度 <= 0.04)的正文, 界面字 / 图标 / 线, 语法色与终端白压到明度 0.88, 色相不变; 用户定: 只有这一类按刺眼处理'),
     'text_cap': (False, 'glare', 'themes.adapt', '正文对比度高于目标时压下来'),

@@ -16,7 +16,7 @@ from colorlib import (WHITE_C, WHITE_L, Rgb, unwhite, amber, blend, cr, de2000, 
 import levels, pool, separate
 from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
 from comfort import (BADGE_MAX_CR, BRIGHT_TINT_L, BRIGHT_TINT_SAT, BADGE_PAIRS, BADGE_TEXT_MIN, BORDER_KEYS, BORDER_MAX_CR, CONTROL_BORDER_KEYS, CONTROL_BORDER_MAX_CR,
-                     CONTROL_TEXT_MIN, CONTROL_TEXT_PAIRS, FOCUS_KEYS, FOCUS_MAX, FOCUS_MIN_CR, GRAY_CHROMA, TINT_KEYS, TINTED_BG_CHROMA, PLACEHOLDER_CR, PLACEHOLDER_KEY, PLACEHOLDER_MAX_CHROMA,
+                     FOCUS_KEYS, FOCUS_MAX, GRAY_CHROMA, TINT_KEYS, TINTED_BG_CHROMA, PLACEHOLDER_CR, PLACEHOLDER_KEY, PLACEHOLDER_MAX_CHROMA,
                      HIGHLIGHT_KEYS, HIGHLIGHT_MAX_CR, INPUT_SELECTION_TEXT, SELECTION_VISIBLE, input_selection,
                      HIGHLIGHT_TEXT_MIN, LIGHT_PANEL_MAX, PANEL_KEYS,
                      PANEL_MAX_CHROMA, PANEL_MAX_CR, STATUS_GROUPS, UI_TEXT_MAX, UI_TEXT_SKIP, own_background)
@@ -483,33 +483,6 @@ def selections(colors: dict, t: dict) -> None:
             colors[k] = hx(most)
 
 
-# 列表(文件树, 问题面板等)选中 / 聚焦 / 悬停行上的字与其行底; 字未定义时 VS Code 用 foreground
-LIST_TEXT_PAIRS = [('list.activeSelectionForeground', 'list.activeSelectionBackground'),
-                   ('list.inactiveSelectionForeground', 'list.inactiveSelectionBackground'),
-                   ('list.focusForeground', 'list.focusBackground'), ('list.hoverForeground', 'list.hoverBackground')]
-
-
-def list_selection_text(colors: dict, t: dict) -> None:
-    """列表选中行上的字不低于 4.5: 字不换边, 先往原方向推(白字更白), 不够再微调行底(见 nudge); 都不行才换字色."""
-    bg = t['bg']
-    for fk, bk in LIST_TEXT_PAIRS:
-        under = opaque(colors, bk, bg)
-        text = opaque(colors, fk, under) if under is not None and fk in colors else None
-        if under is None:
-            continue
-        text = text or opaque(colors, 'foreground', under) or t['fg']
-        if cr(text, under) >= 4.5:
-            continue
-        n = nudge(under, text, 4.5)
-        if n is not None:
-            if n[0] != under:
-                colors[bk] = hx(n[0])
-            colors[fk] = hx(n[1])
-        else:
-            side = max((t['fg'], bg), key=lambda x: cr(x, under))
-            colors[fk] = hx(tune(hx(side), under, 1.0, 4.55))
-
-
 def calm(colors: dict, t: dict) -> None:
     # 面板底色不成亮块, 高亮底色不刺眼且压在上面的正文可读; 口径与 comfort.py 的防疲劳规则一致
     bg, fg = t['bg'], t['fg']
@@ -635,13 +608,8 @@ def find_order(colors: dict, t: dict) -> None:
         colors[keys[1]] = hx(o)
 
 
-# 徽标的生成目标比门禁(BADGE_MAX_CR 2.2, 字 >= 3.5)更安静: 低彩度的色点, 与编辑区底对比度 BADGE_SOFT_CR 以内, 字推到 BADGE_TEXT_GOAL;
-# 贴着门禁上限时浅色主题是一片粉彩色块, 上面的深色字只有 3.7, 深色主题的字只有 3.6
-BADGE_CHROMA, BADGE_SOFT_CR, BADGE_TEXT_GOAL = 0.07, 1.7, 4.5
-# 小块(按钮, 徽标)上的字不够读时先保留原样式: 字不换边(白字仍是白字), 先沿原方向推到更白 / 更黑, 不够再把底色沿远离字色的方向
-# 调明度(色相与饱和度不变), 如 One Light 蓝底白字 3.8 只把蓝色加深一点(ΔE 5); 底色要变 NUDGE_MAX_DE 以上才够时(一眼已是另一种颜色),
-# 多半是原主题配错了字色(如 Moka Light 蓝底红字 1.1, 要变 38), 才换字色. 15 以内的有各主题白字橙底的 Warning 徽标(12~14)
-NUDGE_MAX_DE = 15
+# 徽标的生成目标比门禁(BADGE_MAX_CR 2.2)更安静: 低彩度的色点, 与编辑区底对比度 BADGE_SOFT_CR 以内; 徽标上的字由 level_floor 按调整后的底色求
+BADGE_CHROMA, BADGE_SOFT_CR = 0.07, 1.7
 
 
 def away(c: Rgb, ref: Rgb, goal: float) -> Rgb:
@@ -655,63 +623,26 @@ def away(c: Rgb, ref: Rgb, goal: float) -> Rgb:
     return out
 
 
-def nudge(block: Rgb, text: Rgb, goal: float) -> tuple[Rgb, Rgb] | None:
-    """(底色, 字色): 字沿远离 block 的方向推(不换边), 仍不够时 block 沿远离字的方向调明度, 直到对比度 >= goal;
-    调到头仍不够, 或底色变化超过 NUDGE_MAX_DE 时返回 None."""
-    t = away(text, block, goal + 0.05)
-    c = away(block, t, goal + 0.05)
-    return (c, t) if cr(t, c) >= goal and de2000(block, c) <= NUDGE_MAX_DE else None
-
-
 def quiet_badges(colors: dict, t: dict) -> None:
-    # 徽标: 压到 BADGE_SOFT_CR 以内, 深色主题不成亮块, 浅色主题不成暗斑; 字取与徽标反差大的一侧(暗徽标配浅字, 亮徽标配深字), 推到可读
-    bg, dark = t['bg'], t['dark']
-    quiet, need_text = on('badge_quiet'), on('badge_text')
-    if not (quiet or need_text):
+    # 徽标: 压到 BADGE_SOFT_CR 以内, 深色主题不成亮块, 浅色主题不成暗斑
+    bg = t['bg']
+    if not on('badge_quiet'):
         return
-    for bk, fk in BADGE_PAIRS:
+    for bk, _ in BADGE_PAIRS:
         badge = opaque(colors, bk, bg)
         if badge is None:
             continue
-        if quiet:
-            L, C, H = oklch(badge)
-            if C > BADGE_CHROMA:
-                badge = from_oklch(L, BADGE_CHROMA, H)
-            if cr(badge, bg) > BADGE_SOFT_CR:
-                badge = toward_bg(badge, bg, BADGE_SOFT_CR)
-        else:
-            # 只管字可读: 原来的字已可读(或没定义字色)就不动
-            cur = opaque(colors, fk, badge)
-            if cur is None or cr(cur, badge) >= BADGE_TEXT_GOAL:
-                continue
-        if not need_text:
-            colors[bk] = hx(badge)
-            continue
-        if not quiet and (n := nudge(badge, cur, BADGE_TEXT_GOAL)) is not None:
-            colors[bk] = hx(n[0])
-            if n[1] != cur:
-                colors[fk] = hx(n[1])
-            continue
-        # 亮度 0.18 附近白字与黑字对徽标的对比度相等; 字从正文(深色主题浅字)或底色一侧起步, 不额外提亮或加黑
-        light = lum(badge) < 0.18
-        text = (t['fg'] if dark else t['bg']) if light else (t['bg'] if dark else t['fg'])
-        step = 0.004 if light else -0.004
-        # 先把徽标往远离字的方向调(深色主题即再压暗); 靠近编辑区底时最多到面板上限, 免得徽标看不出来
         L, C, H = oklch(badge)
-        toward = (-step > 0) == (oklch(bg)[0] > L)
-        while cr(text, badge) < BADGE_TEXT_GOAL + 0.03 and 0 < L - step < 1 and not (toward and cr(badge, bg) < PANEL_MAX_CR + 0.1):
-            L -= step
-            badge = from_oklch(L, C, H)
-        L, C, H = oklch(text)
-        while cr(text, badge) < BADGE_TEXT_GOAL + 0.03 and 0 < L + step < 1:
-            L += step
-            text = from_oklch(L, C, H)
-        colors[bk], colors[fk] = hx(badge), hx(text)
+        if C > BADGE_CHROMA:
+            badge = from_oklch(L, BADGE_CHROMA, H)
+        if cr(badge, bg) > BADGE_SOFT_CR:
+            badge = toward_bg(badge, bg, BADGE_SOFT_CR)
+        colors[bk] = hx(badge)
 
 
 def quiet_buttons(colors: dict, t: dict) -> None:
-    """按钮底: 彩度封顶 BUTTON_CHROMA, 明度从编辑区底向外推到 BUTTON_PAIRS 给的对比度(色相不变); 字从正文起步推到 4.5."""
-    bg, fg = t['bg'], t['fg']
+    """按钮底: 彩度封顶 BUTTON_CHROMA, 明度从编辑区底向外推到 BUTTON_PAIRS 给的对比度(色相不变); 按钮上的字由 level_floor 求."""
+    bg = t['bg']
     for key, target in BUTTON_PAIRS if on('button_quiet') else []:
         c = opaque(colors, key, bg)
         if c is None:
@@ -725,32 +656,6 @@ def quiet_buttons(colors: dict, t: dict) -> None:
             L += step
             b = from_oklch(L, C, H)
         colors[key] = hx(b)
-    # 半透明的按钮底按叠到编辑区底上的实际颜色算
-    under = opaque(colors, 'button.background', bg)
-    cur = under and opaque(colors, 'button.foreground', under)
-    if under and on('button_text') and not on('button_quiet') and cur is not None and cr(cur, under) < 4.5:
-        # 只管字可读时保留原按钮的样式(见 NUDGE_MAX_DE): 只调按钮底(连同悬停底)够用就不动字; 不够的换字色,
-        # 在正文与编辑区底两侧取对按钮底反差大的一侧(Pale Light 深紫底上原为深色字 2.6, 换浅色字)
-        if (n := nudge(under, cur, 4.5)) is not None:
-            colors['button.background'] = hx(n[0])
-            if n[1] != cur:
-                colors['button.foreground'] = hx(n[1])
-            hover = opaque(colors, 'button.hoverBackground', bg)
-            if hover is not None and cr(n[1], hover) < 4.5:
-                colors['button.hoverBackground'] = hx((nudge(hover, n[1], 4.5) or (hover,))[0])
-            return
-        side = max((fg, bg), key=lambda x: cr(x, under))
-        text = tune(hx(side), under, 1.0, 4.55)
-        colors['button.foreground'] = hx(text)
-        # 字推到纯白 / 纯黑仍不够时, 按钮底再往反方向挪一点补足
-        if cr(text, under) < 4.5:
-            colors['button.background'] = hx(fit(under, text, lo=4.55))
-        return
-    if under and on('button_text') and (on('button_quiet') or cur is None or cr(cur, under) < 4.5):
-        colors['button.foreground'] = hx(tune(hx(fg), under, 1.0, 4.55))
-
-
-IGNORED_MIN = 3.0
 
 
 def quiet_lists_and_borders(colors: dict, t: dict, m: 'Mapper') -> None:
@@ -780,12 +685,6 @@ def quiet_lists_and_borders(colors: dict, t: dict, m: 'Mapper') -> None:
                 colors[k] = hx(toward_bg(rgb, bg, BORDER_MAX_CR - 0.02))
     k = 'gitDecoration.ignoredResourceForeground'
     p = parse(colors.get(k))
-    if p and on('ignored_floor') and not on('ignored_dim'):
-        # 只在读不清(低于 IGNORED_MIN)时提上来, 色相与饱和度不变
-        under = opaque(colors, 'sideBar.background', bg) or bg
-        c = blend(p[0], under, int(p[1], 16) / 255) if p[1] else p[0]
-        if cr(c, under) < IGNORED_MIN:
-            colors[k] = hx(fit(c, under, lo=IGNORED_MIN + 0.02))
     if p and m.comment_cr and on('ignored_dim'):
         under = opaque(colors, 'sideBar.background', bg) or bg
         c = blend(p[0], under, int(p[1], 16) / 255) if p[1] else p[0]
@@ -854,7 +753,7 @@ def tint_grays(colors: dict, t: dict) -> None:
 
 def quiet_controls(colors: dict, t: dict) -> None:
     # 输入框 / 下拉框(问题面板与输出面板的筛选框, 输出通道下拉框等): 描边去彩度并压到 CONTROL_BORDER_MAX_CR, 焦点描边不超过 正文 x FOCUS_MAX;
-    # 占位提示字落到 PLACEHOLDER_CR(注释口径, 比输入的字淡), 输入的字至少 CONTROL_TEXT_MIN; 口径见 comfort.control_issues
+    # 占位提示字不超过 PLACEHOLDER_CR 上限(注释口径, 比输入的字淡); 太淡的焦点描边 / 占位字 / 输入的字由 level_floor 提; 口径见 comfort.control_issues
     bg, fg = t['bg'], t['fg']
     inp = opaque(colors, 'input.background', bg) or bg
     quiet = on('control_quiet')
@@ -864,56 +763,17 @@ def quiet_controls(colors: dict, t: dict) -> None:
             L, C, H = oklch(p[0])
             colors[k] = hx(from_oklch(L, PANEL_MAX_CHROMA, H)) + p[1]
         cap_cr(colors, k, bg, CONTROL_BORDER_MAX_CR)
-    for k in FOCUS_KEYS:
-        if quiet:
-            cap_cr(colors, k, bg, cr(fg, bg) * FOCUS_MAX)
-        if not on('focus_floor'):
-            continue
-        # 太淡时提到 FOCUS_MIN_CR(半透明色先叠成不透明), 色相不变: 否则聚焦的输入框反而比未聚焦的描边更暗(如 Owl / Pale 的焦点描边 1.0)
-        c = opaque(colors, k, bg)
-        if c is not None and cr(c, bg) < FOCUS_MIN_CR:
-            rgb, alpha = parse(colors[k])
-            a = int(alpha, 16) / 255 if alpha else 1.0
-            while a < 1 and cr(blend(rgb, bg, a), bg) < FOCUS_MIN_CR:
-                a = min(1.0, a + 0.02)
-            ok = cr(blend(rgb, bg, a), bg) >= FOCUS_MIN_CR
-            colors[k] = hx(rgb) + '%02X' % round(a * 255) if alpha and ok else hx(fit(c, bg, lo=FOCUS_MIN_CR + 0.02))
+    for k in FOCUS_KEYS if quiet else []:
+        cap_cr(colors, k, bg, cr(fg, bg) * FOCUS_MAX)
     ph = opaque(colors, PLACEHOLDER_KEY, inp)
-    if ph is not None:
-        lo, hi = PLACEHOLDER_CR
+    if ph is not None and on('placeholder_quiet'):
+        hi = PLACEHOLDER_CR[1]
         L, C, H = oklch(ph)
-        if on('placeholder_quiet') and C > PLACEHOLDER_MAX_CHROMA:
+        if C > PLACEHOLDER_MAX_CHROMA:
             ph = from_oklch(L, PLACEHOLDER_MAX_CHROMA - 0.002, H)
             colors[PLACEHOLDER_KEY] = hx(ph)
-        if on('placeholder_quiet') and cr(ph, inp) > hi:
+        if cr(ph, inp) > hi:
             colors[PLACEHOLDER_KEY] = hx(toward_bg(ph, inp, hi - 0.02))
-        elif on('placeholder_floor') and cr(ph, inp) < lo:
-            colors[PLACEHOLDER_KEY] = hx(tune(hx(ph), inp, 1.0, lo + 0.02))
-    for fk, bk in CONTROL_TEXT_PAIRS if on('control_text') else []:
-        under = opaque(colors, bk, bg) or bg
-        c = opaque(colors, fk, under)
-        if c is not None and cr(c, under) < CONTROL_TEXT_MIN:
-            colors[fk] = hx(tune(hx(c), under, 1.0, CONTROL_TEXT_MIN + 0.02))
-
-
-# 源代码管理 Graph 视图的分支标签: 字是 historyItemHoverLabelForeground(默认取面板底), 底是各 ref 色(默认取 charts.blue / charts.purple)
-GRAPH_LABEL_TEXT = 'scmGraph.historyItemHoverLabelForeground'
-GRAPH_REF_KEYS = [('scmGraph.historyItemRefColor', 'charts.blue', 'editorInfo.foreground'),
-                  ('scmGraph.historyItemRemoteRefColor', 'charts.purple'), ('scmGraph.historyItemBaseRefColor',)]
-GRAPH_LABEL_MIN = 4.5
-
-
-def graph_labels(colors: dict, t: dict) -> None:
-    # 标签字回到 VS Code 的默认取色(面板底); 原主题沿用的浅灰字落在 ref 色块上几乎看不清, 如 One Dark Pro 的 #B1B1B1 字压在蓝底上.
-    # ref 色与字不够 GRAPH_LABEL_MIN 时沿远离字色的方向推明度, 色相不变
-    if not on('graph_labels'):
-        return
-    colors.pop(GRAPH_LABEL_TEXT, None)
-    bg = opaque(colors, 'panel.background', t['bg']) or t['bg']
-    for chain in GRAPH_REF_KEYS:
-        ref = next((opaque(colors, k, bg) for k in chain if colors.get(k)), None)
-        if ref is not None and cr(ref, bg) < GRAPH_LABEL_MIN:
-            colors[chain[0]] = hx(fit(ref, bg, lo=GRAPH_LABEL_MIN))
 
 
 def white_cap(colors: dict) -> None:
@@ -971,20 +831,6 @@ def transform(t: dict, src: dict) -> dict:
             if c is not None and cr(c, tbg) < LEGIBLE + TERM_MARGIN:
                 colors[k] = hx(fit(c, tbg, lo=LEGIBLE + TERM_MARGIN))
 
-    # 映射后仍可能有界面文字对比度不足(底色变了, 或原主题本身就偏淡), 逐对推到下限
-    for fg_key, bg_key, need in UI_PAIRS if on('ui_text_floor') else []:
-        under = opaque(colors, bg_key, t['bg']) or t['bg']
-        fg = opaque(colors, fg_key, under)
-        if fg is not None and cr(fg, under) < need:
-            # 半透明的字先加不透明度, 够了就保留原色与透明度写法
-            rgb, alpha = parse(colors[fg_key])
-            a = int(alpha, 16) / 255 if alpha else 1.0
-            while a < 1 and cr(blend(rgb, under, a), under) < need:
-                a = min(1.0, a + 0.02)
-            if alpha and cr(blend(rgb, under, a), under) >= need:
-                colors[fg_key] = hx(rgb) + '%02X' % round(a * 255)
-            else:
-                colors[fg_key] = hx(tune(hx(fg), under, 1.0, need))
     line_no = opaque(colors, 'editorLineNumber.foreground', t['bg'])
     if on('line_no_cap') and line_no is not None and cr(line_no, t['bg']) > LINE_NO_MAX:
         colors['editorLineNumber.foreground'] = hx(toward_bg(line_no, t['bg'], LINE_NO_MAX))
@@ -997,15 +843,12 @@ def transform(t: dict, src: dict) -> dict:
     quiet_ui_text(colors, t)
     quiet_controls(colors, t)
     tint_grays(colors, t)
-    graph_labels(colors, t)
     if on('white_cap') and t['dark']:
         white_cap(colors)
-    # 分层门槛: 取代 ui_text_floor / badge_text / button_text 等旧的逐对下限; 放在选区之前, 选区按调整后的输入框字色求
+    # 分层门槛: 界面文字, 徽标 / 按钮 / 列表选中行上的字, 焦点描边, 占位字等的下限; 放在选区之前, 选区按调整后的输入框字色求
     if on('level_floor'):
         levels.fix(colors, t, (WHITE_L - 0.01, WHITE_C) if on('white_cap') and t['dark'] else None)
     # 输入框底色与文字在前面几步还会调整, 选区放到它们之后求
-    if on('list_selection_text'):
-        list_selection_text(colors, t)
     if on('selections'):
         selections(colors, t)
     comfortable(colors, t)
