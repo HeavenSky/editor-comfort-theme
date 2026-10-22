@@ -29,6 +29,15 @@ This page gets the matching colors into macOS Terminal.app. You need macOS; the 
 | C Pale Dark     | [`pale-dark.terminal`](../assets/terminal/pale-dark.terminal)         |
 | C Pale Light    | [`pale-light.terminal`](../assets/terminal/pale-light.terminal)       |
 
+## What a profile changes
+
+A profile changes only how the window looks; keyboard and shell behavior stay at Terminal.app's defaults.
+
+- Colors: background, text, bold text, cursor, selection and the 16 ANSI colors come from the theme. Bold text keeps its color instead of switching to the bright variant.
+- Window: 120 × 30 with a blinking vertical-bar cursor, and the title bar shows neither the profile name nor the window size. Closing a window never asks for confirmation.
+- Font: the profiles are built with Maple Mono NF CN at 12 pt. To use another font, change it under Settings → Profiles → Text.
+- Option does not act as Meta. To turn that on, select **Use Option as Meta key** under Settings → Profiles → Keyboard.
+
 ## Fix a duplicate profile named `<name> 1`
 
 - Symptom: after importing, Settings → Profiles shows both `C One Dark` and `C One Dark 1`.

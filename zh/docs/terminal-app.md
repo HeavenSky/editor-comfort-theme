@@ -29,6 +29,15 @@
 | C Pale Dark     | [`pale-dark.terminal`](../../assets/terminal/pale-dark.terminal)         |
 | C Pale Light    | [`pale-light.terminal`](../../assets/terminal/pale-light.terminal)       |
 
+## 配置改了什么
+
+配置只改窗口的外观，按键和 shell 的行为沿用 Terminal.app 的默认值。
+
+- 颜色：底色、文字、粗体文字、光标、选区和 16 个 ANSI 色都取自主题。粗体文字保持原色，不换成亮色。
+- 窗口：120 × 30，光标是闪烁的竖线，标题栏不显示配置名和窗口尺寸。关闭窗口时不再询问。
+- 字体：配置按 12 号 Maple Mono NF CN 生成。想换字体，在「设置」→「描述文件」→「文本」里改。
+- Option 键不当作 Meta 键。需要的话，在「设置」→「描述文件」→「键盘」里勾选「将 Option 键用作 Meta 键」。
+
 ## 出现名为 `<name> 1` 的重复配置
 
 - 症状：导入后，「设置」→「描述文件」里同时出现 `C One Dark` 和 `C One Dark 1`。

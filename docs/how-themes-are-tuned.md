@@ -16,6 +16,7 @@ Every theme starts as the original theme exactly as published. The three new lig
 - Syntax rules come from a pool merged from all original themes and are added only for scopes the original leaves uncolored.
 - Some pool rules would recolor, through an outer scope, a token the original already colors. The build finds them by tokenizing sample files and skips them.
 - Bracket pair colors 1–3 use the theme's own colors; 4–6 stay unset, as in VS Code.
+- Terminal colors the original leaves unset come from its own syntax colors, one per color slot (red, green, yellow and so on), so C One Light's terminal yellow is its gold `#986801`. An unset terminal background follows the panel background, as VS Code does for the terminal in the panel.
 
 ## Fix only what is hard to read
 
