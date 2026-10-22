@@ -4,22 +4,24 @@
 # 补全段: 原主题 assets/source/<name>.json -> 中间主题 assets/full-theme/<name>-full.json(同 jq . 的格式), 是调色链的输入, 也是全关时的产物.
 # 只做格式规范与完整性补全, 不改原主题已有的颜色与规则:
 #   1. 格式: 颜色统一成大写 #RRGGBB(AA); 非 hex 的语法前景(如 inherit)VS Code 不认, 丢掉; schema 清理(gen_vscode.conform)
-#   2. 界面颜色键: 编辑区 / 终端的底色, 前景, 光标, 输入框选区缺了就补; VS Code 硬编码默认色的键按原主题终端色(没有终端色的按语法色)同色相补
+#   2. 界面颜色键: 编辑区 / 终端的底色, 前景, 光标, 输入框选区缺了就补; 终端 6 彩色与亮色缺了按色槽取原主题的语法色补(fill_terminal);
+#      VS Code 硬编码默认色的键按终端色同色相补
 #   3. 语法规则: 按 assets/pool/full-rule.json 严格增量补 —— 原主题规则原样保留, 池里的选择器只在原主题解析不出颜色时补, 补的规则放最前;
 #      full-rule.json 的 skip 记各主题经分词实测会改掉原主题已上色 token 的池选择器(外层上色, 内层被补), 不补
 #   4. 语义色原样保留
 # 中间主题都不进版本库(assets/full-theme/ 整个忽略); 补全段的漂移由 gen_vscode.py --check 核对 themes/ 生成物暴露.
 # 用法: uv run tools/gen/complete.py   写出全部中间主题
 #       uv run tools/gen/complete.py --guard   用 tools/textmate/pool-guard.mjs 对 tools/samples 分词实测, 重算 full-rule.json 的 skip(npm run pool:update 的最后一步)
-import json, os, subprocess, sys
+import itertools, json, os, subprocess, sys
 
 # 补全复用 gen_vscode 的映射与补色函数, 但一律在全关下运行: 不让任何调色步骤混进补全段
 os.environ['COMFORT_STEPS'] = 'none'
 sys.dont_write_bytecode = True
 sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d) for d in ('lib', 'gen', 'check', 'lab')]
-from colorlib import h, hx, oklch
-from gen_vscode import (ANSI, BRACKET_FALLBACK, FULL, NEUTRAL_CHROMA, REGISTRY, SOURCES, Mapper, conform, fill_hardcoded, load, parse, resolve,
-                        source_fg, status_apart)
+from colorlib import from_oklch, h, hx, oklch
+from comfort import TERM_COLORS, TERM_HUES, _deg, _in_hue
+from gen_vscode import (ANSI, BRACKET_FALLBACK, FULL, NEUTRAL_CHROMA, REGISTRY, SOURCES, Mapper, conform, fill_hardcoded, hardcoded_keys, load, parse,
+                        resolve, source_fg, status_apart)
 import pool
 
 FULL_RULE = os.path.join(SOURCES, '..', 'pool', 'full-rule.json')
@@ -61,6 +63,40 @@ def pool_rules(name: str, rules: list, colors: dict, fg: str, guard: bool = True
     return out
 
 
+def fill_terminal(colors: dict, rules: list, dark: bool) -> None:
+    """原主题没定义的终端 6 彩色按色槽(comfort.TERM_HUES)取原主题的彩色语法色: 每槽取色相落在槽内, 离槽中心最近且不与别的槽重复的;
+    槽里没有就用 VS Code 默认色. 没定义的亮色: 深色主题按 VS Code 默认 普通色 -> 亮色 的明度差平移, 色相与彩度不变; 浅色主题与普通色相同
+    (默认亮色更浅, 在浅底上反而更淡, 再被终端下限压回来时彩度会走样, 如 One Light 亮红成了 #E9010E). 黑白灰由 fill_hardcoded 补.
+    不按色相就近套 VS Code 默认色: 浅色默认的黄是偏绿的橄榄色, 就近会取到绿色(原 One Light 绿黄同色)."""
+    reg = hardcoded_keys(dark)
+    key = lambda n: f'terminal.ansi{n}'
+    missing = [n for n in TERM_COLORS if key(n) not in colors]
+    if missing:
+        have = {hx(parse(colors[key(n)])[0]) for n in TERM_COLORS if key(n) in colors}
+        syn = {hx(parse(c)[0]) for r in pool.ROLES if (c := pool.role_value(rules, r, None)) and parse(c)}
+        syn = sorted(c for c in syn if oklch(h(c))[1] > NEUTRAL_CHROMA and c not in have)
+
+        def gap(c: str, n: str) -> float:
+            lo, hi = TERM_HUES[n]
+            mid = (lo + ((hi - lo) % 360) / 2) % 360
+            return abs((_deg(h(c)) - mid + 180) % 360 - 180)
+
+        opts = [[c for c in syn if _in_hue(_deg(h(c)), TERM_HUES[n])] + [None] for n in missing]
+        best = min((p for p in itertools.product(*opts) if len({c for c in p if c}) == len([c for c in p if c])),
+                   key=lambda p: sum(gap(c, n) if c else 180 for c, n in zip(p, missing)))
+        for n, c in zip(missing, best):
+            colors[key(n)] = c or norm(reg[key(n)])
+    for n in TERM_COLORS:
+        if key('Bright' + n) in colors:
+            continue
+        if not dark:
+            colors[key('Bright' + n)] = colors[key(n)]
+            continue
+        L, C, H = oklch(parse(colors[key(n)])[0])
+        dl = oklch(parse(reg[key('Bright' + n)])[0])[0] - oklch(parse(reg[key(n)])[0])[0]
+        colors[key('Bright' + n)] = hx(from_oklch(min(1.0, max(0.0, L + dl)), C, H))
+
+
 def complete(name: str, dark: bool, guard: bool = True) -> dict:
     src = load(os.path.join(SOURCES, f'{name}.json'))
     reg = json.load(open(REGISTRY, encoding='utf-8'))['colors']
@@ -84,15 +120,13 @@ def complete(name: str, dark: bool, guard: bool = True) -> dict:
                     ('terminalCursor.foreground', 'editorCursor.foreground'), ('selection.background', 'editor.selectionBackground')):
         if k not in colors and base in colors:
             colors[k] = colors[base]
+    # 终端彩色先补齐: 它们也是下面补界面色的色源(VS Code 硬编码默认色的键按同色相的终端色补)
+    fill_terminal(colors, rules, dark)
     bg = parse(colors['editor.background'])[0]
     t = dict(name=name, dark=dark, bg=bg, fg=h(fg), cap=1.0, token_min=0.0, comment_cr=None, syntax_max=None,
              ansi={n: parse(colors[f'terminal.ansi{n}'])[0] for n in ANSI if f'terminal.ansi{n}' in colors})
     t['ui_ansi'] = {n: t['ansi'].get(n, t['fg']) for n in ANSI}
     m = Mapper(t, {'colors': colors, 'tokenColors': rules})
-    # 补色的色源: 原主题的终端彩色; 没有终端色时取原主题的彩色语法色
-    if not all(f'terminal.ansi{n}' in colors for n in ANSI[1:7]):
-        syn = {parse(c)[0] for r in pool.ROLES if (c := pool.role_value(rules, r, None)) and parse(c)}
-        m.hues = [(oklch(c)[2], c) for c in syn if oklch(c)[1] > NEUTRAL_CHROMA] or m.hues
     if 'editorBracketHighlight.foreground1' not in colors:
         for i, scope in enumerate(BRACKET_FALLBACK, 1):
             colors[f'editorBracketHighlight.foreground{i}'] = norm(resolve(rules, scope) or fg)

@@ -10,6 +10,10 @@
 - 彩色徽标、按钮和状态栏上的字必须由浅转深（或反过来）时，改用本主题的编辑区底色或正文色，不再用中性灰，读起来更清楚：C Dracula Dark 粉色徽标上的字变为 `#282A36`（对比度 6.1，原为 3.1）（[详见](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/zh/docs/how-themes-are-tuned.md#只修看不清的地方)）。
 - Terminal.app 配置只设颜色、字体、光标和 120 × 30 的窗口，标题栏不再显示配置名和窗口尺寸。按键和 shell 退出后的行为沿用 Terminal.app 的默认值，Option 键不再当作 Meta 键；想保留的话，在“终端 → 设置 → 描述文件 → 键盘”里勾选“将 Option 键用作 Meta 键”。重新导入配置后生效（[导入配置](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/zh/docs/terminal-app.md#导入配置)）。
 
+### 修复
+
+- C One Light 的终端黄不再和终端绿是同一种绿色：改用 One Light 自己的金棕色 `#986801`，git 已修改标记和类图标也随之一致。
+
 ## v0.0.4 2026-10-16
 
 ### 破坏性变更

@@ -10,6 +10,10 @@
 - Text on colored badges, buttons and status bars that has to flip from light to dark, or the reverse, now uses the theme's editor background or body text color instead of a neutral gray, and reads better: C Dracula Dark's pink badge now has `#282A36` text (contrast 6.1, was 3.1) ([details](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/how-themes-are-tuned.md#fix-only-what-is-hard-to-read)).
 - Terminal.app profiles now set only colors, font, cursor and a 120 × 30 window, and the title bar no longer shows the profile name or window size. Keyboard and shell-exit behavior follow Terminal.app's defaults, so Option no longer acts as Meta; to keep it, turn on **Use Option as Meta key** under Terminal → Settings → Profiles → Keyboard. Import the profiles again to get the change ([import a profile](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/terminal-app.md#import-a-profile)).
 
+### Fixed
+
+- C One Light's terminal yellow is no longer the same green as its terminal green: it now uses One Light's own gold `#986801`, and the git modified marker and class icons follow it.
+
 ## v0.0.4 2026-10-16
 
 ### Breaking
