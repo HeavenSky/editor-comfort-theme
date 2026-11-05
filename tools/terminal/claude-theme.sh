@@ -59,7 +59,7 @@ if { exec 3<>/dev/tty; } 2>/dev/null; then
   restore() {
     trap - EXIT INT TERM HUP
     stty "$old" <&3 2>/dev/null
-    exec 3>&- 2>/dev/null
+    exec 3>&-
   }
   trap restore EXIT INT TERM HUP
   bg=$(q 11)

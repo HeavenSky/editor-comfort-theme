@@ -419,21 +419,26 @@ const BACKUP = path.join(os.homedir(), ".cache", "editor-comfort-shoot-theme-bac
 const saveBackup = saved =>
 	fs.writeFileSync(
 		BACKUP,
-		JSON.stringify(
-			Object.fromEntries(Object.entries(saved).map(([f, b]) => [f, b.toString("base64")]))
-		)
+		JSON.stringify({
+			repo: REPO,
+			themes: Object.fromEntries(Object.entries(saved).map(([f, b]) => [f, b.toString("base64")])),
+		}),
+		{ flag: "wx" }
 	);
 const loadBackup = () => {
+	let backup;
 	try {
-		return Object.fromEntries(
-			Object.entries(JSON.parse(fs.readFileSync(BACKUP, "utf8"))).map(([f, v]) => [
-				f,
-				Buffer.from(v, "base64"),
-			])
-		);
-	} catch {
-		return null;
+		backup = JSON.parse(fs.readFileSync(BACKUP, "utf8"));
+	} catch (e) {
+		if (e.code === "ENOENT") return null;
+		throw e;
 	}
+	if (backup.repo !== REPO) {
+		throw new Error(`主题备份不属于当前仓库或为未记录仓库的旧格式, 请先核对并手动恢复: ${BACKUP}`);
+	}
+	return Object.fromEntries(
+		Object.entries(backup.themes).map(([f, v]) => [f, Buffer.from(v, "base64")])
+	);
 };
 const clearBackup = () => fs.rmSync(BACKUP, { force: true });
 const restoreThemes = saved => {
@@ -504,6 +509,8 @@ for f in sys.argv[1:]:
 }
 
 async function runJob(s, job, log) {
+	// 仅持锁的执行进程进入这里; 上次还原失败时先恢复, 不能用残留的对比主题覆盖备份.
+	recoverBackup();
 	const themes = themeList(job.filter || []);
 	const sets = job.sets.map(x => ({
 		...x,
@@ -555,7 +562,7 @@ async function runJob(s, job, log) {
 			restoreThemes(saved);
 			if (overlaid) clearBackup();
 		} catch (e) {
-			log(`themes/ 的原主题文件还原失败: ${e.message}(磁盘备份在 ${BACKUP})`);
+			throw new Error(`themes/ 的原主题文件还原失败: ${e.message}(磁盘备份在 ${BACKUP})`, { cause: e });
 		}
 	}
 	s.warm = true;
@@ -617,6 +624,7 @@ async function serve() {
 		console.error(`另一个截图进程正在运行(pid ${holder}), 不再启动常驻`);
 		process.exit(1);
 	}
+	recoverBackup();
 	const s = await launch();
 	let closing = false;
 	let current = null; // 正在运行的任务; 退出前等它的 finally 把 themes/ 还原完
@@ -684,7 +692,6 @@ async function serve() {
 }
 
 const args = process.argv.slice(2);
-recoverBackup();
 if (args.includes("--serve")) {
 	await serve();
 } else {
@@ -720,6 +727,7 @@ if (args.includes("--serve")) {
 		);
 		process.exit(1);
 	}
+	recoverBackup();
 	const s = await launch();
 	let code = 0;
 	try {
