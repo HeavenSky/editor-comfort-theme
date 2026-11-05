@@ -32,7 +32,7 @@ Every theme starts as the original theme exactly as published. The three new lig
 | Body text on selections, find matches and other highlights | 3.5     |
 
 - Editor and input selections are made visible, starting from the original selection color and changing only what is needed.
-- The terminal selection is recomputed from the theme's terminal blue when the original one is barely visible or the text on it is hard to read.
+- In VS Code, the terminal selection starts from the original theme's terminal selection color, falling back to its editor selection color when unset. Visibility and text readability are checked against the terminal's own background and text colors; only when those checks fail is the selection recomputed from the theme's terminal blue. Terminal.app selections are checked separately against the profile's background and text colors.
 - The current find match stands out more than the other matches.
 - UI text and lines are raised until they read well next to the theme's body text. Each UI color falls into one of four tiers: content (sidebar text, text on badges and buttons), dimmed (line numbers, input placeholders), line (borders, focus outlines) and background (selected rows). Each tier's minimum is set relative to the contrast of the theme's own body text and calibrated on eight UI reference themes.
 - Translucent colors first gain opacity; after that, only their lightness changes.

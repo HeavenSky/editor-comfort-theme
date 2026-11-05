@@ -421,7 +421,9 @@ const saveBackup = saved =>
 		BACKUP,
 		JSON.stringify({
 			repo: REPO,
-			themes: Object.fromEntries(Object.entries(saved).map(([f, b]) => [f, b.toString("base64")])),
+			themes: Object.fromEntries(
+				Object.entries(saved).map(([f, b]) => [f, b.toString("base64")])
+			),
 		}),
 		{ flag: "wx" }
 	);
@@ -434,7 +436,9 @@ const loadBackup = () => {
 		throw e;
 	}
 	if (backup.repo !== REPO) {
-		throw new Error(`主题备份不属于当前仓库或为未记录仓库的旧格式, 请先核对并手动恢复: ${BACKUP}`);
+		throw new Error(
+			`主题备份不属于当前仓库或为未记录仓库的旧格式, 请先核对并手动恢复: ${BACKUP}`
+		);
 	}
 	return Object.fromEntries(
 		Object.entries(backup.themes).map(([f, v]) => [f, Buffer.from(v, "base64")])
@@ -529,6 +533,7 @@ async function runJob(s, job, log) {
 	jobSettings = job.settings || {};
 	const stopGuard = guardFront();
 	const t0 = Date.now();
+	let failure = null;
 	try {
 		for (const x of sets) fs.mkdirSync(x.dir, { recursive: true });
 		for (const [tag, setup] of Object.entries(SCENES)) {
@@ -555,6 +560,8 @@ async function runJob(s, job, log) {
 				}
 			}
 		}
+	} catch (e) {
+		failure = e;
 	} finally {
 		jobSettings = {};
 		stopGuard();
@@ -562,9 +569,13 @@ async function runJob(s, job, log) {
 			restoreThemes(saved);
 			if (overlaid) clearBackup();
 		} catch (e) {
-			throw new Error(`themes/ 的原主题文件还原失败: ${e.message}(磁盘备份在 ${BACKUP})`, { cause: e });
+			failure = new AggregateError(
+				failure ? [failure, e] : [e],
+				`themes/ 的原主题文件还原失败: ${e.message}(磁盘备份在 ${BACKUP})`
+			);
 		}
 	}
+	if (failure) throw failure;
 	s.warm = true;
 	for (const x of sets) compress(x.dir, job.thumb, job.jpg);
 	log(

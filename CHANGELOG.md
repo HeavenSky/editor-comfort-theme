@@ -2,6 +2,12 @@
 
 **English** · [简体中文](./zh/CHANGELOG.md)
 
+## v0.0.6 2026-11-05
+
+### Fixed
+
+- Terminal selections in C Ayu Light, C GitHub Dark, C Owl Light and C Sunlit Light now use colors calculated against the terminal's own background and text, so their visibility and readability no longer depend on the editor's colors. The original theme's terminal selection color is kept when it already meets those requirements ([how selections are adjusted](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/docs/how-themes-are-tuned.md#fix-only-what-is-hard-to-read)).
+
 ## v0.0.5 2026-10-22
 
 ### Changed

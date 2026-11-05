@@ -2,6 +2,12 @@
 
 [English](../CHANGELOG.md) · **简体中文**
 
+## v0.0.6 2026-11-05
+
+### 修复
+
+- C Ayu Light、C GitHub Dark、C Owl Light 和 C Sunlit Light 的终端选区改为按终端自己的底色与字色求色，选区是否看得出、上面的字是否易读，不再由编辑区配色决定。原主题的终端选区色已经满足要求时保留原色（[选区怎样调整](https://github.com/HeavenSky/editor-comfort-theme/blob/HEAD/zh/docs/how-themes-are-tuned.md#只修看不清的地方)）。
+
 ## v0.0.5 2026-10-22
 
 ### 变更
