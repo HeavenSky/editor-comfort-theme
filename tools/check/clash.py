@@ -43,6 +43,12 @@ def source_roles(t: dict) -> dict:
     return roles
 
 
+def theme_roles(th: dict) -> dict:
+    """生成主题里各角色(pool.ROLES)的颜色: 按 ROLES 的 scope 链经选择器解析取值, 与 source_roles 同口径."""
+    fg = th['colors']['editor.foreground']
+    return {r: pool._rgb(pool.role_value(th['tokenColors'], r, fg)) for r in pool.ROLES}
+
+
 def apart(a: str, b: str) -> bool:
     """不同族, 且同属代码或同属 Markdown 文档(两个领域的角色不会同屏, 文档内部见 --markdown)."""
     ra, rb = a.split()[0], b.split()[0]
@@ -51,17 +57,18 @@ def apart(a: str, b: str) -> bool:
 
 def by_theme(only: list[str]) -> int:
     total = 0
+    matched = 0
     for t in build():
         if only and not any(o in t['name'] for o in only):
             continue
+        matched += 1
         th = json.load(open(theme_file(t['name']), encoding='utf-8'))
         sr = source_roles(t)
-        g = {r['name'][8:]: h(r['settings']['foreground'][1:7]) for r in th['tokenColors']
-             if r.get('name', '').startswith('Comfort ') and 'foreground' in r['settings']}
+        g = theme_roles(th)
         ks, out = sorted(g), []
         for i, a in enumerate(ks):
             for b in ks[i + 1:]:
-                sa, sb = sr.get(a.split()[0]), sr.get(b.split()[0])
+                sa, sb = sr.get(a), sr.get(b)
                 if not (apart(a, b) and sa and sb):
                     continue
                 d, d0 = de2000(g[a], g[b]), de2000(sa, sb)
@@ -69,6 +76,9 @@ def by_theme(only: list[str]) -> int:
                     out.append(f'{a}~{b} {d0:.0f}->{d:.1f}')
         total += len(out)
         print(f"{t['name']:13} {len(out):3}  {'; '.join(out)}")
+    if not matched:
+        print(f'没有匹配的主题: {only}' if only else '主题列表为空')
+        return 2
     print(f'\n调色带来的新撞色共 {total} 对(生成后 ΔE < {CLASH}, 原主题 ΔE >= {APART})')
     return 0
 
@@ -117,22 +127,30 @@ def by_grammar(ext: str) -> int:
     if not grammars:
         print(f'没找到语法文件: {ext}')
         return 2
+    # 规则池的选择器 -> 角色(full-rule.json): 命中的规则按它落到角色上; 跟随外层的角色不在池里, 跳过
+    sel_role = json.load(open(pool.FULL_RULE, encoding='utf-8'))['rules']
     themes = {t['name']: (json.load(open(theme_file(t['name']), encoding='utf-8')), source_roles(t)) for t in build()}
     report = defaultdict(lambda: defaultdict(set))
+    checked = 0
     for gname, scs in grammars.items():
         for tname, (th, sr) in themes.items():
             resolve = resolver(th)
             colors = {}
             for sc in scs:
                 b = resolve(sc)
-                if b and b[2].startswith('Comfort '):
-                    colors[b[2][8:]] = b[3]
+                role = b and sel_role.get(b[0])
+                if role:
+                    colors[role] = b[3]
+                    checked += 1
             ks = sorted(colors)
             for i, a in enumerate(ks):
                 for b in ks[i + 1:]:
-                    sa, sb = sr.get(a.split()[0]), sr.get(b.split()[0])
+                    sa, sb = sr.get(a), sr.get(b)
                     if apart(a, b) and sa and sb and de2000(h(colors[a][1:7]), h(colors[b][1:7])) < CLASH and de2000(sa, sb) >= APART:
                         report[(a, b)][tname].add(gname)
+    if not checked:
+        print('没有任何 scope 解析到规则池里的角色; 检查规则池与选择器映射是否匹配')
+        return 2
     print(f'{len(grammars)} 个语法文件; 调色带来的新撞色(角色对: 主题 x 涉及语法数):')
     for (a, b), per in sorted(report.items(), key=lambda x: -sum(len(v) for v in x[1].values())):
         print(f"  {a} ~ {b}: " + ', '.join(f'{t} {len(g)}' for t, g in sorted(per.items())))

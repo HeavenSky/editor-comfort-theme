@@ -70,6 +70,11 @@ def fingerprint(rules: list) -> str:
     return hashlib.sha1(json.dumps(selectors(rules)).encode()).hexdigest()[:16]
 
 
+def file_digest(path: str) -> str:
+    """案例文件的内容摘要: 改了已有案例的内容而不更名时, 命中表据此失效."""
+    return hashlib.sha1(open(path, 'rb').read()).hexdigest()[:16]
+
+
 _std = None
 
 
@@ -164,9 +169,13 @@ def fix(rules: list, src: dict, t: dict, comment_rule) -> list:
     entry = H['themes'].get(name)
     if entry is None or entry['fingerprint'] != fingerprint(src.get('tokenColors', [])):
         raise SystemExit(f'{name}: 语法层次命中表与中间主题不符, 先运行 uv run tools/gen/separate.py --update')
-    # 命中表的 token 下标按案例集的顺序记; 案例集增删或调序后旧表会错位
-    if H['files'] != [os.path.relpath(f, ROOT) for f in corpus_files()]:
-        raise SystemExit(f'{name}: 语法层次命中表与案例集(assets/layers/cases.json)不符, 先运行 uv run tools/gen/separate.py --update')
+    # 命中表的 token 下标按案例集的顺序记; 案例集增删, 调序或改动已有案例内容后旧表会错位
+    if H['files'] != [os.path.relpath(f, ROOT) for f in corpus_files()] or H.get('case_digests') != [file_digest(f) for f in corpus_files()]:
+        raise SystemExit(f'{name}: 语法层次命中表与案例集(assets/layers/cases.json)的清单或内容不符, 先运行 uv run tools/gen/separate.py --update')
+    # 各主题的 hits 与 token 表按下标一一对应, 长度不符说明命中表残缺
+    bad_len = [n for n, e in H['themes'].items() if len(e['hits']) != len(H['tokens'])]
+    if bad_len:
+        raise SystemExit(f'{name}: 语法层次命中表的 hits 与 token 数不符({", ".join(bad_len)}), 先运行 uv run tools/gen/separate.py --update')
     gate = standard()['rules']['gate']
     tokens = H['tokens']
     checks = checks_of(tokens)
@@ -383,7 +392,8 @@ def update() -> int:
         print(p.stderr.strip()[-2000:])
         return 1
     res = json.loads(p.stdout)
-    out = dict(files=[os.path.relpath(f, ROOT) for f in files], tokens=[[f, ln, R.role(sc)] for f, ln, sc in res['tokens']],
+    out = dict(files=[os.path.relpath(f, ROOT) for f in files], case_digests=[file_digest(f) for f in files],
+               tokens=[[f, ln, R.role(sc)] for f, ln, sc in res['tokens']],
                themes={n: dict(fingerprint=fingerprint(r), selectors=selectors(r), hits=res['themes'][n]) for n, r in themes.items()})
     text = json.dumps(out, ensure_ascii=False, separators=(',', ':'))
     # 每个主题一行, 便于看 diff

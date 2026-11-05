@@ -351,7 +351,7 @@ def transform(t: dict, src: dict) -> dict:
     for k, c in (('editor.foreground', t['fg']), ('editorCursor.foreground', t['cursor'])):
         put(k, c)
     if t.get('sel_changed'):
-        colors['terminal.selectionBackground'], colors['terminal.inactiveSelectionBackground'] = hx(t['sel']), hx(t['sel_inactive'])
+        colors['terminal.selectionBackground'], colors['terminal.inactiveSelectionBackground'] = hx(t['term_sel']), hx(t['term_sel_inactive'])
     for n in ANSI:
         put('terminal.ansi' + n, t['ansi'][n])
         put('terminal.ansiBright' + n, t['ansi']['Bright' + n])

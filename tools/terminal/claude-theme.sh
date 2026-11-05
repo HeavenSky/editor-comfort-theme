@@ -55,13 +55,19 @@ bg= fg= pal=()
 if { exec 3<>/dev/tty; } 2>/dev/null; then
   old=$(stty -g <&3)
   stty raw -echo <&3
+  # 查询期间收到终止信号也要恢复终端状态: 保存后注册清理, 正常走到这里注销并恢复
+  restore() {
+    trap - EXIT INT TERM HUP
+    stty "$old" <&3 2>/dev/null
+    exec 3>&- 2>/dev/null
+  }
+  trap restore EXIT INT TERM HUP
   bg=$(q 11)
   if [ -n "$bg" ] && [ "$action" = new ]; then
     fg=$(q 10)
     for i in {0..15}; do pal[$i]=$(q "4;$i") || break; done
   fi
-  stty "$old" <&3
-  exec 3>&-
+  restore
 fi
 if [ -z "$bg" ]; then
   echo "终端没有回应底色查询(不支持 OSC 11, 或在 tmux / ssh 里)" >&2

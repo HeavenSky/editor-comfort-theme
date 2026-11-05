@@ -414,6 +414,47 @@ async function apply(s, theme) {
 }
 
 // ======== 任务 ========
+// 主题文件的磁盘备份: 有 src 的组把 themes/ 原文件临时换掉, 内存里的备份只够优雅退出; 进程被强杀时靠这份磁盘备份在下次启动时恢复
+const BACKUP = path.join(os.homedir(), ".cache", "editor-comfort-shoot-theme-backup.json");
+const saveBackup = saved =>
+	fs.writeFileSync(
+		BACKUP,
+		JSON.stringify(
+			Object.fromEntries(Object.entries(saved).map(([f, b]) => [f, b.toString("base64")]))
+		)
+	);
+const loadBackup = () => {
+	try {
+		return Object.fromEntries(
+			Object.entries(JSON.parse(fs.readFileSync(BACKUP, "utf8"))).map(([f, v]) => [
+				f,
+				Buffer.from(v, "base64"),
+			])
+		);
+	} catch {
+		return null;
+	}
+};
+const clearBackup = () => fs.rmSync(BACKUP, { force: true });
+const restoreThemes = saved => {
+	for (const [f, buf] of Object.entries(saved)) {
+		const p = path.join(THEMES, `${f}.json`);
+		let same = false;
+		try {
+			same = fs.readFileSync(p).equals(buf);
+		} catch {}
+		if (!same) fs.writeFileSync(p, buf);
+	}
+};
+// 上次被强杀留下的备份先恢复, 免得 themes/ 里留着对比用的主题
+const recoverBackup = () => {
+	const bk = loadBackup();
+	if (!bk) return;
+	restoreThemes(bk);
+	clearBackup();
+	console.error("已从磁盘备份恢复 themes/ 的原主题文件(上次截图进程被强杀)");
+};
+
 function compress(dir, thumb, jpg) {
 	const pngs = fs.readdirSync(dir).filter(f => f.endsWith(".png"));
 	if (thumb) {
@@ -472,6 +513,8 @@ async function runJob(s, job, log) {
 	const saved = Object.fromEntries(
 		themes.map(t => [t.file, fs.readFileSync(path.join(THEMES, `${t.file}.json`))])
 	);
+	const overlaid = sets.some(x => x.src);
+	if (overlaid) saveBackup(saved);
 	// job.audit: 检查模块路径(导出 audit(page, ctx)), 每张截图后在同一画面上调用; 每次任务重新加载, 常驻进程不用重启
 	const audit = job.audit
 		? (await import(`${pathToFileURL(path.resolve(job.audit)).href}?t=${Date.now()}`)).audit
@@ -508,9 +551,11 @@ async function runJob(s, job, log) {
 	} finally {
 		jobSettings = {};
 		stopGuard();
-		for (const [f, buf] of Object.entries(saved)) {
-			const p = path.join(THEMES, `${f}.json`);
-			if (!fs.readFileSync(p).equals(buf)) fs.writeFileSync(p, buf);
+		try {
+			restoreThemes(saved);
+			if (overlaid) clearBackup();
+		} catch (e) {
+			log(`themes/ 的原主题文件还原失败: ${e.message}(磁盘备份在 ${BACKUP})`);
 		}
 	}
 	s.warm = true;
@@ -574,56 +619,72 @@ async function serve() {
 	}
 	const s = await launch();
 	let closing = false;
-	const bye = async (code = 0) => {
+	let current = null; // 正在运行的任务; 退出前等它的 finally 把 themes/ 还原完
+	async function bye(code = 0) {
+		if (closing) {
+			// 再来一次信号就是强行退出; 主题还原靠磁盘备份在下次启动时恢复
+			process.exit(1);
+		}
 		closing = true;
+		server.close();
+		try {
+			if (current) await current;
+		} catch {}
 		await s.close();
 		process.exit(code);
-	};
-	// 截图用的 VS Code 窗口被关掉时常驻进程跟着退出, 免得接了任务却没有窗口可拍
+	}
+	// 截图用的 VS Code 窗口被关掉时常驻进程跟着退出, 免得接了任务却没有窗口可拍; 等当前任务还原完主题再退
 	s.browser.on("disconnected", () => {
 		if (closing) return;
 		console.error("VS Code 已退出, 常驻截图结束");
-		process.exit(1);
+		bye(1);
 	});
 	process.on("SIGINT", () => bye());
 	process.on("SIGTERM", () => bye());
 	let queue = Promise.resolve();
-	http.createServer((req, res) => {
-		if (req.url === "/ping") return res.end("ok");
-		if (req.url === "/quit") {
-			res.end("bye\n");
-			return bye();
-		}
-		if (req.url !== "/job" || req.method !== "POST") {
-			res.statusCode = 404;
-			return res.end();
-		}
-		let body = "";
-		req.on("data", d => {
-			body += d;
-		});
-		req.on("end", () => {
-			res.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
-			const log = line => {
-				res.write(line + "\n");
-				console.log(line);
-			};
-			queue = queue
-				.then(() => runJob(s, JSON.parse(body), log))
-				.then(
-					() => res.end("OK\n"),
-					e => {
-						console.error(e.message);
-						res.end(`ERROR ${e.message}\n`);
-					}
-				);
-		});
-	}).listen(CTL, "127.0.0.1", () =>
-		console.log(`常驻截图已就绪: 127.0.0.1:${CTL}(VS Code 调试端口 ${PORT})`)
-	);
+	const server = http
+		.createServer((req, res) => {
+			if (req.url === "/ping") return res.end("ok");
+			if (req.url === "/quit") {
+				res.end("bye\n");
+				return bye();
+			}
+			if (req.url !== "/job" || req.method !== "POST") {
+				res.statusCode = 404;
+				return res.end();
+			}
+			if (closing) {
+				res.statusCode = 503;
+				return res.end("常驻截图正在退出, 不再接收任务\n");
+			}
+			let body = "";
+			req.on("data", d => {
+				body += d;
+			});
+			req.on("end", () => {
+				res.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
+				const log = line => {
+					res.write(line + "\n");
+					console.log(line);
+				};
+				queue = queue
+					.then(() => (current = runJob(s, JSON.parse(body), log)))
+					.then(
+						() => res.end("OK\n"),
+						e => {
+							console.error(e.message);
+							res.end(`ERROR ${e.message}\n`);
+						}
+					);
+			});
+		})
+		.listen(CTL, "127.0.0.1", () =>
+			console.log(`常驻截图已就绪: 127.0.0.1:${CTL}(VS Code 调试端口 ${PORT})`)
+		);
 }
 
 const args = process.argv.slice(2);
+recoverBackup();
 if (args.includes("--serve")) {
 	await serve();
 } else {

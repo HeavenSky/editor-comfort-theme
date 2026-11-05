@@ -2,7 +2,7 @@
 #
 # 每套主题都按补全段的中间主题 assets/full-theme/<name>-full.json(complete.py)适配: 底色, 正文, 光标, 选区与 16 色终端取自它,
 # 再经 tools/gen/steps.py 登记的调色步骤调整; 步骤全关时这些值与 full 相同. Terminal 主题只用 bg / fg / bold / cursor / sel / ansi;
-# VS Code 主题另用 sel / sel_inactive 作终端选区(term_selection 重算时才有 sel_inactive 并写回).
+# VS Code 主题另用 term_bg / term_fg / term_sel 作终端底色, 文字色与选区(term_selection 重算时才有 term_sel_inactive 并写回).
 # 命名: <name>-dark / <name>-light(与 assets/source/ 的原主题同名), 显示名 C <Name> Dark / Light.
 import json, os
 
@@ -73,9 +73,14 @@ def adapt(name: str, label: str, source: str, dark: bool) -> dict:
     ansi = lambda n: parse(c[f'terminal.ansi{n}'])[0]
     sel = c['editor.selectionBackground']
     sel = blend(parse(sel)[0], bg, int(sel[7:9], 16) / 255 if len(sel) == 9 else 1)
+    # 终端自己的底色与文字色(可比编辑区深 / 浅一档), 以及原主题的终端选区: 不定义 terminal.selectionBackground 时 VS Code 回落到编辑区选区
+    tbg, tfg = parse(c['terminal.background'])[0], parse(c['terminal.foreground'])[0]
+    tsel = c.get('terminal.selectionBackground') or c['editor.selectionBackground']
+    tsel = blend(parse(tsel)[0], tbg, int(tsel[7:9], 16) / 255 if len(tsel) == 9 else 1)
     return dict(
         name=name, label=label, dark=dark, source=source, token_min=LEGIBLE, comment_cr=True,
         full=f'{name}-full.json', bg=bg, fg=fg, bold=fg, cursor=parse(c['editorCursor.foreground'])[0], sel=sel,
+        term_bg=tbg, term_fg=tfg, term_sel=tsel,
         ui_src={n: tone(hx(ansi(n)), bg, LEGIBLE) for n in ANSI[1:7]},
         ansi=_ansi({n: tone(hx(ansi(n)), bg, TERM_ACCENT_MIN) for n in ANSI[1:7]},
                    {n: tone(hx(ansi('Bright' + n)), bg, TERM_ACCENT_MIN) for n in ANSI[1:7]},
@@ -120,10 +125,13 @@ def build() -> list[dict]:
     # 终端选区(.terminal 的 SelectionColor, VS Code 的 terminal.selectionBackground / inactiveSelectionBackground):
     # 原主题多不定义, VS Code 回落到编辑区选区色, 浅色主题里几乎看不见; 一律按门禁终端范围的选区口径求色
     for t in T:
-        ts, bg, fg, blue = term_spec(t['dark']), t['bg'], t['fg'], t['ansi']['Blue']
-        # 原选区看得出且上面的字可读时沿用原选区
-        if on('term_selection') and (cr(t['sel'], bg) < ts['selection'][0] or cr(fg, t['sel']) < ts['on_selection'][0]):
-            t['sel'] = term_selection(bg, fg, blue, ts['selection'][0] + TERM_SEL_MARGIN, t['dark'])
-            t['sel_inactive'] = term_selection(bg, fg, blue, ts['inactive_selection'][0] + TERM_SEL_INACTIVE_MARGIN, t['dark'])
+        ts, blue = term_spec(t['dark']), t['ansi']['Blue']
+        # Terminal.app 的选区画在它的底色(编辑区底)上: 原选区看得出且上面的字可读时沿用
+        if on('term_selection') and (cr(t['sel'], t['bg']) < ts['selection'][0] or cr(t['fg'], t['sel']) < ts['on_selection'][0]):
+            t['sel'] = term_selection(t['bg'], t['fg'], blue, ts['selection'][0] + TERM_SEL_MARGIN, t['dark'])
+        # VS Code 终端选区: 按实际终端底色与文字色判断原主题的 terminal.selectionBackground, 与 Terminal.app 的配色输入分别处理
+        if on('term_selection') and (cr(t['term_sel'], t['term_bg']) < ts['selection'][0] or cr(t['term_fg'], t['term_sel']) < ts['on_selection'][0]):
+            t['term_sel'] = term_selection(t['term_bg'], t['term_fg'], blue, ts['selection'][0] + TERM_SEL_MARGIN, t['dark'])
+            t['term_sel_inactive'] = term_selection(t['term_bg'], t['term_fg'], blue, ts['inactive_selection'][0] + TERM_SEL_INACTIVE_MARGIN, t['dark'])
             t['sel_changed'] = True
     return T
