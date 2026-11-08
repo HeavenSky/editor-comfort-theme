@@ -51,10 +51,22 @@ export default function deriveAllowlist({ pkg, rootEntries, l10nEntries, outEntr
 		for (const name of l10nEntries) allowed.add(`${dir}/${name}`);
 	}
 
+	// `$(codicon)` 形式的图标引用的是内置图标, 不是磁盘上的文件, 当成文件会报 missing from VSIX。
+	const isFile = icon => typeof icon === "string" && !icon.startsWith("$(");
+
 	// 活动栏等视图容器各有自己的图标, 且与 `pkg.icon` (市场图标) 是不同的产物。
 	for (const containers of Object.values(pkg.contributes?.viewsContainers ?? {})) {
 		for (const container of containers) {
-			if (container.icon) allowed.add(strip(container.icon));
+			if (isFile(container.icon)) allowed.add(strip(container.icon));
+		}
+	}
+
+	// 命令图标 (编辑器标题栏, 视图标题栏的按钮) 可以按明暗主题各给一份。
+	for (const command of pkg.contributes?.commands ?? []) {
+		const icons =
+			typeof command.icon === "object" ? Object.values(command.icon ?? {}) : [command.icon];
+		for (const icon of icons) {
+			if (isFile(icon)) allowed.add(strip(icon));
 		}
 	}
 
@@ -80,6 +92,16 @@ export default function deriveAllowlist({ pkg, rootEntries, l10nEntries, outEntr
 		...(contributes.productIconThemes ?? []),
 	]) {
 		if (theme.path) allowed.add(strip(theme.path));
+	}
+
+	// Markdown 预览的脚本与样式在预览打开时按路径加载, 漏打包只会让预览静默缺功能。
+	// 脚本项可以是字符串或 `{ path, type }`。
+	for (const script of contributes["markdown.previewScripts"] ?? []) {
+		const path = typeof script === "string" ? script : script?.path;
+		if (path) allowed.add(strip(path));
+	}
+	for (const style of contributes["markdown.previewStyles"] ?? []) {
+		if (typeof style === "string") allowed.add(strip(style));
 	}
 
 	for (const name of NLS) {

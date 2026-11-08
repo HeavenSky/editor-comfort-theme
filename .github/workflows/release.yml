@@ -166,13 +166,30 @@ jobs:
               with:
                   name: ${{ needs.release.outputs.vsix_name }}
 
+            # 市场上已有该版本时跳过, 重跑失败的运行(例: 只有 Open VSX 失败)才安全; vsce 对已存在的版本直接报错.
+            # 扩展从未发布过时 vsce show 失败, 按未发布处理.
+            - name: Check published version
+              id: published
+              env:
+                  VERSION: ${{ needs.release.outputs.version }}
+              run: |
+                  id="$(node -p "const p=require('./package.json'); p.publisher + '.' + p.name")"
+                  versions="$(npx --no-install vsce show "$id" --json 2>/dev/null | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{console.log(JSON.parse(s).versions.map(v=>v.version).join("\n"))}catch{}})' || true)"
+                  if printf '%s\n' "$versions" | grep -qxF "$VERSION"; then
+                    echo "$id@$VERSION 已在 Marketplace 上, 跳过发布"
+                    echo "skip=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "skip=false" >> "$GITHUB_OUTPUT"
+                  fi
+
             - name: Publish to VS Code Marketplace
+              if: steps.published.outputs.skip != 'true'
               env:
                   VSCE_PAT: ${{ secrets.VSCE_PAT }}
                   VSIX_NAME: ${{ needs.release.outputs.vsix_name }}
               run: npx --no-install vsce publish --packagePath "$VSIX_NAME"
 
-    # Open VSX(VSCodium / Cursor / Windsurf 等非官方发行版的市场), 同样按 secret 存在与否开关.
+    # Open VSX(VSCodium / Cursor / Windsurf 等非官方发行版的市场), 默认不发布; 配了 OVSX_PAT 才自动推送, 同样按 secret 存在与否开关.
     open-vsx:
         needs: release
         if: needs.release.outputs.has_ovsx_pat == 'true'
@@ -188,13 +205,32 @@ jobs:
               with:
                   name: ${{ needs.release.outputs.vsix_name }}
 
+            # Open VSX 上已有该版本时跳过, 重跑安全; 只有 404 按未发布处理, 其余状态与网络错误让 job 失败,
+            # 不把查询失败误当作已发布而跳过.
+            - name: Check published version
+              id: published
+              env:
+                  VERSION: ${{ needs.release.outputs.version }}
+              run: |
+                  id="$(node -p "const p=require('./package.json'); p.publisher + '/' + p.name")"
+                  if ! status="$(curl -sS --retry 3 -o /dev/null -w '%{http_code}' "https://open-vsx.org/api/$id/$VERSION")"; then
+                    echo "::error::查询 Open VSX 失败, 无法判断 $id@$VERSION 是否已发布"
+                    exit 1
+                  fi
+                  case "$status" in
+                    200) echo "$id@$VERSION 已在 Open VSX 上, 跳过发布"; echo "skip=true" >> "$GITHUB_OUTPUT" ;;
+                    404) echo "skip=false" >> "$GITHUB_OUTPUT" ;;
+                    *) echo "::error::查询 Open VSX 返回 HTTP $status, 无法判断 $id@$VERSION 是否已发布"; exit 1 ;;
+                  esac
+
             # ovsx 刻意不进 devDependencies, 因此这个 job 也不装依赖: 它只被这一步用到, 而这一步
             # 只在配了 OVSX_PAT 时才跑. 写进 devDependencies 会让所有开发者与所有 job 都为一个
             # 多数派生仓库根本不发布的市场付安装成本. marketplace job 不同 —— vsce 是打包环节
             # 的既有依赖, 本来就装.
-            # 代价是 `--yes` 会在发布时现拉一个版本; 介意的仓库把它改成 `ovsx@<大版本>` 约束一下.
+            # 钉死版本, 发布工具与其余依赖一样由提交锁定; 升级时改这一处.
             - name: Publish to Open VSX
+              if: steps.published.outputs.skip != 'true'
               env:
                   OVSX_PAT: ${{ secrets.OVSX_PAT }}
                   VSIX_NAME: ${{ needs.release.outputs.vsix_name }}
-              run: npx --yes ovsx publish "$VSIX_NAME"
+              run: npx --yes ovsx@1.3.0 publish "$VSIX_NAME"

@@ -49,9 +49,9 @@ function runChild(label, args, options) {
 const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
 const target = join(OUT_DIR, `${pkg.name}-${pkg.version}.vsix`);
 
-// NEVER 显式传 --baseContentUrl / --baseImagesUrl: vsce 会从 package.json 的 repository
-// 自动推导出正确的一对基址 (链接 `/blob/HEAD`, 图片 `/raw/HEAD`), 而显式传参会抹掉这个区分 ——
-// 只传 baseContentUrl 时 baseImagesUrl 也会回退到它, 结果文档链接指向 raw 纯文本。
+// vsce 从 repository.url 推导链接 `/blob/HEAD` 与图片 `/raw/HEAD` 两个基址, 但不认 repository.directory:
+// 扩展在 monorepo 子目录里时, 不补目录 README 的相对链接与图片会指到仓库根而失效, 此时成对显式传两个基址;
+// 只传 baseContentUrl 时 baseImagesUrl 也会回退到它, 图片会指向 blob 页面而不是原图。
 // 这里仍校验 repository, 让地址不合规时立刻失败, 而不是等 vsce 遇到相对链接才报错。
 const repoUrl = (pkg.repository?.url ?? pkg.repository ?? "")
 	.replace(/^git\+/, "")
@@ -60,6 +60,21 @@ if (!/^https:\/\/github\.com\/[^/]+\/[^/]+$/.test(repoUrl)) {
 	console.error(`package.json 的 repository.url 不是预期的 GitHub 地址: ${repoUrl || "(空)"}`);
 	process.exit(1);
 }
+const repoDir =
+	typeof pkg.repository?.directory === "string"
+		? pkg.repository.directory.replace(/^\/+|\/+$/g, "")
+		: "";
+const baseUrlArgs = repoDir
+	? [
+			"--baseContentUrl",
+			`${repoUrl}/blob/HEAD/${repoDir}`,
+			"--baseImagesUrl",
+			`${repoUrl}/raw/HEAD/${repoDir}`,
+		]
+	: [];
+
+// 预发布标记写进 vsix 本身, 发布步骤用 --packagePath 原样上传, 不会再补; 所以只能在打包时带上。
+const preReleaseArgs = process.argv.includes("--pre-release") ? ["--pre-release"] : [];
 
 // 打包策略走 `files` 白名单。这两条本来也会失败 —— 前者被 vsce 拒绝, 后者会让整个工作目录
 // 进包并撞上下面的内容断言 —— 但那时的报错离原因很远, 所以在这里先拦一道并说清该怎么做。
@@ -98,6 +113,8 @@ runChild(
 		target,
 		// 产物由 esbuild 打成单文件, 不需要 vsce 解析并打包依赖树。
 		"--no-dependencies",
+		...baseUrlArgs,
+		...preReleaseArgs,
 	],
 	{ cwd: ROOT, stdio: "inherit", timeout: VSCE_TIMEOUT_MS }
 );
