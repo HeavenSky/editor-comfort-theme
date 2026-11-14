@@ -2,7 +2,7 @@
 
 [English](../CHANGELOG.md) · **简体中文**
 
-## Unreleased
+## v0.0.7 2026-11-14
 
 ### 修复
 

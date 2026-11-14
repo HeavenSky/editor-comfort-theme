@@ -2,7 +2,7 @@
 
 **English** · [简体中文](./zh/CHANGELOG.md)
 
-## Unreleased
+## v0.0.7 2026-11-14
 
 ### Fixed
 
