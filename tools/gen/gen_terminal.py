@@ -3,7 +3,7 @@
 # dependencies = ["pyobjc-framework-Cocoa; sys_platform == 'darwin'"]
 # ///
 # 由 themes.py 生成 macOS Terminal.app 主题 assets/terminal/<name>.terminal(颜色以 sRGB 存储); 手改 .terminal 会在下次生成时被覆盖.
-# 用法: uv run tools/gen/gen_terminal.py [--font MapleMono-NF-CN-Regular] [--size 12]
+# 用法: uv run tools/gen/gen_terminal.py [--font MapleMono-NF-CN] [--size 12]
 import argparse, os, plistlib, sys
 
 sys.dont_write_bytecode = True  # 不在 tools/ 下留 __pycache__
@@ -41,7 +41,7 @@ def color(rgb, alpha: float = 1.0) -> bytes:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--font', default='MapleMono-NF-CN-Regular')
+    ap.add_argument('--font', default='MapleMono-NF-CN')
     ap.add_argument('--size', type=float, default=12)
     args = ap.parse_args()
     font = NSFont.fontWithName_size_(args.font, args.size)
