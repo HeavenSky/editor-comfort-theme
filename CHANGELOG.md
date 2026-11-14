@@ -2,6 +2,12 @@
 
 **English** · [简体中文](./zh/CHANGELOG.md)
 
+## Unreleased
+
+### Fixed
+
+- Terminal profiles now specify the font family `MapleMono-NF-CN` instead of the non-existent `MapleMono-NF-CN-Regular`, so Terminal.app resolves the installed Maple Mono NF CN font; re-import the `.terminal` profile to apply the fix.
+
 ## v0.0.6 2026-11-05
 
 ### Fixed

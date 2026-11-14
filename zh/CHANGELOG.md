@@ -2,6 +2,12 @@
 
 [English](../CHANGELOG.md) · **简体中文**
 
+## Unreleased
+
+### 修复
+
+- 终端配置的字体族从并不存在的 `MapleMono-NF-CN-Regular` 改为 `MapleMono-NF-CN`，Terminal.app 能正确解析已安装的 Maple Mono NF CN 字体；重新导入 `.terminal` 配置后生效。
+
 ## v0.0.6 2026-11-05
 
 ### 修复
