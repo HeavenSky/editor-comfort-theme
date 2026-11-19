@@ -14,7 +14,7 @@ sys.path[:0] = [os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', d
 from colorlib import WHITE_C, WHITE_L, Rgb, unwhite, blend, cr, de2000, fit, from_oklch, h, hx, lum, oklch, sat, with_sat
 import levels, separate
 from themefile import SOURCES, load, parse
-from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, problems
+from schema import FONT_STYLE, HEX, RULE_KEYS, SEMANTIC_STYLE_KEYS, SETTINGS_KEYS, TRANSPARENT, coverage_problems, problems, registry
 from comfort import HIGHLIGHT_KEYS, HIGHLIGHT_TEXT_MIN, INPUT_SELECTION_TEXT, SELECTION_VISIBLE, input_selection
 from themes import ANSI, LEGIBLE, TERM_MARGIN, build
 from steps import on
@@ -465,13 +465,14 @@ def main() -> int:
         return 2
     out = sys.argv[sys.argv.index('--out') + 1] if '--out' in sys.argv else OUT
     os.makedirs(out, exist_ok=True)
+    reg = registry()
     stale = []
     for t in build():
         path = os.path.join(out, f"{t['name']}.json")
         theme = render(t)
-        bad = problems(theme)
+        bad = problems(theme, reg) + coverage_problems(theme, reg, theme['type'])
         if bad:
-            print(f"{t['name']}: 生成结果不符合 vscode://schemas/color-theme:", *bad[:10], sep='\n  ')
+            print(f"{t['name']}: 生成结果未通过 schema 或补全键校验:", *bad[:10], sep='\n  ')
             return 1
         text = json.dumps(theme, indent='\t', ensure_ascii=False) + '\n'
         old = open(path, encoding='utf-8').read() if os.path.exists(path) else None

@@ -2,10 +2,11 @@
 
 **English** · [简体中文](./zh/CHANGELOG.md)
 
-## v0.0.7 2026-11-14
+## v0.0.7 2026-11-19
 
 ### Fixed
 
+- C Owl Dark, C Pale Dark and C Pale Light now use theme colors for more editor details, including whitespace markers, active links and search ranges.
 - Terminal profiles now specify the font family `MapleMono-NF-CN` instead of the non-existent `MapleMono-NF-CN-Regular`, so Terminal.app resolves the installed Maple Mono NF CN font; re-import the `.terminal` profile to apply the fix.
 
 ## v0.0.6 2026-11-05

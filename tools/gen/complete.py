@@ -23,6 +23,7 @@ import math
 from colorlib import blend, cr, de2000, from_oklch, h, hue_deg, hue_in, hx, lum, oklch, sat, with_sat
 from comfort import STATUS_GROUPS, TERM_COLORS, TERM_HUES
 from gen_vscode import ANSI, FULL, NEUTRAL_CHROMA, REGISTRY, SOURCES, TEXT_ON_CODE, Mapper, conform, load, opaque, parse, scopes_of, source_fg
+from schema import coverage_problems, hardcoded_defaults, registry
 import pool
 
 FULL_RULE = pool.FULL_RULE
@@ -75,9 +76,7 @@ def resolve(rules: list, scope: str) -> str | None:
 
 def hardcoded_keys(dark: bool) -> dict[str, str]:
     """VS Code 注册表中默认值是硬编码字面量的键 -> 该默认值; 主题不定义这些键时界面会落到与主题无关的颜色."""
-    reg = json.load(open(REGISTRY, encoding='utf-8'))
-    mode = 'dark' if dark else 'light'
-    return {k: v[mode] for k, v in reg['colors'].items() if v.get(mode) and not v.get('deprecated')}
+    return hardcoded_defaults(registry(), 'dark' if dark else 'light')
 
 
 def is_area(key: str) -> bool:
@@ -209,7 +208,8 @@ def complete(name: str, dark: bool, guard: bool = True) -> dict:
     src = load(os.path.join(SOURCES, f'{name}.json'))
     reg = json.load(open(REGISTRY, encoding='utf-8'))['colors']
     mode = 'dark' if dark else 'light'
-    colors = {k: norm(v) for k, v in src.get('colors', {}).items()}
+    # null 会被 conform 清理, 补色前先当作未定义, 避免它占住键位.
+    colors = {k: norm(v) for k, v in src.get('colors', {}).items() if v is not None}
     rules = json.loads(json.dumps(src.get('tokenColors', [])))
     for r in rules:
         st = r.get('settings')
@@ -287,8 +287,14 @@ def main() -> int:
         guard()
         return 0
     os.makedirs(FULL, exist_ok=True)
+    reg = registry()
     for name, dark in names():
-        text = json.dumps(complete(name, dark), indent=2, ensure_ascii=False) + '\n'
+        theme = complete(name, dark)
+        missing = coverage_problems(theme, reg, theme['type'])
+        if missing:
+            print(f'{name}: 中间主题补全校验失败:', *missing, sep='\n  ', file=sys.stderr)
+            return 1
+        text = json.dumps(theme, indent=2, ensure_ascii=False) + '\n'
         path = full_path(name)
         old = open(path, encoding='utf-8').read() if os.path.exists(path) else None
         if old == text:

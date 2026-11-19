@@ -2,10 +2,11 @@
 
 [English](../CHANGELOG.md) · **简体中文**
 
-## v0.0.7 2026-11-14
+## v0.0.7 2026-11-19
 
 ### 修复
 
+- C Owl Dark、C Pale Dark 和 C Pale Light 的空白字符标记、活动链接和搜索范围等编辑器细节现在使用各自的主题配色。
 - 终端配置的字体族从并不存在的 `MapleMono-NF-CN-Regular` 改为 `MapleMono-NF-CN`，Terminal.app 能正确解析已安装的 Maple Mono NF CN 字体；重新导入 `.terminal` 配置后生效。
 
 ## v0.0.6 2026-11-05

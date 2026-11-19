@@ -1,10 +1,32 @@
 # /// script
 # requires-python = ">=3.11"
 # ///
-# 按 vscode://schemas/color-theme 校验 VS Code 颜色主题; 规则取自 VS Code 源码(颜色注册表 / textmate-colors / token-styling),
-# 颜色键的注册, 半透明要求与废弃标记来自 assets/vscode/color-registry.json(npm run extract:vscode 提取).
-# 用法: uv run tools/check/schema.py <主题.json>...   (有问题时逐条列出并退出码 1)
-import json, os, re, sys
+"""使用仓库的 VS Code 注册表快照校验主题, 只读.
+
+Usage:
+  uv run tools/check/schema.py [--complete] <主题.json>...
+  uv run tools/check/schema.py -h
+
+Options:
+  默认检查未注册键、废弃键和不符合 schema 的值.
+  --complete  额外要求 colors 显式提供十六进制颜色. 范围为注册表中对应明暗模式
+              下有硬编码默认色的未废弃键. 由其他颜色推导默认值的键交给 VS Code 回退.
+              按主题 type 或 -dark.json / -light.json 后缀识别明暗.
+
+Examples:
+  # 检测原始主题的缺失项. null 也会被报告为缺少显式颜色.
+  uv run tools/check/schema.py --complete assets/source/*.json
+  # 重新生成中间主题与发布主题. 补全阶段把原主题的 null 当作未定义.
+  npm run gen:themes
+  # 复查补全结果. npm run check 和 CI 也会在生成链中检查缺失键.
+  uv run tools/check/schema.py --complete assets/full-theme/*-full.json themes/*.json
+
+更新 VS Code 后, 先运行 npm run extract:vscode 刷新 assets/vscode/color-registry.json,
+再运行 npm run gen:themes 并复查产物.
+
+有问题时逐条列出并退出码 1.
+"""
+import argparse, json, os, re, sys
 
 sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'lib'))
@@ -24,6 +46,21 @@ SEMANTIC_STYLE_KEYS = {'foreground', 'background', 'fontStyle', 'bold', 'italic'
 
 def registry() -> dict:
     return json.load(open(REGISTRY_PATH, encoding='utf-8'))
+
+
+def hardcoded_defaults(reg: dict, mode: str) -> dict[str, str]:
+    """对应明暗模式下, 补全要覆盖的未废弃硬编码默认色."""
+    return {k: v[mode] for k, v in reg['colors'].items() if v.get(mode) and not v.get('deprecated')}
+
+
+def coverage_problems(theme: dict, reg: dict, mode: str) -> list[str]:
+    colors = theme.get('colors') or {}
+    missing = []
+    for key in hardcoded_defaults(reg, mode):
+        value = colors.get(key)
+        if not isinstance(value, str) or not HEX.fullmatch(value):
+            missing.append(f'colors.{key}: 缺少显式颜色')
+    return missing
 
 
 def problems(theme: dict, reg: dict | None = None) -> list[str]:
@@ -88,20 +125,32 @@ def problems(theme: dict, reg: dict | None = None) -> list[str]:
 
 
 def main() -> int:
-    files = sys.argv[1:]
-    if not files:
-        print('用法: uv run tools/check/schema.py <主题.json>...')
-        return 2
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument('-h', '--help', action='store_true')
+    parser.add_argument('--complete', action='store_true')
+    parser.add_argument('files', nargs='*')
+    args = parser.parse_args()
+    if args.help or not args.files:
+        print(__doc__)
+        return 0 if args.help else 2
     reg, bad = registry(), 0
-    for f in files:
-        ps = problems(load(f), reg)
+    for f in args.files:
+        theme = load(f)
+        ps = problems(theme, reg)
+        if args.complete:
+            mode = theme.get('type') or os.path.basename(f).removesuffix('.json').rsplit('-', 1)[-1]
+            if mode in ('dark', 'light'):
+                ps.extend(coverage_problems(theme, reg, mode))
+            else:
+                ps.append('无法识别主题明暗, 请提供 type 或 -dark.json / -light.json 文件名')
         if ps:
             bad += 1
             print(f'{f}: {len(ps)} 个问题')
             for p in ps:
                 print(f'  - {p}')
     if not bad:
-        print(f'{len(files)} 个主题全部符合 vscode://schemas/color-theme')
+        checks = '并通过补全键校验' if args.complete else ''
+        print(f'{len(args.files)} 个主题全部符合 vscode://schemas/color-theme{checks}')
     return 1 if bad else 0
 
 

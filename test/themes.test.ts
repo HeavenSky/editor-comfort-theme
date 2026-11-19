@@ -55,3 +55,16 @@ describe.each(contributed)("$label", ({ uiTheme, path }) => {
 		expect(ansi).toHaveLength(16);
 	});
 });
+
+it("原主题的 null 不会阻止补全 editorWhitespace.foreground", () => {
+	for (const name of ["owl-dark", "pale-dark", "pale-light"]) {
+		const sourceColors = JSON.parse(
+			readFileSync(join(ROOT, "assets/source", `${name}.json`), "utf8")
+		).colors;
+		const publishedColors = JSON.parse(
+			readFileSync(join(ROOT, "themes", `${name}.json`), "utf8")
+		).colors;
+		expect(sourceColors["editorWhitespace.foreground"]).toBeNull();
+		expect(publishedColors["editorWhitespace.foreground"]).toMatch(HEX);
+	}
+});

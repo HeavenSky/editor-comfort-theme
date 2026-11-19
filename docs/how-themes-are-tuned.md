@@ -12,6 +12,8 @@ Every theme starts as the original theme exactly as published. The three new lig
 
 **Completion adds colors the original leaves unset and never recolors one it sets.**
 
+Completion treats a `null` color as unset. It fills colors in the generated themes while preserving the original theme files.
+
 - UI colors that VS Code would otherwise hard-code, such as terminal, diff and git decoration colors, take the hue of the theme's own terminal colors. Text on them is at least as readable as with VS Code's defaults; where the defaults exceed 4.5, the requirement is capped at 4.5.
 - Syntax rules come from a pool merged from all original themes and are added only for scopes the original leaves uncolored.
 - Some pool rules would recolor, through an outer scope, a token the original already colors. The build finds them by tokenizing sample files and skips them.
